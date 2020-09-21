@@ -21,7 +21,7 @@
       v-if="response.count > 0"
       class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
     >
-      <div class="mr-3 mb-3">
+      <div class="mr-3 mb-3 ">
         <v-select
           :value="paginateBy"
           color="primary"
@@ -80,7 +80,7 @@
         @change="setHeaders($event)"
       >
         <template v-slot:prepend>
-          <div>{{$t('common.fields')}}</div>
+          <div>{{ $t("common.fields") }}</div>
         </template>
       </v-select>
       <!--  LIST VIEW  -->
@@ -198,23 +198,50 @@ export default {
           text: "reference.id",
           value: "id",
           show: true,
-          fixed: false
+          fixed: false,
+          class: "text-no-wrap"
         },
-        { text: "reference.author", value: "author", show: true, fixed: false },
-        { text: "reference.year", value: "year", show: true, fixed: false },
-        { text: "reference.title", value: "title", show: true, fixed: false },
+        {
+          text: "reference.author",
+          value: "author",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.year",
+          value: "year",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.title",
+          value: "title",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
         {
           text: "reference.bookJournal",
           value: "bookJournal",
           show: true,
-          fixed: false
+          fixed: false,
+          class: "text-no-wrap"
         },
-        { text: "reference.pages", value: "pages", show: false, fixed: false },
+        {
+          text: "reference.pages",
+          value: "pages",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
         {
           text: "reference.keywords",
           value: "keywords",
           show: false,
-          fixed: false
+          fixed: false,
+          class: "text-no-wrap"
         }
       ]
     };
@@ -361,15 +388,8 @@ export default {
 .radio-buttons >>> .v-label {
   margin-bottom: 0;
 }
-.newSelect .v-select__selection {
-  white-space: nowrap;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 90%;
-}
 
-.newSelect .v-select__selections {
-  max-width: 70%;
+.tableHeaderCell {
+  white-space: nowrap;
 }
 </style>

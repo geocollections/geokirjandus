@@ -16,18 +16,6 @@
         </v-radio-group>
       </div>
     </v-row>
-    <div>
-      <v-select
-        :label="$t('common.fields')"
-        v-if="view === 'table'"
-        :value="getHeadersShowing"
-        multiple
-        chips
-        :items="getSelectItems"
-        @change="setHeaders($event)"
-      >
-      </v-select>
-    </div>
     <!-- PAGINATION -->
     <div
       v-if="response.count > 0"
@@ -60,12 +48,7 @@
       </div>
     </div>
     <!-- DATA TABLE -->
-    <v-card
-      elevation="4"
-      color="primary"
-      class="table-card my-1"
-      :loading="isLoading"
-    >
+    <v-card elevation="4" color="primary" class=" my-1" :loading="isLoading">
       <template v-slot:progress>
         <v-progress-linear indeterminate color="primary"></v-progress-linear>
       </template>
@@ -83,6 +66,23 @@
           <export-buttons :filename="module" :table-data="response.results" />
         </div>
       </v-card-title>
+
+      <v-select
+        class="pa-2"
+        v-if="view === 'table'"
+        :value="getHeadersShowing"
+        multiple
+        dense
+        chips
+        outlined
+        hide-details
+        :items="getSelectItems"
+        @change="setHeaders($event)"
+      >
+        <template v-slot:prepend>
+          <div>{{$t('common.fields')}}</div>
+        </template>
+      </v-select>
       <!--  LIST VIEW  -->
       <list-view
         v-if="view === 'list' && response.count > 0"
@@ -93,7 +93,10 @@
       />
 
       <!--  TABLE VIEW  -->
+
       <v-data-table
+        class="d-inline-block"
+        style="width: 100%"
         v-if="view === 'table' && response.count > 0"
         :headers="getHeadersShowing"
         :items="response.results"
@@ -191,7 +194,12 @@ export default {
           show: true,
           fixed: true
         },
-        { text: "reference.id", value: "id", show: true, fixed: false },
+        {
+          text: "reference.id",
+          value: "id",
+          show: true,
+          fixed: false
+        },
         { text: "reference.author", value: "author", show: true, fixed: false },
         { text: "reference.year", value: "year", show: true, fixed: false },
         { text: "reference.title", value: "title", show: true, fixed: false },
@@ -352,5 +360,16 @@ export default {
 
 .radio-buttons >>> .v-label {
   margin-bottom: 0;
+}
+.newSelect .v-select__selection {
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+.newSelect .v-select__selections {
+  max-width: 70%;
 }
 </style>

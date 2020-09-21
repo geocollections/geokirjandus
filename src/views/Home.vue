@@ -15,7 +15,7 @@
             v-on:reset:parameters="resetSearch"
           />
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <list-module-core
             :module="$route.meta.object"
             :api-call="fetchReferences"

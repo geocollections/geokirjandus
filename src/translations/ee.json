@@ -1,1 +1,48 @@
-{}
+{
+  "title": "Eesti maapõue teavikute register",
+  "pagination": "Kuva {num} kaupa",
+  "common": {
+    "search": "Otsing",
+    "advancedSearch": "Detailotsing",
+    "found": "Leitud",
+    "records": "kirjet",
+    "listView": "Listi vaade",
+    "tableView": "Tabeli vaade",
+    "export": "Ekspordi",
+    "copy": "Kopeeri",
+    "links": "Lingid",
+    "deleteSearch": "Eemalda otsing",
+    "lookUpType": "Filter"
+  },
+  "reference": {
+    "id": "ID",
+    "author": "Autor",
+    "year": "Aasta",
+    "title": "Pealkiri",
+    "bookJournal": "Raamat/Ajakiri",
+    "abstractRemarks": "Abstrakt/Märkused",
+    "localities": "Lokaliteedid",
+    "keywords": "Terminid",
+    "userAdded": "Lisanud kasutaja",
+    "isEstonianAuthor": "Eesti autor",
+    "isEstonianReference": "Eesti kirjandus",
+    "viewReference": "Vaata viitet"
+  },
+  "link": {
+    "geocollections": "GeoCollections",
+    "fossiilid": "Fossiilid",
+    "kivid": "Kivid",
+    "sarvAPI": "SARV API",
+    "sarvDOI": "SARV DOI",
+    "sarvEdit": "SARV andmehaldus",
+    "egt": "EGT Geoloogiafond",
+    "natarc": "NATARC"
+  },
+  "lookUpType": {
+    "equals": "= võrdne",
+    "contains": "* sisaldab",
+    "startsWith": "=* algab",
+    "endsWith": "*= lõppeb",
+    "notContains": "!* ei sisalda"
+  }
+}

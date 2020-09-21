@@ -1,26 +1,30 @@
 import axios from "axios";
 
-const API_URL = "/api";
+const API_URL = "https://api.geocollections.info/solr/reference/";
 const FACET_QUERY =
   "q=*&rows=0&facet=on&facet.mincount=1&facet.field=recordbasis&facet.field=highertaxon&facet.field=type_status&facet.field=country&facet.field=datasetowner&facet.field=providername&facet.field=providername&facet.field=providercountry";
 
 class SearchService {
   static async search(searchParams) {
     try {
+      console.log("searching");
       let start = (searchParams.page - 1) * searchParams.paginateBy;
       let sort = buildSort(searchParams.sortBy, searchParams.sortDesc);
 
-      let searchFields = buildSearchFieldsQuery(searchParams.searchFields);
+      let searchFields = buildSearchFieldsQuery(
+        searchParams.search,
+        searchParams.advancedSearch
+      );
 
       let url = `${API_URL}?start=${start}&rows=${searchParams.paginateBy}&sort=${sort}&defType=edismax`;
 
       if (searchFields && searchFields.length > 0) url += `&${searchFields}`;
       else url += `&q=*`;
 
+      console.log(url);
       const res = await axios.get(url);
       return res.data;
     } catch (err) {
-      console.log(err);
       throw new Error(err);
     }
   }
@@ -60,44 +64,87 @@ function buildSort(sortBy, sortDesc) {
   return sort;
 }
 
-function buildSearchFieldsQuery(searchFields) {
-  let encodedData = [];
+function buildSearchFieldsQuery(search, advancedSearch) {
+  const searchStr = search.value ? `q=${search.value}` : "q=*";
 
-  Object.keys(searchFields).forEach(field => {
-    let name = searchFields[field].field;
-    let lookUpType = searchFields[field].lookUpType;
-    let value = searchFields[field].value;
-    let fieldType = searchFields[field].fieldType;
+  const advancedSearchStr = Object.entries(advancedSearch).reduce(
+    (prev, [k, v]) => {
+      const param = v.fields.reduce((prev, curr, idx) => {
+        function buildStr(encodedObject) {
+          let encodedValue;
 
-    if (value && value.trim().length > 0) {
-      let encodedObject = `fq=${name}:`;
-      let encodedValue = encodeURIComponent(value);
-      if (name === "q") encodedObject = encodedObject.substring(1, 3);
+          if (v.type === "range") {
+            encodedValue = v.value.map(el => {
+              console.log(el);
+              return encodeURIComponent(el);
+            });
+          } else encodedValue = encodeURIComponent(v.value);
+          console.log(encodedValue)
+          if (curr === "q") encodedObject = encodedObject.substring(1, 3);
+          if (v.type === "checkbox") {
+            if (curr === "highertaxon_checkbox")
+              encodedObject = "fq=highertaxon:";
+            encodedValue = encodedValue.replace(/%2C/g, " OR ");
+            encodedObject += encodedValue;
+          } else {
+            if (v.lookUpType === "") encodedObject += encodedValue;
+            else if (v.lookUpType === "contains")
+              encodedObject += `*${encodedValue}*`;
+            else if (v.lookUpType === "equals")
+              encodedObject += `"${encodedValue}"`;
+            else if (v.lookUpType === "range")
+              encodedObject += `[${encodedValue[0]} TO ${encodedValue[1]}]`;
+            else if (v.lookUpType === "startsWith")
+              encodedObject += `${encodedValue}*`;
+            else if (v.lookUpType === "endsWith")
+              encodedObject += `*${encodedValue}`;
+            else if (v.lookUpType === "notContains")
+              encodedObject = `-${curr}:*${encodedValue}*`;
+            else if (v.lookUpType === "greater than")
+              encodedObject += `[${encodedValue} TO *]`;
+            else if (v.lookUpType === "smaller than")
+              encodedObject += `[* TO ${encodedValue}]`;
+          }
+          return encodedObject;
+        }
+        if (idx === 0) {
 
-      if (fieldType === "checkbox") {
-        if (name === "highertaxon_checkbox") encodedObject = "fq=highertaxon:";
-        encodedValue = encodedValue.replace(/%2C/g, " OR ");
-        encodedObject += encodedValue;
-      } else {
-        if (lookUpType === "") encodedObject += encodedValue;
-        else if (lookUpType === "contains")
-          encodedObject += `*${encodedValue}*`;
-        else if (lookUpType === "equals") encodedObject += `"${encodedValue}"`;
-        else if (lookUpType === "starts with")
-          encodedObject += `${encodedValue}*`;
-        else if (lookUpType === "does not contain")
-          encodedObject = `fq=-${name}:${encodedValue}`;
-        else if (lookUpType === "greater than")
-          encodedObject += `[${encodedValue} TO *]`;
-        else if (lookUpType === "smaller than")
-          encodedObject += `[* TO ${encodedValue}]`;
+          if (v.type === "range") {
+            let encodedObject = `${curr}:`;
+            encodedObject = buildStr(encodedObject);
+
+            return v.active ? `${prev}${encodedObject}` : `${prev}`;
+          }else if ( v.value && v.value.trim().length > 0) {
+            let encodedObject = `${curr}:`;
+            encodedObject = buildStr(encodedObject);
+            return `${prev}${encodedObject}`;
+          }
+          return `${prev}`;
+        }
+        if (v.type === "text" && v.value && v.value.trim().length > 0) {
+          let encodedObject = ` OR ${curr}:`;
+          encodedObject = buildStr(encodedObject);
+          return `${prev}${encodedObject}`;
+        }
+        return `${prev}`;
+      }, "");
+
+      if (param.length > 0) {
+        if (prev.length > 0) {
+          return `${prev}&fq=${param}`;
+        }
+
+        return `${prev}fq=${param}`;
       }
-
-      encodedData.push(encodedObject);
-    } else if (name === "q") encodedData.push("q=*");
-  });
-
-  return encodedData.join("&");
+      return `${prev}`;
+    },
+    ""
+  );
+  console.log(`${searchStr}&${advancedSearchStr}`);
+  console.log(encodeURIComponent(searchStr));
+  return advancedSearchStr.length > 0
+    ? encodeURIComponent(`${searchStr}&${advancedSearchStr}`)
+    : encodeURIComponent(searchStr);
 }
 
 export default SearchService;

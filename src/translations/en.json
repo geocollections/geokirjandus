@@ -1,1 +1,48 @@
-{}
+{
+  "title": "Estonian geological literature register",
+  "pagination": "Show {num} results",
+  "common": {
+    "search": "Search",
+    "advancedSearch": "Filter",
+    "found": "Found",
+    "records": "records",
+    "listView": "List view",
+    "tableView": "Tabel view",
+    "export": "Export",
+    "copy": "Copy",
+    "links": "Links",
+    "deleteSearch": "Delete search",
+    "lookUpType": "Filter"
+  },
+  "reference": {
+    "id": "ID",
+    "author": "Author",
+    "year": "Year",
+    "title": "Title",
+    "bookJournal": "Book/Journal",
+    "abstractRemarks": "Abstract/Remarks",
+    "localities": "Localities",
+    "keywords": "Keywords",
+    "userAdded": "User added",
+    "isEstonianAuthor": "Estonian author",
+    "isEstonianReference": "Estonian reference",
+    "viewReference": "View Reference"
+  },
+  "link": {
+    "geocollections": "GeoCollections",
+    "fossiilid": "Fossiilid",
+    "kivid": "Kivid",
+    "sarvAPI": "SARV API",
+    "sarvDOI": "SARV DOI",
+    "sarvEdit": "SARV data management",
+    "egt": "EGT Geological Archive",
+    "natarc": "NATARC"
+  },
+  "lookUpType": {
+    "equals": "= equals",
+    "contains": "* contains",
+    "startsWith": "=* start with",
+    "endsWith": "*= ends with",
+    "notContains": "!* does not contain"
+  }
+}

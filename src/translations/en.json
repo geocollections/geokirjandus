@@ -12,7 +12,9 @@
     "copy": "Copy",
     "links": "Links",
     "deleteSearch": "Delete search",
-    "lookUpType": "Filter"
+    "lookUpType": "Filter",
+    "fields": "Fields",
+    "actions": ""
   },
   "reference": {
     "id": "ID",
@@ -26,7 +28,8 @@
     "userAdded": "User added",
     "isEstonianAuthor": "Estonian author",
     "isEstonianReference": "Estonian reference",
-    "viewReference": "View Reference"
+    "viewReference": "View Reference",
+    "pages": "Pages"
   },
   "link": {
     "geocollections": "GeoCollections",

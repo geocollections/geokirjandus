@@ -12,7 +12,8 @@
     "copy": "Kopeeri",
     "links": "Lingid",
     "deleteSearch": "Eemalda otsing",
-    "lookUpType": "Filter"
+    "lookUpType": "Filter",
+    "fields": "Väljad"
   },
   "reference": {
     "id": "ID",
@@ -26,7 +27,8 @@
     "userAdded": "Lisanud kasutaja",
     "isEstonianAuthor": "Eesti autor",
     "isEstonianReference": "Eesti kirjandus",
-    "viewReference": "Vaata viitet"
+    "viewReference": "Vaata viitet",
+    "pages": "Leheküljed"
   },
   "link": {
     "geocollections": "GeoCollections",

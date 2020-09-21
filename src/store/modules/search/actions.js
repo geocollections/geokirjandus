@@ -10,6 +10,14 @@ const actions = {
     commit("UPDATE_PAGE", page);
   },
 
+  updateSortBy({commit}, payload) {
+    commit("UPDATE_SORT_BY", payload);
+  },
+
+  updateSortDesc({commit}, payload) {
+    commit("UPDATE_SORT_DESC", payload);
+  },
+
   updateSearch: debounce(({ commit }, searchValue) => {
     commit("UPDATE_SEARCH", searchValue);
   }, 500),

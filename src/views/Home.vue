@@ -22,9 +22,13 @@
             :parameters="parameters"
             :page="page"
             :paginateBy="paginateBy"
+            :sort-by="sortBy"
+            :sort-desc="sortDesc"
             v-on:update:paginateBy="updatePaginateBy"
             v-on:update:page="updatePage"
             v-on:reset:page="resetPage"
+            v-on:update:sortBy="updateSortBy"
+            v-on:update:sortDesc="updateSortDesc"
           >
           </list-module-core>
         </v-col>
@@ -81,6 +85,8 @@ export default {
       "updateAdvancedSearch",
       "updatePage",
       "updatePaginateBy",
+      "updateSortBy",
+      "updateSortDesc",
       "resetSearch",
       "resetPage"
     ]),

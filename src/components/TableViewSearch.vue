@@ -19,7 +19,7 @@
               @click="$emit('update:showAdvancedSearch', !showAdvancedSearch)"
             >
               <span>{{ $t("common.advancedSearch") }}</span>
-              <!--              <v-icon right :color="bodyActiveColor">fas fa-search</v-icon>-->
+                            <v-icon right :color="bodyActiveColor">fas fa-search</v-icon>
             </div>
             <v-spacer></v-spacer>
             <v-btn

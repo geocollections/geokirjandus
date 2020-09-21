@@ -28,6 +28,16 @@ const mutations = {
     state.paginateBy = paginateBy;
   },
 
+  UPDATE_SORT_BY(state, payload) {
+    console.log(payload)
+    state.sortBy = payload
+  },
+
+  UPDATE_SORT_DESC(state, payload) {
+    console.log(payload)
+    state.sortDesc = payload
+  },
+
   UPDATE_ADVANCED_SEARCH(state, payload) {
     if (payload.id === "year") {
       if (payload.value) {

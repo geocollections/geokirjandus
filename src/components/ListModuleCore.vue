@@ -16,7 +16,18 @@
         </v-radio-group>
       </div>
     </v-row>
-
+    <div>
+      <v-select
+        :label="$t('common.fields')"
+        v-if="view === 'table'"
+        :value="getHeadersShowing"
+        multiple
+        chips
+        :items="getSelectItems"
+        @change="setHeaders($event)"
+      >
+      </v-select>
+    </div>
     <!-- PAGINATION -->
     <div
       v-if="response.count > 0"
@@ -72,7 +83,7 @@
           <export-buttons :filename="module" :table-data="response.results" />
         </div>
       </v-card-title>
-
+      <!--  LIST VIEW  -->
       <list-view
         v-if="view === 'list' && response.count > 0"
         :module="module"
@@ -80,17 +91,31 @@
         body-color="white"
         body-active-color="black"
       />
+
+      <!--  TABLE VIEW  -->
       <v-data-table
         v-if="view === 'table' && response.count > 0"
-        :headers="translatedHeaders"
+        :headers="getHeadersShowing"
         :items="response.results"
         hide-default-footer
         :items-per-page="paginateBy"
         :page="page"
+        :sort-by="getSortBy"
+        :sort-desc="getSortDesc"
+        v-on:update:sort-by="$emit('update:sortBy', $event)"
+        v-on:update:sort-desc="$emit('update:sortDesc', $event)"
+        multi-sort
       >
-        <template v-slot:item.bookJournal="{item}">
-              <div v-if="item.book">{{item.book}}</div>
-          <div v-else-if="item.journal__journal_name">{{item.journal__journal_name}}</div>
+        <template v-slot:item.bookJournal="{ item }">
+          <div v-if="item.book">{{ item.book }}</div>
+          <div v-else-if="item.journal__journal_name">
+            {{ item.journal__journal_name }}
+          </div>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-btn icon @click="detailView(item)">
+            <v-icon>fas fa-eye</v-icon>
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -119,6 +144,14 @@ export default {
     exportButtons: {
       type: Boolean,
       default: true
+    },
+    sortBy: {
+      type: Array[String],
+      default: ["id"]
+    },
+    sortDesc: {
+      type: Array[String],
+      default: [false]
     },
     useListView: {
       type: Boolean,
@@ -149,20 +182,57 @@ export default {
         count: 0,
         results: []
       },
+      // TODO: Look at maybe normalizing headers
       headers: [
-        { text: "reference.id", value: "id" },
-        { text: "reference.author", value: "author" },
-        { text: "reference.year", value: "year" },
-        { text: "reference.title", value: "title" },
-        { text: "reference.bookJournal", value: "bookJournal"}
+        {
+          text: "common.actions",
+          sortable: false,
+          value: "actions",
+          show: true,
+          fixed: true
+        },
+        { text: "reference.id", value: "id", show: true, fixed: false },
+        { text: "reference.author", value: "author", show: true, fixed: false },
+        { text: "reference.year", value: "year", show: true, fixed: false },
+        { text: "reference.title", value: "title", show: true, fixed: false },
+        {
+          text: "reference.bookJournal",
+          value: "bookJournal",
+          show: true,
+          fixed: false
+        },
+        { text: "reference.pages", value: "pages", show: false, fixed: false },
+        {
+          text: "reference.keywords",
+          value: "keywords",
+          show: false,
+          fixed: false
+        }
       ]
     };
   },
 
   computed: {
     ...mapState("search", ["paginateBy", "page"]),
-    currentViewType() {
-      return "list";
+    getSelectItems() {
+      return this.translatedHeaders
+        .filter(header => {
+          return !header.fixed;
+        })
+        .map(header => {
+          return { value: header.value, text: header.text };
+        });
+    },
+    getHeadersShowing() {
+      return this.translatedHeaders.filter(header => {
+        return header.show;
+      });
+    },
+    getSortBy() {
+      return this.sortBy;
+    },
+    getSortDesc() {
+      return this.sortDesc;
     },
     translatedHeaders() {
       return this.headers.map(header => {
@@ -202,11 +272,35 @@ export default {
         this.search();
       },
       deep: true
+    },
+    sortBy: {
+      handler() {
+        this.search();
+      },
+      deep: true
+    },
+    sortDesc: {
+      handler() {
+        this.search();
+      },
+      deep: true
     }
   },
 
   methods: {
     ...mapActions("search", ["updatePaginateBy", "updatePage"]),
+    detailView(item) {
+      this.$router.push(`/reference/${item.id}`);
+    },
+    setHeaders(event) {
+      this.headers.forEach(header => {
+        if (event.includes(header.value)) {
+          header.show = true;
+        } else {
+          header.show = false;
+        }
+      });
+    },
     search: debounce(function() {
       this.isLoading = true;
 
@@ -228,7 +322,6 @@ export default {
           let q = Object.fromEntries(
             Object.entries(this.parameters)
               .filter(([_, v]) => {
-
                 return v.active ? v.value : null;
               })
               .map(([k, v]) => {

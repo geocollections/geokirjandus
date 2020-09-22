@@ -3,47 +3,45 @@
     <app-header />
     <v-navigation-drawer
       app
+      bottom
       clipped
+      mobile-breakpoint="960"
       width="400px"
     >
       <template v-slot:default>
         <table-view-search
-            :show-advanced-search="showAdvancedSearch"
-            v-on:update:showAdvancedSearch="showAdvancedSearch = $event"
-            :col-size="12"
-            :search="search"
-            :advanced-search="advancedSearch"
-            v-on:update:search="updateSearch"
-            v-on:update:advancedSearch="updateAdvancedSearch"
-            v-on:reset:parameters="resetSearch"
+          :show-advanced-search="showAdvancedSearch"
+          v-on:update:showAdvancedSearch="showAdvancedSearch = $event"
+          :col-size="12"
+          :search="search"
+          :advanced-search="advancedSearch"
+          v-on:update:search="updateSearch"
+          v-on:update:advancedSearch="updateAdvancedSearch"
+          v-on:reset:parameters="resetSearch"
         />
       </template>
     </v-navigation-drawer>
     <v-main>
-
       <v-container>
-        <div>
-
-          <v-row>
-            <v-col class="">
-              <list-module-core
-                  :module="$route.meta.object"
-                  :api-call="fetchReferences"
-                  :parameters="parameters"
-                  :page="page"
-                  :paginateBy="paginateBy"
-                  :sort-by="sortBy"
-                  :sort-desc="sortDesc"
-                  v-on:update:paginateBy="updatePaginateBy"
-                  v-on:update:page="updatePage"
-                  v-on:reset:page="resetPage"
-                  v-on:update:sortBy="updateSortBy"
-                  v-on:update:sortDesc="updateSortDesc"
-              >
-              </list-module-core>
-            </v-col>
-          </v-row>
-        </div>
+        <v-row>
+          <v-col class="">
+            <list-module-core
+              :module="$route.meta.object"
+              :api-call="fetchReferences"
+              :parameters="parameters"
+              :page="page"
+              :paginateBy="paginateBy"
+              :sort-by="sortBy"
+              :sort-desc="sortDesc"
+              v-on:update:paginateBy="updatePaginateBy"
+              v-on:update:page="updatePage"
+              v-on:reset:page="resetPage"
+              v-on:update:sortBy="updateSortBy"
+              v-on:update:sortDesc="updateSortDesc"
+            >
+            </list-module-core>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
   </div>
@@ -117,11 +115,9 @@ export default {
 </script>
 
 <style scoped>
-
 @media (min-width: 1904px) {
   .container {
     max-width: 1264px !important;
   }
 }
-
 </style>

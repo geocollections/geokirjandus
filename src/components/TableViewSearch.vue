@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-text-field
-            class="mx-2"
+            class="mx-3"
             hide-details
           :value="search.value"
           :label="$t('common.search')"
@@ -90,7 +90,7 @@
                       class="pa-2"
                       v-if="advancedSearch.byIds[id].type === 'text'"
                     >
-                      <v-col cols="3" xl="2" class="py-0 px-1">
+                      <v-col cols="3"  class="py-0 px-1">
                         <!--  TODO: change emit field key to id  -->
                         <v-select
                           :value="

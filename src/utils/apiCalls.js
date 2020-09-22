@@ -8,3 +8,11 @@ export const fetchReference = async id => {
 export const fetchReferences = async data => {
   return SearchService.search(data);
 };
+
+export const fetchLibrary = async id => {
+  return SearchService.getLibrary(id);
+}
+
+export const fetchLibraryReferences = async id => {
+  return SearchService.getLibraryReferences(id);
+}

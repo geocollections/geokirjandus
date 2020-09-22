@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://api.geocollections.info/solr/reference/";
+const API_URL = "https://api.geocollections.info/solr";
+const REFERENCE = "reference";
+const LIBRARY = "library";
 const FACET_QUERY =
   "q=*&rows=0&facet=on&facet.mincount=1&facet.field=recordbasis&facet.field=highertaxon&facet.field=type_status&facet.field=country&facet.field=datasetowner&facet.field=providername&facet.field=providername&facet.field=providercountry";
 
@@ -16,7 +18,7 @@ class SearchService {
         searchParams.advancedSearch
       );
 
-      let url = `${API_URL}?start=${start}&rows=${searchParams.paginateBy}&sort=${sort}&defType=edismax`;
+      let url = `${API_URL}/${REFERENCE}/?start=${start}&rows=${searchParams.paginateBy}&sort=${sort}&defType=edismax`;
 
       if (searchFields && searchFields.length > 0) url += `&${searchFields}`;
       else url += `&q=*`;
@@ -31,7 +33,29 @@ class SearchService {
 
   static async getDetailView(id) {
     try {
-      let url = `${API_URL}?q=id:${decodeURIComponent(id)}`;
+      let url = `${API_URL}/${REFERENCE}/?q=id:${decodeURIComponent(id)}`;
+
+      const res = await axios.get(url);
+      return res.data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  static async getLibraryReferences(id) {
+    try {
+      let url = `${API_URL}/${REFERENCE}/?q=libraries:*|${decodeURIComponent(id)}|*`;
+
+      const res = await axios.get(url);
+      return res.data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  static async getLibrary(id) {
+    try {
+      let url = `${API_URL}/${LIBRARY}/?q=id:${decodeURIComponent(id)}`;
 
       const res = await axios.get(url);
       return res.data;
@@ -79,7 +103,7 @@ function buildSearchFieldsQuery(search, advancedSearch) {
               return encodeURIComponent(el);
             });
           } else encodedValue = encodeURIComponent(v.value);
-          console.log(encodedValue)
+          console.log(encodedValue);
           if (curr === "q") encodedObject = encodedObject.substring(1, 3);
           if (v.type === "checkbox") {
             if (curr === "highertaxon_checkbox")
@@ -108,13 +132,12 @@ function buildSearchFieldsQuery(search, advancedSearch) {
           return encodedObject;
         }
         if (idx === 0) {
-
           if (v.type === "range") {
             let encodedObject = `${curr}:`;
             encodedObject = buildStr(encodedObject);
 
             return v.active ? `${prev}${encodedObject}` : `${prev}`;
-          }else if ( v.value && v.value.trim().length > 0) {
+          } else if (v.value && v.value.trim().length > 0) {
             let encodedObject = `${curr}:`;
             encodedObject = buildStr(encodedObject);
             return `${prev}${encodedObject}`;

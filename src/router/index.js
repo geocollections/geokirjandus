@@ -29,6 +29,22 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/library/:id(\\d+)",
+    props: true,
+    component: () => import("../views/Detail.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("../components/library/Library.vue"),
+        meta: {
+          table: "library",
+          heading: "editReference.heading",
+          object: "library"
+        }
+      }
+    ]
   }
 
 ];

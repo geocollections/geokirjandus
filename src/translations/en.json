@@ -14,7 +14,13 @@
     "deleteSearch": "Delete search",
     "lookUpType": "Filter",
     "fields": "Fields",
-    "actions": ""
+    "actions": "",
+    "libraryCreated": "Library created",
+    "libraryChanged": "Library changed",
+    "summary": "Summary",
+    "libraryReferences": "Library references",
+    "visited": "Visited",
+    "referenceLibrary": "Reference library"
   },
   "reference": {
     "id": "ID",

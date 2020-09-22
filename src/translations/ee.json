@@ -13,7 +13,13 @@
     "links": "Lingid",
     "deleteSearch": "Eemalda otsing",
     "lookUpType": "Filter",
-    "fields": "Väljad"
+    "fields": "Väljad",
+    "libraryCreated": "Kogumik loodud",
+    "libraryChanged": "Kogumik muudetud",
+    "summary": "Kokkuvõte",
+    "libraryReferences": "Kogumiku artiklid",
+    "visited": "Külastatud",
+    "referenceLibrary": "Kogumikule viitamine"
   },
   "reference": {
     "id": "ID",

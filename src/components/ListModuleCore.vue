@@ -2,7 +2,7 @@
   <div class="list-module-core">
     <ScrollToTop class="d-print-none" />
 
-    <v-row align="center" justify="start" class="px-4 d-print-none">
+    <v-row class="px-4 d-print-none">
       <!-- OPTIONS -->
       <div class="mb-2">
         <v-radio-group
@@ -17,38 +17,41 @@
       </div>
     </v-row>
     <!-- PAGINATION -->
+    <v-row>
+
+    </v-row>
     <div
-      v-if="response.count > 0"
-      class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
+        v-if="response.count > 0"
+        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
     >
       <div class="mr-3 mb-3 ">
         <v-select
-          :value="paginateBy"
-          color="primary"
-          dense
-          :items="paginateByOptionsTranslated"
-          item-color="black"
-          label="Paginate by"
-          hide-details
-          @change="$emit('update:paginateBy', $event)"
+            :value="paginateBy"
+            color="primary"
+            dense
+            :items="paginateByOptionsTranslated"
+            item-color="black"
+            label="Paginate by"
+            hide-details
+            @change="$emit('update:paginateBy', $event)"
         />
       </div>
 
       <div>
         <v-pagination
-          :value="page"
-          color="black"
-          circle
-          prev-icon="fas fa-angle-left"
-          next-icon="fas fa-angle-right"
-          :length="Math.ceil(response.count / paginateBy)"
-          :total-visible="5"
-          @input="$emit('update:page', $event)"
+            :value="page"
+            color="black"
+            circle
+            prev-icon="fas fa-angle-left"
+            next-icon="fas fa-angle-right"
+            :length="Math.ceil(response.count / paginateBy)"
+            :total-visible="5"
+            @input="$emit('update:page', $event)"
         />
       </div>
     </div>
     <!-- DATA TABLE -->
-    <v-card  elevation="4" color="primary" class=" my-1" :loading="isLoading">
+    <v-card elevation="4" class=" my-1" :loading="isLoading">
       <template v-slot:progress>
         <v-progress-linear indeterminate color="primary"></v-progress-linear>
       </template>

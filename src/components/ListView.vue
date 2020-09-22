@@ -2,9 +2,7 @@
   <div class="list-view white" >
     <v-row no-gutters>
       <v-col class="list-view-column">
-        
         <reference-list-view
-
           :data="data"
           :body-active-color="bodyActiveColor"
         />

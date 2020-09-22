@@ -1,5 +1,9 @@
 <template>
-  <v-app-bar flat color="primary">
+  <v-app-bar
+      clipped-left
+      app
+
+      flat color="primary">
     <v-toolbar-title>
       <router-link
         :style="{ color: 'black' }"

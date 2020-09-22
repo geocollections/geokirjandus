@@ -118,4 +118,18 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.ablack a:link,
+.ablack a:visited {
+  color: #000;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+.ablack:hover {
+  text-decoration: underline;
+}
+</style>

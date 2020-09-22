@@ -23,7 +23,6 @@ class SearchService {
       if (searchFields && searchFields.length > 0) url += `&${searchFields}`;
       else url += `&q=*`;
 
-      console.log(url);
       const res = await axios.get(url);
       return res.data;
     } catch (err) {
@@ -88,11 +87,9 @@ function buildSearchFieldsQuery(search, advancedSearch) {
 
           if (v.type === "range") {
             encodedValue = v.value.map(el => {
-              console.log(el);
               return encodeURIComponent(el);
             });
           } else encodedValue = encodeURIComponent(v.value);
-          console.log(encodedValue);
           if (curr === "q") encodedObject = encodedObject.substring(1, 3);
           if (v.type === "checkbox") {
             if (curr === "highertaxon_checkbox")

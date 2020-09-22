@@ -1,10 +1,13 @@
 <template>
   <div class="home">
     <app-header />
-    <v-container>
-      <v-row>
-        <v-col cols="4">
-          <table-view-search
+    <v-navigation-drawer
+      app
+      clipped
+      width="400px"
+    >
+      <template v-slot:default>
+        <table-view-search
             :show-advanced-search="showAdvancedSearch"
             v-on:update:showAdvancedSearch="showAdvancedSearch = $event"
             :col-size="12"
@@ -13,27 +16,36 @@
             v-on:update:search="updateSearch"
             v-on:update:advancedSearch="updateAdvancedSearch"
             v-on:reset:parameters="resetSearch"
-          />
-        </v-col>
-        <v-col cols="8">
-          <list-module-core
-            :module="$route.meta.object"
-            :api-call="fetchReferences"
-            :parameters="parameters"
-            :page="page"
-            :paginateBy="paginateBy"
-            :sort-by="sortBy"
-            :sort-desc="sortDesc"
-            v-on:update:paginateBy="updatePaginateBy"
-            v-on:update:page="updatePage"
-            v-on:reset:page="resetPage"
-            v-on:update:sortBy="updateSortBy"
-            v-on:update:sortDesc="updateSortDesc"
-          >
-          </list-module-core>
-        </v-col>
-      </v-row>
-    </v-container>
+        />
+      </template>
+    </v-navigation-drawer>
+    <v-main>
+
+      <v-container>
+        <div>
+
+          <v-row>
+            <v-col class="">
+              <list-module-core
+                  :module="$route.meta.object"
+                  :api-call="fetchReferences"
+                  :parameters="parameters"
+                  :page="page"
+                  :paginateBy="paginateBy"
+                  :sort-by="sortBy"
+                  :sort-desc="sortDesc"
+                  v-on:update:paginateBy="updatePaginateBy"
+                  v-on:update:page="updatePage"
+                  v-on:reset:page="resetPage"
+                  v-on:update:sortBy="updateSortBy"
+                  v-on:update:sortDesc="updateSortDesc"
+              >
+              </list-module-core>
+            </v-col>
+          </v-row>
+        </div>
+      </v-container>
+    </v-main>
   </div>
 </template>
 
@@ -103,3 +115,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+@media (min-width: 1904px) {
+  .container {
+    max-width: 1264px !important;
+  }
+}
+
+</style>

@@ -1,9 +1,8 @@
 <template>
   <div v-if="data.length > 0">
-    <div class="list" v-for="(entity) in data" :key="entity.id">
-      <div class="list-row ml-2 p-1">
-        <reference-item :reference="entity"></reference-item>
-      </div>
+    <div v-for="(entity, index) in data" :key="entity.id">
+      <v-divider v-if="index !== 0" />
+      <reference-item class="my-2" :reference="entity"></reference-item>
     </div>
   </div>
 </template>

@@ -3,6 +3,8 @@
     <v-row>
       <v-col>
         <v-text-field
+            class="mx-2"
+            hide-details
           :value="search.value"
           :label="$t('common.search')"
           @input="$emit('update:search', $event)"
@@ -12,7 +14,7 @@
     <v-row class="d-print-none" v-if="advancedSearch.allIds.length > 0">
       <v-col class="py-4">
         <!--   ADVANCED SEARCH   -->
-        <v-card color="white" elevation="4">
+        <v-card class="mx-2" color="white" elevation="4">
           <v-card-title class="pb-0">
             <div
               class="card-title--clickable"

@@ -178,7 +178,7 @@ export default {
         { text: "pagination", value: 1000 }
       ],
       filterTable: "",
-      view: "table",
+      view: "list",
       noResults: null,
       isLoading: false,
       response: {

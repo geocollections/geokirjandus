@@ -1,94 +1,17 @@
 <template>
   <div v-if="data.length > 0">
-    <div class="list" v-for="(entity, index) in data" :key="index">
+    <div class="list" v-for="(entity) in data" :key="entity.id">
       <div class="list-row ml-2 p-1">
-        <span v-if="entity.author" class="ablack font-weight-medium">
-          <router-link
-              :to="{ path: '/reference/' + entity.id }"
-              :title="$t('reference.viewReference')"
-          >
-            {{ entity.author }},
-          </router-link>
-        </span>
-
-        <span v-if="entity.year"> {{ entity.year }}. </span>
-
-        <span v-if="entity.title"> {{ entity.title }}. </span>
-
-        <span v-if="entity.book_editor || entity.book">
-          <i>In: </i>
-        </span>
-
-        <span v-if="entity.book_editor"> {{ entity.book_editor }} (ed.), </span>
-
-        <span v-if="entity.book">
-          <i>{{ entity.book }}</i
-          >.
-        </span>
-
-        <span v-if="entity.publisher"> {{ entity.publisher }}, </span>
-
-        <span v-if="entity.publisher_place">
-          {{ entity.publisher_place }}.
-        </span>
-
-        <span v-if="entity.journal__journal_name">
-          <i>{{ entity.journal__journal_name }}</i>
-        </span>
-
-        <span v-if="entity.volume"> {{ entity.volume }}, </span>
-
-        <span v-if="entity.number"> {{ entity.number }}, </span>
-
-        <span v-if="entity.pages && entity.journal__journal_name">
-          {{ entity.pages }}.
-        </span>
-
-        <span v-else-if="entity.pages"> pp. {{ entity.pages }}. </span>
-
-        <!-- TODO: DOI LINK -->
-        <span v-if="entity.doi">
-          <a
-              :href="getDoiUrl(entity.doi)"
-              :title="getDoiUrl(entity.doi)"
-              target="DoiWindow"
-              :class="`${bodyActiveColor}--text`"
-          >https://doi.org/{{ entity.doi }}
-          </a>
-        </span>
-
-        <span>
-          <a
-              v-if="entity.attachment__filename"
-              :href="getFileUrl(entity.attachment__filename)"
-              :title="getFileUrl(entity.attachment__filename)"
-              target="FileWindow"
-              class="green-link"
-          >
-            <b>PDF</b>
-          </a>
-          <a
-              v-if="
-              entity.attachment__filename === null &&
-                entity.url &&
-                getUrl(entity.url)
-            "
-              :href="getUrl(entity.url)"
-              :title="getUrl(entity.url)"
-              target="UrlWindow"
-              rel="noopener noreferrer"
-              class="red-link"
-          >
-            <b>PDF</b>
-          </a>
-        </span>
+        <reference-item :reference="entity"></reference-item>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ReferenceItem from "@/components/reference/ReferenceItem";
 export default {
+  components: { ReferenceItem },
   props: {
     data: {
       type: Array
@@ -107,8 +30,8 @@ export default {
 
     getFileUrl(uuid) {
       return `https://files.geocollections.info/${uuid.substring(
-          0,
-          2
+        0,
+        2
       )}/${uuid.substring(2, 4)}/${uuid}`;
     },
 
@@ -127,14 +50,14 @@ export default {
 
     openPdf(params) {
       window.open(
-          "https://files.geocollections.info/" +
+        "https://files.geocollections.info/" +
           params.pdf.substring(0, 2) +
           "/" +
           params.pdf.substring(2, 4) +
           "/" +
           params.pdf,
-          "",
-          "width=1000,height=900"
+        "",
+        "width=1000,height=900"
       );
     }
   }
@@ -143,7 +66,7 @@ export default {
 
 <style scoped>
 .list /*:not(:first-child)*/
-{
+ {
   /*border-top: dotted 1.2pt #ccc;*/
   padding: 0.2em 0 0 4em;
   text-indent: -4em;

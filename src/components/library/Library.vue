@@ -96,12 +96,10 @@ export default {
   },
   created() {
     this.getLibrary().then(res => {
-      console.log(res.results[0]);
       this.library = res.results[0];
     });
 
     this.getLibraryReferences().then(res => {
-      console.log(res.results);
       this.references = res.results;
     });
   },

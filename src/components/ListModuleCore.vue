@@ -48,7 +48,7 @@
       </div>
     </div>
     <!-- DATA TABLE -->
-    <v-card elevation="4" color="primary" class=" my-1" :loading="isLoading">
+    <v-card  elevation="4" color="primary" class=" my-1" :loading="isLoading">
       <template v-slot:progress>
         <v-progress-linear indeterminate color="primary"></v-progress-linear>
       </template>

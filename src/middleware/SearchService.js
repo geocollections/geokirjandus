@@ -31,9 +31,9 @@ class SearchService {
     }
   }
 
-  static async getDetailView(id) {
+  static async getDetailView(id, tabel) {
     try {
-      let url = `${API_URL}/${REFERENCE}/?q=id:${decodeURIComponent(id)}`;
+      let url = `${API_URL}/${tabel}/?q=id:${decodeURIComponent(id)}`;
 
       const res = await axios.get(url);
       return res.data;
@@ -45,17 +45,6 @@ class SearchService {
   static async getLibraryReferences(id) {
     try {
       let url = `${API_URL}/${REFERENCE}/?q=libraries:*|${decodeURIComponent(id)}|*`;
-
-      const res = await axios.get(url);
-      return res.data;
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
-  static async getLibrary(id) {
-    try {
-      let url = `${API_URL}/${LIBRARY}/?q=id:${decodeURIComponent(id)}`;
 
       const res = await axios.get(url);
       return res.data;

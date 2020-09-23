@@ -148,7 +148,7 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "TableViewSearch",
+  name: "Search",
   props: {
     showAdvancedSearch: {
       type: Boolean,

@@ -13,7 +13,7 @@
         class="d-print-none"
       >
         <template v-slot:default>
-          <table-view-search
+          <search
             :show-advanced-search="showAdvancedSearch"
             v-on:update:showAdvancedSearch="showAdvancedSearch = $event"
             :col-size="12"
@@ -33,7 +33,7 @@
         <v-container>
           <v-row>
             <v-col class="">
-              <list-module-core
+              <data-viewer
                 :module="$route.meta.object"
                 :data="result"
                 :count="count"
@@ -48,8 +48,7 @@
                 v-on:reset:page="resetPage"
                 v-on:update:sortBy="updateSortBy"
                 v-on:update:sortDesc="updateSortDesc"
-              >
-              </list-module-core>
+              />
             </v-col>
           </v-row>
         </v-container>
@@ -64,9 +63,9 @@
 <script>
 import AppHeader from "@/components/AppHeader";
 import { fetchReferences } from "@/utils/apiCalls";
-import ListModuleCore from "@/components/ListModuleCore";
+import DataViewer from "@/components/DataViewer";
 import { mapState, mapActions } from "vuex";
-import TableViewSearch from "@/components/TableViewSearch";
+import Search from "@/components/Search";
 
 import Fabs from "@/components/Fabs";
 import ListView from "@/components/ListView";
@@ -76,8 +75,8 @@ export default {
   components: {
     ListView,
     Fabs,
-    TableViewSearch,
-    ListModuleCore,
+    Search,
+    DataViewer,
     AppHeader
   },
   data() {

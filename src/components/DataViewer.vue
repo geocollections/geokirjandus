@@ -171,7 +171,7 @@ export default {
       default: false
     }
   },
-  name: "ListModuleCore",
+  name: "DataViewer",
   data() {
     return {
       paginateByOptions: [

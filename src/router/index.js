@@ -45,6 +45,10 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "*",
+    redirect: "/"
   }
 
 ];

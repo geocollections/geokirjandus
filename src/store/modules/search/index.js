@@ -126,10 +126,10 @@ const state = {
       "bookJournal",
       "abstractRemarks",
       "localities",
-      "is_estonian_author",
-      "is_estonian_reference",
       "keywords",
-      "user_added"
+      "user_added",
+      "is_estonian_author",
+      "is_estonian_reference"
     ]
   },
   // TODO: Check lookuptype values

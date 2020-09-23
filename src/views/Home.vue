@@ -2,9 +2,11 @@
   <div class="home">
     <app-header />
     <v-navigation-drawer
+      v-model="showSearch"
       app
       bottom
       clipped
+      disable-route-watcher
       mobile-breakpoint="960"
       width="400px"
     >
@@ -21,6 +23,10 @@
         />
       </template>
     </v-navigation-drawer>
+    <fabs
+      :show-search="showSearch"
+      v-on:update:showSearch="showSearch = !showSearch"
+    />
     <v-main>
       <v-container>
         <v-row>
@@ -53,15 +59,20 @@ import { fetchReferences } from "@/utils/apiCalls";
 import ListModuleCore from "@/components/ListModuleCore";
 import { mapState, mapActions } from "vuex";
 import TableViewSearch from "@/components/TableViewSearch";
+
+import ScrollToTop from "@/components/ScrollToTop";
+import Fabs from "@/components/Fabs";
 export default {
   name: "Home",
   components: {
+    Fabs,
     TableViewSearch,
     ListModuleCore,
     AppHeader
   },
   data() {
     return {
+      showSearch: true,
       showAdvancedSearch: true
     };
   },

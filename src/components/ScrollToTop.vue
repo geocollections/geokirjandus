@@ -4,10 +4,7 @@
       v-scroll="onScroll"
       v-show="showFab"
       fab
-      fixed
-      bottom
-      right
-      :color="bodyActiveColor"
+      color="deep-orange"
       dark
       @click="toTop"
       style="z-index: 1500"
@@ -20,15 +17,6 @@
 <script>
 export default {
   name: "ScrollToTop",
-
-  props: {
-    bodyActiveColor: {
-      type: String,
-      required: false,
-      default: "deep-orange"
-    }
-  },
-
   data: () => ({
     showFab: false
   }),

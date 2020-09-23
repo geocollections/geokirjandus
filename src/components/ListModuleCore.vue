@@ -1,6 +1,6 @@
 <template>
   <div class="list-module-core">
-    <ScrollToTop class="d-print-none" />
+
 
     <v-row class="px-4 d-print-none">
       <!-- OPTIONS -->
@@ -130,12 +130,11 @@
 
 <script>
 import ExportButtons from "../components/ExportButtons";
-import ScrollToTop from "@/components/ScrollToTop";
 import debounce from "lodash/debounce";
 import { mapActions, mapState } from "vuex";
 import ListView from "@/components/ListView";
 export default {
-  components: { ListView, ExportButtons, ScrollToTop },
+  components: { ListView, ExportButtons},
   props: {
     apiCall: {
       type: Function

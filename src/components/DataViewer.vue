@@ -86,10 +86,13 @@
       <list-view
         v-if="view === 'list' && count > 0"
         :module="module"
-        :data="data"
         body-color="white"
         body-active-color="black"
-      />
+      >
+        <template>
+          <slot name="list-view" v-bind:data="data"></slot>
+        </template>
+      </list-view>
 
       <!--  TABLE VIEW  -->
 
@@ -128,7 +131,6 @@
 import ExportButtons from "../components/ExportButtons";
 import { mapActions, mapState } from "vuex";
 import ListView from "@/components/ListView";
-
 export default {
   components: { ListView, ExportButtons },
   props: {

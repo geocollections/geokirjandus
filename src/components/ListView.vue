@@ -2,21 +2,18 @@
   <div class="list-view white" >
     <v-row no-gutters>
       <v-col class="list-view-column">
-        <reference-list-view
-          :data="data"
-          :body-active-color="bodyActiveColor"
-        />
+        <slot>
+
+        </slot>
         </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import ReferenceListView from "./ReferenceListView";
 
 export default {
   components: {
-    ReferenceListView
   },
   props: ["module", "data", "bodyColor", "bodyActiveColor"],
   name: "ListView"

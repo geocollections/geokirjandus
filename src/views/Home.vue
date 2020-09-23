@@ -9,7 +9,6 @@
         clipped
         disable-route-watcher
         mobile-breakpoint="960"
-        width="400px"
         class="d-print-none"
       >
         <template v-slot:default>
@@ -30,7 +29,7 @@
         v-on:update:showSearch="showSearch = !showSearch"
       />
       <v-main>
-        <v-container>
+        <v-container fluid>
           <v-row>
             <v-col class="">
               <data-viewer
@@ -48,7 +47,13 @@
                 v-on:reset:page="resetPage"
                 v-on:update:sortBy="updateSortBy"
                 v-on:update:sortDesc="updateSortDesc"
-              />
+              >
+                <template v-slot:list-view="slotProps">
+                  <reference-list-view
+                    :data="slotProps.data"
+                  ></reference-list-view>
+                </template>
+              </data-viewer>
             </v-col>
           </v-row>
         </v-container>
@@ -70,9 +75,11 @@ import Search from "@/components/Search";
 import Fabs from "@/components/Fabs";
 import ListView from "@/components/ListView";
 import debounce from "lodash/debounce";
+import ReferenceListView from "@/components/ReferenceListView";
 export default {
   name: "Home",
   components: {
+    ReferenceListView,
     ListView,
     Fabs,
     Search,
@@ -206,6 +213,9 @@ export default {
 </script>
 
 <style scoped>
+.container--fluid {
+  max-width: 100%;
+}
 @media (min-width: 1904px) {
   .container {
     max-width: 1264px !important;

@@ -39,6 +39,7 @@
                 :count="count"
                 :parameters="parameters"
                 :page="page"
+                :is-loading="isLoading"
                 :paginateBy="paginateBy"
                 :sort-by="sortBy"
                 :sort-desc="sortDesc"
@@ -82,7 +83,8 @@ export default {
   data() {
     return {
       showSearch: true,
-      showAdvancedSearch: true
+      showAdvancedSearch: true,
+      isLoading: false
     };
   },
   watch: {
@@ -158,6 +160,7 @@ export default {
     ]),
     ...mapActions("references", ["setReferences"]),
     fetch: debounce(function() {
+      this.isLoading = true;
       fetchReferences({
         search: this.search,
         page: this.page,
@@ -166,9 +169,15 @@ export default {
         sortDesc: this.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       })
-        .then(response => {
-          this.setReferences(response);
-        })
+        .then(
+          response => {
+            this.setReferences(response);
+            this.isLoading = false;
+          },
+          () => {
+            this.isLoading = false;
+          }
+        )
         .finally(() => {
           let q = Object.fromEntries(
             Object.entries(this.parameters)

@@ -1,7 +1,5 @@
 <template>
   <div class="list-module-core">
-
-
     <v-row class="px-4 d-print-none">
       <!-- OPTIONS -->
       <div class="mb-2">
@@ -17,39 +15,8 @@
       </div>
     </v-row>
     <!-- PAGINATION -->
-    <v-row>
+    <v-row> </v-row>
 
-    </v-row>
-    <div
-        v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
-    >
-      <div class="mr-3 mb-3 ">
-        <v-select
-            :value="paginateBy"
-            color="primary"
-            dense
-            :items="paginateByOptionsTranslated"
-            item-color="black"
-            label="Paginate by"
-            hide-details
-            @change="$emit('update:paginateBy', $event)"
-        />
-      </div>
-
-      <div>
-        <v-pagination
-            :value="page"
-            color="black"
-            circle
-            prev-icon="fas fa-angle-left"
-            next-icon="fas fa-angle-right"
-            :length="Math.ceil(count / paginateBy)"
-            :total-visible="5"
-            @input="$emit('update:page', $event)"
-        />
-      </div>
-    </div>
     <!-- DATA TABLE -->
     <v-card elevation="4" class=" my-1" :loading="isLoading">
       <template v-slot:progress>
@@ -69,7 +36,36 @@
           <export-buttons :filename="module" :table-data="data" />
         </div>
       </v-card-title>
+      <div
+        v-if="count > 0"
+        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
+      >
+        <div class="mx-3 mb-3 ">
+          <v-select
+            :value="paginateBy"
+            color="primary"
+            dense
+            :items="paginateByOptionsTranslated"
+            item-color="black"
+            label="Paginate by"
+            hide-details
+            @change="$emit('update:paginateBy', $event)"
+          />
+        </div>
 
+        <div>
+          <v-pagination
+            :value="page"
+            color="black"
+            circle
+            prev-icon="fas fa-angle-left"
+            next-icon="fas fa-angle-right"
+            :length="Math.ceil(count / paginateBy)"
+            :total-visible="5"
+            @input="$emit('update:page', $event)"
+          />
+        </div>
+      </div>
       <v-select
         class="pa-2"
         v-if="view === 'table'"
@@ -130,11 +126,11 @@
 
 <script>
 import ExportButtons from "../components/ExportButtons";
-import debounce from "lodash/debounce";
 import { mapActions, mapState } from "vuex";
 import ListView from "@/components/ListView";
+
 export default {
-  components: { ListView, ExportButtons},
+  components: { ListView, ExportButtons },
   props: {
     data: {
       type: Array[Object]
@@ -169,6 +165,10 @@ export default {
     useImageView: {
       type: Boolean,
       default: false
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
   name: "ListModuleCore",
@@ -185,7 +185,6 @@ export default {
       ],
       filterTable: "",
       view: "list",
-      isLoading: false,
       // TODO: Look at maybe normalizing headers
       headers: [
         {

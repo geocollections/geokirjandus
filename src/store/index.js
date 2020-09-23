@@ -4,6 +4,7 @@ import VuexPersistence from "vuex-persist";
 
 import settings from "./modules/settings";
 import search from "./modules/search";
+import references from "./modules/references";
 
 Vue.use(Vuex);
 
@@ -13,7 +14,7 @@ Vue.use(Vuex);
 // });
 
 export default new Vuex.Store({
-  modules: { settings, search },
+  modules: { settings, search, references },
   // plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"
 });

@@ -21,7 +21,7 @@
 
     </v-row>
     <div
-        v-if="response.count > 0"
+        v-if="count > 0"
         class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
     >
       <div class="mr-3 mb-3 ">
@@ -44,7 +44,7 @@
             circle
             prev-icon="fas fa-angle-left"
             next-icon="fas fa-angle-right"
-            :length="Math.ceil(response.count / paginateBy)"
+            :length="Math.ceil(count / paginateBy)"
             :total-visible="5"
             @input="$emit('update:page', $event)"
         />
@@ -60,13 +60,13 @@
         <v-icon class="mr-2" color="#191414" large>fas fa-list</v-icon>
         <span id="table-title">
           <span>{{ $t("common.found") }}</span>
-          <span class="font-weight-bold">{{ ` ${response.count} ` }}</span>
+          <span class="font-weight-bold">{{ ` ${count} ` }}</span>
           <span>{{ $t("common.records") }}</span>
         </span>
         <div class="flex-grow-1"></div>
         <!-- EXPORT -->
         <div class="mr-4 mb-2" v-if="exportButtons">
-          <export-buttons :filename="module" :table-data="response.results" />
+          <export-buttons :filename="module" :table-data="data" />
         </div>
       </v-card-title>
 
@@ -88,9 +88,9 @@
       </v-select>
       <!--  LIST VIEW  -->
       <list-view
-        v-if="view === 'list' && response.count > 0"
+        v-if="view === 'list' && count > 0"
         :module="module"
-        :data="response.results"
+        :data="data"
         body-color="white"
         body-active-color="black"
       />
@@ -100,9 +100,9 @@
       <v-data-table
         class="d-inline-block"
         style="width: 100%"
-        v-if="view === 'table' && response.count > 0"
+        v-if="view === 'table' && count > 0"
         :headers="getHeadersShowing"
-        :items="response.results"
+        :items="data"
         hide-default-footer
         :items-per-page="paginateBy"
         :page="page"
@@ -136,8 +136,12 @@ import ListView from "@/components/ListView";
 export default {
   components: { ListView, ExportButtons},
   props: {
-    apiCall: {
-      type: Function
+    data: {
+      type: Array[Object]
+    },
+    count: {
+      type: Number,
+      default: 0
     },
     module: {
       type: String,
@@ -181,12 +185,7 @@ export default {
       ],
       filterTable: "",
       view: "list",
-      noResults: null,
       isLoading: false,
-      response: {
-        count: 0,
-        results: []
-      },
       // TODO: Look at maybe normalizing headers
       headers: [
         {
@@ -288,44 +287,9 @@ export default {
       });
     }
   },
-  watch: {
-    parameters: {
-      handler() {
-        this.$emit("reset:page");
-        this.search();
-      },
-      deep: true
-    },
-    page: {
-      handler() {
-        this.search();
-      },
-      immediate: true,
-      deep: true
-    },
-    paginateBy: {
-      handler() {
-        this.$emit("reset:page");
-        this.search();
-      },
-      deep: true
-    },
-    sortBy: {
-      handler() {
-        this.search();
-      },
-      deep: true
-    },
-    sortDesc: {
-      handler() {
-        this.search();
-      },
-      deep: true
-    }
-  },
-
   methods: {
     ...mapActions("search", ["updatePaginateBy", "updatePage"]),
+    ...mapActions("references", ["setReferences"]),
     detailView(item) {
       this.$router.push(`/reference/${item.id}`);
     },
@@ -337,48 +301,7 @@ export default {
           header.show = false;
         }
       });
-    },
-    search: debounce(function() {
-      this.isLoading = true;
-
-      this.apiCall()
-        .then(
-          response => {
-            if (response.count === 0) this.noResults = true;
-            if (response.count > 0) this.noResults = false;
-            this.response.count = response.count;
-            this.response.results = response.results;
-
-            this.isLoading = false;
-          },
-          () => {
-            this.isLoading = false;
-          }
-        )
-        .finally(() => {
-          let q = Object.fromEntries(
-            Object.entries(this.parameters)
-              .filter(([_, v]) => {
-                return v.active ? v.value : null;
-              })
-              .map(([k, v]) => {
-                if (k === "year") {
-                  return [k, `${v.value[0]}-${v.value[1]}`];
-                }
-
-                return k === "search"
-                  ? [k, v.value]
-                  : [`${k}_${v.lookUpType}`, v.value];
-              })
-          );
-          console.log(q);
-          if (this.page > 1) {
-            q.page = this.page;
-          }
-          q.paginateBy = this.paginateBy;
-          this.$router.push({ query: q }).catch(() => {});
-        });
-    }, 500)
+    }
   }
 };
 </script>

@@ -1,9 +1,18 @@
 <template>
-  <div class="library">
+  <v-main class="library">
     <v-container v-if="library">
       <v-row>
+        <v-col cols="auto">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon >fas fa-backspace</v-icon>
+          </v-btn>
+        </v-col>
         <v-col>
           <h1>{{ getTitle }}</h1>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
           <h2>{{ library.author }}</h2>
         </v-col>
       </v-row>
@@ -61,7 +70,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-main>
 </template>
 
 <script>

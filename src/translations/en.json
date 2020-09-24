@@ -20,7 +20,8 @@
     "summary": "Summary",
     "libraryReferences": "Library references",
     "visited": "Visited",
-    "referenceLibrary": "Reference library"
+    "referenceLibrary": "Reference library",
+    "generalInfo": "General info"
   },
   "reference": {
     "id": "ID",
@@ -35,7 +36,14 @@
     "isEstonianAuthor": "Estonian author",
     "isEstonianReference": "Estonian reference",
     "viewReference": "View Reference",
-    "pages": "Pages"
+    "pages": "Pages",
+    "reference": "Reference",
+    "book": "Book",
+    "bookEditor": "Editor",
+    "journalName": "Journal",
+    "volume": "Volume",
+    "type": "Type",
+    "language": "Language"
   },
   "link": {
     "geocollections": "GeoCollections",

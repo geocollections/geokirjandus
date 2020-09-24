@@ -1,10 +1,10 @@
 <template>
-  <div class="reference">
+  <v-main class="reference">
     <v-container v-if="reference">
       <v-row>
-        <v-col>
-          <v-btn @click="$router.go(-1)">
-            Back
+        <v-col cols="auto">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon >fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
         <v-col>
@@ -13,66 +13,67 @@
       </v-row>
       <v-row>
         <v-col>
-          <h3>General Info</h3>
+          <h3>{{$t("common.generalInfo")}}</h3>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
                 <tr>
-                  <th>ID</th>
+                  <th>{{ $t("reference.id") }}</th>
                   <td>{{ reference.id }}</td>
                 </tr>
                 <tr>
-                  <th>Reference</th>
+                  <th>{{ $t("reference.reference") }}</th>
                   <td>{{ reference.reference }}</td>
                 </tr>
                 <tr>
-                  <th>Author</th>
+                  <th>{{ $t("reference.author") }}</th>
                   <td>{{ reference.author }}</td>
                 </tr>
                 <tr>
-                  <th>Year</th>
+                  <th>{{ $t("reference.year") }}</th>
                   <td>{{ reference.year }}</td>
                 </tr>
                 <tr>
-                  <th>Title</th>
+                  <th>{{ $t("reference.title") }}</th>
                   <td>{{ reference.title }}</td>
                 </tr>
                 <tr v-if="reference.book">
-                  <th>Book</th>
+                  <th>{{ $t("reference.book") }}</th>
                   <td>{{ reference.book }}</td>
                 </tr>
                 <tr v-if="reference.book">
-                  <th>Book editor</th>
+                  <th>{{ $t("reference.bookEditor") }}</th>
                   <td>{{ reference.book_editor }}</td>
                 </tr>
                 <tr v-if="reference.journal__journal_name">
-                  <th>Journal</th>
+                  <th>{{ $t("reference.journalName") }}</th>
                   <td>{{ reference.journal__journal_name }}</td>
                 </tr>
                 <tr v-if="reference.volume">
-                  <th>Volume</th>
+                  <th>{{ $t("reference.volume") }}</th>
                   <td>{{ reference.volume }}</td>
                 </tr>
                 <tr>
-                  <th>Pages</th>
+                  <th>{{ $t("reference.pages") }}</th>
                   <td>{{ reference.pages }}</td>
                 </tr>
                 <tr v-if="reference.localities">
-                  <th>Localities</th>
+                  <th>{{ $t("reference.localities") }}</th>
                   <td>{{ reference.localities }}</td>
                 </tr>
                 <tr>
                   <!--  TODO: is this source type?  -->
-                  <th>Type</th>
-                  <td>{{ reference.type }}</td>
+                  <th>{{ $t("reference.type") }}</th>
+                  <td>{{ getReferenceType }}</td>
                 </tr>
                 <tr>
-                  <!--  TODO: shows only language id right now  -->
-                  <th>Language</th>
-                  <td>{{ reference.language }}</td>
+                  <th>{{ $t("reference.language") }}</th>
+                  <td>
+                    {{ getReferenceLanguage }}
+                  </td>
                 </tr>
                 <tr v-if="reference.doi">
-                  <th>DOI</th>
+                  <th>{{ $t("reference.doi") }}</th>
                   <td>
                     <a :href="reference.doi_url" target="_blank">{{
                       reference.doi
@@ -80,7 +81,7 @@
                   </td>
                 </tr>
                 <tr v-if="reference.abstract">
-                  <th>Abstract</th>
+                  <th>{{ $t("reference.abstract") }}</th>
                   <td v-html="reference.abstract"></td>
                 </tr>
               </tbody>
@@ -90,14 +91,14 @@
       </v-row>
       <v-row v-if="reference.attachment_filename">
         <v-col>
-          <h3>File</h3>
+          <h3>{{ $t("reference.file") }}</h3>
           <a :href="getFileUrl(reference.attachment__filename)" target="_blank"
             >File</a
           >
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-main>
 </template>
 
 <script>
@@ -116,6 +117,18 @@ export default {
       console.log(res.results[0]);
       this.reference = res.results[0];
     });
+  },
+  computed: {
+    getReferenceType() {
+      return this.$i18n.locale === "ee"
+        ? this.reference.reference_type
+        : this.reference.reference_type_en;
+    },
+    getReferenceLanguage() {
+      return this.$i18n.locale === "ee"
+        ? this.reference.reference_language
+        : this.reference.reference_language_en;
+    }
   },
   methods: {
     getReference() {

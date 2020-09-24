@@ -19,7 +19,8 @@
     "summary": "Kokkuvõte",
     "libraryReferences": "Kogumiku artiklid",
     "visited": "Külastatud",
-    "referenceLibrary": "Kogumikule viitamine"
+    "referenceLibrary": "Kogumikule viitamine",
+    "generalInfo": "Üldinfo"
   },
   "reference": {
     "id": "ID",
@@ -34,7 +35,14 @@
     "isEstonianAuthor": "Eesti autor",
     "isEstonianReference": "Eesti kirjandus",
     "viewReference": "Vaata viitet",
-    "pages": "Leheküljed"
+    "pages": "Leheküljed",
+    "reference": "Viide",
+    "book": "Raamat",
+    "bookEditor": "Toimetaja",
+    "journalName": "Ajakiri",
+    "volume": "Köide",
+    "type": "Tüüp",
+    "language": "Keel"
   },
   "link": {
     "geocollections": "GeoCollections",

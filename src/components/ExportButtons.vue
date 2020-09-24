@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y>
+  <v-menu transition="slide-y-transition" offset-y bottom right>
     <template v-slot:activator="{ on }">
       <v-btn color="primary" dark v-on="on" :small="small">
         <span>{{ $t("common.export") }}</span>

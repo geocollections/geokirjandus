@@ -64,6 +64,8 @@
             :total-visible="5"
             @input="$emit('update:page', $event)"
           />
+
+          <div class="px-3 py-1 text-end">{{ getRange }}</div>
         </div>
       </div>
       <v-select
@@ -251,6 +253,15 @@ export default {
 
   computed: {
     ...mapState("search", ["paginateBy", "page"]),
+    getRange() {
+      return `${
+        this.count > 0 ? this.paginateBy * this.page - (this.paginateBy - 1) : 0
+      } - ${
+        this.paginateBy * this.page > this.count
+          ? this.count
+          : this.paginateBy * this.page
+      } (${this.count})`;
+    },
     getSelectItems() {
       return this.translatedHeaders
         .filter(header => {

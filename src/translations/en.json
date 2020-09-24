@@ -43,7 +43,10 @@
     "journalName": "Journal",
     "volume": "Volume",
     "type": "Type",
-    "language": "Language"
+    "language": "Language",
+    "libraries": "Libraries",
+    "doi": "DOI",
+    "abstract": "Abstract"
   },
   "link": {
     "geocollections": "GeoCollections",

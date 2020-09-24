@@ -11,7 +11,7 @@
     "export": "Ekspordi",
     "copy": "Kopeeri",
     "links": "Lingid",
-    "deleteSearch": "Eemalda otsing",
+    "deleteSearch": "Tühjenda väljad",
     "lookUpType": "Filter",
     "fields": "Väljad",
     "libraryCreated": "Kogumik loodud",
@@ -30,7 +30,7 @@
     "bookJournal": "Raamat/Ajakiri",
     "abstractRemarks": "Abstrakt/Märkused",
     "localities": "Lokaliteedid",
-    "keywords": "Terminid",
+    "keywords": "Märksõnad",
     "userAdded": "Lisanud kasutaja",
     "isEstonianAuthor": "Eesti autor",
     "isEstonianReference": "Eesti kirjandus",
@@ -42,7 +42,10 @@
     "journalName": "Ajakiri",
     "volume": "Köide",
     "type": "Tüüp",
-    "language": "Keel"
+    "language": "Keel",
+    "libraries": "Kogud",
+    "doi": "DOI",
+    "abstract": "Abstrakt"
   },
   "link": {
     "geocollections": "GeoCollections",

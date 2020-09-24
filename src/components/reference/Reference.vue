@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="auto">
           <v-btn large icon @click="$router.go(-1)">
-            <v-icon >fas fa-backspace</v-icon>
+            <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
         <v-col>
@@ -13,7 +13,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <h3>{{$t("common.generalInfo")}}</h3>
+          <h3>{{ $t("common.generalInfo") }}</h3>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
@@ -89,6 +89,19 @@
           </v-simple-table>
         </v-col>
       </v-row>
+      <v-row v-if="libraries">
+        <v-col>
+          <h3>{{ $t("reference.libraries") }}</h3>
+          <div v-for="(library, index) in libraries" :key="index">
+
+            <router-link :to="{ path: `/library/${library.id}` }">
+              {{library.title}}
+            </router-link>
+            <span>{{` ${library.author} (${library.year})`}}</span>
+
+          </div>
+        </v-col>
+      </v-row>
       <v-row v-if="reference.attachment_filename">
         <v-col>
           <h3>{{ $t("reference.file") }}</h3>
@@ -102,20 +115,26 @@
 </template>
 
 <script>
-import { fetchReference } from "@/utils/apiCalls";
+import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
 
 export default {
   name: "Reference",
   data() {
     return {
       id: this.$route.params.id,
-      reference: null
+      reference: null,
+      libraries: null
     };
   },
   created() {
+
     this.getReference().then(res => {
       console.log(res.results[0]);
       this.reference = res.results[0];
+      this.getReferenceLibraries().then(res => {
+        console.log(res.results)
+        this.libraries = res.results;
+      });
     });
   },
   computed: {
@@ -131,6 +150,15 @@ export default {
     }
   },
   methods: {
+    getReferenceLibraries() {
+      return fetchReferenceLibraries({
+        search: {
+          value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
+          type: "text",
+          lookUpType: "contains"
+        }
+      });
+    },
     getReference() {
       return fetchReference(this.$route.params.id);
     },

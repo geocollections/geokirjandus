@@ -2,7 +2,6 @@
   <v-app-bar
       clipped-left
       app
-
       flat color="primary">
     <v-toolbar-title>
       <router-link

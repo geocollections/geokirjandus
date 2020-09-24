@@ -1,23 +1,49 @@
 <template>
   <div class="lang-buttons pa-2">
-    <v-btn
-        text
-        :dark="isDark"
-        @click="changeLang('ee')"
-        large
-        class="font-weight-bold"
-    >
-      EST <span class="flag flag-ee flag-squared flag-circle ml-1"></span>
-    </v-btn>
-    <v-btn
-        text
-        :dark="isDark"
-        @click="changeLang('en')"
-        large
-        class="font-weight-bold"
-    >
-      ENG<span class="flag flag-en flag-squared flag-circle ml-1"></span>
-    </v-btn>
+    <v-menu>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon color="primary" dark v-bind="attrs" v-on="on">
+          <span :class="classObject" style="height: 28px ; width: 28px" />
+        </v-btn>
+      </template>
+      <v-list>
+        <div v-for="(language, idx) in languages" :key="idx">
+          <v-list-item @click="changeLang(language.value)">
+            <v-list-item-title class="d-flex ">
+              <span
+                v-if="language.value === 'ee'"
+                style="height: 28px ; width: 28px"
+                class="flag flag-ee flag-squared flag-circle mr-2"
+              />
+              <span
+                v-if="language.value === 'en'"
+                style="height: 28px ; width: 28px"
+                class="flag flag-en flag-squared flag-circle mr-2"
+              />
+              <span class="align-self-center">{{ $t(language.text) }}</span>
+            </v-list-item-title>
+          </v-list-item>
+        </div>
+      </v-list>
+    </v-menu>
+    <!--    <v-btn-->
+    <!--      text-->
+    <!--      :dark="isDark"-->
+    <!--      @click="changeLang('ee')"-->
+    <!--      large-->
+    <!--      class="font-weight-bold"-->
+    <!--    >-->
+    <!--      EST <span class="flag flag-ee flag-squared flag-circle ml-1"></span>-->
+    <!--    </v-btn>-->
+    <!--    <v-btn-->
+    <!--      text-->
+    <!--      :dark="isDark"-->
+    <!--      @click="changeLang('en')"-->
+    <!--      large-->
+    <!--      class="font-weight-bold"-->
+    <!--    >-->
+    <!--      ENG<span class="flag flag-en flag-squared flag-circle ml-1"></span>-->
+    <!--    </v-btn>-->
   </div>
 </template>
 
@@ -33,9 +59,26 @@ export default {
       default: true
     }
   },
+  data() {
+    return {
+      languages: [
+        { value: "ee", text: "EST" },
+        { value: "en", text: "ENG" }
+      ]
+    };
+  },
   // mixins: [toastMixin],
   computed: {
-    ...mapState("settings", ["language"])
+    ...mapState("settings", ["language"]),
+    classObject() {
+      return {
+        flag: true,
+        "flag-en": this.$i18n.locale === "en",
+        "flag-ee": this.$i18n.locale === "ee",
+        "flag-squared": true,
+        "flag-circle": true
+      };
+    }
   },
   methods: {
     ...mapActions("settings", ["updateLanguage"]),

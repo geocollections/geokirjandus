@@ -48,7 +48,8 @@
     "language": "Keel",
     "libraries": "Kogud",
     "doi": "DOI",
-    "abstract": "Abstrakt"
+    "abstract": "Abstrakt",
+    "dateChanged": "Viimati muudetud"
   },
   "link": {
     "geocollections": "GeoCollections",

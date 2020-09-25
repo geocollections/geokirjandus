@@ -39,14 +39,17 @@
                 :parameters="parameters"
                 :page="page"
                 :is-loading="isLoading"
-                :paginateBy="paginateBy"
+                :paginate-by="paginateBy"
                 :sort-by="sortBy"
                 :sort-desc="sortDesc"
+                :headers="headers"
+                :detail-view="detailView"
                 v-on:update:paginateBy="updatePaginateBy"
                 v-on:update:page="updatePage"
                 v-on:reset:page="resetPage"
                 v-on:update:sortBy="updateSortBy"
                 v-on:update:sortDesc="updateSortDesc"
+                v-on:update:headers="headers = $event"
               >
                 <template v-slot:prepend>
                   <div v-if="libraries && libraries.length > 0" class="px-2">
@@ -94,11 +97,11 @@ import { fetchReferences, fetchLibraries } from "@/utils/apiCalls";
 import DataViewer from "@/components/DataViewer";
 import { mapState, mapActions } from "vuex";
 import Search from "@/components/Search";
-
 import Fabs from "@/components/Fabs";
 import ListView from "@/components/ListView";
 import debounce from "lodash/debounce";
 import ReferenceListView from "@/components/reference/ReferenceListView";
+
 export default {
   name: "Home",
   components: {
@@ -117,7 +120,72 @@ export default {
       libraries: null,
       libraryPage: 1,
       librariesCount: 0,
-      librariesBy: 5
+      librariesBy: 5,
+      headers: [
+        {
+          text: `${this.$t("common.actions")}`,
+          sortable: false,
+          value: "actions",
+          show: true,
+          fixed: true
+        },
+        {
+          text: `${this.$t("reference.id")}`,
+          value: "id",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.author")}`,
+          value: "author",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.year")}`,
+          value: "year",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.title")}`,
+          value: "title",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.bookJournal")}`,
+          value: "bookJournal",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.pages")}`,
+          value: "pages",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.keywords")}`,
+          value: "keywords",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.dateChanged")}`,
+          value: "date_changed",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        }
+      ]
     };
   },
   watch: {
@@ -210,6 +278,9 @@ export default {
         this.libraries = [...this.libraries, ...res.results];
         this.librariesCount = res.count;
       });
+    },
+    detailView(item) {
+      this.$router.push(`/reference/${item.id}`);
     },
     fetch: debounce(function() {
       this.isLoading = true;

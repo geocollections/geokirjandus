@@ -93,12 +93,10 @@
         <v-col>
           <h3>{{ $t("reference.libraries") }}</h3>
           <div v-for="(library, index) in libraries" :key="index">
-
             <router-link :to="{ path: `/library/${library.id}` }">
-              {{library.title}}
+              {{ library.title }}
             </router-link>
-            <span>{{` ${library.author} (${library.year})`}}</span>
-
+            <span>{{ ` ${library.author} (${library.year})` }}</span>
           </div>
         </v-col>
       </v-row>
@@ -129,12 +127,15 @@ export default {
   created() {
 
     this.getReference().then(res => {
-      console.log(res.results[0]);
       this.reference = res.results[0];
-      this.getReferenceLibraries().then(res => {
-        console.log(res.results)
-        this.libraries = res.results;
-      });
+      if (this.reference.libraries) {
+
+        this.getReferenceLibraries().then(res => {
+
+          this.libraries = res.results;
+        });
+
+      }
     });
   },
   computed: {
@@ -151,13 +152,14 @@ export default {
   },
   methods: {
     getReferenceLibraries() {
-      return fetchReferenceLibraries({
-        search: {
-          value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
-          type: "text",
-          lookUpType: "contains"
-        }
-      });
+        return fetchReferenceLibraries({
+          search: {
+            value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
+            type: "text",
+            lookUpType: "contains"
+          }
+        });
+
     },
     getReference() {
       return fetchReference(this.$route.params.id);

@@ -53,33 +53,34 @@
         </template>
       </v-select>
       <v-card-actions
-          v-if="count > 0"
-          class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
+        v-if="count > 0"
+        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
       >
         <div class="col-md-3">
           <v-select
-              :value="paginateBy"
-              color="primary"
-              dense
-              outlined
-              :items="paginateByOptionsTranslated"
-              item-color="black"
-              :label="$t('common.paginateBy')"
-              hide-details
-              @change="$emit('update:paginateBy', $event)"
+            :value="paginateBy"
+            color="primary"
+            dense
+            outlined
+            :items="paginateByOptionsTranslated"
+            item-color="black"
+            :label="$t('common.paginateBy')"
+            hide-details
+            @change="$emit('update:paginateBy', $event)"
           />
         </div>
         <v-pagination
-            :value="page"
-            color="black"
-            circle
-            prev-icon="fas fa-angle-left"
-            next-icon="fas fa-angle-right"
-            :length="Math.ceil(count / paginateBy)"
-            :total-visible="5"
-            @input="$emit('update:page', $event)"
+          :value="page"
+          color="black"
+          circle
+          prev-icon="fas fa-angle-left"
+          next-icon="fas fa-angle-right"
+          :length="Math.ceil(count / paginateBy)"
+          :total-visible="5"
+          @input="$emit('update:page', $event)"
         />
       </v-card-actions>
+
       <!--  LIST VIEW  -->
       <list-view
         v-if="view === 'list' && count > 0"
@@ -93,7 +94,6 @@
       </list-view>
 
       <!--  TABLE VIEW  -->
-
       <v-data-table
         v-if="view === 'table' && count > 0"
         :headers="getHeadersShowing"
@@ -126,7 +126,6 @@
 
 <script>
 import ExportButtons from "../components/ExportButtons";
-import { mapActions, mapState } from "vuex";
 import ListView from "@/components/ListView";
 export default {
   components: { ListView, ExportButtons },
@@ -168,6 +167,18 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    headers: {
+      type: Array[Object]
+    },
+    detailView: {
+      type: Function
+    },
+    page: {
+      type: Number
+    },
+    paginateBy: {
+      type: Number
     }
   },
   name: "DataViewer",
@@ -183,71 +194,11 @@ export default {
         { text: "pagination", value: 1000 }
       ],
       filterTable: "",
-      view: "table",
-      // TODO: Look at maybe normalizing headers
-      headers: [
-        {
-          text: "common.actions",
-          sortable: false,
-          value: "actions",
-          show: true,
-          fixed: true,
-        },
-        {
-          text: "reference.id",
-          value: "id",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "reference.author",
-          value: "author",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "reference.year",
-          value: "year",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "reference.title",
-          value: "title",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "reference.bookJournal",
-          value: "bookJournal",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "reference.pages",
-          value: "pages",
-          show: false,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "reference.keywords",
-          value: "keywords",
-          show: false,
-          fixed: false,
-          class: "text-no-wrap"
-        }
-      ]
+      view: "table"
     };
   },
 
   computed: {
-    ...mapState("search", ["paginateBy", "page"]),
     getRange() {
       return `${
         this.count > 0 ? this.paginateBy * this.page - (this.paginateBy - 1) : 0
@@ -258,7 +209,7 @@ export default {
       } (${this.count})`;
     },
     getSelectItems() {
-      return this.translatedHeaders
+      return this.headers
         .filter(header => {
           return !header.fixed;
         })
@@ -267,7 +218,7 @@ export default {
         });
     },
     getHeadersShowing() {
-      return this.translatedHeaders.filter(header => {
+      return this.headers.filter(header => {
         return header.show;
       });
     },
@@ -276,14 +227,6 @@ export default {
     },
     getSortDesc() {
       return this.sortDesc;
-    },
-    translatedHeaders() {
-      return this.headers.map(header => {
-        return {
-          ...header,
-          text: this.$t(header.text)
-        };
-      });
     },
     paginateByOptionsTranslated() {
       return this.paginateByOptions.map(item => {
@@ -295,19 +238,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions("search", ["updatePaginateBy", "updatePage"]),
-    ...mapActions("references", ["setReferences"]),
-    detailView(item) {
-      this.$router.push(`/reference/${item.id}`);
-    },
     setHeaders(event) {
-      this.headers.forEach(header => {
+      const headers = this.headers.map(header => {
         if (event.includes(header.value)) {
-          header.show = true;
+          return { ...header, show: true };
         } else {
-          header.show = false;
+          return { ...header, show: false };
         }
       });
+
+      this.$emit("update:headers", headers);
     }
   }
 };

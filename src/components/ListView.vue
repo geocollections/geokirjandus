@@ -1,7 +1,7 @@
 <template>
   <div class="list-view white" >
     <v-row no-gutters>
-      <v-col class="list-view-column">
+      <v-col class="list-view-column py-0">
         <slot>
 
         </slot>

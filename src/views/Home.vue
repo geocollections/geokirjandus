@@ -30,19 +30,6 @@
       />
       <v-main>
         <v-container fluid>
-          <v-row v-if="libraries">
-            <v-col class="py-0">
-              <v-subheader>{{$t("common.libraries")}}</v-subheader>
-              <v-chip-group
-                  show-arrows
-              >
-                <v-chip v-for="(library, index) in libraries" :key="index" @click="$router.push(`/library/${library.id}`)">
-                  {{library.title}}
-                </v-chip>
-                <v-chip v-if="librariesCount > libraryPage * librariesBy" @click="getLibraries">{{`+${librariesCount - libraryPage * librariesBy}`}}</v-chip>
-              </v-chip-group>
-            </v-col>
-          </v-row>
           <v-row>
             <v-col>
               <data-viewer
@@ -61,6 +48,18 @@
                 v-on:update:sortBy="updateSortBy"
                 v-on:update:sortDesc="updateSortDesc"
               >
+                <template v-slot:prepend>
+                  <div v-if="libraries && libraries.length > 0">
+                    <v-chip-group
+                        show-arrows
+                    >
+                      <v-chip v-for="(library, index) in libraries" :key="index" @click="$router.push(`/library/${library.id}`)">
+                        {{library.title}}
+                      </v-chip>
+                      <v-chip v-if="librariesCount > libraryPage * librariesBy" @click="getLibraries">{{`+${librariesCount - libraryPage * librariesBy}`}}</v-chip>
+                    </v-chip-group>
+                  </div>
+                </template>
                 <template v-slot:list-view="slotProps">
                   <reference-list-view
 

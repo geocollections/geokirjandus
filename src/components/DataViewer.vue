@@ -14,8 +14,6 @@
         </v-radio-group>
       </div>
     </v-row>
-    <!-- PAGINATION -->
-    <v-row> </v-row>
 
     <!-- DATA TABLE -->
     <v-card elevation="4" class=" my-1" :loading="isLoading">
@@ -38,7 +36,7 @@
       </v-card-title>
       <v-card-actions
         v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between"
+        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
       >
         <div class="col-md-3">
           <v-select
@@ -64,6 +62,8 @@
           @input="$emit('update:page', $event)"
         />
       </v-card-actions>
+      <slot name="prepend"></slot>
+
       <v-select
         class="pa-2"
         v-if="view === 'table'"

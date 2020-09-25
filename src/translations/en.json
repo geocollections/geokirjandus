@@ -23,7 +23,8 @@
     "referenceLibrary": "Reference library",
     "generalInfo": "General info",
     "libraries": "Libraries",
-    "paginateBy": "Show"
+    "paginateBy": "Show",
+    "actions": ""
   },
   "reference": {
     "id": "ID",

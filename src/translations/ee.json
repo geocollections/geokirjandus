@@ -22,7 +22,8 @@
     "referenceLibrary": "Kogumikule viitamine",
     "generalInfo": "Üldinfo",
     "libraries": "Kogud",
-    "paginateBy": "Kuva"
+    "paginateBy": "Kuva",
+    "actions": ""
   },
   "reference": {
     "id": "ID",

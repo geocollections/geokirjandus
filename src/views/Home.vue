@@ -49,20 +49,30 @@
                 v-on:update:sortDesc="updateSortDesc"
               >
                 <template v-slot:prepend>
-                  <div v-if="libraries && libraries.length > 0">
+                  <div v-if="libraries && libraries.length > 0" class="px-2">
                     <v-chip-group
-                        show-arrows
+                      :show-arrows="$vuetify.breakpoint.smAndUp"
+                      :column="$vuetify.breakpoint.smAndDown"
                     >
-                      <v-chip v-for="(library, index) in libraries" :key="index" @click="$router.push(`/library/${library.id}`)">
-                        {{library.title}}
+                      <v-chip
+                        v-for="(library, index) in libraries"
+                        :key="index"
+                        @click="$router.push(`/library/${library.id}`)"
+                      >
+                        {{ library.title }}
                       </v-chip>
-                      <v-chip v-if="librariesCount > libraryPage * librariesBy" @click="getLibraries">{{`+${librariesCount - libraryPage * librariesBy}`}}</v-chip>
+                      <v-chip
+                        v-if="librariesCount > libraryPage * librariesBy"
+                        @click="getLibraries"
+                        >{{
+                          `+${librariesCount - libraryPage * librariesBy}`
+                        }}</v-chip
+                      >
                     </v-chip-group>
                   </div>
                 </template>
                 <template v-slot:list-view="slotProps">
                   <reference-list-view
-
                     :data="slotProps.data"
                   ></reference-list-view>
                 </template>
@@ -88,7 +98,7 @@ import Search from "@/components/Search";
 import Fabs from "@/components/Fabs";
 import ListView from "@/components/ListView";
 import debounce from "lodash/debounce";
-import ReferenceListView from "@/components/ReferenceListView";
+import ReferenceListView from "@/components/reference/ReferenceListView";
 export default {
   name: "Home",
   components: {
@@ -107,7 +117,7 @@ export default {
       libraries: null,
       libraryPage: 1,
       librariesCount: 0,
-      librariesBy: 5,
+      librariesBy: 5
     };
   },
   watch: {
@@ -183,7 +193,6 @@ export default {
     ]),
     ...mapActions("references", ["setReferences"]),
     getLibraries() {
-
       this.libraryPage++;
 
       const libraryParams = {

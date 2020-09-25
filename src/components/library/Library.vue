@@ -11,7 +11,7 @@
           <h1>{{ getTitle }}</h1>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="library.author">
         <v-col>
           <h2>{{ library.author }}</h2>
         </v-col>
@@ -45,7 +45,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="library.abstract">
         <v-col>
           <h3>{{ $t("common.summary") }}</h3>
           <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>

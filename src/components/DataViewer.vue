@@ -34,34 +34,6 @@
           <export-buttons :filename="module" :table-data="data" />
         </div>
       </v-card-title>
-      <v-card-actions
-        v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
-      >
-        <div class="col-md-3">
-          <v-select
-            :value="paginateBy"
-            color="primary"
-            dense
-            outlined
-            :items="paginateByOptionsTranslated"
-            item-color="black"
-            :label="$t('common.paginateBy')"
-            hide-details
-            @change="$emit('update:paginateBy', $event)"
-          />
-        </div>
-        <v-pagination
-          :value="page"
-          color="black"
-          circle
-          prev-icon="fas fa-angle-left"
-          next-icon="fas fa-angle-right"
-          :length="Math.ceil(count / paginateBy)"
-          :total-visible="5"
-          @input="$emit('update:page', $event)"
-        />
-      </v-card-actions>
       <slot name="prepend"></slot>
 
       <v-select
@@ -80,6 +52,34 @@
           <div>{{ $t("common.fields") }}</div>
         </template>
       </v-select>
+      <v-card-actions
+          v-if="count > 0"
+          class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
+      >
+        <div class="col-md-3">
+          <v-select
+              :value="paginateBy"
+              color="primary"
+              dense
+              outlined
+              :items="paginateByOptionsTranslated"
+              item-color="black"
+              :label="$t('common.paginateBy')"
+              hide-details
+              @change="$emit('update:paginateBy', $event)"
+          />
+        </div>
+        <v-pagination
+            :value="page"
+            color="black"
+            circle
+            prev-icon="fas fa-angle-left"
+            next-icon="fas fa-angle-right"
+            :length="Math.ceil(count / paginateBy)"
+            :total-visible="5"
+            @input="$emit('update:page', $event)"
+        />
+      </v-card-actions>
       <!--  LIST VIEW  -->
       <list-view
         v-if="view === 'list' && count > 0"
@@ -95,8 +95,6 @@
       <!--  TABLE VIEW  -->
 
       <v-data-table
-        class="d-inline-block"
-        style="width: 100%"
         v-if="view === 'table' && count > 0"
         :headers="getHeadersShowing"
         :items="data"
@@ -108,6 +106,7 @@
         v-on:update:sort-by="$emit('update:sortBy', $event)"
         v-on:update:sort-desc="$emit('update:sortDesc', $event)"
         multi-sort
+        class="mobile-row"
       >
         <template v-slot:item.bookJournal="{ item }">
           <div v-if="item.book">{{ item.book }}</div>
@@ -184,7 +183,7 @@ export default {
         { text: "pagination", value: 1000 }
       ],
       filterTable: "",
-      view: "list",
+      view: "table",
       // TODO: Look at maybe normalizing headers
       headers: [
         {
@@ -192,7 +191,7 @@ export default {
           sortable: false,
           value: "actions",
           show: true,
-          fixed: true
+          fixed: true,
         },
         {
           text: "reference.id",
@@ -324,5 +323,8 @@ export default {
 
 .tableHeaderCell {
   white-space: nowrap;
+}
+.mobile-row >>> .v-data-table__mobile-row {
+  height: initial !important;
 }
 </style>

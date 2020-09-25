@@ -20,7 +20,7 @@
                 style="height: 28px ; width: 28px"
                 class="flag flag-en flag-squared flag-circle mr-2"
               />
-              <span class="align-self-center">{{ $t(language.text) }}</span>
+              <span class="align-self-center">{{ language.text }}</span>
             </v-list-item-title>
           </v-list-item>
         </div>

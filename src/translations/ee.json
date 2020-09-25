@@ -1,13 +1,13 @@
 {
   "title": "Eesti maapõue teavikute register",
-  "pagination": "Kuva {num} kaupa",
+  "pagination": "{num} kaupa",
   "common": {
     "search": "Otsing",
     "advancedSearch": "Detailotsing",
     "found": "Leitud",
     "records": "kirjet",
-    "listView": "Listi vaade",
-    "tableView": "Tabeli vaade",
+    "listView": "List",
+    "tableView": "Tabel",
     "export": "Ekspordi",
     "copy": "Kopeeri",
     "links": "Lingid",
@@ -20,7 +20,9 @@
     "libraryReferences": "Kogumiku artiklid",
     "visited": "Külastatud",
     "referenceLibrary": "Kogumikule viitamine",
-    "generalInfo": "Üldinfo"
+    "generalInfo": "Üldinfo",
+    "libraries": "Kogud",
+    "paginateBy": "Kuva"
   },
   "reference": {
     "id": "ID",

@@ -1,13 +1,13 @@
 {
   "title": "Estonian geological literature register",
-  "pagination": "Show {num} results",
+  "pagination": "{num} results",
   "common": {
     "search": "Search",
     "advancedSearch": "Filter",
     "found": "Found",
     "records": "records",
-    "listView": "List view",
-    "tableView": "Tabel view",
+    "listView": "List",
+    "tableView": "Table",
     "export": "Export",
     "copy": "Copy",
     "links": "Links",
@@ -21,7 +21,9 @@
     "libraryReferences": "Library references",
     "visited": "Visited",
     "referenceLibrary": "Reference library",
-    "generalInfo": "General info"
+    "generalInfo": "General info",
+    "libraries": "Libraries",
+    "paginateBy": "Show"
   },
   "reference": {
     "id": "ID",

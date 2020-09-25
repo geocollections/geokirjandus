@@ -1,22 +1,30 @@
 import SearchService from "@/middleware/SearchService";
 
-export const fetchReference = async id => {
+export const fetchReference = id => {
   return SearchService.getDetailView(id, "reference");
 };
 
-
-export const fetchReferences = async data => {
+export const fetchReferences = data => {
   return SearchService.search(data, "reference");
 };
 
-export const fetchReferenceLibraries = async data => {
+export const fetchReferenceLibraries = data => {
+  return SearchService.search(data, "library");
+};
+
+export const fetchLibrary = id => {
+  return SearchService.getDetailView(id, "library");
+};
+
+export const fetchLibraries = data => {
   return SearchService.search(data, "library");
 }
 
-export const fetchLibrary = async id => {
-  return SearchService.getDetailView(id, "library");
-}
-
-export const fetchLibraryReferences = async id => {
-  return SearchService.getLibraryReferences(id);
-}
+export const fetchLibraryReferences = id => {
+  const data = {
+    search: {
+      value: `libraries:*|${id}|*`
+    }
+  };
+  return SearchService.search(data, "reference");
+};

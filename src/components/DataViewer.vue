@@ -36,38 +36,34 @@
           <export-buttons :filename="module" :table-data="data" />
         </div>
       </v-card-title>
-      <div
+      <v-card-actions
         v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between mt-3 d-print-none"
+        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between"
       >
-        <div class="mx-3 mb-3 ">
+        <div class="col-md-3">
           <v-select
             :value="paginateBy"
             color="primary"
             dense
+            outlined
             :items="paginateByOptionsTranslated"
             item-color="black"
-            label="Paginate by"
+            :label="$t('common.paginateBy')"
             hide-details
             @change="$emit('update:paginateBy', $event)"
           />
         </div>
-
-        <div>
-          <v-pagination
-            :value="page"
-            color="black"
-            circle
-            prev-icon="fas fa-angle-left"
-            next-icon="fas fa-angle-right"
-            :length="Math.ceil(count / paginateBy)"
-            :total-visible="5"
-            @input="$emit('update:page', $event)"
-          />
-
-          <div class="px-3 py-1 text-end">{{ getRange }}</div>
-        </div>
-      </div>
+        <v-pagination
+          :value="page"
+          color="black"
+          circle
+          prev-icon="fas fa-angle-left"
+          next-icon="fas fa-angle-right"
+          :length="Math.ceil(count / paginateBy)"
+          :total-visible="5"
+          @input="$emit('update:page', $event)"
+        />
+      </v-card-actions>
       <v-select
         class="pa-2"
         v-if="view === 'table'"

@@ -30,8 +30,21 @@
       />
       <v-main>
         <v-container fluid>
+          <v-row v-if="libraries">
+            <v-col class="py-0">
+              <v-subheader>{{$t("common.libraries")}}</v-subheader>
+              <v-chip-group
+                  show-arrows
+              >
+                <v-chip v-for="(library, index) in libraries" :key="index" @click="$router.push(`/library/${library.id}`)">
+                  {{library.title}}
+                </v-chip>
+                <v-chip v-if="librariesCount > libraryPage * librariesBy" @click="getLibraries">{{`+${librariesCount - libraryPage * librariesBy}`}}</v-chip>
+              </v-chip-group>
+            </v-col>
+          </v-row>
           <v-row>
-            <v-col class="">
+            <v-col>
               <data-viewer
                 :module="$route.meta.object"
                 :data="result"
@@ -50,6 +63,7 @@
               >
                 <template v-slot:list-view="slotProps">
                   <reference-list-view
+
                     :data="slotProps.data"
                   ></reference-list-view>
                 </template>
@@ -67,7 +81,7 @@
 
 <script>
 import AppHeader from "@/components/AppHeader";
-import { fetchReferences } from "@/utils/apiCalls";
+import { fetchReferences, fetchLibraries } from "@/utils/apiCalls";
 import DataViewer from "@/components/DataViewer";
 import { mapState, mapActions } from "vuex";
 import Search from "@/components/Search";
@@ -90,7 +104,11 @@ export default {
     return {
       showSearch: true,
       showAdvancedSearch: true,
-      isLoading: false
+      isLoading: false,
+      libraries: null,
+      libraryPage: 1,
+      librariesCount: 0,
+      librariesBy: 5,
     };
   },
   watch: {
@@ -165,6 +183,26 @@ export default {
       "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
+    getLibraries() {
+
+      this.libraryPage++;
+
+      const libraryParams = {
+        search: this.search,
+        page: this.libraryPage,
+        paginateBy: this.librariesBy,
+        advancedSearch: {
+          author: this.advancedSearch.byIds["author"],
+          year: this.advancedSearch.byIds["year"],
+          title: this.advancedSearch.byIds["title"]
+        }
+      };
+
+      fetchLibraries(libraryParams).then(res => {
+        this.libraries = [...this.libraries, ...res.results];
+        this.librariesCount = res.count;
+      });
+    },
     fetch: debounce(function() {
       this.isLoading = true;
       fetchReferences({
@@ -207,6 +245,22 @@ export default {
           q.paginateBy = this.paginateBy;
           this.$router.push({ query: q }).catch(() => {});
         });
+
+      const libraryParams = {
+        search: this.search,
+        page: this.libraryPage,
+        paginateBy: this.librariesBy,
+        advancedSearch: {
+          author: this.advancedSearch.byIds["author"],
+          year: this.advancedSearch.byIds["year"],
+          title: this.advancedSearch.byIds["title"]
+        }
+      };
+
+      fetchLibraries(libraryParams).then(res => {
+        this.libraries = res.results;
+        this.librariesCount = res.count;
+      });
     }, 500)
   }
 };

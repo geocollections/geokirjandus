@@ -1,8 +1,6 @@
 import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
-const REFERENCE = "reference";
-const LIBRARY = "library";
 const FACET_QUERY =
   "q=*&rows=0&facet=on&facet.mincount=1&facet.field=recordbasis&facet.field=highertaxon&facet.field=type_status&facet.field=country&facet.field=datasetowner&facet.field=providername&facet.field=providername&facet.field=providercountry";
 
@@ -10,9 +8,9 @@ class SearchService {
   static async search(searchParams, table) {
     try {
       console.log("searching");
+      console.log(searchParams)
       let start = (searchParams.page - 1) * searchParams.paginateBy;
       let sort = buildSort(searchParams.sortBy, searchParams.sortDesc);
-      console.log(searchParams.advancedSearch)
       let searchFields = buildSearchFieldsQuery(
         searchParams.search,
         searchParams.advancedSearch ?? {}
@@ -20,9 +18,11 @@ class SearchService {
       let url = `${API_URL}/${table}/`;
 
       let urlParameters = ["defType=edismax"];
-
-      if (searchParams.page && searchParams.paginateBy) {
-        urlParameters.push(`start=${start}&rows=${searchParams.paginateBy}`);
+      if (searchParams.page) {
+        urlParameters.push(`start=${start}`)
+      }
+      if (searchParams.paginateBy) {
+        urlParameters.push(`rows=${searchParams.paginateBy}`);
       }
       if (searchParams.sortBy && searchParams.sortDesc) {
         urlParameters.push(`sort=${sort}`);
@@ -39,22 +39,9 @@ class SearchService {
     }
   }
 
-  static async getDetailView(id, tabel) {
+  static async getDetailView(id, table) {
     try {
-      let url = `${API_URL}/${tabel}/?q=id:${decodeURIComponent(id)}`;
-
-      const res = await axios.get(url);
-      return res.data;
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
-  static async getLibraryReferences(id) {
-    try {
-      let url = `${API_URL}/${REFERENCE}/?q=libraries:*|${decodeURIComponent(
-        id
-      )}|*`;
+      let url = `${API_URL}/${table}/?q=id:${decodeURIComponent(id)}`;
 
       const res = await axios.get(url);
       return res.data;

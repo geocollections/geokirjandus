@@ -17,7 +17,7 @@
             $t("common.advancedSearch")
           }}</v-list-item-title>
         </template>
-        <v-list-item :key="index" v-for="(id, index) in advancedSearch.allIds">
+        <v-list-item dense :key="index" v-for="(id, index) in advancedSearch.allIds">
           <!-- REGULAR SEARCH FIELD -->
           <v-row class="pa-2" v-if="advancedSearch.byIds[id].type === 'text'">
             <v-col cols="3" class="py-0 px-1">
@@ -28,7 +28,6 @@
                 disable-lookup
                 hide-details
                 :items="translatedLookUpTypes"
-                :label="$t('common.lookUpType')"
                 @input="
                   $emit('update:advancedSearch', {
                     lookUpType: $event,

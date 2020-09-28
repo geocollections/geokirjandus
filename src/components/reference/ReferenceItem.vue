@@ -47,7 +47,6 @@
 
     <span v-else-if="reference.pages"> pp. {{ reference.pages }}. </span>
 
-    <!-- TODO: DOI LINK -->
     <span v-if="reference.doi">
       <a target="DoiWindow" @click="openDOI(reference.doi)"
         >https://doi.org/{{ reference.doi }}

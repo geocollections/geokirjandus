@@ -132,7 +132,6 @@ const state = {
       "is_estonian_reference"
     ]
   },
-  // TODO: Check lookuptype values
   lookUpTypes: [
     { text: "lookUpType.equals", value: "equals", symbol: "=" },
     { text: "lookUpType.contains", value: "contains", symbol: "*" },

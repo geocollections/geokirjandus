@@ -62,7 +62,6 @@
                   <td>{{ reference.localities }}</td>
                 </tr>
                 <tr>
-                  <!--  TODO: is this source type?  -->
                   <th>{{ $t("reference.type") }}</th>
                   <td>{{ getReferenceType }}</td>
                 </tr>

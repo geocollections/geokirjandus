@@ -21,45 +21,7 @@ export default {
       default: "deep-orange"
     }
   },
-  name: "ReferenceListView",
-  methods: {
-    getDoiUrl(doi) {
-      return `https://doi.org/${doi}`;
-    },
-
-    getFileUrl(uuid) {
-      return `https://files.geocollections.info/${uuid.substring(
-        0,
-        2
-      )}/${uuid.substring(2, 4)}/${uuid}`;
-    },
-
-    getUrl(url) {
-      if (url.startsWith("http")) return url;
-      else if (url.startsWith("www.")) return "http://" + url;
-      else if (url.includes("www."))
-        return "http://" + url.substring(url.indexOf("www."));
-      else return false;
-    },
-
-    openDOI(params) {
-      // TODO: Check for correct doi address
-      window.open("https://doi.org/" + params.doi, "", "width=1000,height=900");
-    },
-
-    openPdf(params) {
-      window.open(
-        "https://files.geocollections.info/" +
-          params.pdf.substring(0, 2) +
-          "/" +
-          params.pdf.substring(2, 4) +
-          "/" +
-          params.pdf,
-        "",
-        "width=1000,height=900"
-      );
-    }
-  }
+  name: "ReferenceListView"
 };
 </script>
 

@@ -31,7 +31,7 @@
       <v-main>
         <v-container fluid>
           <v-row>
-            <v-col>
+            <v-col class="pt-0">
               <data-viewer
                 :module="$route.meta.object"
                 :data="result"
@@ -52,7 +52,8 @@
                 v-on:update:headers="headers = $event"
               >
                 <template v-slot:prepend>
-                  <div v-if="libraries && libraries.length > 0" class="px-2">
+                  <v-card-text v-if="libraries && libraries.length > 0" class="px-2 pb-0">
+                    <span class="subheading pl-3">Libraries</span>
                     <v-chip-group
                       :show-arrows="$vuetify.breakpoint.smAndUp"
                       :column="$vuetify.breakpoint.smAndDown"
@@ -72,7 +73,7 @@
                         }}</v-chip
                       >
                     </v-chip-group>
-                  </div>
+                  </v-card-text>
                 </template>
 
                 <!--  TABLE VIEW CUSTOM TEMPLATES  -->

@@ -1,17 +1,26 @@
 <template>
   <div class="list-module-core">
-    <v-row class="px-4 d-print-none">
+    <v-row class="px-4 mb-3">
       <!-- OPTIONS -->
-      <div class="mb-2">
+      <div class="d-flex">
         <v-radio-group
-          class="radio-buttons mt-0"
+          class="radio-buttons mt-0 align-self-center"
           v-model="view"
           row
           hide-details
         >
-          <v-radio value="list" class="mb-2" :label="$t('common.listView')" />
-          <v-radio value="table" class="mb-2" :label="$t('common.tableView')" />
+          <v-radio value="list" :label="$t('common.listView')" />
+          <v-radio value="table" :label="$t('common.tableView')" />
         </v-radio-group>
+      </div>
+      <v-spacer></v-spacer>
+      <!-- EXPORT -->
+      <div v-if="exportButtons">
+        <export-buttons
+          :filename="module"
+          :table-data="data"
+          clipboard-class="data-viewer-table"
+        />
       </div>
     </v-row>
 
@@ -21,18 +30,13 @@
         <v-progress-linear indeterminate color="primary"></v-progress-linear>
       </template>
 
-      <v-card-title class="d-print-none">
+      <v-card-title class="d-print-none pb-2">
         <v-icon class="mr-2" color="#191414" large>fas fa-list</v-icon>
         <span id="table-title">
           <span>{{ $t("common.found") }}</span>
           <span class="font-weight-bold">{{ ` ${count} ` }}</span>
           <span>{{ $t("common.records") }}</span>
         </span>
-        <div class="flex-grow-1"></div>
-        <!-- EXPORT -->
-        <div class="mr-4 mb-2" v-if="exportButtons">
-          <export-buttons :filename="module" :table-data="data" clipboard-class="data-viewer-table" />
-        </div>
       </v-card-title>
       <slot name="prepend"></slot>
 
@@ -82,10 +86,7 @@
       </v-card-actions>
 
       <!--  LIST VIEW  -->
-      <list-view
-        v-if="view === 'list' && count > 0"
-        :module="module"
-      >
+      <list-view v-if="view === 'list' && count > 0" :module="module">
         <template>
           <slot name="list-view" v-bind:data="data"></slot>
         </template>
@@ -113,31 +114,31 @@
         </template>
       </v-data-table>
       <v-card-actions
-          v-if="count > 0"
-          class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
+        v-if="count > 0"
+        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
       >
         <div class="col-md-3">
           <v-select
-              :value="paginateBy"
-              color="primary"
-              dense
-              outlined
-              :items="paginateByOptionsTranslated"
-              item-color="black"
-              :label="$t('common.paginateBy')"
-              hide-details
-              @change="$emit('update:paginateBy', $event)"
+            :value="paginateBy"
+            color="primary"
+            dense
+            outlined
+            :items="paginateByOptionsTranslated"
+            item-color="black"
+            :label="$t('common.paginateBy')"
+            hide-details
+            @change="$emit('update:paginateBy', $event)"
           />
         </div>
         <v-pagination
-            :value="page"
-            color="black"
-            circle
-            prev-icon="fas fa-angle-left"
-            next-icon="fas fa-angle-right"
-            :length="Math.ceil(count / paginateBy)"
-            :total-visible="5"
-            @input="$emit('update:page', $event)"
+          :value="page"
+          color="black"
+          circle
+          prev-icon="fas fa-angle-left"
+          next-icon="fas fa-angle-right"
+          :length="Math.ceil(count / paginateBy)"
+          :total-visible="5"
+          @input="$emit('update:page', $event)"
         />
       </v-card-actions>
     </v-card>

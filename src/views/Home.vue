@@ -87,7 +87,9 @@
                     {{ item.journal__journal_name }}
                   </div>
                 </template>
-
+                <template v-slot:item.date_changed="{ item }">
+                  {{ formatDate(item.date_changed) }}
+                </template>
                 <!--  LIST VIEW TEMPLATE  -->
                 <template v-slot:list-view="{ data }">
                   <reference-list-view :data="data"></reference-list-view>
@@ -171,9 +173,16 @@ export default {
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.bookJournal")}`,
-          value: "bookJournal",
-          show: true,
+          text: `${this.$t("reference.journalName")}`,
+          value: "journal__journal_name",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.book")}`,
+          value: "book",
+          show: false,
           fixed: false,
           class: "text-no-wrap"
         },
@@ -246,6 +255,13 @@ export default {
       "sortDesc"
     ]),
     ...mapState("references", ["result", "count"]),
+    getDateLocale() {
+      if (this.$i18n.locale === "ee") {
+        return "et-EE";
+      } else {
+        return "en-GB";
+      }
+    },
     parameters() {
       return { ...this.advancedSearch.byIds, search: this.search };
     },
@@ -273,6 +289,13 @@ export default {
       "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
+    formatDate(date) {
+      return date
+        ? new Date(date).toLocaleString(this.getDateLocale, {
+            dateStyle: "medium"
+          })
+        : null;
+    },
     getLibraries() {
       this.libraryPage++;
 

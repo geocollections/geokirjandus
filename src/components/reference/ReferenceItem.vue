@@ -49,10 +49,7 @@
 
     <!-- TODO: DOI LINK -->
     <span v-if="reference.doi">
-      <a
-        :href="getDoiUrl(reference.doi)"
-        :title="getDoiUrl(reference.doi)"
-        target="DoiWindow"
+      <a target="DoiWindow" @click="openDOI(reference.doi)"
         >https://doi.org/{{ reference.doi }}
       </a>
     </span>
@@ -60,16 +57,15 @@
     <span>
       <a
         v-if="reference.attachment__filename"
-        :href="getFileUrl(reference.attachment__filename)"
-        :title="getFileUrl(reference.attachment__filename)"
         target="FileWindow"
         class="green-link"
+        @click="openPdf(reference.attachment__filename)"
       >
         <b>PDF</b>
       </a>
       <a
         v-if="
-          reference.attachment__filename === null &&
+          !reference.attachment__filename &&
             reference.url &&
             getUrl(reference.url)
         "
@@ -113,13 +109,28 @@ export default {
       else if (url.includes("www."))
         return "http://" + url.substring(url.indexOf("www."));
       else return false;
+    },
+    openPdf(uuid) {
+      window.open(
+        "https://files.geocollections.info/" +
+          uuid.substring(0, 2) +
+          "/" +
+          uuid.substring(2, 4) +
+          "/" +
+          uuid,
+        "",
+        "width=1000,height=900"
+      );
+    },
+    openDOI(doi) {
+      // TODO: Check for correct doi address
+      window.open("https://doi.org/" + doi, "", "width=1000,height=900");
     }
   }
 };
 </script>
 
 <style scoped>
-
 .ablack a:link,
 .ablack a:visited {
   color: #000;
@@ -131,5 +142,9 @@ a:hover {
 
 .ablack:hover {
   text-decoration: underline;
+}
+
+.red-link {
+  color: #f44336;
 }
 </style>

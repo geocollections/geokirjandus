@@ -92,7 +92,6 @@
           <slot name="list-view" v-bind:data="data"></slot>
         </template>
       </list-view>
-
       <!--  TABLE VIEW  -->
       <v-data-table
         v-if="view === 'table' && count > 0"
@@ -108,16 +107,11 @@
         multi-sort
         class="mobile-row"
       >
-        <template v-slot:item.bookJournal="{ item }">
-          <div v-if="item.book">{{ item.book }}</div>
-          <div v-else-if="item.journal__journal_name">
-            {{ item.journal__journal_name }}
-          </div>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-btn icon @click="detailView(item)">
-            <v-icon>fas fa-eye</v-icon>
-          </v-btn>
+        <template
+          v-for="(_, slotName) in $scopedSlots"
+          v-slot:[slotName]="context"
+        >
+          <slot :name="slotName" v-bind="context" />
         </template>
       </v-data-table>
     </v-card>
@@ -238,6 +232,9 @@ export default {
     }
   },
   methods: {
+    log(t) {
+      console.log(t);
+    },
     setHeaders(event) {
       const headers = this.headers.map(header => {
         if (event.includes(header.value)) {

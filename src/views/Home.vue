@@ -74,10 +74,23 @@
                     </v-chip-group>
                   </div>
                 </template>
-                <template v-slot:list-view="slotProps">
-                  <reference-list-view
-                    :data="slotProps.data"
-                  ></reference-list-view>
+
+                <!--  TABLE VIEW CUSTOM TEMPLATES  -->
+                <template v-slot:item.actions="{ item }">
+                  <v-btn icon @click="detailView(item)">
+                    <v-icon>fas fa-eye</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:item.bookJournal="{ item }">
+                  <div v-if="item.book">{{ item.book }}</div>
+                  <div v-else-if="item.journal__journal_name">
+                    {{ item.journal__journal_name }}
+                  </div>
+                </template>
+
+                <!--  LIST VIEW TEMPLATE  -->
+                <template v-slot:list-view="{ data }">
+                  <reference-list-view :data="data"></reference-list-view>
                 </template>
               </data-viewer>
             </v-col>

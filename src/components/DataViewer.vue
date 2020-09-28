@@ -31,7 +31,7 @@
         <div class="flex-grow-1"></div>
         <!-- EXPORT -->
         <div class="mr-4 mb-2" v-if="exportButtons">
-          <export-buttons :filename="module" :table-data="data" />
+          <export-buttons :filename="module" :table-data="data" clipboard-class="data-viewer-table" />
         </div>
       </v-card-title>
       <slot name="prepend"></slot>
@@ -105,7 +105,7 @@
         v-on:update:sort-by="$emit('update:sortBy', $event)"
         v-on:update:sort-desc="$emit('update:sortDesc', $event)"
         multi-sort
-        class="mobile-row"
+        class="mobile-row data-viewer-table"
       >
         <template
           v-for="(_, slotName) in $scopedSlots"

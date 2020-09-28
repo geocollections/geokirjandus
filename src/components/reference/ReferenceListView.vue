@@ -14,11 +14,6 @@ export default {
   props: {
     data: {
       type: Array
-    },
-    bodyActiveColor: {
-      type: String,
-      required: false,
-      default: "deep-orange"
     }
   },
   name: "ReferenceListView"

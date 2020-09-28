@@ -85,8 +85,6 @@
       <list-view
         v-if="view === 'list' && count > 0"
         :module="module"
-        body-color="white"
-        body-active-color="black"
       >
         <template>
           <slot name="list-view" v-bind:data="data"></slot>
@@ -114,6 +112,34 @@
           <slot :name="slotName" v-bind="context" />
         </template>
       </v-data-table>
+      <v-card-actions
+          v-if="count > 0"
+          class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
+      >
+        <div class="col-md-3">
+          <v-select
+              :value="paginateBy"
+              color="primary"
+              dense
+              outlined
+              :items="paginateByOptionsTranslated"
+              item-color="black"
+              :label="$t('common.paginateBy')"
+              hide-details
+              @change="$emit('update:paginateBy', $event)"
+          />
+        </div>
+        <v-pagination
+            :value="page"
+            color="black"
+            circle
+            prev-icon="fas fa-angle-left"
+            next-icon="fas fa-angle-right"
+            :length="Math.ceil(count / paginateBy)"
+            :total-visible="5"
+            @input="$emit('update:page', $event)"
+        />
+      </v-card-actions>
     </v-card>
   </div>
 </template>

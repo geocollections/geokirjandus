@@ -43,11 +43,6 @@ export default {
     tableData: {
       type: Array
     },
-    bodyActiveColor: {
-      type: String,
-      required: false,
-      default: "deep-orange"
-    },
     clipboardClass: {
       type: String,
       required: false

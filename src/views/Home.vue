@@ -127,7 +127,7 @@ export default {
   },
   data() {
     return {
-      showSearch: true,
+      showSearch: this.$vuetify.breakpoint.mdAndUp,
       showAdvancedSearch: true,
       isLoading: false,
       libraries: null,

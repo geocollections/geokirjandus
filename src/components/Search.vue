@@ -23,8 +23,6 @@
             <v-col cols="3" class="py-0 px-1">
               <v-select
                 :value="advancedSearch.byIds[id].lookUpType || 'contains'"
-                :color="bodyActiveColor"
-                :item-color="bodyActiveColor"
                 disable-lookup
                 hide-details
                 :items="translatedLookUpTypes"
@@ -47,9 +45,7 @@
               <v-text-field
                 :value="advancedSearch.byIds[id].value"
                 :label="$t(advancedSearch.byIds[id].label)"
-                :color="bodyActiveColor"
                 hide-details
-                :class="bodyActiveColor + '--text'"
                 @input="
                   $emit('update:advancedSearch', {
                     value: $event,
@@ -127,7 +123,6 @@
             <v-checkbox
               :label="$t(advancedSearch.byIds[id].label)"
               class="mt-0 pr-6"
-              :color="bodyActiveColor"
               false-value="0"
               true-value="1"
               :indeterminate="isIndeterminate(advancedSearch.byIds[id].value)"
@@ -176,7 +171,6 @@ export default {
     }
   },
   computed: {
-    ...mapState("settings", ["bodyColor", "bodyActiveColor"]),
     ...mapState("search", ["lookUpTypes"]),
     translatedLookUpTypes() {
       return this.lookUpTypes.map(item => {

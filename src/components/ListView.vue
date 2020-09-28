@@ -15,7 +15,7 @@
 export default {
   components: {
   },
-  props: ["module", "data", "bodyColor", "bodyActiveColor"],
+  props: ["module", "data"],
   name: "ListView"
 };
 </script>

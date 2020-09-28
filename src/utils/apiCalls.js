@@ -18,10 +18,12 @@ export const fetchLibrary = id => {
 
 export const fetchLibraries = data => {
   return SearchService.search(data, "library");
-}
+};
 
 export const fetchLibraryReferences = id => {
   const data = {
+    sortBy: ["author"],
+    sortDesc: [false],
     search: {
       value: `libraries:*|${id}|*`
     }

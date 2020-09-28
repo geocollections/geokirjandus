@@ -188,7 +188,7 @@ export default {
         { text: "pagination", value: 1000 }
       ],
       filterTable: "",
-      view: "table"
+      view: "list"
     };
   },
 

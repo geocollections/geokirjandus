@@ -100,12 +100,19 @@
           </div>
         </v-col>
       </v-row>
-      <v-row v-if="reference.attachment_filename">
+      <v-row v-if="reference.attachment__filename || reference.url">
         <v-col>
-          <h3>{{ $t("reference.file") }}</h3>
-          <a :href="getFileUrl(reference.attachment__filename)" target="_blank"
-            >File</a
-          >
+          <h3>{{$t("common.links")}}</h3>
+          <v-btn
+            v-if="reference.attachment__filename"
+            target="_blank"
+            :href="getFileUrl(reference.attachment__filename)"
+            ><v-icon>fas fa-file</v-icon><span class="pl-1">PDF</span>
+          </v-btn>
+          <v-btn v-if="reference.url" target="_blank" :href="reference.url">
+            <v-icon>fas fa-external-link-square-alt</v-icon
+            ><span class="pl-1">URL</span>
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -125,16 +132,12 @@ export default {
     };
   },
   created() {
-
     this.getReference().then(res => {
       this.reference = res.results[0];
       if (this.reference.libraries) {
-
         this.getReferenceLibraries().then(res => {
-
           this.libraries = res.results;
         });
-
       }
     });
   },
@@ -152,14 +155,13 @@ export default {
   },
   methods: {
     getReferenceLibraries() {
-        return fetchReferenceLibraries({
-          search: {
-            value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
-            type: "text",
-            lookUpType: "contains"
-          }
-        });
-
+      return fetchReferenceLibraries({
+        search: {
+          value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
+          type: "text",
+          lookUpType: "contains"
+        }
+      });
     },
     getReference() {
       return fetchReference(this.$route.params.id);

@@ -178,8 +178,8 @@ export default {
       if (jsonArray && jsonArray.length > 0) {
         jsonArray.forEach(item => {
           // Only write to string if type exists
-          if (item.type && item.type__ris_type) {
-            risString += "TY  - " + item.type__ris_type + "\n";
+          if (item.type && item.reference_ris_type) {
+            risString += "TY  - " + item.reference_ris_type + "\n";
 
             // Todo: Add certain fields to certain types --> if (item.type__ris_type === 'JOUR') {} etc.
 

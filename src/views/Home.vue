@@ -101,7 +101,7 @@
       </v-main>
     </div>
     <div class="d-none d-print-block">
-      <list-view :data="result"></list-view>
+      <reference-list-view :data="result"></reference-list-view>
     </div>
   </div>
 </template>
@@ -113,7 +113,6 @@ import DataViewer from "@/components/DataViewer";
 import { mapState, mapActions } from "vuex";
 import Search from "@/components/Search";
 import Fabs from "@/components/Fabs";
-import ListView from "@/components/ListView";
 import debounce from "lodash/debounce";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 
@@ -121,7 +120,6 @@ export default {
   name: "Home",
   components: {
     ReferenceListView,
-    ListView,
     Fabs,
     Search,
     DataViewer,

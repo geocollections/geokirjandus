@@ -1,5 +1,5 @@
 {
-  "title": "Estonian geological literature register",
+  "title": "e-maapõu",
   "pagination": "{num} results",
   "messages": {
     "langChange": "Language changed"
@@ -53,7 +53,10 @@
     "libraries": "Libraries",
     "doi": "DOI",
     "abstract": "Abstract",
-    "dateChanged": "Date changed"
+    "dateChanged": "Date changed",
+    "titleTranslated": "Translated title",
+    "publisher": "Publisher",
+    "userChanged": "User changed"
   },
   "link": {
     "geocollections": "GeoCollections",

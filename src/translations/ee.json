@@ -1,5 +1,5 @@
 {
-  "title": "Eesti maapõue teavikute register",
+  "title": "e-maapõu",
   "pagination": "{num} kaupa",
   "messages": {
     "langChange": "Keel vahetatud"
@@ -53,7 +53,10 @@
     "libraries": "Kogud",
     "doi": "DOI",
     "abstract": "Abstrakt",
-    "dateChanged": "Viimati muudetud"
+    "dateChanged": "Viimati muudetud",
+    "titleTranslated": "Tõlgitud pealkiri",
+    "publisher": "Kirjastaja",
+    "userChanged": "Muutnud kasutaja"
   },
   "link": {
     "geocollections": "GeoCollections",

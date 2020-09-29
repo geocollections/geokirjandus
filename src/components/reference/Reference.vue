@@ -21,29 +21,37 @@
                   <th>{{ $t("reference.id") }}</th>
                   <td>{{ reference.id }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.reference">
                   <th>{{ $t("reference.reference") }}</th>
                   <td>{{ reference.reference }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.author">
                   <th>{{ $t("reference.author") }}</th>
                   <td>{{ reference.author }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.year">
                   <th>{{ $t("reference.year") }}</th>
                   <td>{{ reference.year }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.title">
                   <th>{{ $t("reference.title") }}</th>
                   <td>{{ reference.title }}</td>
+                </tr>
+                <tr v-if="reference.title_translated">
+                  <th>{{ $t("reference.titleTranslated") }}</th>
+                  <td>{{ reference.title_translated }}</td>
                 </tr>
                 <tr v-if="reference.book">
                   <th>{{ $t("reference.book") }}</th>
                   <td>{{ reference.book }}</td>
                 </tr>
-                <tr v-if="reference.book">
+                <tr v-if="reference.book_editor">
                   <th>{{ $t("reference.bookEditor") }}</th>
                   <td>{{ reference.book_editor }}</td>
+                </tr>
+                <tr v-if="reference.publisher">
+                  <th>{{ $t("reference.publisher") }}</th>
+                  <td>{{ reference.publisher }}</td>
                 </tr>
                 <tr v-if="reference.journal__journal_name">
                   <th>{{ $t("reference.journalName") }}</th>
@@ -53,7 +61,7 @@
                   <th>{{ $t("reference.volume") }}</th>
                   <td>{{ reference.volume }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.pages">
                   <th>{{ $t("reference.pages") }}</th>
                   <td>{{ reference.pages }}</td>
                 </tr>
@@ -61,11 +69,11 @@
                   <th>{{ $t("reference.localities") }}</th>
                   <td>{{ reference.localities }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.type">
                   <th>{{ $t("reference.type") }}</th>
                   <td>{{ getReferenceType }}</td>
                 </tr>
-                <tr>
+                <tr v-if="reference.language">
                   <th>{{ $t("reference.language") }}</th>
                   <td>
                     {{ getReferenceLanguage }}
@@ -82,6 +90,22 @@
                 <tr v-if="reference.abstract">
                   <th>{{ $t("reference.abstract") }}</th>
                   <td v-html="reference.abstract"></td>
+                </tr>
+                <tr v-if="reference.remarks">
+                  <th>{{ $t("reference.remarks") }}</th>
+                  <td v-html="reference.remarks"></td>
+                </tr>
+                <tr v-if="reference.keywords">
+                  <th>{{ $t("reference.keywords") }}</th>
+                  <td>{{ reference.keywords }}</td>
+                </tr>
+                <tr v-if="reference.user_added">
+                  <th>{{ $t("reference.userAdded") }}</th>
+                  <td>{{ reference.user_added }} ({{formatDate(reference.date_added)}})</td>
+                </tr>
+                <tr v-if="reference.user_changed">
+                  <th>{{ $t("reference.userChanged") }}</th>
+                  <td>{{ reference.user_changed }} ({{formatDate(reference.date_changed)}})</td>
                 </tr>
               </tbody>
             </template>
@@ -141,6 +165,13 @@ export default {
     });
   },
   computed: {
+    getDateLocale() {
+      if (this.$i18n.locale === "ee") {
+        return "et-EE";
+      } else {
+        return "en-GB";
+      }
+    },
     getReferenceType() {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_type
@@ -153,6 +184,11 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleString(this.getDateLocale, {
+        dateStyle: "medium"
+      });
+    },
     getReferenceLibraries() {
       return fetchReferenceLibraries({
         search: {

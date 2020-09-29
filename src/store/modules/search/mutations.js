@@ -55,22 +55,29 @@ const mutations = {
   },
   SET_SEARCH_FROM_URL(state, payload) {
     Object.entries(payload).forEach(([k, v]) => {
-      if (k === "search") {
-        state.search.value = v;
-      } else if (k === "year") {
-        const range = v.split("-").map(year => {
-          return parseInt(year);
-        });
-
-        state.advancedSearch.byIds[k].value = range;
-      } else if (k === "page") {
-        state.page = parseInt(v);
-      } else if (k === "paginateBy") {
-        state.paginateBy = parseInt(v);
-      } else {
-        const query = k.split("_");
-        state.advancedSearch.byIds[query[0]].value = v;
-        state.advancedSearch.byIds[query[0]].lookUpType = query[1];
+      switch (k) {
+        case "search":
+          state.search.value = v;
+          break;
+        case "year": {
+          const range = v.split("-").map(year => {
+            return parseInt(year);
+          });
+          state.advancedSearch.byIds[k].active = true;
+          state.advancedSearch.byIds[k].value = range;
+          break;
+        }
+        case "page":
+          state.page = parseInt(v);
+          break;
+        case "paginateBy":
+          state.paginateBy = parseInt(v);
+          break;
+        default: {
+          const query = k.split("_");
+          state.advancedSearch.byIds[query[0]].value = v;
+          state.advancedSearch.byIds[query[0]].lookUpType = query[1];
+        }
       }
     });
   },

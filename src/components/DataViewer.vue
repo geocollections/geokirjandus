@@ -44,16 +44,15 @@
           <span class="subheading pl-3">{{ $t("common.fields") }}</span>
 
           <v-select
-              class="pa-2"
-              s
-              :value="getHeadersShowing"
-              multiple
-              dense
-              chips
-              outlined
-              hide-details
-              :items="getSelectItems"
-              @change="setHeaders($event)"
+            class="pa-2"
+            :value="getHeadersShowing"
+            multiple
+            dense
+            chips
+            outlined
+            hide-details
+            :items="getSelectItems"
+            @change="setHeaders($event)"
           >
           </v-select>
         </v-card-text>
@@ -89,7 +88,6 @@
 
       <!--  LIST VIEW  -->
       <v-expand-transition>
-
         <list-view v-if="view === 'list' && count > 0" :module="module">
           <template>
             <slot name="list-view" v-bind:data="data"></slot>
@@ -272,11 +270,8 @@ export default {
   methods: {
     setHeaders(event) {
       const headers = this.headers.map(header => {
-        if (event.includes(header.value)) {
-          return { ...header, show: true };
-        } else {
-          return { ...header, show: false };
-        }
+        if (event.includes(header.value)) return { ...header, show: true };
+        return { ...header, show: false };
       });
 
       this.$emit("update:headers", headers);

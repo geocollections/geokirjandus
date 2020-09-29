@@ -28,6 +28,7 @@
       </v-list>
     </v-menu>
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
+    <!--  MOBILE MENU  -->
     <v-menu v-if="!$vuetify.breakpoint.smAndUp" transition="slide-y-transition" offset-y bottom right>
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon dark v-bind="attrs" v-on="on">

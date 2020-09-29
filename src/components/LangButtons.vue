@@ -2,7 +2,7 @@
   <div class="lang-buttons">
     <v-menu transition="slide-y-transition" offset-y bottom right>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on">
+        <v-btn class="ml-auto d-block" icon v-bind="attrs" v-on="on">
           <span :class="classObject" style="height: 28px ; width: 28px" />
         </v-btn>
       </template>

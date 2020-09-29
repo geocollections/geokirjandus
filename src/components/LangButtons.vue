@@ -26,30 +26,12 @@
         </div>
       </v-list>
     </v-menu>
-    <!--    <v-btn-->
-    <!--      text-->
-    <!--      :dark="isDark"-->
-    <!--      @click="changeLang('ee')"-->
-    <!--      large-->
-    <!--      class="font-weight-bold"-->
-    <!--    >-->
-    <!--      EST <span class="flag flag-ee flag-squared flag-circle ml-1"></span>-->
-    <!--    </v-btn>-->
-    <!--    <v-btn-->
-    <!--      text-->
-    <!--      :dark="isDark"-->
-    <!--      @click="changeLang('en')"-->
-    <!--      large-->
-    <!--      class="font-weight-bold"-->
-    <!--    >-->
-    <!--      ENG<span class="flag flag-en flag-squared flag-circle ml-1"></span>-->
-    <!--    </v-btn>-->
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
-// import toastMixin from "../../mixins/toastMixin";
+import toastMixin from "../mixins/toastMixin";
 
 export default {
   name: "lang-buttons",
@@ -67,7 +49,7 @@ export default {
       ]
     };
   },
-  // mixins: [toastMixin],
+  mixins: [toastMixin],
   computed: {
     ...mapState("settings", ["language"]),
     classObject() {
@@ -82,13 +64,11 @@ export default {
   },
   methods: {
     ...mapActions("settings", ["updateLanguage"]),
-
     changeLang(newLang) {
       if (this.lang === newLang) return;
       this.$i18n.locale = newLang;
-      // this.$moment.locale(newLang === "ee" ? "et" : "en");
       this.updateLanguage(newLang);
-      // this.toastInfo({ text: this.$t("messages.langChange") });
+      this.toastInfo({ text: this.$t("messages.langChange") });
     }
   }
 };

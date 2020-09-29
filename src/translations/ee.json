@@ -1,6 +1,9 @@
 {
   "title": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
+  "messages": {
+    "langChange": "Keel vahetatud"
+  },
   "common": {
     "search": "Otsing",
     "advancedSearch": "Detailotsing",

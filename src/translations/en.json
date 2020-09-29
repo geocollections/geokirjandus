@@ -1,6 +1,9 @@
 {
   "title": "Estonian geological literature register",
   "pagination": "{num} results",
+  "messages": {
+    "langChange": "Language changed"
+  },
   "common": {
     "search": "Search",
     "advancedSearch": "Filter",

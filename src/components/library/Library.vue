@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="auto">
           <v-btn large icon @click="$router.go(-1)">
-            <v-icon >fas fa-backspace</v-icon>
+            <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
         <v-col>
@@ -61,12 +61,27 @@
       </v-row>
       <v-row>
         <v-col>
-          <div :key="reference.id" v-for="(reference, index) in references">
-            <v-divider v-if="index !== 0" />
-            <div class="py-2">
-              <reference-item :reference="reference" :index="index"></reference-item>
-            </div>
-          </div>
+          <v-skeleton-loader
+            :loading="isLoading"
+            transition="fade-transition"
+            type="list-item-three-line"
+          >
+            <v-card>
+              <v-card-text
+                class="py-0"
+                :key="reference.id"
+                v-for="(reference, index) in references"
+              >
+                <v-divider v-if="index !== 0" />
+                <div class="py-2">
+                  <reference-item
+                    :reference="reference"
+                    :index="index"
+                  ></reference-item>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-skeleton-loader>
         </v-col>
       </v-row>
     </v-container>
@@ -84,7 +99,8 @@ export default {
     return {
       id: this.$route.params.id,
       library: null,
-      references: null
+      references: null,
+      isLoading: true
     };
   },
   computed: {
@@ -110,6 +126,7 @@ export default {
 
     this.getLibraryReferences().then(res => {
       this.references = res.results;
+      this.isLoading = false;
     });
   },
   methods: {

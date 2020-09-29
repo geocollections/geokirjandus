@@ -39,23 +39,25 @@
         </span>
       </v-card-title>
       <slot name="prepend"></slot>
-      <v-card-text v-if="view === 'table'" class="px-2 py-0">
-        <span class="subheading pl-3">{{ $t("common.fields") }}</span>
+      <v-expand-transition>
+        <v-card-text v-if="view === 'table'" class="px-2 py-0">
+          <span class="subheading pl-3">{{ $t("common.fields") }}</span>
 
-        <v-select
-          class="pa-2"
-          s
-          :value="getHeadersShowing"
-          multiple
-          dense
-          chips
-          outlined
-          hide-details
-          :items="getSelectItems"
-          @change="setHeaders($event)"
-        >
-        </v-select>
-      </v-card-text>
+          <v-select
+              class="pa-2"
+              s
+              :value="getHeadersShowing"
+              multiple
+              dense
+              chips
+              outlined
+              hide-details
+              :items="getSelectItems"
+              @change="setHeaders($event)"
+          >
+          </v-select>
+        </v-card-text>
+      </v-expand-transition>
       <v-card-actions
         v-if="count > 0"
         class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
@@ -86,12 +88,16 @@
       </v-card-actions>
 
       <!--  LIST VIEW  -->
-      <list-view v-if="view === 'list' && count > 0" :module="module">
-        <template>
-          <slot name="list-view" v-bind:data="data"></slot>
-        </template>
-      </list-view>
+      <v-expand-transition>
+
+        <list-view v-if="view === 'list' && count > 0" :module="module">
+          <template>
+            <slot name="list-view" v-bind:data="data"></slot>
+          </template>
+        </list-view>
+      </v-expand-transition>
       <!--  TABLE VIEW  -->
+
       <v-data-table
         v-if="view === 'table' && count > 0"
         :headers="getHeadersShowing"

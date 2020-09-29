@@ -1,9 +1,9 @@
 <template>
   <div v-if="data.length > 0">
-    <div v-for="(entity, index) in data" :key="entity.id">
+    <v-card-text class="py-0" v-for="(entity, index) in data" :key="entity.id">
       <v-divider v-if="index !== 0" />
       <reference-item class="my-2" :reference="entity"></reference-item>
-    </div>
+    </v-card-text>
   </div>
 </template>
 

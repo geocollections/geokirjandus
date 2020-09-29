@@ -52,28 +52,30 @@
                 v-on:update:headers="headers = $event"
               >
                 <template v-slot:prepend>
-                  <v-card-text v-if="libraries && libraries.length > 0" class="px-2 pb-0">
-                    <span class="subheading pl-3">Libraries</span>
-                    <v-chip-group
-                      :show-arrows="$vuetify.breakpoint.smAndUp"
-                      :column="$vuetify.breakpoint.smAndDown"
-                    >
-                      <v-chip
-                        v-for="(library, index) in libraries"
-                        :key="index"
-                        @click="$router.push(`/library/${library.id}`)"
+                  <v-expand-transition>
+                    <v-card-text v-if="libraries && libraries.length > 0" class="px-2 pb-0">
+                      <span class="subheading pl-3">Libraries</span>
+                      <v-chip-group
+                          :show-arrows="$vuetify.breakpoint.smAndUp"
+                          :column="$vuetify.breakpoint.smAndDown"
                       >
-                        {{ library.title }}
-                      </v-chip>
-                      <v-chip
-                        v-if="librariesCount > libraryPage * librariesBy"
-                        @click="getLibraries"
+                        <v-chip
+                            v-for="(library, index) in libraries"
+                            :key="index"
+                            @click="$router.push(`/library/${library.id}`)"
+                        >
+                          {{ library.title }}
+                        </v-chip>
+                        <v-chip
+                            v-if="librariesCount > libraryPage * librariesBy"
+                            @click="getLibraries"
                         >{{
-                          `+${librariesCount - libraryPage * librariesBy}`
-                        }}</v-chip
-                      >
-                    </v-chip-group>
-                  </v-card-text>
+                            `+${librariesCount - libraryPage * librariesBy}`
+                          }}</v-chip
+                        >
+                      </v-chip-group>
+                    </v-card-text>
+                  </v-expand-transition>
                 </template>
 
                 <!--  TABLE VIEW CUSTOM TEMPLATES  -->

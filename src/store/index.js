@@ -9,7 +9,7 @@ import references from "./modules/references";
 Vue.use(Vuex);
 //
 // const vuexLocal = new VuexPersistence({
-//   key: "geoloogia.info_v1",
+//   key: "geoloogia.geokirjandus",
 //   storage: window.localStorage
 // });
 

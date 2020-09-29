@@ -1,18 +1,18 @@
 <template>
   <v-main class="reference">
     <v-container v-if="reference">
-      <v-row>
-        <v-col cols="auto">
-          <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <h1>{{ reference.reference }}</h1>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+      <v-card>
+        <v-card-title>
+          <v-col cols="auto">
+            <v-btn large icon @click="$router.go(-1)">
+              <v-icon>fas fa-backspace</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col>
+            <h1>{{ reference.reference }}</h1>
+          </v-col>
+        </v-card-title>
+        <v-card-text>
           <h3>{{ $t("common.generalInfo") }}</h3>
           <v-simple-table>
             <template v-slot:default>
@@ -101,19 +101,25 @@
                 </tr>
                 <tr v-if="reference.user_added">
                   <th>{{ $t("reference.userAdded") }}</th>
-                  <td>{{ reference.user_added }} ({{formatDate(reference.date_added)}})</td>
+                  <td>
+                    {{ reference.user_added }} ({{
+                      formatDate(reference.date_added)
+                    }})
+                  </td>
                 </tr>
                 <tr v-if="reference.user_changed">
                   <th>{{ $t("reference.userChanged") }}</th>
-                  <td>{{ reference.user_changed }} ({{formatDate(reference.date_changed)}})</td>
+                  <td>
+                    {{ reference.user_changed }} ({{
+                      formatDate(reference.date_changed)
+                    }})
+                  </td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
-        </v-col>
-      </v-row>
-      <v-row v-if="libraries">
-        <v-col>
+        </v-card-text>
+        <v-card-text v-if="reference.libraries">
           <h3>{{ $t("reference.libraries") }}</h3>
           <div v-for="(library, index) in libraries" :key="index">
             <router-link :to="{ path: `/library/${library.id}` }">
@@ -121,11 +127,9 @@
             </router-link>
             <span>{{ ` ${library.author} (${library.year})` }}</span>
           </div>
-        </v-col>
-      </v-row>
-      <v-row v-if="reference.attachment__filename || reference.url">
-        <v-col>
-          <h3>{{$t("common.links")}}</h3>
+        </v-card-text>
+        <v-card-text v-if="reference.attachment__filename || reference.url">
+          <h3>{{ $t("common.links") }}</h3>
           <v-btn
             v-if="reference.attachment__filename"
             target="_blank"
@@ -136,8 +140,8 @@
             <v-icon>fas fa-external-link-square-alt</v-icon
             ><span class="pl-1">URL</span>
           </v-btn>
-        </v-col>
-      </v-row>
+        </v-card-text>
+      </v-card>
     </v-container>
   </v-main>
 </template>

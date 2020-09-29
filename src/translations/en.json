@@ -56,7 +56,8 @@
     "dateChanged": "Date changed",
     "titleTranslated": "Translated title",
     "publisher": "Publisher",
-    "userChanged": "User changed"
+    "userChanged": "User changed",
+    "remarks": "Remarks"
   },
   "link": {
     "geocollections": "GeoCollections",

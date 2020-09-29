@@ -56,7 +56,8 @@
     "dateChanged": "Viimati muudetud",
     "titleTranslated": "Tõlgitud pealkiri",
     "publisher": "Kirjastaja",
-    "userChanged": "Muutnud kasutaja"
+    "userChanged": "Muutnud kasutaja",
+    "remarks": "Märkused"
   },
   "link": {
     "geocollections": "GeoCollections",

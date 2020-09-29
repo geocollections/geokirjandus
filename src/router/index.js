@@ -1,27 +1,39 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Reference from "@/components/reference/Reference";
+import ReferenceViewer from "@/components/reference/ReferenceViewer";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
     component: Home,
     alias: "/reference",
     meta: {
       object: "reference"
-    }
+    },
+    children: [
+      {
+        path: "",
+        component: ReferenceViewer,
+        meta: {
+          table: "reference",
+          heading: "editReference.heading",
+          object: "reference"
+        }
+      }
+    ]
   },
   {
     path: "/reference/:id(\\d+)",
     props: true,
-    component: () => import("../views/Detail.vue"),
+    component: Home,
     children: [
       {
         path: "",
-        component: () => import("../components/reference/Reference.vue"),
+        component: Reference,
         meta: {
           table: "reference",
           heading: "editReference.heading",
@@ -33,7 +45,7 @@ const routes = [
   {
     path: "/library/:id(\\d+)",
     props: true,
-    component: () => import("../views/Detail.vue"),
+    component: Home,
     children: [
       {
         path: "",

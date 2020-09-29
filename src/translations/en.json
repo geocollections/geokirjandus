@@ -26,7 +26,8 @@
     "generalInfo": "General info",
     "libraries": "Libraries",
     "paginateBy": "Show",
-    "actions": ""
+    "actions": "",
+    "sortBy": "Sort by"
   },
   "reference": {
     "id": "ID",

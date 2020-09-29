@@ -39,28 +39,28 @@
         </span>
       </v-card-title>
       <slot name="prepend"></slot>
+      <v-card-text v-if="view === 'table'" class="px-2 py-0">
+        <span class="subheading pl-3">{{ $t("common.fields") }}</span>
 
-      <v-select
-        class="pa-2"
-        v-if="view === 'table'"
-        :value="getHeadersShowing"
-        multiple
-        dense
-        chips
-        outlined
-        hide-details
-        :items="getSelectItems"
-        @change="setHeaders($event)"
-      >
-        <template v-slot:prepend>
-          <div>{{ $t("common.fields") }}</div>
-        </template>
-      </v-select>
+        <v-select
+          class="pa-2"
+          s
+          :value="getHeadersShowing"
+          multiple
+          dense
+          chips
+          outlined
+          hide-details
+          :items="getSelectItems"
+          @change="setHeaders($event)"
+        >
+        </v-select>
+      </v-card-text>
       <v-card-actions
         v-if="count > 0"
         class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
       >
-        <div class="col-md-3">
+        <div class="col-md-3 px-2">
           <v-select
             :value="paginateBy"
             color="primary"
@@ -104,6 +104,7 @@
         v-on:update:sort-by="$emit('update:sortBy', $event)"
         v-on:update:sort-desc="$emit('update:sortDesc', $event)"
         multi-sort
+        :header-props="headerProps"
         class="mobile-row data-viewer-table"
       >
         <template
@@ -215,7 +216,11 @@ export default {
         { text: "pagination", value: 1000 }
       ],
       filterTable: "",
-      view: "list"
+      view: "list",
+      headerProps: {
+        sortByText: this.$t("common.sortBy"),
+        outlined: true
+      }
     };
   },
 

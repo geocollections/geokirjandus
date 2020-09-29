@@ -26,7 +26,8 @@
     "generalInfo": "Üldinfo",
     "libraries": "Kogud",
     "paginateBy": "Kuva",
-    "actions": ""
+    "actions": "",
+    "sortBy": "Sorteeri"
   },
   "reference": {
     "id": "ID",

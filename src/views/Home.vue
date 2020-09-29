@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="d-print-none">
-      <app-header class="d-print-none" />
+      <app-header class="d-print-none" v-on:update:showSearch="showSearch = !showSearch" />
       <v-navigation-drawer
         v-model="showSearch"
         app

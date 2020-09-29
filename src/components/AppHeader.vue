@@ -3,6 +3,10 @@
       clipped-left
       app
       flat color="primary">
+
+    <v-btn v-if="$vuetify.breakpoint.smAndUp" @click="$emit('update:showSearch')" icon>
+      <v-icon>fas fa-search</v-icon>
+    </v-btn>
     <v-toolbar-title>
       <router-link
         :style="{ color: 'black' }"

@@ -148,7 +148,6 @@ function buildSearchFieldsQuery(search, advancedSearch) {
     ""
   );
   console.log(`${searchStr}&${advancedSearchStr}`);
-  console.log(encodeURIComponent(searchStr));
   return advancedSearchStr.length > 0
     ? encodeURIComponent(`${searchStr}&${advancedSearchStr}`)
     : encodeURIComponent(searchStr);

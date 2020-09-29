@@ -1,8 +1,8 @@
-import Vue from "vue";
-import _ from "lodash";
+import { cloneDeep } from "lodash";
+
 const mutations = {
   RESET_SEARCH(state) {
-    let resetAdvancedSearch = _.cloneDeep(state.advancedSearch.byIds);
+    let resetAdvancedSearch = cloneDeep(state.advancedSearch.byIds);
 
     state.advancedSearch.allIds.forEach(id => {
       if (id === "year") {
@@ -29,13 +29,11 @@ const mutations = {
   },
 
   UPDATE_SORT_BY(state, payload) {
-    console.log(payload)
-    state.sortBy = payload
+    state.sortBy = payload;
   },
 
   UPDATE_SORT_DESC(state, payload) {
-    console.log(payload)
-    state.sortDesc = payload
+    state.sortDesc = payload;
   },
 
   UPDATE_ADVANCED_SEARCH(state, payload) {
@@ -44,7 +42,6 @@ const mutations = {
         state.advancedSearch.byIds[payload.id].value = payload.value;
       }
       if (payload.active != null) {
-        console.log(payload);
         state.advancedSearch.byIds[payload.id].active = payload.active;
       }
     } else {

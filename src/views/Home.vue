@@ -354,7 +354,6 @@ export default {
                   : [`${k}_${v.lookUpType}`, v.value];
               })
           );
-          console.log(q);
           if (this.page > 1) {
             q.page = this.page;
           }

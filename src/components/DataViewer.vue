@@ -270,9 +270,6 @@ export default {
     }
   },
   methods: {
-    log(t) {
-      console.log(t);
-    },
     setHeaders(event) {
       const headers = this.headers.map(header => {
         if (event.includes(header.value)) {

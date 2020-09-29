@@ -3,7 +3,6 @@ import {debounce} from "lodash";
 const actions = {
 
   updatePaginateBy({commit}, paginateBy) {
-    console.log(paginateBy)
     commit("UPDATE_PAGINATE_BY", paginateBy);
   },
 

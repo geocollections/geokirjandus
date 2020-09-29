@@ -135,7 +135,7 @@
       </v-list-group>
       <v-list-item>
         <v-btn @click="$emit('reset:parameters')" color="red" dark>
-          <v-icon left>fas fa-filter</v-icon>
+          <v-icon left>fas fa-trash</v-icon>
           {{ $t("common.deleteSearch") }}
         </v-btn>
       </v-list-item>
@@ -188,9 +188,6 @@ export default {
     calendarMenus: ["date_start", "date_end"]
   }),
   methods: {
-    test(event) {
-      console.log(event);
-    },
     isIndeterminate(value) {
       return !value ? true : false;
     },

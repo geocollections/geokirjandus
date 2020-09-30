@@ -1,28 +1,5 @@
 <template>
-  <div class="list-module-core">
-    <v-row class="px-4 mb-3">
-      <!-- OPTIONS -->
-      <div class="d-flex">
-        <v-radio-group
-          class="radio-buttons mt-0 align-self-center"
-          v-model="view"
-          row
-          hide-details
-        >
-          <v-radio value="list" :label="$t('common.listView')" />
-          <v-radio value="table" :label="$t('common.tableView')" />
-        </v-radio-group>
-      </div>
-      <v-spacer></v-spacer>
-      <!-- EXPORT -->
-      <div v-if="exportButtons">
-        <export-buttons
-          :filename="module"
-          :table-data="data"
-          clipboard-class="data-viewer-table"
-        />
-      </div>
-    </v-row>
+  <div class="data-viewer">
 
     <!-- DATA TABLE -->
     <v-card elevation="4" class=" my-1" :loading="isLoading">
@@ -37,6 +14,27 @@
           <span class="font-weight-bold">{{ ` ${count} ` }}</span>
           <span>{{ $t("common.records") }}</span>
         </span>
+
+        <v-spacer></v-spacer>
+        <div class="d-flex">
+          <v-radio-group
+              class="radio-buttons mt-0 align-self-center"
+              v-model="view"
+              row
+              hide-details
+          >
+            <v-radio value="list" :label="$t('common.listView')" />
+            <v-radio value="table" :label="$t('common.tableView')" />
+          </v-radio-group>
+        </div>
+        <!-- EXPORT -->
+        <div v-if="exportButtons">
+          <export-buttons
+              :filename="module"
+              :table-data="data"
+              clipboard-class="data-viewer-table"
+          />
+        </div>
       </v-card-title>
       <slot name="prepend"></slot>
       <v-expand-transition>

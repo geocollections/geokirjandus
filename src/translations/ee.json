@@ -57,7 +57,8 @@
     "titleTranslated": "Tõlgitud pealkiri",
     "publisher": "Kirjastaja",
     "userChanged": "Muutnud kasutaja",
-    "remarks": "Märkused"
+    "remarks": "Märkused",
+    "journal": "Ajakiri"
   },
   "link": {
     "geocollections": "GeoCollections",

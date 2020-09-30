@@ -57,7 +57,8 @@
     "titleTranslated": "Translated title",
     "publisher": "Publisher",
     "userChanged": "User changed",
-    "remarks": "Remarks"
+    "remarks": "Remarks",
+    "journal": "Journal"
   },
   "link": {
     "geocollections": "GeoCollections",

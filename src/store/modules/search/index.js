@@ -34,7 +34,7 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.author",
-        fields: ["author"],
+        fields: ["author"]
       },
       year: {
         type: "range",
@@ -50,7 +50,7 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.title",
-        fields: ["title"],
+        fields: ["title"]
       },
       localities: {
         type: "text",
@@ -60,23 +60,29 @@ const state = {
         label: "reference.localities",
         fields: ["localities"]
       },
-      bookJournal: {
+      book: {
         type: "text",
-        id: "bookJournal",
+        id: "book",
         lookUpType: "contains",
         value: null,
-        label: "reference.bookJournal",
-        fields: ["journal__journal_name", "journal_name_short", "book"],
-
+        label: "reference.book",
+        fields: ["book"]
       },
-      abstractRemarks: {
+      journal: {
         type: "text",
-        id: "abstractRemarks",
+        id: "journal",
         lookUpType: "contains",
         value: null,
-        label: "reference.abstractRemarks",
-        fields: ["abstract", "remarks"],
-
+        label: "reference.journal",
+        fields: ["journal__journal_name", "journal_name_short"]
+      },
+      abstract: {
+        type: "text",
+        id: "abstract",
+        lookUpType: "contains",
+        value: null,
+        label: "reference.abstract",
+        fields: ["abstract"]
       },
       is_estonian_author: {
         type: "checkbox",
@@ -84,8 +90,7 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.isEstonianAuthor",
-        fields: ["is_estonian_author"],
-
+        fields: ["is_estonian_author"]
       },
       is_estonian_reference: {
         type: "checkbox",
@@ -93,8 +98,7 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.isEstonianReference",
-        fields: ["is_estonian_reference"],
-
+        fields: ["is_estonian_reference"]
       },
       keywords: {
         type: "text",
@@ -102,8 +106,7 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.keywords",
-        fields: ["keywords"],
-
+        fields: ["keywords"]
       },
       user_added: {
         type: "text",
@@ -111,15 +114,16 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.userAdded",
-        fields: ["user_added"],
-      },
+        fields: ["user_added"]
+      }
     },
     allIds: [
       "author",
       "year",
       "title",
-      "bookJournal",
-      "abstractRemarks",
+      "book",
+      "journal",
+      "abstract",
       "localities",
       "keywords",
       "user_added",

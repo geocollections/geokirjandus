@@ -8,7 +8,7 @@ class SearchService {
   static async search(searchParams, table) {
     try {
       console.log("searching");
-      console.log(searchParams)
+      console.log(searchParams);
       let start = (searchParams.page - 1) * searchParams.paginateBy;
       let sort = buildSort(searchParams.sortBy, searchParams.sortDesc);
       let searchFields = buildSearchFieldsQuery(
@@ -19,7 +19,7 @@ class SearchService {
 
       let urlParameters = ["defType=edismax"];
       if (searchParams.page) {
-        urlParameters.push(`start=${start}`)
+        urlParameters.push(`start=${start}`);
       }
       if (searchParams.paginateBy) {
         urlParameters.push(`rows=${searchParams.paginateBy}`);
@@ -31,7 +31,7 @@ class SearchService {
       urlParameters.push(searchFields);
 
       url = `${url}?${urlParameters.join("&")}`;
-      console.log(url)
+      console.log(url);
       const res = await axios.get(url);
       return res.data;
     } catch (err) {
@@ -101,11 +101,14 @@ function buildSearchFieldsQuery(search, advancedSearch) {
             else if (v.lookUpType === "equals")
               encodedObject += `"${encodedValue}"`;
             else if (v.lookUpType === "range") {
-              const start = isNaN(parseInt(encodedValue[0])) ? "*" : encodedValue[0];
-              const end = isNaN(parseInt(encodedValue[1])) ? "*" : encodedValue[1];
+              const start = isNaN(parseInt(encodedValue[0]))
+                ? "*"
+                : encodedValue[0];
+              const end = isNaN(parseInt(encodedValue[1]))
+                ? "*"
+                : encodedValue[1];
               encodedObject += `[${start} TO ${end}]`;
-            }
-            else if (v.lookUpType === "startsWith")
+            } else if (v.lookUpType === "startsWith")
               encodedObject += `${encodedValue}*`;
             else if (v.lookUpType === "endsWith")
               encodedObject += `*${encodedValue}`;
@@ -120,10 +123,13 @@ function buildSearchFieldsQuery(search, advancedSearch) {
         }
         if (idx === 0) {
           if (v.type === "range") {
+            if (isNaN(v.value[0]) && isNaN(v.value[1])) {
+              return `${prev}`;
+            }
             let encodedObject = `${curr}:`;
             encodedObject = buildStr(encodedObject);
 
-            return v.active ? `${prev}${encodedObject}` : `${prev}`;
+            return `${prev}${encodedObject}`;
           } else if (v.value && v.value.trim().length > 0) {
             let encodedObject = `${curr}:`;
             encodedObject = buildStr(encodedObject);

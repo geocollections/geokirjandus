@@ -303,23 +303,34 @@ export default {
           let q = Object.fromEntries(
             Object.entries(this.parameters)
               .filter(([_, v]) => {
-                if (v.type === "range")
-                  return isNaN(v.value[0]) && isNaN(v.value[1])
-                    ? null
-                    : v.value;
-                return v.value;
+                switch (v.type) {
+                  case "range": {
+                    return isNaN(v.value[0]) && isNaN(v.value[1])
+                      ? null
+                      : v.value;
+                  }
+                  default: {
+                    return v.value;
+                  }
+                }
               })
               .map(([k, v]) => {
-                if (k === "year") {
-                  const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
-                  const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
+                switch (v.type) {
+                  case "range": {
+                    const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
+                    const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
 
-                  return [k, `${start}-${end}`];
+                    return [k, `${start}-${end}`];
+                  }
+                  case "checkbox": {
+                    return [k, v.value];
+                  }
+                  default: {
+                    return k === "search"
+                      ? [k, v.value]
+                      : [`${k}_${v.lookUpType}`, v.value];
+                  }
                 }
-
-                return k === "search"
-                  ? [k, v.value]
-                  : [`${k}_${v.lookUpType}`, v.value];
               })
           );
           if (this.page > 1) {

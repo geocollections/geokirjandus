@@ -114,9 +114,8 @@
             <v-checkbox
               :label="$t(advancedSearch.byIds[id].label)"
               class="mt-0 pr-6"
-              false-value="0"
+              :false-value="null"
               true-value="1"
-              :indeterminate="isIndeterminate(advancedSearch.byIds[id].value)"
               hide-details
               :value="advancedSearch.byIds[id].value"
               @change="updateCheckbox($event, id)"
@@ -179,9 +178,6 @@ export default {
     calendarMenus: ["date_start", "date_end"]
   }),
   methods: {
-    isIndeterminate(value) {
-      return !value ? true : false;
-    },
     updateCheckbox(event, id) {
       if (this.advancedSearch.byIds[id].value === "0") {
         this.$emit("update:advancedSearch", {

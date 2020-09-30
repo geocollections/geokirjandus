@@ -112,8 +112,7 @@ const state = {
         value: null,
         label: "reference.userAdded",
         fields: ["user_added"],
-
-      }
+      },
     },
     allIds: [
       "author",

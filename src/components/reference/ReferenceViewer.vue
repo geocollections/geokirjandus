@@ -1,81 +1,79 @@
 <template>
-  <v-main>
-    <v-container>
-      <v-row>
-        <v-col>
-          <data-viewer
-            :module="$route.meta.object"
-            :data="result"
-            :count="count"
-            :parameters="parameters"
-            :page="page"
-            :is-loading="isLoading"
-            :paginate-by="paginateBy"
-            :sort-by="sortBy"
-            :sort-desc="sortDesc"
-            :headers="headers"
-            :detail-view="detailView"
-            v-on:update:paginateBy="updatePaginateBy"
-            v-on:update:page="updatePage"
-            v-on:reset:page="resetPage"
-            v-on:update:sortBy="updateSortBy"
-            v-on:update:sortDesc="updateSortDesc"
-            v-on:update:headers="headers = $event"
-          >
-            <template v-slot:prepend>
-              <v-expand-transition>
-                <v-card-text
-                  v-if="libraries && libraries.length > 0"
-                  class="px-2 pb-0"
+  <v-container>
+    <v-row>
+      <v-col>
+        <data-viewer
+          :module="$route.meta.object"
+          :data="result"
+          :count="count"
+          :parameters="parameters"
+          :page="page"
+          :is-loading="isLoading"
+          :paginate-by="paginateBy"
+          :sort-by="sortBy"
+          :sort-desc="sortDesc"
+          :headers="headers"
+          :detail-view="detailView"
+          v-on:update:paginateBy="updatePaginateBy"
+          v-on:update:page="updatePage"
+          v-on:reset:page="resetPage"
+          v-on:update:sortBy="updateSortBy"
+          v-on:update:sortDesc="updateSortDesc"
+          v-on:update:headers="headers = $event"
+        >
+          <template v-slot:prepend>
+            <v-expand-transition>
+              <v-card-text
+                v-if="showLibraries && libraries && libraries.length > 0"
+                class="px-2 pb-0"
+              >
+                <span class="subheading pl-3">Libraries</span>
+                <v-chip-group
+                  :show-arrows="$vuetify.breakpoint.smAndUp"
+                  :column="$vuetify.breakpoint.smAndDown"
                 >
-                  <span class="subheading pl-3">Libraries</span>
-                  <v-chip-group
-                    :show-arrows="$vuetify.breakpoint.smAndUp"
-                    :column="$vuetify.breakpoint.smAndDown"
+                  <v-chip
+                    v-for="(library, index) in libraries"
+                    :key="index"
+                    @click="$router.push(`/library/${library.id}`)"
                   >
-                    <v-chip
-                      v-for="(library, index) in libraries"
-                      :key="index"
-                      @click="$router.push(`/library/${library.id}`)"
-                    >
-                      {{ library.title }}
-                    </v-chip>
-                    <v-chip
-                      v-if="librariesCount > libraryPage * librariesBy"
-                      @click="getLibraries"
-                      >{{
-                        `+${librariesCount - libraryPage * librariesBy}`
-                      }}</v-chip
-                    >
-                  </v-chip-group>
-                </v-card-text>
-              </v-expand-transition>
-            </template>
+                    {{ library.title }}
+                  </v-chip>
+                  <v-chip
+                    v-if="librariesCount > libraryPage * librariesBy"
+                    @click="getLibraries"
+                    >{{
+                      `+${librariesCount - libraryPage * librariesBy}`
+                    }}</v-chip
+                  >
+                </v-chip-group>
+              </v-card-text>
+            </v-expand-transition>
+          </template>
 
-            <!--  TABLE VIEW CUSTOM TEMPLATES  -->
-            <template v-slot:item.actions="{ item }">
-              <v-btn icon @click="detailView(item)">
-                <v-icon>fas fa-eye</v-icon>
-              </v-btn>
-            </template>
-            <template v-slot:item.bookJournal="{ item }">
-              <div v-if="item.book">{{ item.book }}</div>
-              <div v-else-if="item.journal__journal_name">
-                {{ item.journal__journal_name }}
-              </div>
-            </template>
-            <template v-slot:item.date_changed="{ item }">
-              {{ formatDate(item.date_changed) }}
-            </template>
-            <!--  LIST VIEW TEMPLATE  -->
-            <template v-slot:list-view="{ data }">
-              <reference-list-view :data="data"></reference-list-view>
-            </template>
-          </data-viewer>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-main>
+          <!--  TABLE VIEW CUSTOM TEMPLATES  -->
+          <template v-slot:item.actions="{ item }">
+            <v-btn icon @click="detailView(item)">
+              <v-icon>fas fa-eye</v-icon>
+            </v-btn>
+          </template>
+          <template v-slot:item.bookJournal="{ item }">
+            <div v-if="item.book">{{ item.book }}</div>
+            <div v-else-if="item.journal__journal_name">
+              {{ item.journal__journal_name }}
+            </div>
+          </template>
+          <template v-slot:item.date_changed="{ item }">
+            {{ formatDate(item.date_changed) }}
+          </template>
+          <!--  LIST VIEW TEMPLATE  -->
+          <template v-slot:list-view="{ data }">
+            <reference-list-view :data="data"></reference-list-view>
+          </template>
+        </data-viewer>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -207,15 +205,20 @@ export default {
       deep: true
     }
   },
+  props: {
+    search: {
+      type: Object
+    },
+    advancedSearch: {
+      type: Object
+    },
+    showLibraries: {
+      type: Boolean,
+      default: true
+    }
+  },
   computed: {
-    ...mapState("search", [
-      "search",
-      "advancedSearch",
-      "page",
-      "paginateBy",
-      "sortBy",
-      "sortDesc"
-    ]),
+    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
     ...mapState("references", ["result", "count"]),
     getDateLocale() {
       if (this.$i18n.locale === "ee") {
@@ -303,14 +306,16 @@ export default {
           let q = Object.fromEntries(
             Object.entries(this.parameters)
               .filter(([_, v]) => {
-                switch (v.type) {
-                  case "range": {
-                    return isNaN(v.value[0]) && isNaN(v.value[1])
-                      ? null
-                      : v.value;
-                  }
-                  default: {
-                    return v.value;
+                if (!v.hidden) {
+                  switch (v.type) {
+                    case "range": {
+                      return isNaN(v.value[0]) && isNaN(v.value[1])
+                        ? null
+                        : v.value;
+                    }
+                    default: {
+                      return v.value;
+                    }
                   }
                 }
               })
@@ -336,7 +341,9 @@ export default {
           if (this.page > 1) {
             q.page = this.page;
           }
-          q.paginateBy = this.paginateBy;
+          if (this.paginateBy !== 50) {
+            q.paginateBy = this.paginateBy;
+          }
           this.$router.push({ query: q }).catch(() => {});
         });
 

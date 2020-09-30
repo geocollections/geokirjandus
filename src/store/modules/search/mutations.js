@@ -78,8 +78,10 @@ const mutations = {
           break;
         default: {
           const query = k.split("_");
-          state.advancedSearch.byIds[query[0]].value = v;
-          state.advancedSearch.byIds[query[0]].lookUpType = query[1];
+          if (state.advancedSearch.byIds[query[0]]) {
+            state.advancedSearch.byIds[query[0]].value = v;
+            state.advancedSearch.byIds[query[0]].lookUpType = query[1];
+          }
         }
       }
     });

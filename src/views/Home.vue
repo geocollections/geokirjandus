@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <div class="d-print-none">
-      <app-header class="d-print-none" v-on:update:showSearch="showSearch = !showSearch" />
+      <app-header
+        class="d-print-none"
+        v-on:update:showSearch="showSearch = !showSearch"
+      />
       <v-navigation-drawer
         v-model="showSearch"
         app
@@ -28,10 +31,11 @@
         :show-search="showSearch"
         v-on:update:showSearch="showSearch = !showSearch"
       />
-      <v-expand-transition>
-
-        <router-view />
-      </v-expand-transition>
+      <v-main>
+        <v-expand-transition>
+          <router-view :search="search" :advancedSearch="advancedSearch" />
+        </v-expand-transition>
+      </v-main>
     </div>
     <div class="d-none d-print-block">
       <reference-list-view :data="result"></reference-list-view>

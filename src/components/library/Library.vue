@@ -1,98 +1,90 @@
 <template>
-  <v-main class="library">
-    <v-container v-if="library">
-      <v-card>
-        <v-card-title>
+  <v-container v-if="library">
+    <v-card>
+      <v-card-title>
+        <v-col cols="auto">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon>fas fa-backspace</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col>
+          <h1>{{ getTitle }}</h1>
+        </v-col>
+      </v-card-title>
+      <v-card-subtitle v-if="library.author">
+        <v-col>
+          <h2>{{ library.author }}</h2>
+        </v-col>
+      </v-card-subtitle>
+      <v-card-text>
+        <v-row>
           <v-col cols="auto">
-            <v-btn large icon @click="$router.go(-1)">
-              <v-icon>fas fa-backspace</v-icon>
-            </v-btn>
+            <b>{{ $t("common.libraryCreated") }}:</b>
+            {{ formatDate(library.date_added) }}
           </v-col>
-          <v-col>
-            <h1>{{ getTitle }}</h1>
+          <v-col cols="auto">
+            <b>{{ $t("common.libraryChanged") }}:</b>
+            {{ formatDate(library.date_changed) }}
           </v-col>
-        </v-card-title>
-        <v-card-subtitle v-if="library.author">
-          <v-col>
-            <h2>{{ library.author }}</h2>
-          </v-col>
-        </v-card-subtitle>
-        <v-card-text>
-          <v-row>
-            <v-col cols="auto">
-              <b>{{ $t("common.libraryCreated") }}:</b>
-              {{ formatDate(library.date_added) }}
-            </v-col>
-            <v-col cols="auto">
-              <b>{{ $t("common.libraryChanged") }}:</b>
-              {{ formatDate(library.date_changed) }}
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-subtitle>
-          <h2>
-            <b>{{ $t("common.referenceLibrary") }}</b>
-          </h2>
-        </v-card-subtitle>
-        <v-card-text>
-          <!--  TODO: Add URL  -->
-          <div>
-            {{
-              `${library.author} (${library.year}) ${getTitle}. ${$t(
-                "common.visited"
-              )}: ${formatDate(Date.now())}`
-            }}
-          </div>
-        </v-card-text>
-        <v-card-subtitle v-if="library.abstract">
-          <h2>
-            <b>{{ $t("common.summary") }}</b>
-          </h2>
-        </v-card-subtitle>
-        <v-card-text v-if="library.abstract">
-          <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
-          <div v-else v-html="library.abstract_en[0]"></div>
-        </v-card-text>
-        <v-card-subtitle>
-          <h2>
-            <b>{{ $t("common.libraryReferences") }}</b>
-          </h2>
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-skeleton-loader
-            :loading="isLoading"
-            transition="fade-transition"
-            type="list-item-three-line"
-          >
-            <v-card>
-              <v-card-text
-                class="py-0"
-                :key="reference.id"
-                v-for="(reference, index) in references"
-              >
-                <v-divider v-if="index !== 0" />
-                <div class="py-2">
-                  <reference-item
-                    :reference="reference"
-                    :index="index"
-                  ></reference-item>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-skeleton-loader>
-        </v-card-actions>
-      </v-card>
-    </v-container>
-  </v-main>
+        </v-row>
+      </v-card-text>
+      <v-card-subtitle>
+        <h2>
+          <b>{{ $t("common.referenceLibrary") }}</b>
+        </h2>
+      </v-card-subtitle>
+      <v-card-text>
+        <!--  TODO: Add URL  -->
+        <div>
+          {{
+            `${library.author} (${library.year}) ${getTitle}. ${$t(
+              "common.visited"
+            )}: ${formatDate(Date.now())}`
+          }}
+        </div>
+      </v-card-text>
+      <v-card-subtitle v-if="library.abstract">
+        <h2>
+          <b>{{ $t("common.summary") }}</b>
+        </h2>
+      </v-card-subtitle>
+      <v-card-text v-if="library.abstract">
+        <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
+        <div v-else v-html="library.abstract_en[0]"></div>
+      </v-card-text>
+      <v-card-subtitle>
+        <h2>
+          <b>{{ $t("common.libraryReferences") }}</b>
+        </h2>
+      </v-card-subtitle>
+      <v-card-actions>
+        <reference-viewer
+          :search="search"
+          :advancedSearch="getAdvancedSearch"
+          :show-libraries="false"
+        ></reference-viewer>
+      </v-card-actions>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
 import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
 import ReferenceItem from "@/components/reference/ReferenceItem";
+import ReferenceViewer from "@/components/reference/ReferenceViewer";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Library",
-  components: { ReferenceItem },
+  components: { ReferenceViewer },
+  props: {
+    search: {
+      type: Object
+    },
+    advancedSearch: {
+      type: Object
+    }
+  },
   data() {
     return {
       id: this.$route.params.id,
@@ -115,9 +107,27 @@ export default {
       } else {
         return this.library.title_en;
       }
+    },
+    getAdvancedSearch() {
+      return {
+        byIds: {
+          ...this.advancedSearch.byIds,
+          libraries: {
+            type: "text",
+            id: "libraries",
+            lookUpType: "contains",
+            value: `|${this.library.id}|`,
+            label: "reference.libraries",
+            fields: ["libraries"],
+            hidden: true
+          }
+        },
+        allIds: [...this.advancedSearch.allIds, "libraries"]
+      };
     }
   },
   created() {
+    this.resetSearch();
     this.getLibrary().then(res => {
       this.library = res.results[0];
     });
@@ -128,6 +138,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("search", ["resetSearch"]),
     getDoiUrl(doi) {
       return `https://doi.org/${doi}`;
     },

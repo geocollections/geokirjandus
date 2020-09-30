@@ -100,8 +100,11 @@ function buildSearchFieldsQuery(search, advancedSearch) {
               encodedObject += `*${encodedValue}*`;
             else if (v.lookUpType === "equals")
               encodedObject += `"${encodedValue}"`;
-            else if (v.lookUpType === "range")
-              encodedObject += `[${encodedValue[0]} TO ${encodedValue[1]}]`;
+            else if (v.lookUpType === "range") {
+              const start = isNaN(parseInt(encodedValue[0])) ? "*" : encodedValue[0];
+              const end = isNaN(parseInt(encodedValue[1])) ? "*" : encodedValue[1];
+              encodedObject += `[${start} TO ${end}]`;
+            }
             else if (v.lookUpType === "startsWith")
               encodedObject += `${encodedValue}*`;
             else if (v.lookUpType === "endsWith")

@@ -35,16 +35,14 @@ const state = {
         value: null,
         label: "reference.author",
         fields: ["author"],
-        active: true
       },
       year: {
         type: "range",
         id: "year",
         lookUpType: "range",
-        value: [1980, 2000],
+        value: [NaN, NaN],
         label: "reference.year",
-        fields: ["year"],
-        active: false
+        fields: ["year"]
       },
       title: {
         type: "text",
@@ -53,7 +51,6 @@ const state = {
         value: null,
         label: "reference.title",
         fields: ["title"],
-        active: true
       },
       localities: {
         type: "text",
@@ -61,8 +58,7 @@ const state = {
         lookUpType: "contains",
         value: null,
         label: "reference.localities",
-        fields: ["localities"],
-        active: true
+        fields: ["localities"]
       },
       bookJournal: {
         type: "text",
@@ -71,7 +67,7 @@ const state = {
         value: null,
         label: "reference.bookJournal",
         fields: ["journal__journal_name", "journal_name_short", "book"],
-        active: true
+
       },
       abstractRemarks: {
         type: "text",
@@ -80,7 +76,7 @@ const state = {
         value: null,
         label: "reference.abstractRemarks",
         fields: ["abstract", "remarks"],
-        active: true
+
       },
       is_estonian_author: {
         type: "checkbox",
@@ -89,7 +85,7 @@ const state = {
         value: null,
         label: "reference.isEstonianAuthor",
         fields: ["is_estonian_author"],
-        active: true
+
       },
       is_estonian_reference: {
         type: "checkbox",
@@ -98,7 +94,7 @@ const state = {
         value: null,
         label: "reference.isEstonianReference",
         fields: ["is_estonian_reference"],
-        active: true
+
       },
       keywords: {
         type: "text",
@@ -107,7 +103,7 @@ const state = {
         value: null,
         label: "reference.keywords",
         fields: ["keywords"],
-        active: true
+
       },
       user_added: {
         type: "text",
@@ -116,7 +112,7 @@ const state = {
         value: null,
         label: "reference.userAdded",
         fields: ["user_added"],
-        active: true
+
       }
     },
     allIds: [

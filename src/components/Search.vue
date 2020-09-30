@@ -17,7 +17,11 @@
             $t("common.advancedSearch")
           }}</v-list-item-title>
         </template>
-        <v-list-item dense :key="index" v-for="(id, index) in advancedSearch.allIds">
+        <v-list-item
+          dense
+          :key="index"
+          v-for="(id, index) in advancedSearch.allIds"
+        >
           <!-- REGULAR SEARCH FIELD -->
           <v-row class="pa-2" v-if="advancedSearch.byIds[id].type === 'text'">
             <v-col cols="3" class="py-0 px-1">
@@ -49,7 +53,8 @@
                 @input="
                   $emit('update:advancedSearch', {
                     value: $event,
-                    id: id
+                    id: id,
+                    type: advancedSearch.byIds[id].type
                   })
                 "
               ></v-text-field>
@@ -61,26 +66,11 @@
             class="pa-2"
             v-else-if="advancedSearch.byIds[id].type === 'range'"
           >
-            <v-col cols="3" class="py-0">
-              <v-switch
-                :input-value="advancedSearch.byIds[id].active"
-                hide-details
-                @change="
-                  $emit('update:advancedSearch', {
-                    id: id,
-                    active: $event
-                  })
-                "
-              >
-              </v-switch>
-            </v-col>
-
             <div class="col py-0">
               <v-row>
                 <v-col cols="6" class="py-0 px-1">
                   <v-text-field
                     :value="advancedSearch.byIds[id].value[0]"
-                    :disabled="!advancedSearch.byIds[id].active"
                     :label="$t(advancedSearch.byIds[id].label)"
                     hide-details
                     type="number"
@@ -90,7 +80,8 @@
                           parseInt($event),
                           advancedSearch.byIds[id].value[1]
                         ],
-                        id: id
+                        id: id,
+                        type: advancedSearch.byIds[id].type
                       })
                     "
                   />
@@ -98,7 +89,6 @@
                 <v-col cols="6" class="py-0 px-1">
                   <v-text-field
                     :value="advancedSearch.byIds[id].value[1]"
-                    :disabled="!advancedSearch.byIds[id].active"
                     hide-details
                     single-line
                     type="number"
@@ -108,7 +98,8 @@
                           advancedSearch.byIds[id].value[0],
                           parseInt($event)
                         ],
-                        id: id
+                        id: id,
+                        type: advancedSearch.byIds[id].type
                       })
                     "
                   />

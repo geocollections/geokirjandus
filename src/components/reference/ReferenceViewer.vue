@@ -3,45 +3,49 @@
     <v-container>
       <v-row>
         <v-col>
-
           <data-viewer
-              :module="$route.meta.object"
-              :data="result"
-              :count="count"
-              :parameters="parameters"
-              :page="page"
-              :is-loading="isLoading"
-              :paginate-by="paginateBy"
-              :sort-by="sortBy"
-              :sort-desc="sortDesc"
-              :headers="headers"
-              :detail-view="detailView"
-              v-on:update:paginateBy="updatePaginateBy"
-              v-on:update:page="updatePage"
-              v-on:reset:page="resetPage"
-              v-on:update:sortBy="updateSortBy"
-              v-on:update:sortDesc="updateSortDesc"
-              v-on:update:headers="headers = $event"
+            :module="$route.meta.object"
+            :data="result"
+            :count="count"
+            :parameters="parameters"
+            :page="page"
+            :is-loading="isLoading"
+            :paginate-by="paginateBy"
+            :sort-by="sortBy"
+            :sort-desc="sortDesc"
+            :headers="headers"
+            :detail-view="detailView"
+            v-on:update:paginateBy="updatePaginateBy"
+            v-on:update:page="updatePage"
+            v-on:reset:page="resetPage"
+            v-on:update:sortBy="updateSortBy"
+            v-on:update:sortDesc="updateSortDesc"
+            v-on:update:headers="headers = $event"
           >
             <template v-slot:prepend>
               <v-expand-transition>
-                <v-card-text v-if="libraries && libraries.length > 0" class="px-2 pb-0">
+                <v-card-text
+                  v-if="libraries && libraries.length > 0"
+                  class="px-2 pb-0"
+                >
                   <span class="subheading pl-3">Libraries</span>
                   <v-chip-group
-                      :show-arrows="$vuetify.breakpoint.smAndUp"
-                      :column="$vuetify.breakpoint.smAndDown"
+                    :show-arrows="$vuetify.breakpoint.smAndUp"
+                    :column="$vuetify.breakpoint.smAndDown"
                   >
                     <v-chip
-                        v-for="(library, index) in libraries"
-                        :key="index"
-                        @click="$router.push(`/library/${library.id}`)"
+                      v-for="(library, index) in libraries"
+                      :key="index"
+                      @click="$router.push(`/library/${library.id}`)"
                     >
                       {{ library.title }}
                     </v-chip>
                     <v-chip
-                        v-if="librariesCount > libraryPage * librariesBy"
-                        @click="getLibraries"
-                    >{{ `+${librariesCount - libraryPage * librariesBy}` }}</v-chip
+                      v-if="librariesCount > libraryPage * librariesBy"
+                      @click="getLibraries"
+                      >{{
+                        `+${librariesCount - libraryPage * librariesBy}`
+                      }}</v-chip
                     >
                   </v-chip-group>
                 </v-card-text>
@@ -84,12 +88,11 @@ import DataViewer from "@/components/DataViewer";
 export default {
   name: "ReferenceViewer",
   components: {
-    ReferenceListView, DataViewer
+    ReferenceListView,
+    DataViewer
   },
   data() {
     return {
-      showSearch: this.$vuetify.breakpoint.mdAndUp,
-      showAdvancedSearch: true,
       isLoading: false,
       libraries: null,
       libraryPage: 1,
@@ -300,11 +303,18 @@ export default {
           let q = Object.fromEntries(
             Object.entries(this.parameters)
               .filter(([_, v]) => {
-                return v.active ? v.value : null;
+                if (v.type === "range")
+                  return isNaN(v.value[0]) && isNaN(v.value[1])
+                    ? null
+                    : v.value;
+                return v.value;
               })
               .map(([k, v]) => {
                 if (k === "year") {
-                  return [k, `${v.value[0]}-${v.value[1]}`];
+                  const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
+                  const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
+
+                  return [k, `${start}-${end}`];
                 }
 
                 return k === "search"

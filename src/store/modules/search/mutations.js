@@ -5,15 +5,16 @@ const mutations = {
     let resetAdvancedSearch = cloneDeep(state.advancedSearch.byIds);
 
     state.advancedSearch.allIds.forEach(id => {
-      if (id === "year") {
-        resetAdvancedSearch[id].value = [1980, 2000];
-        resetAdvancedSearch[id].active = false;
-      } else {
-        resetAdvancedSearch[id].value = null;
-        resetAdvancedSearch[id].lookUpType = "contains";
+      switch (resetAdvancedSearch[id].type) {
+        case "range":
+          resetAdvancedSearch[id].value = [NaN, NaN];
+          break;
+        default: {
+          resetAdvancedSearch[id].value = null;
+          resetAdvancedSearch[id].lookUpType = "contains";
+        }
       }
     });
-
     state.search.value = null;
 
     state.advancedSearch = {
@@ -37,17 +38,16 @@ const mutations = {
   },
 
   UPDATE_ADVANCED_SEARCH(state, payload) {
-    if (payload.id === "year") {
-      if (payload.value) {
+    switch (payload.type) {
+      case "range":
         state.advancedSearch.byIds[payload.id].value = payload.value;
+        break;
+      default: {
+        if (payload.lookUpType)
+          state.advancedSearch.byIds[payload.id].lookUpType =
+            payload.lookUpType;
+        else state.advancedSearch.byIds[payload.id].value = payload.value;
       }
-      if (payload.active != null) {
-        state.advancedSearch.byIds[payload.id].active = payload.active;
-      }
-    } else {
-      if (payload.lookUpType)
-        state.advancedSearch.byIds[payload.id].lookUpType = payload.lookUpType;
-      else state.advancedSearch.byIds[payload.id].value = payload.value;
     }
   },
   UPDATE_SEARCH(state, searchValue) {
@@ -63,7 +63,6 @@ const mutations = {
           const range = v.split("-").map(year => {
             return parseInt(year);
           });
-          state.advancedSearch.byIds[k].active = true;
           state.advancedSearch.byIds[k].value = range;
           break;
         }

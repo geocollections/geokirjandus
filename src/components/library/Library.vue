@@ -1,40 +1,40 @@
 <template>
   <v-main class="library">
     <v-container v-if="library">
-      <v-row>
-        <v-col cols="auto">
-          <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <h1>{{ getTitle }}</h1>
-        </v-col>
-      </v-row>
-      <v-row v-if="library.author">
-        <v-col>
-          <h2>{{ library.author }}</h2>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="auto">
-          <div>
-            <b>{{ $t("common.libraryCreated") }}:</b>
-            {{ formatDate(library.date_added) }}
-          </div>
-        </v-col>
-        <v-col cols="auto">
-          <div>
-            <b>{{ $t("common.libraryChanged") }}:</b>
-            {{ formatDate(library.date_changed) }}
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <div>
+      <v-card>
+        <v-card-title>
+          <v-col cols="auto">
+            <v-btn large icon @click="$router.go(-1)">
+              <v-icon>fas fa-backspace</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col>
+            <h1>{{ getTitle }}</h1>
+          </v-col>
+        </v-card-title>
+        <v-card-subtitle v-if="library.author">
+          <v-col>
+            <h2>{{ library.author }}</h2>
+          </v-col>
+        </v-card-subtitle>
+        <v-card-text>
+          <v-row>
+            <v-col cols="auto">
+              <b>{{ $t("common.libraryCreated") }}:</b>
+              {{ formatDate(library.date_added) }}
+            </v-col>
+            <v-col cols="auto">
+              <b>{{ $t("common.libraryChanged") }}:</b>
+              {{ formatDate(library.date_changed) }}
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-subtitle>
+          <h2>
             <b>{{ $t("common.referenceLibrary") }}</b>
-          </div>
+          </h2>
+        </v-card-subtitle>
+        <v-card-text>
           <!--  TODO: Add URL  -->
           <div>
             {{
@@ -43,24 +43,22 @@
               )}: ${formatDate(Date.now())}`
             }}
           </div>
-        </v-col>
-      </v-row>
-      <v-row v-if="library.abstract">
-        <v-col>
-          <h3>{{ $t("common.summary") }}</h3>
+        </v-card-text>
+        <v-card-subtitle v-if="library.abstract">
+          <h2>
+            <b>{{ $t("common.summary") }}</b>
+          </h2>
+        </v-card-subtitle>
+        <v-card-text v-if="library.abstract">
           <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
           <div v-else v-html="library.abstract_en[0]"></div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+        </v-card-text>
+        <v-card-subtitle>
           <h2>
             <b>{{ $t("common.libraryReferences") }}</b>
           </h2>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+        </v-card-subtitle>
+        <v-card-actions>
           <v-skeleton-loader
             :loading="isLoading"
             transition="fade-transition"
@@ -82,8 +80,8 @@
               </v-card-text>
             </v-card>
           </v-skeleton-loader>
-        </v-col>
-      </v-row>
+        </v-card-actions>
+      </v-card>
     </v-container>
   </v-main>
 </template>

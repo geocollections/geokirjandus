@@ -86,37 +86,37 @@
       </router-link>
     </span>
 
-    <span>
-      <v-chip
-        v-if="reference.doi"
-        target="DoiWindow"
-        color="blue"
-        class="d-print-none"
-        @click="openDOI(reference.doi)"
-        ><b>DOI</b>
-      </v-chip>
-      <v-chip
-        color="green"
-        v-if="reference.attachment__filename"
-        target="FileWindow"
-        class="d-print-none"
-        @click="openPdf(reference.attachment__filename)"
-      >
-        <b>PDF</b>
-      </v-chip>
-      <v-chip
-        v-if="
-          !reference.attachment__filename &&
-            reference.url &&
-            getUrl(reference.url)
-        "
-        color="red"
-        :href="getUrl(reference.url)"
-        target="UrlWindow d-print-none"
-      >
-        <b>PDF</b>
-      </v-chip>
-    </span>
+    <!--    <span>-->
+    <!--      <v-chip-->
+    <!--        v-if="reference.doi"-->
+    <!--        target="DoiWindow"-->
+    <!--        color="blue"-->
+    <!--        class="d-print-none"-->
+    <!--        @click="openDOI(reference.doi)"-->
+    <!--        ><b>DOI</b>-->
+    <!--      </v-chip>-->
+    <!--      <v-chip-->
+    <!--        color="green"-->
+    <!--        v-if="reference.attachment__filename"-->
+    <!--        target="FileWindow"-->
+    <!--        class="d-print-none"-->
+    <!--        @click="openPdf(reference.attachment__filename)"-->
+    <!--      >-->
+    <!--        <b>PDF</b>-->
+    <!--      </v-chip>-->
+    <!--      <v-chip-->
+    <!--        v-if="-->
+    <!--          !reference.attachment__filename &&-->
+    <!--            reference.url &&-->
+    <!--            getUrl(reference.url)-->
+    <!--        "-->
+    <!--        color="red"-->
+    <!--        :href="getUrl(reference.url)"-->
+    <!--        target="UrlWindow d-print-none"-->
+    <!--      >-->
+    <!--        <b>PDF</b>-->
+    <!--      </v-chip>-->
+    <!--    </span>-->
   </div>
 </template>
 
@@ -146,11 +146,9 @@ export default {
             family: this.reference.author
           }
         ],
-        issued: [
-          {
-            "date-parts": [this.reference.year]
-          }
-        ],
+        issued: {
+          raw: `${this.reference.year}`
+        },
         "container-title": this.reference.book,
         volume: this.reference.volume,
         publisher: this.reference.publisher,

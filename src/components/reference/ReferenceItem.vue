@@ -53,36 +53,65 @@
     <!--      </a>-->
     <!--    </span>-->
 
-    <!--    <span>-->
-    <!--      <a-->
-    <!--        v-if="reference.attachment__filename"-->
-    <!--        target="FileWindow"-->
-    <!--        class="green-link"-->
-    <!--        @click="openPdf(reference.attachment__filename)"-->
-    <!--      >-->
-    <!--        <b>PDF</b>-->
-    <!--      </a>-->
-    <!--      <a-->
-    <!--        v-if="-->
-    <!--          !reference.attachment__filename &&-->
-    <!--            reference.url &&-->
-    <!--            getUrl(reference.url)-->
-    <!--        "-->
-    <!--        :href="getUrl(reference.url)"-->
-    <!--        :title="getUrl(reference.url)"-->
-    <!--        target="UrlWindow"-->
-    <!--        rel="noopener noreferrer"-->
-    <!--        class="red-link"-->
-    <!--      >-->
-    <!--        <b>PDF</b>-->
-    <!--      </a>-->
-    <!--    </span>-->
-    <router-link
-      :to="{ path: '/reference/' + reference.id }"
-      :title="$t('reference.viewReference')"
-    >
-      <span v-html="citation.outerHTML" />
-    </router-link>
+    <!--        <span>-->
+    <!--          <a-->
+    <!--            v-if="reference.attachment__filename"-->
+    <!--            target="FileWindow"-->
+    <!--            class="green-link"-->
+    <!--            @click="openPdf(reference.attachment__filename)"-->
+    <!--          >-->
+    <!--            <b>PDF</b>-->
+    <!--          </a>-->
+    <!--          <a-->
+    <!--            v-if="-->
+    <!--              !reference.attachment__filename &&-->
+    <!--                reference.url &&-->
+    <!--                getUrl(reference.url)-->
+    <!--            "-->
+    <!--            :href="getUrl(reference.url)"-->
+    <!--            :title="getUrl(reference.url)"-->
+    <!--            target="UrlWindow"-->
+    <!--            rel="noopener noreferrer"-->
+    <!--            class="red-link"-->
+    <!--          >-->
+    <!--            <b>PDF</b>-->
+    <!--          </a>-->
+    <!--        </span>-->
+    <span>
+      <router-link
+        :to="{ path: '/reference/' + reference.id }"
+        :title="$t('reference.viewReference')"
+      >
+        <span v-html="citation.outerHTML" />
+      </router-link>
+    </span>
+    <span v-if="reference.doi">
+      <a target="DoiWindow"  class="blue-link" @click="openDOI(reference.doi)">DOI </a>
+    </span>
+    <span>
+      <a
+        v-if="reference.attachment__filename"
+        target="FileWindow"
+        class="green-link"
+        @click="openPdf(reference.attachment__filename)"
+      >
+        <b>PDF</b>
+      </a>
+      <a
+        v-if="
+          !reference.attachment__filename &&
+            reference.url &&
+            getUrl(reference.url)
+        "
+        :href="getUrl(reference.url)"
+        :title="getUrl(reference.url)"
+        target="UrlWindow"
+        rel="noopener noreferrer"
+        class="red-link"
+      >
+        <b>PDF</b>
+      </a>
+    </span>
   </div>
 </template>
 
@@ -179,7 +208,15 @@ a:hover {
   text-decoration: underline;
 }
 
+.green-link {
+  color: #4caf50;
+}
+
 .red-link {
   color: #f44336;
+}
+
+.blue-link {
+  color: blue;
 }
 </style>

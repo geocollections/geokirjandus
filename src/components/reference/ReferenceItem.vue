@@ -85,32 +85,37 @@
         <span v-html="citation.outerHTML" />
       </router-link>
     </span>
-    <span v-if="reference.doi">
-      <a target="DoiWindow"  class="blue-link" @click="openDOI(reference.doi)">DOI </a>
-    </span>
+
     <span>
-      <a
+      <v-chip
+        v-if="reference.doi"
+        target="DoiWindow"
+        color="blue"
+        class="d-print-none"
+        @click="openDOI(reference.doi)"
+        ><b>DOI</b>
+      </v-chip>
+      <v-chip
+        color="green"
         v-if="reference.attachment__filename"
         target="FileWindow"
-        class="green-link"
+        class="d-print-none"
         @click="openPdf(reference.attachment__filename)"
       >
         <b>PDF</b>
-      </a>
-      <a
+      </v-chip>
+      <v-chip
         v-if="
           !reference.attachment__filename &&
             reference.url &&
             getUrl(reference.url)
         "
+        color="red"
         :href="getUrl(reference.url)"
-        :title="getUrl(reference.url)"
-        target="UrlWindow"
-        rel="noopener noreferrer"
-        class="red-link"
+        target="UrlWindow d-print-none"
       >
         <b>PDF</b>
-      </a>
+      </v-chip>
     </span>
   </div>
 </template>

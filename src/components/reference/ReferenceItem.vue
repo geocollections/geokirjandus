@@ -77,46 +77,50 @@
     <!--            <b>PDF</b>-->
     <!--          </a>-->
     <!--        </span>-->
-    <span>
-      <router-link
-        :to="{ path: '/reference/' + reference.id }"
-        :title="$t('reference.viewReference')"
+    <div class="pb-1">
+      <v-chip
+        v-if="reference.doi"
+        link
+        small
+        target="DoiWindow"
+        color="blue"
+        class="d-print-none mr-1"
+        @click="openDOI(reference.doi)"
+        ><b>DOI</b>
+      </v-chip>
+      <v-chip
+        color="green"
+        link
+        small
+        v-if="reference.attachment__filename"
+        target="FileWindow"
+        class="d-print-none mr-1"
+        @click="openPdf(reference.attachment__filename)"
       >
-        <span v-html="citation.outerHTML" />
-      </router-link>
-    </span>
+        <b>PDF</b>
+      </v-chip>
+      <v-chip
+        v-if="
+          !reference.attachment__filename &&
+            reference.url &&
+            getUrl(reference.url)
+        "
+        link
+        small
+        color="red"
+        :href="getUrl(reference.url)"
+        target="UrlWindow d-print-none"
+      >
+        <b>PDF</b>
+      </v-chip>
+    </div>
 
-    <!--    <span>-->
-    <!--      <v-chip-->
-    <!--        v-if="reference.doi"-->
-    <!--        target="DoiWindow"-->
-    <!--        color="blue"-->
-    <!--        class="d-print-none"-->
-    <!--        @click="openDOI(reference.doi)"-->
-    <!--        ><b>DOI</b>-->
-    <!--      </v-chip>-->
-    <!--      <v-chip-->
-    <!--        color="green"-->
-    <!--        v-if="reference.attachment__filename"-->
-    <!--        target="FileWindow"-->
-    <!--        class="d-print-none"-->
-    <!--        @click="openPdf(reference.attachment__filename)"-->
-    <!--      >-->
-    <!--        <b>PDF</b>-->
-    <!--      </v-chip>-->
-    <!--      <v-chip-->
-    <!--        v-if="-->
-    <!--          !reference.attachment__filename &&-->
-    <!--            reference.url &&-->
-    <!--            getUrl(reference.url)-->
-    <!--        "-->
-    <!--        color="red"-->
-    <!--        :href="getUrl(reference.url)"-->
-    <!--        target="UrlWindow d-print-none"-->
-    <!--      >-->
-    <!--        <b>PDF</b>-->
-    <!--      </v-chip>-->
-    <!--    </span>-->
+    <router-link
+      :to="{ path: '/reference/' + reference.id }"
+      :title="$t('reference.viewReference')"
+    >
+      <span v-html="citation.outerHTML" />
+    </router-link>
   </div>
 </template>
 
@@ -143,12 +147,14 @@ export default {
         DOI: this.reference.doi,
         author: [
           {
-            family: this.reference.author
+            literal: this.reference.author
           }
         ],
-        issued: {
-          raw: `${this.reference.year}`
-        },
+        issued: [
+          {
+            "date-parts": [this.reference.year]
+          }
+        ],
         "container-title": this.reference.book,
         volume: this.reference.volume,
         publisher: this.reference.publisher,

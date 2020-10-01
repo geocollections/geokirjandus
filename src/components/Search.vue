@@ -70,14 +70,18 @@
               <v-row>
                 <v-col cols="6" class="py-0 px-1">
                   <v-text-field
-                    :value="advancedSearch.byIds[id].value[0]"
+                    :value="
+                      isNaN(advancedSearch.byIds[id].value[0])
+                        ? ''
+                        : advancedSearch.byIds[id].value[0]
+                    "
                     :label="$t(advancedSearch.byIds[id].label)"
                     hide-details
                     type="number"
                     @change="
                       $emit('update:advancedSearch', {
                         value: [
-                          parseInt($event),
+                          isNaN($event) ? NaN : parseInt($event),
                           advancedSearch.byIds[id].value[1]
                         ],
                         id: id,
@@ -88,7 +92,11 @@
                 </v-col>
                 <v-col cols="6" class="py-0 px-1">
                   <v-text-field
-                    :value="advancedSearch.byIds[id].value[1]"
+                    :value="
+                      isNaN(advancedSearch.byIds[id].value[1])
+                        ? ''
+                        : advancedSearch.byIds[id].value[1]
+                    "
                     hide-details
                     single-line
                     type="number"
@@ -96,7 +104,7 @@
                       $emit('update:advancedSearch', {
                         value: [
                           advancedSearch.byIds[id].value[0],
-                          parseInt($event)
+                          isNaN($event) ? NaN : parseInt($event)
                         ],
                         id: id,
                         type: advancedSearch.byIds[id].type

@@ -344,7 +344,7 @@ export default {
           if (this.paginateBy !== 50) {
             q.paginateBy = this.paginateBy;
           }
-          this.$router.push({ query: q }).catch(() => {});
+          this.$router.replace({ query: q }).catch(() => {});
         });
 
       const libraryParams = {

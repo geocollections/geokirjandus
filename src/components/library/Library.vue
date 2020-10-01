@@ -128,6 +128,7 @@ export default {
   },
   created() {
     this.resetSearch();
+    this.resetPage();
     this.getLibrary().then(res => {
       this.library = res.results[0];
     });
@@ -138,7 +139,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions("search", ["resetSearch"]),
+    ...mapActions("search", ["resetSearch", "resetPage"]),
     getDoiUrl(doi) {
       return `https://doi.org/${doi}`;
     },

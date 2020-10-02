@@ -37,6 +37,7 @@
         </v-expand-transition>
       </v-main>
     </div>
+    <!--  TODO: Right now renders everytime new results are set  -->
     <div class="d-none d-print-block">
       <reference-list-view :data="result"></reference-list-view>
     </div>

@@ -4,6 +4,7 @@
       <app-header
         class="d-print-none"
         v-on:update:showSearch="showSearch = !showSearch"
+        v-on:home="resetSearch"
       />
       <v-navigation-drawer
         v-model="showSearch"
@@ -93,7 +94,10 @@ export default {
       "resetSearch",
       "resetPage"
     ]),
-    ...mapActions("references", ["setReferences"])
+    ...mapActions("references", ["setReferences"]),
+    test() {
+      console.log("hoem");
+    }
   }
 };
 </script>

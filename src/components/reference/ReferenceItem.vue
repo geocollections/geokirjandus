@@ -1,6 +1,5 @@
 <template>
   <div class="referenceItem">
-    <span v-if="index !== undefined">{{ index }}. </span>
     <!--    <span v-if="reference.author" class="ablack font-weight-medium">-->
     <!--      <router-link-->
     <!--        :to="{ path: '/reference/' + reference.id }"-->
@@ -77,6 +76,7 @@
     <!--            <b>PDF</b>-->
     <!--          </a>-->
     <!--        </span>-->
+
     <div class="pb-1">
       <v-chip
         v-if="reference.doi"
@@ -121,9 +121,9 @@
       :to="{ path: '/reference/' + reference.id }"
       :title="$t('reference.viewReference')"
     >
-      <span v-html="citation.outerHTML" />
+      <span v-html="citation" />
     </router-link>
-    <div class="d-none d-print-block" v-html="citation.outerHTML"></div>
+    <div class="d-none d-print-block" v-html="citation"></div>
   </div>
 </template>
 
@@ -164,9 +164,12 @@ export default {
         page: this.reference.pages,
         URL: this.reference.url
       };
-      const cite = new Cite().set(data);
 
-      return cite.get({ type: "html", style: "citation-apa" });
+      return Cite(data).format("bibliography", {
+        format: "html",
+        template: "apa",
+        lang: "en-US"
+      });
     }
   },
   methods: {

@@ -29,7 +29,8 @@
     "actions": "",
     "sortBy": "Sorteeri",
     "start": "Algus",
-    "end": "Lõpp"
+    "end": "Lõpp",
+    "loading": "Otsin"
   },
   "reference": {
     "id": "ID",

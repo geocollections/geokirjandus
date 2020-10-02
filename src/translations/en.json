@@ -29,7 +29,8 @@
     "actions": "",
     "sortBy": "Sort by",
     "start": "Start",
-    "end": "End"
+    "end": "End",
+    "loading": "Loading"
   },
   "reference": {
     "id": "ID",

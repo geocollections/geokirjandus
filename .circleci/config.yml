@@ -1,13 +1,94 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+
+# Version number for caching (needs updating after dependency install/update/change etc.)
+parameters:
+  package-version:
+    type: string
+    default: "v1.0"
+
+jobs:
+  checkout_code:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/geocollections/geokirjandus
+    steps:
+      - checkout
+      - save_cache:
+          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/geocollections/geokirjandus
+
+  bundle_dependencies:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/geocollections/geokirjandus
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Installing packages
+          command: npm install
+      - save_cache:
+          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ./node_modules
+            - ./package-lock.json
+
+  build_dependencies:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/geocollections/geokirjandus
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Building application
+          command: npm run build
+      - save_cache:
+          key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/geocollections/geokirjandus
+
+  deploy_to_prod:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/geocollections/geokirjandus
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Removing current production files
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geokirjandus && rm -rf css/ fonts/ img/ js/ favicon.ico index.html'
+      - run:
+          name: Copying built files to production
+          command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geokirjandus
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  version: 2
+  build-and-deploy:
     jobs:
-      - welcome/run
+      - checkout_code
+      - bundle_dependencies:
+          requires:
+            - checkout_code
+      - build_dependencies:
+          requires:
+            - bundle_dependencies
+          filters:
+            branches:
+              only: circleci-project-setup
+      - deploy_to_prod:
+          requires:
+            - build_dependencies
+          filters:
+            branches:
+              only: circleci-project-setup

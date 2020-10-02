@@ -85,10 +85,10 @@ workflows:
             - bundle_dependencies
           filters:
             branches:
-              only: circleci-project-setup
+              only: master
       - deploy_to_prod:
           requires:
             - build_dependencies
           filters:
             branches:
-              only: circleci-project-setup
+              only: master

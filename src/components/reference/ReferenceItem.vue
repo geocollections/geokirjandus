@@ -117,15 +117,13 @@
     </div>
 
     <router-link
-        class="d-print-none"
+      class="d-print-none"
       :to="{ path: '/reference/' + reference.id }"
       :title="$t('reference.viewReference')"
     >
       <span v-html="citation.outerHTML" />
     </router-link>
-    <div class="d-none d-print-block" v-html="citation.outerHTML">
-
-    </div>
+    <div class="d-none d-print-block" v-html="citation.outerHTML"></div>
   </div>
 </template>
 

@@ -33,8 +33,8 @@
                   :column="$vuetify.breakpoint.smAndDown"
                 >
                   <v-chip
-                    v-for="(library, index) in libraries"
-                    :key="index"
+                    v-for="(library) in libraries"
+                    :key="library.id"
                     @click="$router.push(`/library/${library.id}`)"
                   >
                     {{ library.title }}

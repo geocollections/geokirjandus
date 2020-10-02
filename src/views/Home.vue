@@ -37,8 +37,7 @@
         </v-expand-transition>
       </v-main>
     </div>
-    <!--  TODO: Right now renders everytime new results are set  -->
-    <div class="d-none d-print-block">
+    <div v-if="isPrint" class="d-none d-print-block">
       <reference-list-view :data="result"></reference-list-view>
     </div>
   </div>
@@ -59,10 +58,21 @@ export default {
     Search,
     AppHeader
   },
+  created() {
+    console.log(window);
+
+    window.onbeforeprint = () => {
+      this.isPrint = true;
+    };
+    window.onafterprint = () => {
+      this.isPrint = false;
+    };
+  },
   data() {
     return {
       showSearch: this.$vuetify.breakpoint.mdAndUp,
-      showAdvancedSearch: true
+      showAdvancedSearch: true,
+      isPrint: false
     };
   },
   computed: {

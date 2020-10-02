@@ -59,7 +59,6 @@ export default {
     AppHeader
   },
   created() {
-    console.log(window);
 
     window.onbeforeprint = () => {
       this.isPrint = true;

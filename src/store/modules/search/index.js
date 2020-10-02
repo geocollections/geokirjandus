@@ -41,7 +41,8 @@ const state = {
         id: "year",
         lookUpType: "range",
         value: [NaN, NaN],
-        label: "reference.year",
+        label: "reference.years",
+        placeholders: ["common.start", "common.end"],
         fields: ["year"]
       },
       title: {

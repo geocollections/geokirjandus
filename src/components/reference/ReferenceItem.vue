@@ -108,19 +108,24 @@
         link
         small
         color="red"
+        class="d-print-none"
         :href="getUrl(reference.url)"
         target="UrlWindow d-print-none"
       >
-        <b>PDF</b>
+        <b>URL</b>
       </v-chip>
     </div>
 
     <router-link
+        class="d-print-none"
       :to="{ path: '/reference/' + reference.id }"
       :title="$t('reference.viewReference')"
     >
       <span v-html="citation.outerHTML" />
     </router-link>
+    <div class="d-none d-print-block" v-html="citation.outerHTML">
+
+    </div>
   </div>
 </template>
 

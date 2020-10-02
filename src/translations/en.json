@@ -27,7 +27,9 @@
     "libraries": "Libraries",
     "paginateBy": "Show",
     "actions": "",
-    "sortBy": "Sort by"
+    "sortBy": "Sort by",
+    "start": "Start",
+    "end": "End"
   },
   "reference": {
     "id": "ID",
@@ -58,7 +60,8 @@
     "publisher": "Publisher",
     "userChanged": "User changed",
     "remarks": "Remarks",
-    "journal": "Journal"
+    "journal": "Journal",
+    "years": "Years"
   },
   "link": {
     "geocollections": "GeoCollections",

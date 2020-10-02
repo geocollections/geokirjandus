@@ -1,8 +1,8 @@
 <template>
   <div class="table-view-search">
-    <v-list rounded>
+    <v-list class="mt-0">
       <v-list-item>
-        <v-list-item-content>
+        <v-list-item-content >
           <v-text-field
             hide-details
             :value="search.value"
@@ -11,19 +11,21 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-group value="true">
+      <v-list-group >
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
           }}</v-list-item-title>
         </template>
+
         <v-list-item
           dense
+          class=""
           :key="index"
           v-for="(id, index) in advancedSearch.allIds"
         >
           <!-- REGULAR SEARCH FIELD -->
-          <v-row class="pa-2" v-if="advancedSearch.byIds[id].type === 'text'">
+          <v-row class="pa-1" v-if="advancedSearch.byIds[id].type === 'text'">
             <v-col cols="3" class="py-0 px-1">
               <v-select
                 :value="advancedSearch.byIds[id].lookUpType || 'contains'"
@@ -63,7 +65,7 @@
 
           <!--  RANGE  -->
           <v-row
-            class="pa-2"
+            class="pa-1"
             v-else-if="advancedSearch.byIds[id].type === 'range'"
           >
             <div class="col py-0">
@@ -76,6 +78,7 @@
                         : advancedSearch.byIds[id].value[0]
                     "
                     :label="$t(advancedSearch.byIds[id].label)"
+                    :placeholder="$t(advancedSearch.byIds[id].placeholders[0])"
                     hide-details
                     type="number"
                     @change="
@@ -88,7 +91,8 @@
                         type: advancedSearch.byIds[id].type
                       })
                     "
-                  />
+                  >
+                  </v-text-field>
                 </v-col>
                 <v-col cols="6" class="py-0 px-1">
                   <v-text-field
@@ -98,6 +102,7 @@
                         : advancedSearch.byIds[id].value[1]
                     "
                     hide-details
+                    :placeholder="$t(advancedSearch.byIds[id].placeholders[1])"
                     single-line
                     type="number"
                     @change="
@@ -117,17 +122,20 @@
           </v-row>
           <v-row
             v-if="advancedSearch.byIds[id].type === 'checkbox'"
-            class="px-2"
+            class="px-1"
           >
-            <v-checkbox
-              :label="$t(advancedSearch.byIds[id].label)"
-              class="mt-0 pr-6"
-              :false-value="null"
-              true-value="1"
-              hide-details
-              :value="advancedSearch.byIds[id].value"
-              @change="updateCheckbox($event, id)"
-            ></v-checkbox>
+            <v-col class="py-0">
+              <v-checkbox
+                  dense
+                :label="$t(advancedSearch.byIds[id].label)"
+                class="mt-0 pr-6"
+                :false-value="null"
+                true-value="1"
+                hide-details
+                :value="advancedSearch.byIds[id].value"
+                @change="updateCheckbox($event, id)"
+              />
+            </v-col>
           </v-row>
         </v-list-item>
       </v-list-group>

@@ -67,8 +67,7 @@ jobs:
           key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Removing current production files
-          #command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geokirjandus && rm -rf css/ fonts/ img/ js/ favicon.ico index.html'
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'ls /var/www/geokirjandus/test.txt'
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geokirjandus && rm -rf css/ fonts/ img/ js/ favicon.ico index.html'
       - run:
           name: Copying built files to production
           command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geokirjandus

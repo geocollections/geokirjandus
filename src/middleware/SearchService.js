@@ -7,8 +7,6 @@ const FACET_QUERY =
 class SearchService {
   static async search(searchParams, table) {
     try {
-      console.log("searching");
-      console.log(searchParams);
       let start = (searchParams.page - 1) * searchParams.paginateBy;
       let sort = buildSort(searchParams.sortBy, searchParams.sortDesc);
       let searchFields = buildSearchFieldsQuery(
@@ -31,7 +29,6 @@ class SearchService {
       urlParameters.push(searchFields);
 
       url = `${url}?${urlParameters.join("&")}`;
-      console.log(url);
       const res = await axios.get(url);
       return res.data;
     } catch (err) {
@@ -156,7 +153,6 @@ function buildSearchFieldsQuery(search, advancedSearch) {
     },
     ""
   );
-  console.log(`${searchStr}&${advancedSearchStr}`);
   return advancedSearchStr.length > 0
     ? encodeURIComponent(`${searchStr}&${advancedSearchStr}`)
     : encodeURIComponent(searchStr);

@@ -2,7 +2,7 @@
   <div class="table-view-search">
     <v-list class="mt-0">
       <v-list-item>
-        <v-list-item-content >
+        <v-list-item-content>
           <v-text-field
             hide-details
             :value="search.value"
@@ -11,7 +11,7 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-group >
+      <v-list-group>
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -126,13 +126,13 @@
           >
             <v-col class="py-0">
               <v-checkbox
-                  dense
+                dense
                 :label="$t(advancedSearch.byIds[id].label)"
                 class="mt-0 pr-6"
                 :false-value="null"
                 true-value="1"
                 hide-details
-                :value="advancedSearch.byIds[id].value"
+                :input-value="advancedSearch.byIds[id].value"
                 @change="updateCheckbox($event, id)"
               />
             </v-col>
@@ -166,10 +166,7 @@ export default {
       type: Object
     },
     advancedSearch: {
-      type: Object,
-      default: function() {
-        return [];
-      }
+      type: Object
     },
     colSize: {
       type: Number,
@@ -195,17 +192,10 @@ export default {
   }),
   methods: {
     updateCheckbox(event, id) {
-      if (this.advancedSearch.byIds[id].value === "0") {
-        this.$emit("update:advancedSearch", {
-          value: null,
-          id: id
-        });
-      } else {
-        this.$emit("update:advancedSearch", {
-          value: event,
-          id: id
-        });
-      }
+      this.$emit("update:advancedSearch", {
+        value: event,
+        id: id
+      });
     },
     updateDate(event, fieldId, index) {
       this.$emit("update:searchParameters", event, fieldId);

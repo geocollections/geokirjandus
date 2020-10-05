@@ -30,7 +30,8 @@
     "sortBy": "Sort by",
     "start": "Start",
     "end": "End",
-    "loading": "Loading"
+    "loading": "Loading",
+    "citationStyle": "Citation style"
   },
   "reference": {
     "id": "ID",

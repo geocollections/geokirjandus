@@ -30,7 +30,8 @@
     "sortBy": "Sorteeri",
     "start": "Algus",
     "end": "Lõpp",
-    "loading": "Otsin"
+    "loading": "Otsin",
+    "citationStyle": "Viitamise stiil"
   },
   "reference": {
     "id": "ID",

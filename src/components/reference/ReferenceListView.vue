@@ -1,19 +1,22 @@
 <template>
   <div v-if="data.length > 0">
-    <v-card-actions>
+    <v-col class="px-0" md="3">
       <v-select
         :value="template"
         :items="templates"
+        dense
+        outlined
+        hide-details
+        :label="$t('common.citationStyle')"
         @change="changeTemplate($event)"
       >
       </v-select>
-    </v-card-actions>
+    </v-col>
     <v-card-text class="py-0" v-for="(entity, index) in data" :key="entity.id">
       <v-divider v-if="index !== 0" />
       <reference-item
         class="my-2"
         :reference="entity"
-        :template="template"
         :citation="citation(entity)"
       ></reference-item>
     </v-card-text>
@@ -28,8 +31,10 @@ import Cite from "citation-js";
 const styleConfig = Cite.plugins.config.get("@csl");
 
 import templateStyles from "@/assets/templateStyles.json";
-styleConfig.templates.add("ieee", templateStyles.ieee);
-styleConfig.templates.add("mla", templateStyles.mla);
+
+Object.entries(templateStyles).forEach(([k, v]) => {
+  styleConfig.templates.add(k, v);
+});
 
 export default {
   components: { ReferenceItem },

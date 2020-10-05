@@ -59,9 +59,6 @@ export default {
       type: Object,
       required: true
     },
-    index: {
-      type: Number
-    },
     citation: {
       type: String
     }

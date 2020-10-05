@@ -2,8 +2,6 @@ import actions from "./actions";
 import mutations from "./mutations";
 
 const state = {
-  searchStr: null,
-  activeSearchParametersFilters: [],
   page: 1,
   paginateBy: 50,
   sortBy: ["date_changed"],
@@ -85,17 +83,17 @@ const state = {
         label: "reference.abstract",
         fields: ["abstract"]
       },
-      is_estonian_author: {
+      isEstonianAuthor: {
         type: "checkbox",
-        id: "is_estonian_author",
+        id: "isEstonianAuthor",
         lookUpType: "contains",
         value: null,
         label: "reference.isEstonianAuthor",
         fields: ["is_estonian_author"]
       },
-      is_estonian_reference: {
+      isEstonianReference: {
         type: "checkbox",
-        id: "is_estonian_reference",
+        id: "isEstonianReference",
         lookUpType: "contains",
         value: null,
         label: "reference.isEstonianReference",
@@ -109,9 +107,9 @@ const state = {
         label: "reference.keywords",
         fields: ["keywords"]
       },
-      user_added: {
+      userAdded: {
         type: "text",
-        id: "user_added",
+        id: "userAdded",
         lookUpType: "contains",
         value: null,
         label: "reference.userAdded",
@@ -127,9 +125,9 @@ const state = {
       "abstract",
       "localities",
       "keywords",
-      "user_added",
-      "is_estonian_author",
-      "is_estonian_reference"
+      "userAdded",
+      "isEstonianAuthor",
+      "isEstonianReference"
     ]
   },
   lookUpTypes: [

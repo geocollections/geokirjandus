@@ -173,7 +173,6 @@ export default {
   watch: {
     parameters: {
       handler() {
-        this.resetPage();
         this.fetch();
       },
       deep: true
@@ -187,7 +186,6 @@ export default {
     },
     paginateBy: {
       handler() {
-        this.resetPage();
         this.fetch();
       },
       deep: true
@@ -259,7 +257,6 @@ export default {
       "updateSortBy",
       "updateSortDesc",
       "resetSearch",
-      "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
     formatDate(date) {

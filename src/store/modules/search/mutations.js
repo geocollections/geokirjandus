@@ -1,26 +1,32 @@
 import { cloneDeep } from "lodash";
 
+const resetAdvancedSearch = advancedSearch => {
+  let cloneAdvancedSearch = cloneDeep(advancedSearch.byIds);
+
+  advancedSearch.allIds.forEach(id => {
+    switch (cloneAdvancedSearch[id].type) {
+      case "range":
+        cloneAdvancedSearch[id].value = [NaN, NaN];
+        break;
+      default: {
+        cloneAdvancedSearch[id].value = null;
+        cloneAdvancedSearch[id].lookUpType = "contains";
+      }
+    }
+  });
+
+  return cloneAdvancedSearch;
+};
+
 const mutations = {
   RESET_SEARCH(state) {
-    let resetAdvancedSearch = cloneDeep(state.advancedSearch.byIds);
-
-    state.advancedSearch.allIds.forEach(id => {
-      switch (resetAdvancedSearch[id].type) {
-        case "range":
-          resetAdvancedSearch[id].value = [NaN, NaN];
-          break;
-        default: {
-          resetAdvancedSearch[id].value = null;
-          resetAdvancedSearch[id].lookUpType = "contains";
-        }
-      }
-    });
     state.search.value = null;
 
     state.advancedSearch = {
       ...state.advancedSearch,
-      byIds: resetAdvancedSearch
+      byIds: resetAdvancedSearch(state.advancedSearch)
     };
+    state.page = 1;
   },
   UPDATE_PAGE(state, page) {
     state.page = page;
@@ -53,59 +59,49 @@ const mutations = {
         else state.advancedSearch.byIds[payload.id].value = payload.value;
       }
     }
+    state.page = 1;
   },
   UPDATE_SEARCH(state, searchValue) {
     state.search.value = searchValue;
+    state.page = 1;
   },
   SET_SEARCH_FROM_URL(state, payload) {
-    // TODO: refactor into a function (same bit of code is used in RESET_SEARCH)
-    let resetAdvancedSearch = cloneDeep(state.advancedSearch.byIds);
+    let resetAdvancedSearchObj = resetAdvancedSearch(state.advancedSearch);
 
-    state.advancedSearch.allIds.forEach(id => {
-      switch (resetAdvancedSearch[id].type) {
-        case "range":
-          resetAdvancedSearch[id].value = [NaN, NaN];
-          break;
-        default: {
-          resetAdvancedSearch[id].value = null;
-          resetAdvancedSearch[id].lookUpType = "contains";
-        }
-      }
-    });
-    state.search.value = null;
-
-    // TODO: Refactor switch to use v.type, not key
     Object.entries(payload).forEach(([k, v]) => {
-      console.log(k);
-      switch (k) {
-        case "search":
-          state.search.value = v;
-          break;
-        case "year": {
-          const range = v.split("-").map(year => {
-            return parseInt(year);
-          });
-          resetAdvancedSearch[k].value = range;
-          break;
-        }
-        case "page":
-          state.page = parseInt(v);
-          break;
-        case "paginateBy":
-          state.paginateBy = parseInt(v);
-          break;
-        default: {
-          const query = k.split("_");
-          if (resetAdvancedSearch[query[0]]) {
-            resetAdvancedSearch[query[0]].value = v;
-            resetAdvancedSearch[query[0]].lookUpType = query[1];
+      const searchParameters = k.split("_");
+      const searchFieldName = searchParameters[0];
+
+      if (searchFieldName === "search") {
+        state.search.value = v;
+      } else if (searchFieldName === "page") {
+        state.page = parseInt(v);
+      } else if (searchFieldName === "paginateBy") {
+        state.paginateBy = parseInt(v);
+      } else {
+        switch (resetAdvancedSearchObj[searchFieldName].type) {
+          case "text":
+            resetAdvancedSearchObj[searchFieldName].value = v;
+            resetAdvancedSearchObj[searchFieldName].lookUpType = searchParameters[1];
+            break;
+          case "range": {
+            const range = v.split("-").map(year => {
+              return parseInt(year);
+            });
+            resetAdvancedSearchObj[searchFieldName].value = range;
+            break;
           }
+          case "checkbox":
+            resetAdvancedSearchObj[searchFieldName].value = v;
+            break;
+          default:
+            break;
         }
       }
     });
     state.advancedSearch = {
       ...state.advancedSearch,
-      byIds: resetAdvancedSearch
+      byIds: resetAdvancedSearchObj
     };
   },
   RESET_PAGE(state) {

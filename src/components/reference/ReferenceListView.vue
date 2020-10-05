@@ -1,6 +1,6 @@
 <template>
   <div v-if="data.length > 0">
-    <v-col class="px-0" md="3">
+    <v-col class="px-0 d-print-none" md="3">
       <v-select
         :value="template"
         :items="templates"

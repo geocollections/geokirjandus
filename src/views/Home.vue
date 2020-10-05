@@ -94,10 +94,7 @@ export default {
       "resetSearch",
       "resetPage"
     ]),
-    ...mapActions("references", ["setReferences"]),
-    test() {
-      console.log("hoem");
-    }
+    ...mapActions("references", ["setReferences"])
   }
 };
 </script>

@@ -33,7 +33,7 @@
                   :column="$vuetify.breakpoint.smAndDown"
                 >
                   <v-chip
-                    v-for="(library) in libraries"
+                    v-for="library in libraries"
                     :key="library.id"
                     @click="$router.push(`/library/${library.id}`)"
                   >
@@ -203,6 +203,13 @@ export default {
         this.fetch();
       },
       deep: true
+    },
+    count: {
+      handler() {
+        if (this.count === 1) {
+          this.$router.push(`/reference/${this.result[0].id}`);
+        }
+      }
     }
   },
   props: {
@@ -238,6 +245,7 @@ export default {
   },
   created() {
     if (this.$route.query) {
+      console.log(this.$route.query);
       this.setSearchFromURL(this.$route.query);
     }
   },
@@ -283,6 +291,50 @@ export default {
     detailView(item) {
       this.$router.push(`/reference/${item.id}`);
     },
+    setURLParameters() {
+      let q = Object.fromEntries(
+        Object.entries(this.parameters)
+          .filter(([_, v]) => {
+            if (!v.hidden) {
+              switch (v.type) {
+                case "range": {
+                  return isNaN(v.value[0]) && isNaN(v.value[1])
+                    ? null
+                    : v.value;
+                }
+                default: {
+                  return v.value;
+                }
+              }
+            }
+          })
+          .map(([k, v]) => {
+            switch (v.type) {
+              case "range": {
+                const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
+                const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
+
+                return [k, `${start}-${end}`];
+              }
+              case "checkbox": {
+                return [k, v.value];
+              }
+              default: {
+                return k === "search"
+                  ? [k, v.value]
+                  : [`${k}_${v.lookUpType}`, v.value];
+              }
+            }
+          })
+      );
+      if (this.page > 1) {
+        q.page = this.page;
+      }
+      if (this.paginateBy !== 50) {
+        q.paginateBy = this.paginateBy;
+      }
+      this.$router.replace({ query: q }).catch(() => {});
+    },
     fetch: debounce(function() {
       this.isLoading = true;
       fetchReferences({
@@ -292,60 +344,20 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         advancedSearch: this.advancedSearch.byIds
-      })
-        .then(
-          response => {
+      }).then(
+        response => {
+          if (response.count === 1) {
+            this.$router.push(`/reference/${response.results[0].id}`);
+          } else {
             this.setReferences(response);
-            this.isLoading = false;
-          },
-          () => {
-            this.isLoading = false;
+            this.setURLParameters();
           }
-        )
-        .finally(() => {
-          let q = Object.fromEntries(
-            Object.entries(this.parameters)
-              .filter(([_, v]) => {
-                if (!v.hidden) {
-                  switch (v.type) {
-                    case "range": {
-                      return isNaN(v.value[0]) && isNaN(v.value[1])
-                        ? null
-                        : v.value;
-                    }
-                    default: {
-                      return v.value;
-                    }
-                  }
-                }
-              })
-              .map(([k, v]) => {
-                switch (v.type) {
-                  case "range": {
-                    const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
-                    const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
-
-                    return [k, `${start}-${end}`];
-                  }
-                  case "checkbox": {
-                    return [k, v.value];
-                  }
-                  default: {
-                    return k === "search"
-                      ? [k, v.value]
-                      : [`${k}_${v.lookUpType}`, v.value];
-                  }
-                }
-              })
-          );
-          if (this.page > 1) {
-            q.page = this.page;
-          }
-          if (this.paginateBy !== 50) {
-            q.paginateBy = this.paginateBy;
-          }
-          this.$router.replace({ query: q }).catch(() => {});
-        });
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
+        }
+      );
 
       const libraryParams = {
         search: this.search,

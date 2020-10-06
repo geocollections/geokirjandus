@@ -73,6 +73,7 @@ import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
 import ReferenceItem from "@/components/reference/ReferenceItem";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import { mapState, mapActions } from "vuex";
+import dateMixin from "@/mixins/dateMixin";
 
 export default {
   name: "Library",
@@ -93,14 +94,8 @@ export default {
       isLoading: true
     };
   },
+  mixins: [dateMixin],
   computed: {
-    getDateLocale() {
-      if (this.$i18n.locale === "ee") {
-        return "et-EE";
-      } else {
-        return "en-GB";
-      }
-    },
     getTitle() {
       if (this.$i18n.locale === "ee") {
         return this.library.title;
@@ -142,11 +137,6 @@ export default {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     getDoiUrl(doi) {
       return `https://doi.org/${doi}`;
-    },
-    formatDate(date) {
-      return new Date(date).toLocaleString(this.getDateLocale, {
-        dateStyle: "medium"
-      });
     },
     getUrl(url) {
       if (url.startsWith("http")) return url;

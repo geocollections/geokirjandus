@@ -82,6 +82,7 @@ import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
 import debounce from "lodash/debounce";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 import DataViewer from "@/components/DataViewer";
+import dateMixin from "@/mixins/dateMixin";
 
 export default {
   name: "ReferenceViewer",
@@ -225,13 +226,6 @@ export default {
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
     ...mapState("references", ["result", "count"]),
-    getDateLocale() {
-      if (this.$i18n.locale === "ee") {
-        return "et-EE";
-      } else {
-        return "en-GB";
-      }
-    },
     parameters() {
       return { ...this.advancedSearch.byIds, search: this.search };
     },
@@ -247,6 +241,7 @@ export default {
       this.setSearchFromURL(this.$route.query);
     }
   },
+  mixins: [dateMixin],
   methods: {
     ...mapActions("search", [
       "setSearchFromURL",
@@ -260,13 +255,6 @@ export default {
         "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
-    formatDate(date) {
-      return date
-        ? new Date(date).toLocaleString(this.getDateLocale, {
-            dateStyle: "medium"
-          })
-        : null;
-    },
     getLibraries() {
       this.libraryPage++;
 

@@ -146,6 +146,7 @@
 
 <script>
 import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
+import dateMixin from "@/mixins/dateMixin";
 
 export default {
   name: "Reference",
@@ -166,14 +167,8 @@ export default {
       }
     });
   },
+  mixins: [dateMixin],
   computed: {
-    getDateLocale() {
-      if (this.$i18n.locale === "ee") {
-        return "et-EE";
-      } else {
-        return "en-GB";
-      }
-    },
     getReferenceType() {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_type
@@ -186,11 +181,6 @@ export default {
     }
   },
   methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleString(this.getDateLocale, {
-        dateStyle: "medium"
-      });
-    },
     getReferenceLibraries() {
       return fetchReferenceLibraries({
         search: {

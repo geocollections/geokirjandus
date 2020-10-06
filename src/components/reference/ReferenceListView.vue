@@ -58,16 +58,24 @@ export default {
       this.template = event;
     },
     citation(reference) {
+      const referenceAuthorSplit = reference.author.split(",");
+
+      const authors = [];
+
+      for (let i = 0; i < referenceAuthorSplit.length; i += 2) {
+        const name = {
+          given: referenceAuthorSplit[i + 1],
+          family: referenceAuthorSplit[i]
+        };
+
+        authors.push(name);
+      }
       const data = {
         id: reference.id,
         type: "article-journal",
         title: reference.title,
         DOI: reference.doi,
-        author: [
-          {
-            literal: reference.author
-          }
-        ],
+        author: authors,
         issued: [
           {
             "date-parts": [reference.year]

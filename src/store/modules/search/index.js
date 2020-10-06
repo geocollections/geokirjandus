@@ -87,7 +87,7 @@ const state = {
         type: "checkbox",
         id: "isEstonianAuthor",
         lookUpType: "contains",
-        value: null,
+        value: "1",
         label: "reference.isEstonianAuthor",
         fields: ["is_estonian_author"]
       },
@@ -95,7 +95,7 @@ const state = {
         type: "checkbox",
         id: "isEstonianReference",
         lookUpType: "contains",
-        value: null,
+        value: "1",
         label: "reference.isEstonianReference",
         fields: ["is_estonian_reference"]
       },

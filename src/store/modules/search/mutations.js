@@ -8,6 +8,13 @@ const resetAdvancedSearch = advancedSearch => {
       case "range":
         cloneAdvancedSearch[id].value = [NaN, NaN];
         break;
+      case "checkbox":
+        if (id === "isEstonianAuthor" || id === "isEstonianReference") {
+          cloneAdvancedSearch[id].value = "1";
+        } else {
+          cloneAdvancedSearch[id].value = null;
+        }
+        break;
       default: {
         cloneAdvancedSearch[id].value = null;
         cloneAdvancedSearch[id].lookUpType = "contains";
@@ -82,7 +89,8 @@ const mutations = {
         switch (resetAdvancedSearchObj[searchFieldName].type) {
           case "text":
             resetAdvancedSearchObj[searchFieldName].value = v;
-            resetAdvancedSearchObj[searchFieldName].lookUpType = searchParameters[1];
+            resetAdvancedSearchObj[searchFieldName].lookUpType =
+              searchParameters[1];
             break;
           case "range": {
             const range = v.split("-").map(year => {
@@ -91,9 +99,11 @@ const mutations = {
             resetAdvancedSearchObj[searchFieldName].value = range;
             break;
           }
-          case "checkbox":
+          case "checkbox": {
             resetAdvancedSearchObj[searchFieldName].value = v;
+
             break;
+          }
           default:
             break;
         }

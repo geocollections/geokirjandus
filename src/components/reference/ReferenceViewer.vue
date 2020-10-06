@@ -252,7 +252,7 @@ export default {
       "updateSortBy",
       "updateSortDesc",
       "resetSearch",
-        "resetPage"
+      "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
     getLibraries() {
@@ -280,12 +280,17 @@ export default {
     setURLParameters() {
       let q = Object.fromEntries(
         Object.entries(this.parameters)
-          .filter(([_, v]) => {
+          .filter(([k, v]) => {
             if (!v.hidden) {
               switch (v.type) {
                 case "range": {
                   return isNaN(v.value[0]) && isNaN(v.value[1])
                     ? null
+                    : v.value;
+                }
+                case "checkbox": {
+                  return k === "isEstonianAuthor" || k === "isEstonianReference"
+                    ? false
                     : v.value;
                 }
                 default: {

@@ -11,7 +11,7 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-group>
+      <v-list-group :value="true">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -155,10 +155,6 @@ import { mapState } from "vuex";
 export default {
   name: "Search",
   props: {
-    showAdvancedSearch: {
-      type: Boolean,
-      required: true
-    },
     search: {
       type: Object
     },

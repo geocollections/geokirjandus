@@ -17,8 +17,6 @@
       >
         <template v-slot:default>
           <search
-            :show-advanced-search="showAdvancedSearch"
-            v-on:update:showAdvancedSearch="showAdvancedSearch = $event"
             :col-size="12"
             :search="search"
             :advanced-search="advancedSearch"

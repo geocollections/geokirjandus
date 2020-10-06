@@ -57,25 +57,29 @@ export default {
     changeTemplate(event) {
       this.template = event;
     },
-    citation(reference) {
-      const referenceAuthorSplit = reference.author.split(",");
+    parseNames(namesStr) {
+      const namesSplitByComma = namesStr.split(",");
 
       const authors = [];
 
-      for (let i = 0; i < referenceAuthorSplit.length; i += 2) {
+      for (let i = 0; i < namesSplitByComma.length; i += 2) {
         const name = {
-          given: referenceAuthorSplit[i + 1],
-          family: referenceAuthorSplit[i]
+          given: namesSplitByComma[i + 1],
+          family: namesSplitByComma[i]
         };
 
         authors.push(name);
       }
+
+      return authors;
+    },
+    citation(reference) {
       const data = {
         id: reference.id,
         type: "article-journal",
         title: reference.title,
         DOI: reference.doi,
-        author: authors,
+        author: this.parseNames(reference.author),
         issued: [
           {
             "date-parts": [reference.year]

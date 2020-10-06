@@ -1,5 +1,6 @@
 import Cite from "citation-js";
 import templateStyles from "@/assets/templateStyles.json";
+import {mapActions, mapState} from "vuex";
 
 // Add custom template styles to Cite style configuration
 const styleConfig = Cite.plugins.config.get("@csl");
@@ -10,7 +11,6 @@ Object.entries(templateStyles).forEach(([k, v]) => {
 const citationMixin = {
   data() {
     return {
-      template: "mla",
       templates: [
         { text: "MLA", value: "mla" },
         { text: "IEEE", value: "ieee" },
@@ -18,9 +18,13 @@ const citationMixin = {
       ]
     };
   },
+  computed: {
+    ...mapState("references", ["citationTemplate"])
+  },
   methods: {
+    ...mapActions("references", ["changeCitationTemplate"]),
     changeTemplate(event) {
-      this.template = event;
+      this.changeCitationTemplate(event);
     },
     parseNames(namesStr) {
       const namesSplitByComma = namesStr.split(",");
@@ -59,7 +63,7 @@ const citationMixin = {
 
       return Cite(data).format("bibliography", {
         format: "html",
-        template: this.template,
+        template: this.citationTemplate,
         lang: "en-US"
       });
     }

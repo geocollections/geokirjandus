@@ -2,7 +2,7 @@
   <div v-if="data.length > 0">
     <v-col class="px-0 d-print-none" md="3">
       <v-select
-        :value="template"
+        :value="citationTemplate"
         :items="templates"
         dense
         outlined

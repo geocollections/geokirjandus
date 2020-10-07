@@ -12,7 +12,7 @@
         </v-col>
       </v-card-title>
       <v-card-text>
-        <h3>{{ $t("common.generalInfo") }}</h3>
+        <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
         <v-simple-table>
           <template v-slot:default>
             <tbody>
@@ -147,7 +147,7 @@
         </v-simple-table>
       </v-card-text>
       <v-card-text v-if="reference.libraries">
-        <h3>{{ $t("reference.libraries") }}</h3>
+        <h3 class="pb-0">{{ $t("reference.libraries") }}</h3>
         <div v-for="(library, index) in libraries" :key="index">
           <router-link :to="{ path: `/library/${library.id}` }">
             {{ library.title }}
@@ -155,8 +155,17 @@
           <span>{{ ` ${library.author} (${library.year})` }}</span>
         </div>
       </v-card-text>
+      <v-card-text>
+        <div class="d-flex pb-3">
+          <h3 class="pr-3">{{ $t("common.citation") }}</h3>
+          <div class="col-md-2 pa-0">
+            <citation-select />
+          </div>
+        </div>
+        <div v-html="citation(reference)"></div>
+      </v-card-text>
       <v-card-text v-if="reference.attachment__filename || reference.url">
-        <h3>{{ $t("common.links") }}</h3>
+        <h3 class="pb-3">{{ $t("common.links") }}</h3>
         <v-btn
           v-if="reference.attachment__filename"
           target="_blank"
@@ -175,9 +184,12 @@
 <script>
 import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
+import citationMixin from "@/mixins/citationMixin";
+import CitationSelect from "@/components/CitationSelect";
 
 export default {
   name: "Reference",
+  components: {CitationSelect},
   data() {
     return {
       id: this.$route.params.id,
@@ -195,7 +207,7 @@ export default {
       }
     });
   },
-  mixins: [dateMixin],
+  mixins: [dateMixin, citationMixin],
   computed: {
     getReferenceType() {
       return this.$i18n.locale === "ee"

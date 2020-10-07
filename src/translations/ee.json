@@ -31,7 +31,8 @@
     "start": "Algus",
     "end": "Lõpp",
     "loading": "Otsin",
-    "citationStyle": "Viitamise stiil"
+    "citationStyle": "Viitamise stiil",
+    "citation": "Viide"
   },
   "reference": {
     "id": "ID",

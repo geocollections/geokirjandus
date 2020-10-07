@@ -31,7 +31,8 @@
     "start": "Start",
     "end": "End",
     "loading": "Loading",
-    "citationStyle": "Citation style"
+    "citationStyle": "Citation style",
+    "citation": "Citation"
   },
   "reference": {
     "id": "ID",

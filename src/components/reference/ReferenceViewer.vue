@@ -66,6 +66,9 @@
           <template v-slot:item.date_changed="{ item }">
             {{ formatDate(item.date_changed) }}
           </template>
+          <template v-slot:item.links="{ item }">
+            <reference-links :item="item"/>
+          </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">
             <reference-list-view :data="data"></reference-list-view>
@@ -83,10 +86,12 @@ import debounce from "lodash/debounce";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 import DataViewer from "@/components/DataViewer";
 import dateMixin from "@/mixins/dateMixin";
+import ReferenceLinks from "@/components/reference/ReferenceLinks";
 
 export default {
   name: "ReferenceViewer",
   components: {
+    ReferenceLinks,
     ReferenceListView,
     DataViewer
   },
@@ -167,6 +172,13 @@ export default {
           show: true,
           fixed: false,
           class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("common.links")}`,
+          sortable: false,
+          value: "links",
+          show: true,
+          fixed: true
         }
       ]
     };

@@ -8,45 +8,7 @@
       >
         <span v-html="citation" />
       </router-link>
-      <v-chip
-        v-if="reference.doi"
-        link
-        outlined
-        x-small
-        target="DoiWindow"
-        color="blue"
-        class="d-print-none mr-1"
-        @click="openDOI(reference.doi)"
-        ><b>DOI</b>
-      </v-chip>
-      <v-chip
-        color="green"
-        link
-        outlined
-        x-small
-        v-if="reference.attachment__filename"
-        target="FileWindow"
-        class="d-print-none mr-1"
-        @click="openPdf(reference.attachment__filename)"
-      >
-        <b>PDF</b>
-      </v-chip>
-      <v-chip
-        v-if="
-          !reference.attachment__filename &&
-            reference.url &&
-            getUrl(reference.url)
-        "
-        link
-        outlined
-        x-small
-        color="red"
-        class="d-print-none"
-        :href="getUrl(reference.url)"
-        target="UrlWindow d-print-none"
-      >
-        <b>URL</b>
-      </v-chip>
+      <reference-links :item="reference" />
     </div>
 
     <div class="d-none d-print-block" v-html="citation"></div>
@@ -54,8 +16,10 @@
 </template>
 
 <script>
+import ReferenceLinks from "@/components/reference/ReferenceLinks";
 export default {
   name: "ReferenceItem",
+  components: { ReferenceLinks },
   props: {
     reference: {
       type: Object,
@@ -63,40 +27,6 @@ export default {
     },
     citation: {
       type: String
-    }
-  },
-  methods: {
-    getDoiUrl(doi) {
-      return `https://doi.org/${doi}`;
-    },
-    getFileUrl(uuid) {
-      return `https://files.geocollections.info/${uuid.substring(
-        0,
-        2
-      )}/${uuid.substring(2, 4)}/${uuid}`;
-    },
-    getUrl(url) {
-      if (url.startsWith("http")) return url;
-      else if (url.startsWith("www.")) return "http://" + url;
-      else if (url.includes("www."))
-        return "http://" + url.substring(url.indexOf("www."));
-      else return false;
-    },
-    openPdf(uuid) {
-      window.open(
-        "https://files.geocollections.info/" +
-          uuid.substring(0, 2) +
-          "/" +
-          uuid.substring(2, 4) +
-          "/" +
-          uuid,
-        "",
-        "width=1000,height=900"
-      );
-    },
-    openDOI(doi) {
-      // TODO: Check for correct doi address
-      window.open("https://doi.org/" + doi, "", "width=1000,height=900");
     }
   }
 };

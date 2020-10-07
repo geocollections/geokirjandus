@@ -63,7 +63,8 @@
     "userChanged": "Muutnud kasutaja",
     "remarks": "Märkused",
     "journal": "Ajakiri",
-    "years": "Aastad"
+    "years": "Aastad",
+    "describedTaxa": "Kirjeldatud taksonid"
   },
   "link": {
     "geocollections": "GeoCollections",

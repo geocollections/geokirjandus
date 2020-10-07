@@ -76,6 +76,18 @@
                   </ul>
                 </td>
               </tr>
+              <tr v-if="reference.taxa">
+                <th>{{ $t("reference.describedTaxa") }}</th>
+                <td>
+                  <ul>
+                    <li v-for="taxon in parseTaxa" :key="taxon.id">
+                      <a :href="taxonURL(taxon.id)" target="_blank">{{
+                        taxon.name
+                      }}</a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
               <tr v-if="reference.type">
                 <th>{{ $t("reference.type") }}</th>
                 <td>{{ getReferenceType }}</td>
@@ -104,13 +116,15 @@
               </tr>
               <tr v-if="reference.keywords">
                 <th>{{ $t("reference.keywords") }}</th>
-                <td><ul>
-                  <li v-for="(keyword, index) in parseKeywords" :key="index">
-                    <router-link :to="`/?keywords_contains=${keyword}`">
-                      {{keyword}}
-                    </router-link>
-                  </li>
-                </ul></td>
+                <td>
+                  <ul>
+                    <li v-for="(keyword, index) in parseKeywords" :key="index">
+                      <router-link :to="`/?keywords_contains=${keyword}`">
+                        {{ keyword }}
+                      </router-link>
+                    </li>
+                  </ul>
+                </td>
               </tr>
               <tr v-if="reference.user_added">
                 <th>{{ $t("reference.userAdded") }}</th>
@@ -204,6 +218,17 @@ export default {
         };
       });
     },
+    parseTaxa() {
+      const taxaNames = this.reference.taxa.split(";");
+      const ids = this.reference.taxon_ids.split(";");
+
+      return ids.map((id, index) => {
+        return {
+          id: id,
+          name: taxaNames[index]
+        };
+      });
+    },
     parseKeywords() {
       return this.reference.keywords.split(";").filter(keyword => {
         return keyword !== " ";
@@ -213,6 +238,9 @@ export default {
   methods: {
     localityURL(id) {
       return `https://geocollections.info/locality/${id}`;
+    },
+    taxonURL(id) {
+      return `https://fossiilid.info/${id}`;
     },
     getReferenceLibraries() {
       return fetchReferenceLibraries({

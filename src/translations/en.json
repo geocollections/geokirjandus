@@ -63,7 +63,8 @@
     "userChanged": "User changed",
     "remarks": "Remarks",
     "journal": "Journal",
-    "years": "Years"
+    "years": "Years",
+    "describedTaxa": "Described taxa"
   },
   "link": {
     "geocollections": "GeoCollections",

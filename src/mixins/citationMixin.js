@@ -54,7 +54,7 @@ const citationMixin = {
             "date-parts": [reference.year]
           }
         ],
-        "container-title": reference.book,
+        "container-title": reference.book ?? reference.journal_name,
         volume: reference.volume,
         publisher: reference.publisher,
         page: reference.pages,

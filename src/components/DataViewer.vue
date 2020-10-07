@@ -14,7 +14,7 @@
           <span class="font-weight-bold">{{ ` ${count} ` }}</span>
           <span>{{ $t("common.records") }}</span>
         </span>
-
+        <!--  TODO: Use slot to add inputs to header  -->
         <div class="ml-auto d-flex col-md-2">
           <citation-select />
         </div>

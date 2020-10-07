@@ -25,7 +25,7 @@
       right
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn text dark v-bind="attrs" v-on="on">
+        <v-btn class="mx-3" text dark v-bind="attrs" v-on="on">
           {{ $t("common.links") }}
         </v-btn>
       </template>

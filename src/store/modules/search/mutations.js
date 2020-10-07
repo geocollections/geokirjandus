@@ -9,9 +9,7 @@ const resetAdvancedSearch = advancedSearch => {
         cloneAdvancedSearch[id].value = [NaN, NaN];
         break;
       case "checkbox":
-        if (id === "isEstonianAuthor" || id === "isEstonianReference") {
-          cloneAdvancedSearch[id].value = "1";
-        } else {
+        if (id !== "isEstonianAuthor" && id !== "isEstonianReference") {
           cloneAdvancedSearch[id].value = null;
         }
         break;

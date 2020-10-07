@@ -1,17 +1,5 @@
 <template>
   <div v-if="data.length > 0">
-    <v-col class="px-0 d-print-none" md="3">
-      <v-select
-        :value="citationTemplate"
-        :items="templates"
-        dense
-        outlined
-        hide-details
-        :label="$t('common.citationStyle')"
-        @change="changeTemplate($event)"
-      >
-      </v-select>
-    </v-col>
     <v-card-text class="py-0" v-for="(entity, index) in data" :key="entity.id">
       <v-divider v-if="index !== 0" />
       <reference-item

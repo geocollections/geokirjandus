@@ -1,6 +1,5 @@
 <template>
   <div class="data-viewer">
-
     <!-- DATA TABLE -->
     <v-card elevation="4" class=" my-1" :loading="isLoading">
       <template v-slot:progress>
@@ -16,13 +15,15 @@
           <span>{{ $t("common.records") }}</span>
         </span>
 
-        <v-spacer></v-spacer>
+        <div class="ml-auto d-flex col-md-2">
+          <citation-select />
+        </div>
         <div class="d-flex">
           <v-radio-group
-              class="radio-buttons mt-0 align-self-center"
-              v-model="view"
-              row
-              hide-details
+            class="radio-buttons mt-0 align-self-center"
+            v-model="view"
+            row
+            hide-details
           >
             <v-radio value="list" :label="$t('common.listView')" />
             <v-radio value="table" :label="$t('common.tableView')" />
@@ -31,9 +32,9 @@
         <!-- EXPORT -->
         <div v-if="exportButtons">
           <export-buttons
-              :filename="module"
-              :table-data="data"
-              clipboard-class="data-viewer-table"
+            :filename="module"
+            :table-data="data"
+            clipboard-class="data-viewer-table"
           />
         </div>
       </v-card-title>
@@ -152,8 +153,9 @@
 <script>
 import ExportButtons from "../components/ExportButtons";
 import ListView from "@/components/ListView";
+import CitationSelect from "@/components/CitationSelect";
 export default {
-  components: { ListView, ExportButtons },
+  components: { CitationSelect, ListView, ExportButtons },
   props: {
     data: {
       type: Array[Object]

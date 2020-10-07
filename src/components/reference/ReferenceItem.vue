@@ -1,10 +1,18 @@
 <template>
   <div class="referenceItem">
     <div class="pb-1">
+      <router-link
+        class="d-print-none"
+        :to="{ path: '/reference/' + reference.id }"
+        :title="$t('reference.viewReference')"
+      >
+        <span v-html="citation" />
+      </router-link>
       <v-chip
         v-if="reference.doi"
         link
-        small
+        outlined
+        x-small
         target="DoiWindow"
         color="blue"
         class="d-print-none mr-1"
@@ -14,7 +22,8 @@
       <v-chip
         color="green"
         link
-        small
+        outlined
+        x-small
         v-if="reference.attachment__filename"
         target="FileWindow"
         class="d-print-none mr-1"
@@ -29,7 +38,8 @@
             getUrl(reference.url)
         "
         link
-        small
+        outlined
+        x-small
         color="red"
         class="d-print-none"
         :href="getUrl(reference.url)"
@@ -39,19 +49,11 @@
       </v-chip>
     </div>
 
-    <router-link
-      class="d-print-none"
-      :to="{ path: '/reference/' + reference.id }"
-      :title="$t('reference.viewReference')"
-    >
-      <span v-html="citation" />
-    </router-link>
     <div class="d-none d-print-block" v-html="citation"></div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "ReferenceItem",
   props: {

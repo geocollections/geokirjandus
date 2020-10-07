@@ -25,7 +25,7 @@ const messages = {
 };
 
 // Gets preferred language from store (fallback is ee)
-const lang = store?.state?.settings?.lang || "ee";
+const lang = store?.state?.settings?.language || "ee";
 
 // Translation settings
 const i18n = new VueI18n({

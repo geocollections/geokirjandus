@@ -8,13 +8,13 @@ import references from "./modules/references";
 
 Vue.use(Vuex);
 //
-// const vuexLocal = new VuexPersistence({
-//   key: "geoloogia.geokirjandus",
-//   storage: window.localStorage
-// });
+const vuexLocal = new VuexPersistence({
+  key: "geoloogia.geokirjandus",
+  storage: window.localStorage
+});
 
 export default new Vuex.Store({
   modules: { settings, search, references },
-  // plugins: [vuexLocal.plugin],
+  plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"
 });

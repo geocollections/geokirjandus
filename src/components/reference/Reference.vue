@@ -66,7 +66,15 @@
               </tr>
               <tr v-if="reference.localities">
                 <th>{{ $t("reference.localities") }}</th>
-                <td>{{ reference.localities }}</td>
+                <td>
+                  <ul>
+                    <li v-for="locality in parseLocalities" :key="locality.id">
+                      <a :href="localityURL(locality.id)" target="_blank">{{
+                        locality.name
+                      }}</a>
+                    </li>
+                  </ul>
+                </td>
               </tr>
               <tr v-if="reference.type">
                 <th>{{ $t("reference.type") }}</th>
@@ -96,7 +104,13 @@
               </tr>
               <tr v-if="reference.keywords">
                 <th>{{ $t("reference.keywords") }}</th>
-                <td>{{ reference.keywords }}</td>
+                <td><ul>
+                  <li v-for="(keyword, index) in parseKeywords" :key="index">
+                    <router-link :to="`/?keywords_contains=${keyword}`">
+                      {{keyword}}
+                    </router-link>
+                  </li>
+                </ul></td>
               </tr>
               <tr v-if="reference.user_added">
                 <th>{{ $t("reference.userAdded") }}</th>
@@ -178,9 +192,28 @@ export default {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_language
         : this.reference.reference_language_en;
+    },
+    parseLocalities() {
+      const localityNames = this.reference.localities.split(";");
+      const localityIds = this.reference.locality_ids.split(";");
+
+      return localityIds.map((id, index) => {
+        return {
+          id: id,
+          name: localityNames[index]
+        };
+      });
+    },
+    parseKeywords() {
+      return this.reference.keywords.split(";").filter(keyword => {
+        return keyword !== " ";
+      });
     }
   },
   methods: {
+    localityURL(id) {
+      return `https://geocollections.info/locality/${id}`;
+    },
     getReferenceLibraries() {
       return fetchReferenceLibraries({
         search: {

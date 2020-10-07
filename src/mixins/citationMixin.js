@@ -19,10 +19,10 @@ const citationMixin = {
     };
   },
   computed: {
-    ...mapState("references", ["citationTemplate"])
+    ...mapState("settings", ["citationTemplate"])
   },
   methods: {
-    ...mapActions("references", ["changeCitationTemplate"]),
+    ...mapActions("settings", ["changeCitationTemplate"]),
     changeTemplate(event) {
       this.changeCitationTemplate(event);
     },
@@ -42,23 +42,23 @@ const citationMixin = {
 
       return authors;
     },
-    citation(reference) {
+    citation(obj) {
       const data = {
-        id: reference.id,
+        id: obj.id,
         type: "article-journal",
-        title: reference.title,
-        DOI: reference.doi,
-        author: this.parseNames(reference.author),
+        title: obj.title,
+        DOI: obj.doi,
+        author: this.parseNames(obj.author),
         issued: [
           {
-            "date-parts": [reference.year]
+            "date-parts": [obj.year]
           }
         ],
-        "container-title": reference.book ?? reference.journal_name,
-        volume: reference.volume,
-        publisher: reference.publisher,
-        page: reference.pages,
-        URL: reference.url
+        "container-title": obj.book ?? obj.journal_name,
+        volume: obj.volume,
+        publisher: obj.publisher,
+        page: obj.pages,
+        URL: obj.url
       };
 
       return Cite(data).format("bibliography", {

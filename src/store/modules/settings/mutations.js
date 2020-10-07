@@ -2,6 +2,9 @@
 const mutations = {
   UPDATE_LANGUAGE(state, payload) {
     state.language = payload;
+  },
+  CHANGE_CITATION_TEMPLATE(state, payload) {
+    state.citationTemplate = payload
   }
 };
 

@@ -6,7 +6,7 @@
         <v-progress-linear indeterminate color="primary"></v-progress-linear>
       </template>
 
-      <v-card-title class="d-print-none pb-2">
+      <v-card-title class="d-print-none pt-1 pb-0">
         <v-icon class="mr-2" color="#191414" large>fas fa-list</v-icon>
         <span v-if="isLoading">{{ $t("common.loading") }}</span>
         <span v-else id="table-title">

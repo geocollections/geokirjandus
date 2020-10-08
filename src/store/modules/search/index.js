@@ -10,19 +10,7 @@ const state = {
     id: "search",
     value: null,
     type: "text",
-    lookUpType: "contains",
-    fields: [
-      "year",
-      "author",
-      "title",
-      "journal__journal_name",
-      "journal_name_short",
-      "book",
-      "abstract",
-      "remarks",
-      "keywords",
-      "user_added"
-    ]
+    lookUpType: "contains"
   },
   advancedSearch: {
     byIds: {

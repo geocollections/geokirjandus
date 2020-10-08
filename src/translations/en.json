@@ -1,5 +1,6 @@
 {
   "title": "e-maapõu",
+  "subtitle": "Estonian geological literature register",
   "pagination": "{num} results",
   "messages": {
     "langChange": "Language changed"

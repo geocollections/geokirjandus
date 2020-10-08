@@ -1,5 +1,6 @@
 {
   "title": "e-maapõu",
+  "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
   "messages": {
     "langChange": "Keel vahetatud"

@@ -6,27 +6,25 @@
         :to="{ path: '/reference/' + reference.id }"
         :title="$t('reference.viewReference')"
       >
-        <span v-html="citation" />
+        <reference-citation :reference="reference" />
       </router-link>
       <reference-links :item="reference" />
     </div>
 
-    <div class="d-none d-print-block" v-html="citation"></div>
+    <reference-citation class="d-none d-print-block" :reference="reference" />
   </div>
 </template>
 
 <script>
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
+import ReferenceCitation from "@/components/reference/ReferenceCitation";
 export default {
   name: "ReferenceItem",
-  components: { ReferenceLinks },
+  components: { ReferenceCitation, ReferenceLinks },
   props: {
     reference: {
       type: Object,
       required: true
-    },
-    citation: {
-      type: String
     }
   }
 };

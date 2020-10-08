@@ -36,11 +36,13 @@
       <v-card-text>
         <!--  TODO: Add URL  -->
         <div>
-          {{
-            `${library.author} (${library.year}) ${getTitle}. ${$t(
-              "common.visited"
-            )}: ${formatDate(Date.now())}`
-          }}
+<!--          {{-->
+<!--            `${library.author} (${library.year}) ${getTitle}. ${$t(-->
+<!--              "common.visited"-->
+<!--            )}: ${formatDate(Date.now())}`-->
+<!--          }}-->
+
+          <library-citation :library="library"/>
         </div>
       </v-card-text>
       <v-card-subtitle v-if="library.abstract">
@@ -70,14 +72,15 @@
 
 <script>
 import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
-import ReferenceItem from "@/components/reference/ReferenceItem";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import { mapState, mapActions } from "vuex";
 import dateMixin from "@/mixins/dateMixin";
+import citationMixin from "@/mixins/citationMixin";
+import LibraryCitation from "@/components/library/LibraryCitation";
 
 export default {
   name: "Library",
-  components: { ReferenceViewer },
+  components: {LibraryCitation, ReferenceViewer },
   props: {
     search: {
       type: Object
@@ -94,7 +97,7 @@ export default {
       isLoading: true
     };
   },
-  mixins: [dateMixin],
+  mixins: [dateMixin, citationMixin],
   computed: {
     getTitle() {
       if (this.$i18n.locale === "ee") {
@@ -133,6 +136,7 @@ export default {
       this.isLoading = false;
     });
   },
+
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     getDoiUrl(doi) {

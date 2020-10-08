@@ -1,6 +1,6 @@
 import Cite from "citation-js";
 import templateStyles from "@/assets/templateStyles.json";
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 
 // Add custom template styles to Cite style configuration
 const styleConfig = Cite.plugins.config.get("@csl");
@@ -42,29 +42,12 @@ const citationMixin = {
 
       return authors;
     },
-    citation(obj) {
-      const data = {
-        id: obj.id,
-        type: "article-journal",
-        title: obj.title,
-        DOI: obj.doi,
-        author: this.parseNames(obj.author),
-        issued: [
-          {
-            "date-parts": [obj.year]
-          }
-        ],
-        "container-title": obj.book ?? obj.journal_name,
-        volume: obj.volume,
-        publisher: obj.publisher,
-        page: obj.pages,
-        URL: obj.url
-      };
-
-      return Cite(data).format("bibliography", {
+    citation(clsJson, append = null) {
+      return Cite(clsJson).format("bibliography", {
         format: "html",
         template: this.citationTemplate,
-        lang: "en-US"
+        lang: "en-US",
+        append: append
       });
     }
   }

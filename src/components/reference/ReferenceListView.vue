@@ -5,7 +5,6 @@
       <reference-item
         class="my-2"
         :reference="entity"
-        :citation="citation(entity)"
       ></reference-item>
     </v-card-text>
   </div>
@@ -13,7 +12,6 @@
 
 <script>
 import ReferenceItem from "@/components/reference/ReferenceItem";
-import citationMixin from "@/mixins/citationMixin";
 
 export default {
   name: "ReferenceListView",
@@ -22,7 +20,6 @@ export default {
     data: {
       type: Array
     }
-  },
-  mixins: [citationMixin]
+  }
 };
 </script>

@@ -20,7 +20,7 @@
     <v-row class="d-flex justify-center ">
       <v-col cols="6">
         <v-card>
-          <v-card-title>Viimati lisatud</v-card-title>
+          <v-card-title>{{ $t("common.newest") }}</v-card-title>
           <v-expand-transition>
             <reference-list-view
               v-if="references"

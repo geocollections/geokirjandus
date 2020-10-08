@@ -34,16 +34,7 @@
         </h2>
       </v-card-subtitle>
       <v-card-text>
-        <!--  TODO: Add URL  -->
-        <div>
-<!--          {{-->
-<!--            `${library.author} (${library.year}) ${getTitle}. ${$t(-->
-<!--              "common.visited"-->
-<!--            )}: ${formatDate(Date.now())}`-->
-<!--          }}-->
-
-          <library-citation :library="library"/>
-        </div>
+        <library-citation :library="library" />
       </v-card-text>
       <v-card-subtitle v-if="library.abstract">
         <h2>
@@ -59,13 +50,11 @@
           <b>{{ $t("common.libraryReferences") }}</b>
         </h2>
       </v-card-subtitle>
-      <v-card-actions>
-        <reference-viewer
-          :search="search"
-          :advancedSearch="getAdvancedSearch"
-          :show-libraries="false"
-        ></reference-viewer>
-      </v-card-actions>
+      <reference-viewer
+        :search="search"
+        :advancedSearch="getAdvancedSearch"
+        :show-libraries="false"
+      ></reference-viewer>
     </v-card>
   </v-container>
 </template>
@@ -80,7 +69,7 @@ import LibraryCitation from "@/components/library/LibraryCitation";
 
 export default {
   name: "Library",
-  components: {LibraryCitation, ReferenceViewer },
+  components: { LibraryCitation, ReferenceViewer },
   props: {
     search: {
       type: Object

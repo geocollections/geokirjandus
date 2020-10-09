@@ -162,7 +162,7 @@
             <citation-select />
           </div>
         </div>
-        <div v-html="citation(reference)"></div>
+        <reference-citation :reference="reference" :only-text="true"/>
       </v-card-text>
       <v-card-text v-if="reference.attachment__filename || reference.url">
         <h3 class="pb-3">{{ $t("common.links") }}</h3>
@@ -186,10 +186,11 @@ import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
 import CitationSelect from "@/components/CitationSelect";
+import ReferenceCitation from "@/components/reference/ReferenceCitation";
 
 export default {
   name: "Reference",
-  components: {CitationSelect},
+  components: {ReferenceCitation, CitationSelect},
   data() {
     return {
       id: this.$route.params.id,
@@ -207,7 +208,7 @@ export default {
       }
     });
   },
-  mixins: [dateMixin, citationMixin],
+  mixins: [dateMixin],
   computed: {
     getReferenceType() {
       return this.$i18n.locale === "ee"

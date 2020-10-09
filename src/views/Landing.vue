@@ -14,7 +14,7 @@
         >
         </v-text-field>
         <v-btn class="mr-3" @click="search()">{{ $t("common.search") }}</v-btn>
-        <v-btn to="/reference">View all references</v-btn>
+        <v-btn to="/reference">{{$t("common.viewReferences")}}</v-btn>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center ">

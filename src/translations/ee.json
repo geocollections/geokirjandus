@@ -34,7 +34,8 @@
     "loading": "Otsin",
     "citationStyle": "Viitamise stiil",
     "citation": "Viide",
-    "newest": "Viimati lisatud"
+    "newest": "Viimati lisatud",
+    "viewReferences": "Vaate kirjandust"
   },
   "reference": {
     "id": "ID",

@@ -168,9 +168,6 @@ export default {
       type: String,
       default: null
     },
-    parameters: {
-      type: Object
-    },
     exportButtons: {
       type: Boolean,
       default: true

@@ -17,7 +17,7 @@ export default {
   mixins: [citationMixin, dateMixin],
   computed: {
     append() {
-      return `${this.$t("common.visited")} ${this.formatDate(Date.now())}`;
+      return ` ${this.$t("common.visited")} ${this.formatDate(Date.now())}`;
     },
     getCslJson() {
       return {

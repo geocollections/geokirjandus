@@ -6,7 +6,6 @@
           :module="$route.meta.object"
           :data="result"
           :count="count"
-          :parameters="parameters"
           :page="page"
           :is-loading="isLoading"
           :paginate-by="paginateBy"
@@ -41,7 +40,7 @@
                   </v-chip>
                   <v-chip
                     v-if="librariesCount > libraryPage * librariesBy"
-                    @click="getLibraries"
+                    @click="getNextLibraries"
                     >{{
                       `+${librariesCount - libraryPage * librariesBy}`
                     }}</v-chip
@@ -67,7 +66,7 @@
             {{ formatDate(item.date_changed) }}
           </template>
           <template v-slot:item.links="{ item }">
-            <reference-links :item="item"/>
+            <reference-links :item="item" />
           </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">
@@ -184,34 +183,40 @@ export default {
     };
   },
   watch: {
-    parameters: {
-      handler() {
-        this.fetch();
-      },
+    referenceParameters: {
+      handler: debounce(function() {
+        this.getReferences();
+      }, 300),
+      deep: true
+    },
+    libraryParameters: {
+      handler: debounce(function() {
+        this.getLibraries(this.libraryPage);
+      }, 300),
       deep: true
     },
     page: {
       handler() {
-        this.fetch();
+        this.getReferences();
       },
       immediate: true,
       deep: true
     },
     paginateBy: {
       handler() {
-        this.fetch();
+        this.getReferences();
       },
       deep: true
     },
     sortBy: {
       handler() {
-        this.fetch();
+        this.getReferences();
       },
       deep: true
     },
     sortDesc: {
       handler() {
-        this.fetch();
+        this.getReferences();
       },
       deep: true
     },
@@ -238,8 +243,16 @@ export default {
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
     ...mapState("references", ["result", "count"]),
-    parameters() {
+    referenceParameters() {
       return { ...this.advancedSearch.byIds, search: this.search };
+    },
+    libraryParameters() {
+      return {
+        search: this.search,
+        title: this.advancedSearch.byIds.title,
+        year: this.advancedSearch.byIds.year,
+        author: this.advancedSearch.byIds.author
+      };
     },
     fields() {
       return this.advancedSearch.allIds.map(id => {
@@ -267,31 +280,17 @@ export default {
       "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
-    getLibraries() {
+    getNextLibraries() {
       this.libraryPage++;
 
-      const libraryParams = {
-        search: this.search,
-        page: this.libraryPage,
-        paginateBy: this.librariesBy,
-        advancedSearch: {
-          author: this.advancedSearch.byIds["author"],
-          year: this.advancedSearch.byIds["year"],
-          title: this.advancedSearch.byIds["title"]
-        }
-      };
-
-      fetchLibraries(libraryParams).then(res => {
-        this.libraries = [...this.libraries, ...res.results];
-        this.librariesCount = res.count;
-      });
+      this.getLibraries(this.libraryPage);
     },
     detailView(item) {
       this.$router.push(`/reference/${item.id}`);
     },
     setURLParameters() {
       let q = Object.fromEntries(
-        Object.entries(this.parameters)
+        Object.entries(this.referenceParameters)
           .filter(([k, v]) => {
             if (!v.hidden) {
               switch (v.type) {
@@ -338,7 +337,24 @@ export default {
       }
       this.$router.replace({ query: q }).catch(() => {});
     },
-    fetch: debounce(function() {
+    getLibraries(page = 1) {
+      const libraryParams = {
+        search: this.search,
+        page: page,
+        paginateBy: this.librariesBy,
+        advancedSearch: {
+          author: this.advancedSearch.byIds["author"],
+          year: this.advancedSearch.byIds["year"],
+          title: this.advancedSearch.byIds["title"]
+        }
+      };
+
+      fetchLibraries(libraryParams).then(res => {
+        this.libraries = res.results;
+        this.librariesCount = res.count;
+      });
+    },
+    getReferences() {
       this.isLoading = true;
       fetchReferences({
         search: this.search,
@@ -361,23 +377,7 @@ export default {
           this.isLoading = false;
         }
       );
-
-      const libraryParams = {
-        search: this.search,
-        page: this.libraryPage,
-        paginateBy: this.librariesBy,
-        advancedSearch: {
-          author: this.advancedSearch.byIds["author"],
-          year: this.advancedSearch.byIds["year"],
-          title: this.advancedSearch.byIds["title"]
-        }
-      };
-
-      fetchLibraries(libraryParams).then(res => {
-        this.libraries = res.results;
-        this.librariesCount = res.count;
-      });
-    }, 500)
+    }
   }
 };
 </script>

@@ -22,7 +22,7 @@ export default {
   mixins: [citationMixin],
   computed: {
     prepend() {
-      return `<a class="pr-1" href="/reference/${this.reference.id}">[${this.reference.id}]</a>`;
+      return `<a class="pr-1 d-print-none" href="/reference/${this.reference.id}">[${this.reference.id}]</a>`;
     },
     append() {
       const ComponentClass = Vue.extend(ReferenceLinks);

@@ -1,9 +1,12 @@
 <template>
-  <div class="cite" v-html="citation(getCslJson)"></div>
+  <div class="cite" v-html="citation(getCslJson, append, prepend)"></div>
 </template>
 
 <script>
 import citationMixin from "@/mixins/citationMixin";
+import Vue from "vue";
+import ReferenceLinks from "@/components/reference/ReferenceLinks";
+
 export default {
   name: "ReferenceCitation",
   props: {
@@ -14,6 +17,19 @@ export default {
   },
   mixins: [citationMixin],
   computed: {
+    prepend() {
+      return `<a class="pr-1" href="/reference/${this.reference.id}">[${this.reference.id}]</a>`
+    },
+    append() {
+      var ComponentClass = Vue.extend(ReferenceLinks);
+      var instance = new ComponentClass({
+        propsData: {
+          item: this.reference
+        }
+      });
+      instance.$mount();
+      return instance.$el.innerHTML;
+    },
     getCslJson() {
       return {
         id: this.reference.id,

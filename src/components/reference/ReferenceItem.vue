@@ -1,14 +1,9 @@
 <template>
   <div class="referenceItem">
     <div class="pb-1">
-      <router-link
-        class="d-print-none"
-        :to="{ path: '/reference/' + reference.id }"
-        :title="$t('reference.viewReference')"
-      >
+      <div>
         <reference-citation :reference="reference" />
-      </router-link>
-      <reference-links :item="reference" />
+      </div>
     </div>
 
     <reference-citation class="d-none d-print-block" :reference="reference" />
@@ -16,11 +11,10 @@
 </template>
 
 <script>
-import ReferenceLinks from "@/components/reference/ReferenceLinks";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 export default {
   name: "ReferenceItem",
-  components: { ReferenceCitation, ReferenceLinks },
+  components: { ReferenceCitation },
   props: {
     reference: {
       type: Object,

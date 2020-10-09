@@ -42,11 +42,12 @@ const citationMixin = {
 
       return authors;
     },
-    citation(clsJson, append = null) {
+    citation(clsJson, append = null, prepend = null) {
       return Cite(clsJson).format("bibliography", {
         format: "html",
         template: this.citationTemplate,
         lang: "en-US",
+        prepend: prepend,
         append: append
       });
     }

@@ -7,8 +7,8 @@
       x-small
       target="DoiWindow"
       color="blue"
-      class="d-print-none mr-1"
-      @click="openDOI(item.doi)"
+      class="d-print-none ml-1"
+      :href="getDoiUrl(item.doi)"
       ><b>DOI</b>
     </v-chip>
     <v-chip
@@ -18,8 +18,8 @@
       x-small
       v-if="item.attachment__filename"
       target="FileWindow"
-      class="d-print-none mr-1"
-      @click="openPdf(item.attachment__filename)"
+      class="d-print-none ml-1"
+      :href="getFileUrl(item.attachment__filename)"
     >
       <b>PDF</b>
     </v-chip>
@@ -29,7 +29,7 @@
       outlined
       x-small
       color="red"
-      class="d-print-none"
+      class="d-print-none ml-1"
       :href="getUrl(item.url)"
       target="UrlWindow d-print-none"
     >

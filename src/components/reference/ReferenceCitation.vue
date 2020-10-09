@@ -1,5 +1,6 @@
 <template>
-  <div class="cite" v-html="citation(getCslJson, append, prepend)"></div>
+  <div v-if="onlyText" class="cite" v-html="citation(getCslJson)"></div>
+  <div v-else class="cite" v-html="citation(getCslJson, append, prepend)"></div>
 </template>
 
 <script>
@@ -13,16 +14,19 @@ export default {
     reference: {
       type: Object,
       required: true
+    },
+    onlyText: {
+      type: Boolean
     }
   },
   mixins: [citationMixin],
   computed: {
     prepend() {
-      return `<a class="pr-1" href="/reference/${this.reference.id}">[${this.reference.id}]</a>`
+      return `<a class="pr-1" href="/reference/${this.reference.id}">[${this.reference.id}]</a>`;
     },
     append() {
-      var ComponentClass = Vue.extend(ReferenceLinks);
-      var instance = new ComponentClass({
+      const ComponentClass = Vue.extend(ReferenceLinks);
+      const instance = new ComponentClass({
         propsData: {
           item: this.reference
         }

@@ -12,7 +12,7 @@
       ><b>DOI</b>
     </v-chip>
     <v-chip
-      color="green"
+      color="red"
       link
       outlined
       x-small
@@ -28,7 +28,7 @@
       link
       outlined
       x-small
-      color="red"
+      color="green"
       class="d-print-none ml-1"
       :href="getUrl(item.url)"
       target="UrlWindow d-print-none"

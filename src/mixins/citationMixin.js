@@ -28,7 +28,7 @@ const citationMixin = {
       this.changeCitationTemplate(event);
     },
     parseNames(namesStr) {
-      const namesSplitByComma = namesStr.split(",");
+      const namesSplitByComma = namesStr ?? [];
 
       const authors = [];
 

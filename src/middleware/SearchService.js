@@ -72,7 +72,9 @@ function buildSort(sortBy, sortDesc) {
 }
 
 function buildSearchFieldsQuery(search, advancedSearch) {
-  const searchStr = search.value ? `q=${search.value}` : "q=*";
+  const searchStr = search.value
+    ? `q=${encodeURIComponent(search.value)}`
+    : "q=*";
 
   const advancedSearchStr = Object.entries(advancedSearch).reduce(
     (prev, [k, v]) => {

@@ -11,7 +11,7 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-group :value="true">
+      <v-list-group color="light-blue darken-1" :value="true">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -128,10 +128,11 @@
               <v-checkbox
                 dense
                 :label="$t(advancedSearch.byIds[id].label)"
-                class="mt-0 pr-6"
+                class="checkbox mt-0 pr-6"
                 :false-value="null"
                 true-value="1"
                 hide-details
+                color="light-blue darken-1"
                 :input-value="advancedSearch.byIds[id].value"
                 @change="updateCheckbox($event, id)"
               />
@@ -140,7 +141,7 @@
         </v-list-item>
       </v-list-group>
       <v-list-item>
-        <v-btn @click="$emit('reset:parameters')" color="red" dark>
+        <v-btn class="deleteSearch" @click="$emit('reset:parameters')" dark>
           <v-icon left>fas fa-trash</v-icon>
           {{ $t("common.deleteSearch") }}
         </v-btn>
@@ -200,3 +201,10 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="sass">
+@import 'src/sass/variables.sass'
+
+.deleteSearch
+  background-color: $danger !important
+</style>

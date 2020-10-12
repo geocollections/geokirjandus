@@ -11,7 +11,7 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-group color="light-blue darken-1" :value="true">
+      <v-list-group :value="true">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -132,7 +132,6 @@
                 :false-value="null"
                 true-value="1"
                 hide-details
-                color="light-blue darken-1"
                 :input-value="advancedSearch.byIds[id].value"
                 @change="updateCheckbox($event, id)"
               />

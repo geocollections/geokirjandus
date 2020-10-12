@@ -24,8 +24,10 @@
       <v-col cols="6">
         <v-card>
           <v-card-title>{{ $t("common.newest") }}</v-card-title>
+
           <v-expand-transition>
             <reference-list-view
+                class="pb-3"
               v-if="references"
               :data="references"
             ></reference-list-view>

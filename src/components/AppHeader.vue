@@ -1,14 +1,15 @@
 <template>
-  <v-app-bar clipped-left app flat color="primary">
+  <v-app-bar clipped-left app flat class="appBar">
     <v-btn
       v-if="$vuetify.breakpoint.smAndUp"
       @click="$emit('update:showSearch')"
       icon
+      dark
     >
-      <v-icon>fas fa-search</v-icon>
+      <v-icon class="search">fas fa-search</v-icon>
     </v-btn>
     <v-toolbar-title>
-      <a :style="{ color: 'black' }" style="cursor:pointer" @click="home">
+      <a class="title" @click="home">
         {{ $t("title") }}
       </a>
     </v-toolbar-title>
@@ -31,7 +32,7 @@
       <v-list>
         <v-menu transition="slide-y-transition" offset-y bottom right>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn text v-bind="attrs" v-on="on">
+            <v-btn v-bind="attrs" v-on="on">
               {{ $t("common.links") }}
             </v-btn>
           </template>
@@ -82,3 +83,19 @@ export default {
   components: { Links, LangButtons }
 };
 </script>
+
+<style scoped lang="sass">
+@import 'src/sass/variables.sass'
+
+.appBar
+  background-color: $primary-color !important
+  border-color: $primary-color
+
+.title
+  color: whitesmoke !important
+  cursor: pointer
+
+.search
+  color: whitesmoke !important
+
+</style>

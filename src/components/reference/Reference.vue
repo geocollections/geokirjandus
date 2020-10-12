@@ -18,7 +18,7 @@
             <citation-select />
           </div>
         </div>
-        <v-card flat outlined >
+        <v-card flat outlined>
           <div class="pa-4">
             <reference-citation :reference="reference" :only-text="true" />
           </div>
@@ -27,11 +27,11 @@
       <v-card-text v-if="reference.attachment__filename || reference.url">
         <h3 class="pb-3">{{ $t("common.links") }}</h3>
         <v-btn
-            v-if="reference.attachment__filename"
-            class="mr-2"
-            target="_blank"
-            :href="getFileUrl(reference.attachment__filename)"
-        ><v-icon>fas fa-file</v-icon><span class="pl-1">PDF</span>
+          v-if="reference.attachment__filename"
+          class="mr-2"
+          target="_blank"
+          :href="getFileUrl(reference.attachment__filename)"
+          ><v-icon>fas fa-file</v-icon><span class="pl-1">PDF</span>
         </v-btn>
         <v-btn v-if="reference.url" target="_blank" :href="reference.url">
           <v-icon>fas fa-external-link-square-alt</v-icon
@@ -146,7 +146,9 @@
                 <td class="py-4">
                   <ul>
                     <li v-for="(keyword, index) in parseKeywords" :key="index">
-                      <router-link :to="`/?keywords_contains=${keyword}`">
+                      <router-link
+                        :to="`/reference/?keywords_contains=${keyword}`"
+                      >
                         {{ keyword }}
                       </router-link>
                     </li>

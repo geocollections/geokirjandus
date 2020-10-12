@@ -205,11 +205,11 @@ export default {
         this.getReferences();
       }
     },
-    sortBy: {
-      handler() {
-        this.getReferences();
-      }
-    },
+    // sortBy: {
+    //   handler() {
+    //     this.getReferences();
+    //   }
+    // },
     sortDesc: {
       handler() {
         this.getReferences();

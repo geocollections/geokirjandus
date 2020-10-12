@@ -1,7 +1,10 @@
 <template>
   <v-container fluid class="landing pa-0">
     <v-row class="header d-flex justify-center pb-5">
-      <lang-buttons style="position: absolute" class="d-block ma-4" />
+      <span style="position: absolute; right: 0;top: 0" class="d-flex ma-4">
+        <links />
+        <lang-buttons />
+      </span>
       <v-col cols="4" class="text-center">
         <h1 class="white--text">{{ $t("title") }}</h1>
         <p class="white--text">{{ $t("subtitle") }}</p>
@@ -14,7 +17,7 @@
         >
         </v-text-field>
         <v-btn class="mr-3" @click="search()">{{ $t("common.search") }}</v-btn>
-        <v-btn to="/reference">{{$t("common.viewReferences")}}</v-btn>
+        <v-btn to="/reference">{{ $t("common.viewReferences") }}</v-btn>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center ">
@@ -35,11 +38,12 @@
 
 <script>
 import LangButtons from "@/components/LangButtons";
+import Links from "@/components/Links";
 import { fetchReferences } from "@/utils/apiCalls";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 export default {
   name: "Landing",
-  components: { ReferenceListView, LangButtons },
+  components: { ReferenceListView, LangButtons, Links },
   data() {
     return {
       searchStr: "",

@@ -17,26 +17,7 @@
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-menu
-      v-if="$vuetify.breakpoint.smAndUp"
-      transition="slide-y-transition"
-      offset-y
-      bottom
-      right
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn class="mx-3" text dark v-bind="attrs" v-on="on">
-          {{ $t("common.links") }}
-        </v-btn>
-      </template>
-      <v-list>
-        <div v-for="(link, idx) in links" :key="idx">
-          <v-list-item :href="link.url" target="_blank">
-            <v-list-item-title>{{ $t(link.name) }}</v-list-item-title>
-          </v-list-item>
-        </div>
-      </v-list>
-    </v-menu>
+    <links/>
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
     <v-menu
@@ -76,6 +57,7 @@
 
 <script>
 import LangButtons from "@/components/LangButtons";
+import Links from "@/components/Links";
 export default {
   name: "AppHeader",
   data() {
@@ -101,7 +83,7 @@ export default {
       this.$router.push("/").catch(()=>{});
     }
   },
-  components: { LangButtons }
+  components: {Links, LangButtons }
 };
 </script>
 

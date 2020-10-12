@@ -1,5 +1,5 @@
 <template>
-  <div class="table-view-search">
+  <div class="search">
     <v-list class="mt-0">
       <v-list-item>
         <v-list-item-content>
@@ -200,19 +200,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.checkboxes >>> .v-label {
-  margin-bottom: 0;
-}
-
-.card-title--clickable:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.table-view-search >>> .v-text-field__slot input {
-  color: unset;
-  font-weight: bold;
-}
-</style>

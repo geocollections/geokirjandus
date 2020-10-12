@@ -8,16 +8,12 @@
       <v-icon>fas fa-search</v-icon>
     </v-btn>
     <v-toolbar-title>
-      <a
-        :style="{ color: 'black' }"
-        style="cursor:pointer"
-        @click="home"
-      >
+      <a :style="{ color: 'black' }" style="cursor:pointer" @click="home">
         {{ $t("title") }}
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <links/>
+    <links />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
     <v-menu
@@ -80,11 +76,9 @@ export default {
   methods: {
     home() {
       this.$emit("home");
-      this.$router.push("/").catch(()=>{});
+      this.$router.push("/").catch(() => {});
     }
   },
-  components: {Links, LangButtons }
+  components: { Links, LangButtons }
 };
 </script>
-
-<style scoped></style>

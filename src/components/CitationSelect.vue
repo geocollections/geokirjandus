@@ -19,5 +19,3 @@ export default {
   mixins: [citationMixin]
 };
 </script>
-
-<style scoped></style>

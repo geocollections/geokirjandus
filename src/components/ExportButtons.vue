@@ -1,9 +1,17 @@
 <template>
   <v-menu transition="slide-y-transition" offset-y bottom right>
     <template v-slot:activator="{ on }">
-      <v-btn :icon="$vuetify.breakpoint.smAndDown" color="primary" dark v-on="on" :small="small">
+      <v-btn
+        :icon="$vuetify.breakpoint.smAndDown"
+        color="primary"
+        dark
+        v-on="on"
+        :small="small"
+      >
         <v-icon :small="small">fas fa-file-export</v-icon>
-        <span v-if="!$vuetify.breakpoint.smAndDown" class="pl-1">{{ $t("common.export") }}</span>
+        <span v-if="!$vuetify.breakpoint.smAndDown" class="pl-1">{{
+          $t("common.export")
+        }}</span>
       </v-btn>
     </template>
     <v-list color="primary" dark dense>
@@ -286,5 +294,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

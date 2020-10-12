@@ -278,17 +278,6 @@ export default {
 };
 </script>
 <style scoped>
-.radio-buttons >>> .form-group {
-  margin-bottom: unset;
-}
-
-.radio-buttons >>> .v-label {
-  margin-bottom: 0;
-}
-
-.tableHeaderCell {
-  white-space: nowrap;
-}
 .mobile-row >>> .v-data-table__mobile-row {
   height: initial !important;
 }

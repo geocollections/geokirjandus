@@ -257,7 +257,6 @@ export default {
   },
   created() {
     if (this.$route.query) {
-      console.log(this.sort);
       this.setSearchFromURL(this.$route.query);
     }
   },

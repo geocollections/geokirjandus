@@ -65,7 +65,22 @@ export default {
     getReferences() {
       return fetchReferences({
         search: { id: "search", value: this.searchStr },
-        paginateBy: 10
+        paginateBy: 10,
+        page: 1,
+        sortBy: ["date_changed"],
+        sortDesc: [true],
+        advancedSearch: {
+          isEstonianAuthor: {
+            type: "checkbox",
+            value: "1",
+            fields: ["is_estonian_author"]
+          },
+          isEstonianReference: {
+            type: "checkbox",
+            value: "1",
+            fields: ["is_estonian_reference"]
+          }
+        }
       }).then(res => {
         this.references = res.results;
       });

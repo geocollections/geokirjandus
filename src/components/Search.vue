@@ -81,7 +81,7 @@
                     :placeholder="$t(advancedSearch.byIds[id].placeholders[0])"
                     hide-details
                     type="number"
-                    @change="
+                    @input="
                       $emit('update:advancedSearch', {
                         value: [
                           isNaN($event) ? NaN : parseInt($event),
@@ -105,7 +105,7 @@
                     :placeholder="$t(advancedSearch.byIds[id].placeholders[1])"
                     single-line
                     type="number"
-                    @change="
+                    @input="
                       $emit('update:advancedSearch', {
                         value: [
                           advancedSearch.byIds[id].value[0],

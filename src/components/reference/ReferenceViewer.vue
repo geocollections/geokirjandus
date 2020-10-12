@@ -198,27 +198,22 @@ export default {
     page: {
       handler() {
         this.getReferences();
-      },
-      immediate: true,
-      deep: true
+      }
     },
     paginateBy: {
       handler() {
         this.getReferences();
-      },
-      deep: true
+      }
     },
     sortBy: {
       handler() {
         this.getReferences();
-      },
-      deep: true
+      }
     },
     sortDesc: {
       handler() {
         this.getReferences();
-      },
-      deep: true
+      }
     },
     count: {
       handler() {
@@ -262,7 +257,7 @@ export default {
   },
   created() {
     if (this.$route.query) {
-      console.log(this.$route.query);
+      console.log(this.sort);
       this.setSearchFromURL(this.$route.query);
     }
   },
@@ -338,21 +333,23 @@ export default {
       this.$router.replace({ query: q }).catch(() => {});
     },
     getLibraries(page = 1) {
-      const libraryParams = {
-        search: this.search,
-        page: page,
-        paginateBy: this.librariesBy,
-        advancedSearch: {
-          author: this.advancedSearch.byIds["author"],
-          year: this.advancedSearch.byIds["year"],
-          title: this.advancedSearch.byIds["title"]
-        }
-      };
+      if (this.showLibraries) {
+        const libraryParams = {
+          search: this.search,
+          page: page,
+          paginateBy: this.librariesBy,
+          advancedSearch: {
+            author: this.advancedSearch.byIds["author"],
+            year: this.advancedSearch.byIds["year"],
+            title: this.advancedSearch.byIds["title"]
+          }
+        };
 
-      fetchLibraries(libraryParams).then(res => {
-        this.libraries = res.results;
-        this.librariesCount = res.count;
-      });
+        fetchLibraries(libraryParams).then(res => {
+          this.libraries = res.results;
+          this.librariesCount = res.count;
+        });
+      }
     },
     getReferences() {
       this.isLoading = true;

@@ -27,7 +27,7 @@
 
           <v-expand-transition>
             <reference-list-view
-                class="pb-3"
+              class="pb-3"
               v-if="references"
               :data="references"
             ></reference-list-view>

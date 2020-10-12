@@ -82,7 +82,6 @@ export default {
     return {
       id: this.$route.params.id,
       library: null,
-      references: null,
       isLoading: true
     };
   },
@@ -119,11 +118,6 @@ export default {
     this.getLibrary().then(res => {
       this.library = res.results[0];
     });
-
-    this.getLibraryReferences().then(res => {
-      this.references = res.results;
-      this.isLoading = false;
-    });
   },
 
   methods: {
@@ -141,9 +135,6 @@ export default {
 
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
-    },
-    getLibraryReferences() {
-      return fetchLibraryReferences(this.$route.params.id);
     },
     getFileUrl(uuid) {
       return `https://files.geocollections.info/${uuid.substring(

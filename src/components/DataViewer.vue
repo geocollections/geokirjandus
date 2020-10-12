@@ -1,9 +1,9 @@
 <template>
   <div class="data-viewer">
     <!-- DATA TABLE -->
-    <v-card elevation="4" class=" my-1" :loading="isLoading">
+    <v-card elevation="4" class=" my-1" :loading="isLoading" color="#F8FBEF">
       <template v-slot:progress>
-        <v-progress-linear indeterminate color="primary"></v-progress-linear>
+        <v-progress-linear indeterminate color="#F0B67F"></v-progress-linear>
       </template>
 
       <v-card-title class="d-print-none pt-1 pb-0">
@@ -41,7 +41,6 @@
       <slot name="prepend"></slot>
       <v-expand-transition>
         <v-card-text v-if="view === 'table'" class="px-2 py-0">
-          <span class="subheading pl-3">{{ $t("common.fields") }}</span>
 
           <v-select
             class="pa-2"
@@ -49,11 +48,21 @@
             multiple
             dense
             chips
-            outlined
+            :label="$t('common.fields')"
             hide-details
             :items="getSelectItems"
             @change="setHeaders($event)"
           >
+            <template v-slot:selection="{item}">
+              <v-chip
+                outlined
+                dense
+                color="#F0B67F"
+                text-color="black"
+              >
+                {{item.text}}
+              </v-chip>
+            </template>
           </v-select>
         </v-card-text>
       </v-expand-transition>
@@ -61,12 +70,12 @@
         v-if="count > 0"
         class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
       >
+        <!-- TODO: Extract select and pagination ito separate component  -->
         <div class="col-md-3 px-2">
           <v-select
             :value="paginateBy"
             color="primary"
             dense
-            outlined
             :items="paginateByOptionsTranslated"
             item-color="black"
             :label="$t('common.paginateBy')"
@@ -76,7 +85,7 @@
         </div>
         <v-pagination
           :value="page"
-          color="black"
+          color="#F0B67F"
           circle
           prev-icon="fas fa-angle-left"
           next-icon="fas fa-angle-right"
@@ -88,7 +97,11 @@
 
       <!--  LIST VIEW  -->
       <v-expand-transition>
-        <list-view v-if="view === 'list' && count > 0" :module="module">
+        <list-view
+          v-if="view === 'list' && count > 0"
+          :module="module"
+          class="py-2"
+        >
           <template>
             <slot name="list-view" v-bind:data="data"></slot>
           </template>
@@ -109,7 +122,7 @@
         v-on:update:sort-desc="$emit('update:sortDesc', $event)"
         multi-sort
         :header-props="headerProps"
-        class="mobile-row data-viewer-table"
+        class=" data-viewer-table"
       >
         <template
           v-for="(_, slotName) in $scopedSlots"
@@ -127,7 +140,6 @@
             :value="paginateBy"
             color="primary"
             dense
-            outlined
             :items="paginateByOptionsTranslated"
             item-color="black"
             :label="$t('common.paginateBy')"
@@ -137,7 +149,7 @@
         </div>
         <v-pagination
           :value="page"
-          color="black"
+          color="#F0B67F"
           circle
           prev-icon="fas fa-angle-left"
           next-icon="fas fa-angle-right"
@@ -221,7 +233,6 @@ export default {
       view: "list",
       headerProps: {
         sortByText: this.$t("common.sortBy"),
-        outlined: true
       }
     };
   },

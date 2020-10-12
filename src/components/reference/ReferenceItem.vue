@@ -1,6 +1,6 @@
 <template>
   <div class="referenceItem">
-    <div class="pb-1">
+    <div class="pb-1 px-3">
       <reference-citation :reference="reference" />
     </div>
   </div>

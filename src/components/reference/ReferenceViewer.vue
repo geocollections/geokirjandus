@@ -34,12 +34,17 @@
                   <v-chip
                     v-for="library in libraries"
                     :key="library.id"
+                    outlined
+                    color="#F0B67F"
+                    text-color="black"
                     @click="$router.push(`/library/${library.id}`)"
                   >
                     {{ library.title }}
                   </v-chip>
                   <v-chip
                     v-if="librariesCount > libraryPage * librariesBy"
+                    color="#F0B67F"
+                    text-color="black"
                     @click="getNextLibraries"
                     >{{
                       `+${librariesCount - libraryPage * librariesBy}`

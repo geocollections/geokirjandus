@@ -3,7 +3,6 @@
     :value="citationTemplate"
     :items="templates"
     dense
-    outlined
     hide-details
     :label="$t('common.citationStyle')"
     @change="changeTemplate($event)"

@@ -1,6 +1,6 @@
 <template>
-  <v-container v-if="library">
-    <v-card>
+  <v-container>
+    <v-card v-if="library">
       <v-card-actions style="background-color: #F6EDDF">
         <v-col cols="auto" class="py-0 px-2">
           <v-btn large icon @click="$router.go(-1)">
@@ -47,7 +47,7 @@
         <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
         <div v-else v-html="library.abstract_en[0]"></div>
       </v-card-text>
-      <v-card-text class="py-0">
+      <v-card-text class="pb-0">
         <h2>
           <b>{{ $t("common.libraryReferences") }}</b>
         </h2>
@@ -57,6 +57,18 @@
         :advancedSearch="getAdvancedSearch"
         :show-libraries="false"
       ></reference-viewer>
+    </v-card>
+    <v-card v-if="error">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon>fas fa-backspace</v-icon>
+          </v-btn>
+        </v-col>
+      </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ $t("error.libraryId", { text: id }) }}
+      </v-card-title>
     </v-card>
   </v-container>
 </template>
@@ -84,7 +96,8 @@ export default {
     return {
       id: this.$route.params.id,
       library: null,
-      isLoading: true
+      isLoading: true,
+      error: false
     };
   },
   mixins: [dateMixin, citationMixin],
@@ -119,6 +132,11 @@ export default {
     this.resetPage();
     this.getLibrary().then(res => {
       this.library = res.results[0];
+
+      if (this.library === undefined) {
+        this.error = true;
+        return;
+      }
     });
   },
 

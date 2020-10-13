@@ -1,20 +1,20 @@
 <template>
-  <v-container v-if="reference">
-    <v-card>
-      <v-card-title>
-        <v-col cols="auto">
+  <v-container>
+    <v-card v-if="reference">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
           <v-btn large icon @click="$router.go(-1)">
             <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
-        <v-col>
-          <h1>{{ reference.reference }}</h1>
-        </v-col>
+      </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ reference.reference }}
       </v-card-title>
       <v-card-text>
-        <div class="d-flex pb-3">
+        <div class="d-flex pt-3">
           <h3 class="pr-3 d-flex align-center">{{ $t("common.citation") }}</h3>
-          <div class="col-md-2 pa-0">
+          <div class="col-md-3 px-0">
             <citation-select />
           </div>
         </div>
@@ -24,7 +24,10 @@
           </div>
         </v-card>
       </v-card-text>
-      <v-card-text v-if="reference.attachment__filename || reference.url">
+      <v-card-text
+        class="pt-0"
+        v-if="reference.attachment__filename || reference.url"
+      >
         <h3 class="pb-3">{{ $t("common.links") }}</h3>
         <v-btn
           v-if="reference.attachment__filename"
@@ -38,7 +41,7 @@
           ><span class="pl-1">URL</span>
         </v-btn>
       </v-card-text>
-      <v-card-text>
+      <v-card-text class="pt-0">
         <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
         <v-simple-table>
           <template v-slot:default>
@@ -185,6 +188,18 @@
         </div>
       </v-card-text>
     </v-card>
+    <v-card v-if="error">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon>fas fa-backspace</v-icon>
+          </v-btn>
+        </v-col>
+      </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ $t("error.referenceId", { text: id }) }}
+      </v-card-title>
+    </v-card>
   </v-container>
 </template>
 
@@ -202,12 +217,19 @@ export default {
     return {
       id: this.$route.params.id,
       reference: null,
-      libraries: null
+      libraries: null,
+      error: false
     };
   },
   created() {
     this.getReference().then(res => {
       this.reference = res.results[0];
+
+      if (this.reference === undefined) {
+        this.error = true;
+        return;
+      }
+
       if (this.reference.libraries) {
         this.getReferenceLibraries().then(res => {
           this.libraries = res.results;

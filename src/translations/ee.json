@@ -5,6 +5,10 @@
   "messages": {
     "langChange": "Keel vahetatud"
   },
+  "error": {
+    "referenceId": "Ei leidnud kirjandust. ID: {text}",
+    "libraryId": "Ei leidnud kogumikku. ID: {text}"
+  },
   "common": {
     "search": "Otsing",
     "advancedSearch": "Detailotsing",

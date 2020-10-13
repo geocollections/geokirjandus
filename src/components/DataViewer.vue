@@ -41,7 +41,6 @@
       <slot name="prepend"></slot>
       <v-expand-transition>
         <v-card-text v-if="view === 'table'" class="px-2 py-0">
-
           <v-select
             class="pa-2"
             :value="getHeadersShowing"
@@ -53,48 +52,21 @@
             :items="getSelectItems"
             @change="setHeaders($event)"
           >
-            <template v-slot:selection="{item}">
-              <v-chip
-                outlined
-                dense
-                color="#F0B67F"
-                text-color="black"
-              >
-                {{item.text}}
+            <template v-slot:selection="{ item }">
+              <v-chip outlined dense color="#F0B67F" text-color="black">
+                {{ item.text }}
               </v-chip>
             </template>
           </v-select>
         </v-card-text>
       </v-expand-transition>
-      <v-card-actions
-        v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
-      >
-        <!-- TODO: Extract select and pagination ito separate component  -->
-        <div class="col-md-3 px-2">
-          <v-select
-            :value="paginateBy"
-            color="primary"
-            dense
-            :items="paginateByOptionsTranslated"
-            item-color="black"
-            :label="$t('common.paginateBy')"
-            hide-details
-            @change="$emit('update:paginateBy', $event)"
-          />
-        </div>
-        <v-pagination
-          :value="page"
-          color="#F0B67F"
-          circle
-          prev-icon="fas fa-angle-left"
-          next-icon="fas fa-angle-right"
-          :length="Math.ceil(count / paginateBy)"
-          :total-visible="5"
-          @input="$emit('update:page', $event)"
-        />
-      </v-card-actions>
 
+      <view-helper
+        v-on="$listeners"
+        :page="page"
+        :paginate-by="paginateBy"
+        :count="count"
+      />
       <!--  LIST VIEW  -->
       <v-expand-transition>
         <list-view
@@ -131,33 +103,12 @@
           <slot :name="slotName" v-bind="context" />
         </template>
       </v-data-table>
-      <v-card-actions
-        v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
-      >
-        <div class="col-md-3">
-          <v-select
-            :value="paginateBy"
-            color="primary"
-            dense
-            :items="paginateByOptionsTranslated"
-            item-color="black"
-            :label="$t('common.paginateBy')"
-            hide-details
-            @change="$emit('update:paginateBy', $event)"
-          />
-        </div>
-        <v-pagination
-          :value="page"
-          color="#F0B67F"
-          circle
-          prev-icon="fas fa-angle-left"
-          next-icon="fas fa-angle-right"
-          :length="Math.ceil(count / paginateBy)"
-          :total-visible="5"
-          @input="$emit('update:page', $event)"
-        />
-      </v-card-actions>
+      <view-helper
+        v-on="$listeners"
+        :page="page"
+        :paginate-by="paginateBy"
+        :count="count"
+      />
     </v-card>
   </div>
 </template>
@@ -166,8 +117,10 @@
 import ExportButtons from "../components/ExportButtons";
 import ListView from "@/components/ListView";
 import CitationSelect from "@/components/CitationSelect";
+import ViewHelper from "@/components/ViewHelper";
 export default {
-  components: { CitationSelect, ListView, ExportButtons },
+  name: "DataViewer",
+  components: { ViewHelper, CitationSelect, ListView, ExportButtons },
   props: {
     data: {
       type: Array[Object]
@@ -217,26 +170,15 @@ export default {
       type: Number
     }
   },
-  name: "DataViewer",
   data() {
     return {
-      paginateByOptions: [
-        { text: "pagination", value: 10 },
-        { text: "pagination", value: 25 },
-        { text: "pagination", value: 50 },
-        { text: "pagination", value: 100 },
-        { text: "pagination", value: 250 },
-        { text: "pagination", value: 500 },
-        { text: "pagination", value: 1000 }
-      ],
       filterTable: "",
       view: "list",
       headerProps: {
-        sortByText: this.$t("common.sortBy"),
+        sortByText: this.$t("common.sortBy")
       }
     };
   },
-
   computed: {
     getRange() {
       return `${
@@ -266,14 +208,6 @@ export default {
     },
     getSortDesc() {
       return this.sortDesc;
-    },
-    paginateByOptionsTranslated() {
-      return this.paginateByOptions.map(item => {
-        return {
-          ...item,
-          text: this.$t(item.text, { num: item.value })
-        };
-      });
     }
   },
   methods: {

@@ -1,20 +1,24 @@
 <template>
   <v-container v-if="library">
     <v-card>
-      <v-card-actions>
+      <v-card-actions style="background-color: #F6EDDF">
         <v-col cols="auto" class="py-0 px-2">
           <v-btn large icon @click="$router.go(-1)">
             <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
       </v-card-actions>
-      <v-card-title class="pt-0">
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
         {{ getTitle }}
       </v-card-title>
-      <v-card-text v-if="library.author" class="pb-0">
+      <v-card-text
+        style="background-color: #F6EDDF"
+        v-if="library.author"
+        class="pb-0"
+      >
         <h2>{{ library.author }}</h2>
       </v-card-text>
-      <v-card-text class="py-0">
+      <v-card-text style="background-color: #F6EDDF" class="py-0">
         <v-row>
           <v-col cols="auto">
             <b>{{ $t("common.libraryCreated") }}:</b>
@@ -26,7 +30,7 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-text class="pt-0">
+      <v-card-text>
         <h2>
           <b>{{ $t("common.referenceLibrary") }}</b>
         </h2>

@@ -17,7 +17,6 @@
     </div>
     <div style="font-size: 0.8rem" class="ml-md-auto">{{ getRange }}</div>
     <v-pagination
-
       :value="page"
       color="#F0B67F"
       prev-icon="fas fa-angle-left"

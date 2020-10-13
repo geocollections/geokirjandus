@@ -27,7 +27,9 @@
                 class="px-2 py-2"
                 style="background-color: #F6EDDF"
               >
-                <span class="subheading pl-3">{{$t("common.libraries")}}</span>
+                <span class="subheading pl-3">{{
+                  $t("common.libraries")
+                }}</span>
                 <v-chip-group
                   :show-arrows="$vuetify.breakpoint.smAndUp"
                   :column="$vuetify.breakpoint.smAndDown"
@@ -208,7 +210,7 @@ export default {
     },
     paginateBy: {
       handler() {
-        this.resetPage()
+        this.resetPage();
         this.getReferences();
       }
     },

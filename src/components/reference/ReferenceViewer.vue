@@ -27,7 +27,7 @@
                 class="px-2 py-2"
                 style="background-color: #F6EDDF"
               >
-                <span class="subheading pl-3">Libraries</span>
+                <span class="subheading pl-3">{{$t("common.libraries")}}</span>
                 <v-chip-group
                   :show-arrows="$vuetify.breakpoint.smAndUp"
                   :column="$vuetify.breakpoint.smAndDown"

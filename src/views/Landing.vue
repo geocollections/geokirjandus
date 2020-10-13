@@ -17,13 +17,17 @@
         >
         </v-text-field>
         <v-btn class="mr-3" @click="search()">{{ $t("common.search") }}</v-btn>
-        <v-btn to="/reference">{{ $t("common.viewReferences") }}</v-btn>
+        <v-btn dark color="#F0B67F" to="/reference">{{
+          $t("common.viewReferences")
+        }}</v-btn>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center ">
       <v-col cols="6">
         <v-card>
-          <v-card-title>{{ $t("common.newest") }}</v-card-title>
+          <v-card-title style="background-color: #F6EDDF">{{
+            $t("common.newest")
+          }}</v-card-title>
 
           <v-expand-transition>
             <reference-list-view

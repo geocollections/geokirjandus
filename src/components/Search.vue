@@ -1,7 +1,7 @@
 <template>
   <div class="search">
-    <v-list class="mt-0">
-      <v-list-item>
+    <v-list class="mt-0 pa-0">
+      <v-list-item class="pt-0">
         <v-list-item-content>
           <v-text-field
             hide-details

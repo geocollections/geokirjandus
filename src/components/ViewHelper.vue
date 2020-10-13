@@ -15,10 +15,11 @@
         @change="$emit('update:paginateBy', $event)"
       />
     </div>
+    <div style="font-size: 0.8rem" class="ml-md-auto">{{ getRange }}</div>
     <v-pagination
       :value="page"
       color="#F0B67F"
-      circle
+      class="btn"
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"
@@ -66,9 +67,22 @@ export default {
           text: this.$t(item.text, { num: item.value })
         };
       });
+    },
+    getRange() {
+      return `${
+        this.count > 0 ? this.paginateBy * this.page - (this.paginateBy - 1) : 0
+      } - ${
+        this.paginateBy * this.page > this.count
+          ? this.count
+          : this.paginateBy * this.page
+      } (${this.count})`;
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style>
+button {
+  outline: none !important;
+}
+</style>

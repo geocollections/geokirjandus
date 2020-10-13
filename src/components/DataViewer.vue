@@ -6,21 +6,16 @@
         <v-progress-linear indeterminate color="#F0B67F"></v-progress-linear>
       </template>
 
-      <v-card-title class="d-print-none pt-1 pb-0">
-        <v-icon class="mr-2" color="#191414" large>fas fa-list</v-icon>
-        <span v-if="isLoading">{{ $t("common.loading") }}</span>
-        <span v-else id="table-title">
-          <span>{{ $t("common.found") }}</span>
-          <span class="font-weight-bold">{{ ` ${count} ` }}</span>
-          <span>{{ $t("common.records") }}</span>
-        </span>
-        <!--  TODO: Use slot to add inputs to header  -->
-        <div class="ml-auto d-flex col-md-2">
-          <citation-select />
-        </div>
-        <div class="d-flex">
+      <slot name="prepend"></slot>
+      <!--  TODO: Use slot to add inputs to header  -->
+      <v-card-actions
+        class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between pb-0 pt-2"
+      >
+        <div
+          class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"
+        >
           <v-radio-group
-            class="radio-buttons mt-0 align-self-center"
+            class="radio-buttons mt-0 align-self-center mr-auto"
             v-model="view"
             row
             hide-details
@@ -28,21 +23,22 @@
             <v-radio value="list" :label="$t('common.listView')" />
             <v-radio value="table" :label="$t('common.tableView')" />
           </v-radio-group>
-        </div>
-        <!-- EXPORT -->
-        <div v-if="exportButtons">
+
           <export-buttons
             :filename="module"
             :table-data="data"
+            :small="$vuetify.breakpoint.mdAndUp"
             clipboard-class="data-viewer-table"
           />
         </div>
-      </v-card-title>
-      <slot name="prepend"></slot>
+        <div class="col-12 col-md-3 order-md-1 px-2">
+          <citation-select />
+        </div>
+      </v-card-actions>
       <v-expand-transition>
         <v-card-text v-if="view === 'table'" class="px-2 py-0">
           <v-select
-            class="pa-2"
+            class="pa-"
             :value="getHeadersShowing"
             multiple
             dense

@@ -24,7 +24,8 @@
             <v-expand-transition>
               <v-card-text
                 v-if="showLibraries && libraries && libraries.length > 0"
-                class="px-2 pb-0"
+                class="px-2 py-2"
+                style="background-color: #F6EDDF"
               >
                 <span class="subheading pl-3">Libraries</span>
                 <v-chip-group

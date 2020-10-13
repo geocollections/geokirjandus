@@ -64,6 +64,10 @@
         :paginate-by="paginateBy"
         :count="count"
       />
+
+      <v-card-text v-if="count <= 0" class="d-flex justify-center">
+        <h3>{{ $t("error.nothingFound") }}</h3>
+      </v-card-text>
       <!--  LIST VIEW  -->
       <v-expand-transition>
         <list-view

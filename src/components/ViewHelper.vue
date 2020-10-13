@@ -1,8 +1,5 @@
 <template>
-  <v-card-actions
-    v-if="count > 0"
-    class="flex-column flex-md-row justify-md-space-between py-0"
-  >
+  <v-card-actions class="flex-column flex-md-row justify-md-space-between py-0">
     <div class="col-md-3 px-2">
       <v-select
         :value="paginateBy"

@@ -34,6 +34,11 @@
         <v-expand-transition>
           <router-view :search="search" :advancedSearch="advancedSearch" />
         </v-expand-transition>
+        <v-footer
+          padless
+          :style="{ height: $vuetify.breakpoint.mdAndUp ? '100px' : '125px' }"
+        >
+        </v-footer>
       </v-main>
     </div>
     <div v-if="isPrint" class="d-none d-print-block">
@@ -58,7 +63,6 @@ export default {
     AppHeader
   },
   created() {
-
     window.onbeforeprint = () => {
       this.isPrint = true;
     };

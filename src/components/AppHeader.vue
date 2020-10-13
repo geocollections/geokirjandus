@@ -1,42 +1,20 @@
 <template>
-  <v-app-bar clipped-left app flat color="primary">
+  <v-app-bar clipped-left app flat class="appBar">
     <v-btn
       v-if="$vuetify.breakpoint.smAndUp"
       @click="$emit('update:showSearch')"
       icon
+      dark
     >
-      <v-icon>fas fa-search</v-icon>
+      <v-icon class="search">fas fa-search</v-icon>
     </v-btn>
     <v-toolbar-title>
-      <a
-        :style="{ color: 'black' }"
-        style="cursor:pointer"
-        @click="home"
-      >
+      <a class="title" @click="home">
         {{ $t("title") }}
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-menu
-      v-if="$vuetify.breakpoint.smAndUp"
-      transition="slide-y-transition"
-      offset-y
-      bottom
-      right
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text dark v-bind="attrs" v-on="on">
-          {{ $t("common.links") }}
-        </v-btn>
-      </template>
-      <v-list>
-        <div v-for="(link, idx) in links" :key="idx">
-          <v-list-item :href="link.url" target="_blank">
-            <v-list-item-title>{{ $t(link.name) }}</v-list-item-title>
-          </v-list-item>
-        </div>
-      </v-list>
-    </v-menu>
+    <links />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
     <v-menu
@@ -54,7 +32,7 @@
       <v-list>
         <v-menu transition="slide-y-transition" offset-y bottom right>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn text v-bind="attrs" v-on="on">
+            <v-btn v-bind="attrs" v-on="on">
               {{ $t("common.links") }}
             </v-btn>
           </template>
@@ -76,6 +54,7 @@
 
 <script>
 import LangButtons from "@/components/LangButtons";
+import Links from "@/components/Links";
 export default {
   name: "AppHeader",
   data() {
@@ -98,11 +77,25 @@ export default {
   methods: {
     home() {
       this.$emit("home");
-      this.$router.push("/").catch(()=>{});
+      this.$router.push("/").catch(() => {});
     }
   },
-  components: { LangButtons }
+  components: { Links, LangButtons }
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="sass">
+@import 'src/sass/variables.sass'
+
+.appBar
+  background-color: $primary-color !important
+  border-color: $primary-color
+
+.title
+  color: whitesmoke !important
+  cursor: pointer
+
+.search
+  color: whitesmoke !important
+
+</style>

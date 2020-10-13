@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "../views/Main.vue";
+import Landing from "@/views/Landing";
 import Reference from "@/components/reference/Reference";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 
@@ -9,8 +10,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    component: Landing
+  },
+  {
+    path: "/reference",
     component: Home,
-    alias: "/reference",
     meta: {
       object: "reference"
     },

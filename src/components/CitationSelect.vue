@@ -3,7 +3,6 @@
     :value="citationTemplate"
     :items="templates"
     dense
-    outlined
     hide-details
     :label="$t('common.citationStyle')"
     @change="changeTemplate($event)"
@@ -19,5 +18,3 @@ export default {
   mixins: [citationMixin]
 };
 </script>
-
-<style scoped></style>

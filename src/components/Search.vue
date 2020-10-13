@@ -1,7 +1,7 @@
 <template>
-  <div class="table-view-search">
-    <v-list class="mt-0">
-      <v-list-item>
+  <div class="search">
+    <v-list class="mt-0 pa-0">
+      <v-list-item class="pt-0">
         <v-list-item-content>
           <v-text-field
             hide-details
@@ -81,7 +81,7 @@
                     :placeholder="$t(advancedSearch.byIds[id].placeholders[0])"
                     hide-details
                     type="number"
-                    @change="
+                    @input="
                       $emit('update:advancedSearch', {
                         value: [
                           isNaN($event) ? NaN : parseInt($event),
@@ -105,7 +105,7 @@
                     :placeholder="$t(advancedSearch.byIds[id].placeholders[1])"
                     single-line
                     type="number"
-                    @change="
+                    @input="
                       $emit('update:advancedSearch', {
                         value: [
                           advancedSearch.byIds[id].value[0],
@@ -128,7 +128,7 @@
               <v-checkbox
                 dense
                 :label="$t(advancedSearch.byIds[id].label)"
-                class="mt-0 pr-6"
+                class="checkbox mt-0 pr-6"
                 :false-value="null"
                 true-value="1"
                 hide-details
@@ -140,7 +140,7 @@
         </v-list-item>
       </v-list-group>
       <v-list-item>
-        <v-btn @click="$emit('reset:parameters')" color="red" dark>
+        <v-btn class="deleteSearch" @click="$emit('reset:parameters')" dark>
           <v-icon left>fas fa-trash</v-icon>
           {{ $t("common.deleteSearch") }}
         </v-btn>
@@ -201,18 +201,9 @@ export default {
 };
 </script>
 
-<style scoped>
-.checkboxes >>> .v-label {
-  margin-bottom: 0;
-}
+<style scoped lang="sass">
+@import 'src/sass/variables.sass'
 
-.card-title--clickable:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.table-view-search >>> .v-text-field__slot input {
-  color: unset;
-  font-weight: bold;
-}
+.deleteSearch
+  background-color: $danger !important
 </style>

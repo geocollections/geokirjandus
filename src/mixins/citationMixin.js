@@ -1,6 +1,6 @@
 import Cite from "citation-js";
 import templateStyles from "@/assets/templateStyles.json";
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 
 // Add custom template styles to Cite style configuration
 const styleConfig = Cite.plugins.config.get("@csl");
@@ -14,20 +14,21 @@ const citationMixin = {
       templates: [
         { text: "MLA", value: "mla" },
         { text: "IEEE", value: "ieee" },
-        { text: "APA", value: "apa" }
+        { text: "APA", value: "apa" },
+        { text: "Sedimentology", value: "sedimentlology" }
       ]
     };
   },
   computed: {
-    ...mapState("references", ["citationTemplate"])
+    ...mapState("settings", ["citationTemplate"])
   },
   methods: {
-    ...mapActions("references", ["changeCitationTemplate"]),
+    ...mapActions("settings", ["changeCitationTemplate"]),
     changeTemplate(event) {
       this.changeCitationTemplate(event);
     },
     parseNames(namesStr) {
-      const namesSplitByComma = namesStr.split(",");
+      const namesSplitByComma = namesStr ? namesStr.split(",") : [];
 
       const authors = [];
 
@@ -42,29 +43,13 @@ const citationMixin = {
 
       return authors;
     },
-    citation(reference) {
-      const data = {
-        id: reference.id,
-        type: "article-journal",
-        title: reference.title,
-        DOI: reference.doi,
-        author: this.parseNames(reference.author),
-        issued: [
-          {
-            "date-parts": [reference.year]
-          }
-        ],
-        "container-title": reference.book ?? reference.journal_name,
-        volume: reference.volume,
-        publisher: reference.publisher,
-        page: reference.pages,
-        URL: reference.url
-      };
-
-      return Cite(data).format("bibliography", {
+    citation(clsJson, append = null, prepend = null) {
+      return Cite(clsJson).format("bibliography", {
         format: "html",
         template: this.citationTemplate,
-        lang: "en-US"
+        lang: "en-US",
+        prepend: prepend,
+        append: append
       });
     }
   }

@@ -1,22 +1,24 @@
 <template>
-  <v-container v-if="library">
-    <v-card>
-      <v-card-title>
-        <v-col cols="auto">
+  <v-container>
+    <v-card v-if="library">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
           <v-btn large icon @click="$router.go(-1)">
             <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
-        <v-col>
-          <h1>{{ getTitle }}</h1>
-        </v-col>
+      </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ getTitle }}
       </v-card-title>
-      <v-card-subtitle v-if="library.author">
-        <v-col>
-          <h2>{{ library.author }}</h2>
-        </v-col>
-      </v-card-subtitle>
-      <v-card-text>
+      <v-card-text
+        style="background-color: #F6EDDF"
+        v-if="library.author"
+        class="pb-0"
+      >
+        <h2>{{ library.author }}</h2>
+      </v-card-text>
+      <v-card-text style="background-color: #F6EDDF" class="py-0">
         <v-row>
           <v-col cols="auto">
             <b>{{ $t("common.libraryCreated") }}:</b>
@@ -28,56 +30,60 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-subtitle>
-        <h2>
-          <b>{{ $t("common.referenceLibrary") }}</b>
-        </h2>
-      </v-card-subtitle>
       <v-card-text>
-        <!--  TODO: Add URL  -->
-        <div>
-          {{
-            `${library.author} (${library.year}) ${getTitle}. ${$t(
-              "common.visited"
-            )}: ${formatDate(Date.now())}`
-          }}
-        </div>
+        <h2>
+          <b>{{ $t("common.citation") }}</b>
+        </h2>
       </v-card-text>
-      <v-card-subtitle v-if="library.abstract">
+      <v-card-text class="pt-0">
+        <library-citation :library="library" />
+      </v-card-text>
+      <v-card-text v-if="library.abstract" class="pt-0">
         <h2>
           <b>{{ $t("common.summary") }}</b>
         </h2>
-      </v-card-subtitle>
-      <v-card-text v-if="library.abstract">
+      </v-card-text>
+      <v-card-text v-if="library.abstract" class="py-0">
         <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
         <div v-else v-html="library.abstract_en[0]"></div>
       </v-card-text>
-      <v-card-subtitle>
+      <v-card-text class="pb-0">
         <h2>
           <b>{{ $t("common.libraryReferences") }}</b>
         </h2>
-      </v-card-subtitle>
-      <v-card-actions>
-        <reference-viewer
-          :search="search"
-          :advancedSearch="getAdvancedSearch"
-          :show-libraries="false"
-        ></reference-viewer>
+      </v-card-text>
+      <reference-viewer
+        :search="search"
+        :advancedSearch="getAdvancedSearch"
+        :show-libraries="false"
+      ></reference-viewer>
+    </v-card>
+    <v-card v-if="error">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon>fas fa-backspace</v-icon>
+          </v-btn>
+        </v-col>
       </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ $t("error.libraryId", { text: id }) }}
+      </v-card-title>
     </v-card>
   </v-container>
 </template>
 
 <script>
 import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
-import ReferenceItem from "@/components/reference/ReferenceItem";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import { mapState, mapActions } from "vuex";
 import dateMixin from "@/mixins/dateMixin";
+import citationMixin from "@/mixins/citationMixin";
+import LibraryCitation from "@/components/library/LibraryCitation";
 
 export default {
   name: "Library",
-  components: { ReferenceViewer },
+  components: { LibraryCitation, ReferenceViewer },
   props: {
     search: {
       type: Object
@@ -90,11 +96,11 @@ export default {
     return {
       id: this.$route.params.id,
       library: null,
-      references: null,
-      isLoading: true
+      isLoading: true,
+      error: false
     };
   },
-  mixins: [dateMixin],
+  mixins: [dateMixin, citationMixin],
   computed: {
     getTitle() {
       if (this.$i18n.locale === "ee") {
@@ -126,13 +132,14 @@ export default {
     this.resetPage();
     this.getLibrary().then(res => {
       this.library = res.results[0];
-    });
 
-    this.getLibraryReferences().then(res => {
-      this.references = res.results;
-      this.isLoading = false;
+      if (this.library === undefined) {
+        this.error = true;
+        return;
+      }
     });
   },
+
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     getDoiUrl(doi) {
@@ -148,9 +155,6 @@ export default {
 
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
-    },
-    getLibraryReferences() {
-      return fetchLibraryReferences(this.$route.params.id);
     },
     getFileUrl(uuid) {
       return `https://files.geocollections.info/${uuid.substring(

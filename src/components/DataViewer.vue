@@ -1,94 +1,70 @@
 <template>
   <div class="data-viewer">
     <!-- DATA TABLE -->
-    <v-card elevation="4" class=" my-1" :loading="isLoading">
+    <v-card elevation="4" class=" my-1" :loading="isLoading" color="#F8FBEF">
       <template v-slot:progress>
-        <v-progress-linear indeterminate color="primary"></v-progress-linear>
+        <v-progress-linear indeterminate color="#F0B67F"></v-progress-linear>
       </template>
 
-      <v-card-title class="d-print-none pb-2">
-        <v-icon class="mr-2" color="#191414" large>fas fa-list</v-icon>
-        <span v-if="isLoading">{{ $t("common.loading") }}</span>
-        <span v-else id="table-title">
-          <span>{{ $t("common.found") }}</span>
-          <span class="font-weight-bold">{{ ` ${count} ` }}</span>
-          <span>{{ $t("common.records") }}</span>
-        </span>
-        <!--  TODO: Use slot to add inputs to header  -->
-        <div class="ml-auto d-flex col-md-2">
-          <citation-select />
-        </div>
-        <div class="d-flex">
-          <v-radio-group
-            class="radio-buttons mt-0 align-self-center"
-            v-model="view"
-            row
-            hide-details
-          >
+      <slot name="prepend"></slot>
+      <!--  TODO: Use slot to add inputs to header  -->
+      <v-card-actions
+        class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between pb-0 pt-2"
+      >
+        <div
+          class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"
+        >
+          <v-radio-group class="mt-0" v-model="view" row hide-details dense>
             <v-radio value="list" :label="$t('common.listView')" />
             <v-radio value="table" :label="$t('common.tableView')" />
           </v-radio-group>
-        </div>
-        <!-- EXPORT -->
-        <div v-if="exportButtons">
+
           <export-buttons
             :filename="module"
             :table-data="data"
+            :small="$vuetify.breakpoint.mdAndUp"
             clipboard-class="data-viewer-table"
           />
         </div>
-      </v-card-title>
-      <slot name="prepend"></slot>
+        <div class="col-12 col-md-3 order-md-1 px-2">
+          <citation-select />
+        </div>
+      </v-card-actions>
       <v-expand-transition>
-        <v-card-text v-if="view === 'table'" class="px-2 py-0">
-          <span class="subheading pl-3">{{ $t("common.fields") }}</span>
-
+        <v-card-actions v-if="view === 'table'">
           <v-select
-            class="pa-2"
+            class="px-2"
             :value="getHeadersShowing"
             multiple
             dense
             chips
-            outlined
+            :label="$t('common.fields')"
             hide-details
             :items="getSelectItems"
             @change="setHeaders($event)"
           >
+            <template v-slot:selection="{ item }">
+              <v-chip outlined small dense color="#F0B67F" text-color="black">
+                {{ item.text }}
+              </v-chip>
+            </template>
           </v-select>
-        </v-card-text>
+        </v-card-actions>
       </v-expand-transition>
-      <v-card-actions
-        v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
-      >
-        <div class="col-md-3 px-2">
-          <v-select
-            :value="paginateBy"
-            color="primary"
-            dense
-            outlined
-            :items="paginateByOptionsTranslated"
-            item-color="black"
-            :label="$t('common.paginateBy')"
-            hide-details
-            @change="$emit('update:paginateBy', $event)"
-          />
-        </div>
-        <v-pagination
-          :value="page"
-          color="black"
-          circle
-          prev-icon="fas fa-angle-left"
-          next-icon="fas fa-angle-right"
-          :length="Math.ceil(count / paginateBy)"
-          :total-visible="5"
-          @input="$emit('update:page', $event)"
-        />
-      </v-card-actions>
 
+      <view-helper
+        v-on="$listeners"
+        :page="page"
+        :paginate-by="paginateBy"
+        :count="count"
+      />
       <!--  LIST VIEW  -->
       <v-expand-transition>
-        <list-view v-if="view === 'list' && count > 0" :module="module">
+        <list-view
+          v-if="view === 'list' && count > 0"
+          :module="module"
+          class="py-2"
+        >
           <template>
             <slot name="list-view" v-bind:data="data"></slot>
           </template>
@@ -109,7 +85,7 @@
         v-on:update:sort-desc="$emit('update:sortDesc', $event)"
         multi-sort
         :header-props="headerProps"
-        class="mobile-row data-viewer-table"
+        class=" data-viewer-table"
       >
         <template
           v-for="(_, slotName) in $scopedSlots"
@@ -118,34 +94,12 @@
           <slot :name="slotName" v-bind="context" />
         </template>
       </v-data-table>
-      <v-card-actions
-        v-if="count > 0"
-        class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
-      >
-        <div class="col-md-3">
-          <v-select
-            :value="paginateBy"
-            color="primary"
-            dense
-            outlined
-            :items="paginateByOptionsTranslated"
-            item-color="black"
-            :label="$t('common.paginateBy')"
-            hide-details
-            @change="$emit('update:paginateBy', $event)"
-          />
-        </div>
-        <v-pagination
-          :value="page"
-          color="black"
-          circle
-          prev-icon="fas fa-angle-left"
-          next-icon="fas fa-angle-right"
-          :length="Math.ceil(count / paginateBy)"
-          :total-visible="5"
-          @input="$emit('update:page', $event)"
-        />
-      </v-card-actions>
+      <view-helper
+        v-on="$listeners"
+        :page="page"
+        :paginate-by="paginateBy"
+        :count="count"
+      />
     </v-card>
   </div>
 </template>
@@ -154,8 +108,10 @@
 import ExportButtons from "../components/ExportButtons";
 import ListView from "@/components/ListView";
 import CitationSelect from "@/components/CitationSelect";
+import ViewHelper from "@/components/ViewHelper";
 export default {
-  components: { CitationSelect, ListView, ExportButtons },
+  name: "DataViewer",
+  components: { ViewHelper, CitationSelect, ListView, ExportButtons },
   props: {
     data: {
       type: Array[Object]
@@ -167,9 +123,6 @@ export default {
     module: {
       type: String,
       default: null
-    },
-    parameters: {
-      type: Object
     },
     exportButtons: {
       type: Boolean,
@@ -208,27 +161,15 @@ export default {
       type: Number
     }
   },
-  name: "DataViewer",
   data() {
     return {
-      paginateByOptions: [
-        { text: "pagination", value: 10 },
-        { text: "pagination", value: 25 },
-        { text: "pagination", value: 50 },
-        { text: "pagination", value: 100 },
-        { text: "pagination", value: 250 },
-        { text: "pagination", value: 500 },
-        { text: "pagination", value: 1000 }
-      ],
       filterTable: "",
       view: "list",
       headerProps: {
-        sortByText: this.$t("common.sortBy"),
-        outlined: true
+        sortByText: this.$t("common.sortBy")
       }
     };
   },
-
   computed: {
     getRange() {
       return `${
@@ -258,14 +199,6 @@ export default {
     },
     getSortDesc() {
       return this.sortDesc;
-    },
-    paginateByOptionsTranslated() {
-      return this.paginateByOptions.map(item => {
-        return {
-          ...item,
-          text: this.$t(item.text, { num: item.value })
-        };
-      });
     }
   },
   methods: {
@@ -281,17 +214,6 @@ export default {
 };
 </script>
 <style scoped>
-.radio-buttons >>> .form-group {
-  margin-bottom: unset;
-}
-
-.radio-buttons >>> .v-label {
-  margin-bottom: 0;
-}
-
-.tableHeaderCell {
-  white-space: nowrap;
-}
 .mobile-row >>> .v-data-table__mobile-row {
   height: initial !important;
 }

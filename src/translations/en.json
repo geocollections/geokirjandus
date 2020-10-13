@@ -1,8 +1,13 @@
 {
   "title": "e-maapõu",
+  "subtitle": "Estonian geological literature register",
   "pagination": "{num} results",
   "messages": {
     "langChange": "Language changed"
+  },
+  "error": {
+    "referenceId": "Could not find reference. ID: {text}",
+    "libraryId": "Could not find library. ID: {text}"
   },
   "common": {
     "search": "Search",
@@ -32,7 +37,9 @@
     "end": "End",
     "loading": "Loading",
     "citationStyle": "Citation style",
-    "citation": "Citation"
+    "citation": "Citation",
+    "newest": "Newest additions",
+    "viewReferences": "View references"
   },
   "reference": {
     "id": "ID",

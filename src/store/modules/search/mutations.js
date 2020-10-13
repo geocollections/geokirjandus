@@ -73,6 +73,8 @@ const mutations = {
   SET_SEARCH_FROM_URL(state, payload) {
     let resetAdvancedSearchObj = resetAdvancedSearch(state.advancedSearch);
 
+    state.page = 1;
+
     Object.entries(payload).forEach(([k, v]) => {
       const searchParameters = k.split("_");
       const searchFieldName = searchParameters[0];

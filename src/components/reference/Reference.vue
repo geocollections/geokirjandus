@@ -1,17 +1,47 @@
 <template>
-  <v-container v-if="reference">
-    <v-card>
-      <v-card-title>
-        <v-col cols="auto">
+  <v-container>
+    <v-card v-if="reference">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
           <v-btn large icon @click="$router.go(-1)">
             <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
-        <v-col>
-          <h1>{{ reference.reference }}</h1>
-        </v-col>
+      </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ reference.reference }}
       </v-card-title>
       <v-card-text>
+        <div class="d-flex pt-3">
+          <h3 class="pr-3 d-flex align-center">{{ $t("common.citation") }}</h3>
+          <div class="col-md-3 px-0">
+            <citation-select />
+          </div>
+        </div>
+        <v-card flat outlined>
+          <div class="pa-4">
+            <reference-citation :reference="reference" :only-text="true" />
+          </div>
+        </v-card>
+      </v-card-text>
+      <v-card-text
+        class="pt-0"
+        v-if="reference.attachment__filename || reference.url"
+      >
+        <h3 class="pb-3">{{ $t("common.links") }}</h3>
+        <v-btn
+          v-if="reference.attachment__filename"
+          class="mr-2"
+          target="_blank"
+          :href="getFileUrl(reference.attachment__filename)"
+          ><v-icon>fas fa-file</v-icon><span class="pl-1">PDF</span>
+        </v-btn>
+        <v-btn v-if="reference.url" target="_blank" :href="reference.url">
+          <v-icon>fas fa-external-link-square-alt</v-icon
+          ><span class="pl-1">URL</span>
+        </v-btn>
+      </v-card-text>
+      <v-card-text class="pt-0">
         <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
         <v-simple-table>
           <template v-slot:default>
@@ -66,7 +96,7 @@
               </tr>
               <tr v-if="reference.localities">
                 <th>{{ $t("reference.localities") }}</th>
-                <td>
+                <td class="py-4">
                   <ul>
                     <li v-for="locality in parseLocalities" :key="locality.id">
                       <a :href="localityURL(locality.id)" target="_blank">{{
@@ -78,7 +108,7 @@
               </tr>
               <tr v-if="reference.taxa">
                 <th>{{ $t("reference.describedTaxa") }}</th>
-                <td>
+                <td class="py-4">
                   <ul>
                     <li v-for="taxon in parseTaxa" :key="taxon.id">
                       <a :href="taxonURL(taxon.id)" target="_blank">{{
@@ -108,7 +138,7 @@
               </tr>
               <tr v-if="reference.abstract">
                 <th>{{ $t("reference.abstract") }}</th>
-                <td v-html="reference.abstract"></td>
+                <td class="py-4" v-html="reference.abstract"></td>
               </tr>
               <tr v-if="reference.remarks">
                 <th>{{ $t("reference.remarks") }}</th>
@@ -116,10 +146,12 @@
               </tr>
               <tr v-if="reference.keywords">
                 <th>{{ $t("reference.keywords") }}</th>
-                <td>
+                <td class="py-4">
                   <ul>
                     <li v-for="(keyword, index) in parseKeywords" :key="index">
-                      <router-link :to="`/?keywords_contains=${keyword}`">
+                      <router-link
+                        :to="`/reference/?keywords_contains=${keyword}`"
+                      >
                         {{ keyword }}
                       </router-link>
                     </li>
@@ -148,35 +180,25 @@
       </v-card-text>
       <v-card-text v-if="reference.libraries">
         <h3 class="pb-0">{{ $t("reference.libraries") }}</h3>
-        <div v-for="(library, index) in libraries" :key="index">
+        <div class="py-3" v-for="(library, index) in libraries" :key="index">
           <router-link :to="{ path: `/library/${library.id}` }">
             {{ library.title }}
           </router-link>
           <span>{{ ` ${library.author} (${library.year})` }}</span>
         </div>
       </v-card-text>
-      <v-card-text>
-        <div class="d-flex pb-3">
-          <h3 class="pr-3">{{ $t("common.citation") }}</h3>
-          <div class="col-md-2 pa-0">
-            <citation-select />
-          </div>
-        </div>
-        <div v-html="citation(reference)"></div>
-      </v-card-text>
-      <v-card-text v-if="reference.attachment__filename || reference.url">
-        <h3 class="pb-3">{{ $t("common.links") }}</h3>
-        <v-btn
-          v-if="reference.attachment__filename"
-          target="_blank"
-          :href="getFileUrl(reference.attachment__filename)"
-          ><v-icon>fas fa-file</v-icon><span class="pl-1">PDF</span>
-        </v-btn>
-        <v-btn v-if="reference.url" target="_blank" :href="reference.url">
-          <v-icon>fas fa-external-link-square-alt</v-icon
-          ><span class="pl-1">URL</span>
-        </v-btn>
-      </v-card-text>
+    </v-card>
+    <v-card v-if="error">
+      <v-card-actions style="background-color: #F6EDDF">
+        <v-col cols="auto" class="py-0 px-2">
+          <v-btn large icon @click="$router.go(-1)">
+            <v-icon>fas fa-backspace</v-icon>
+          </v-btn>
+        </v-col>
+      </v-card-actions>
+      <v-card-title style="background-color: #F6EDDF" class="pt-0">
+        {{ $t("error.referenceId", { text: id }) }}
+      </v-card-title>
     </v-card>
   </v-container>
 </template>
@@ -184,22 +206,29 @@
 <script>
 import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
-import citationMixin from "@/mixins/citationMixin";
 import CitationSelect from "@/components/CitationSelect";
+import ReferenceCitation from "@/components/reference/ReferenceCitation";
 
 export default {
   name: "Reference",
-  components: {CitationSelect},
+  components: { ReferenceCitation, CitationSelect },
   data() {
     return {
       id: this.$route.params.id,
       reference: null,
-      libraries: null
+      libraries: null,
+      error: false
     };
   },
   created() {
     this.getReference().then(res => {
       this.reference = res.results[0];
+
+      if (this.reference === undefined) {
+        this.error = true;
+        return;
+      }
+
       if (this.reference.libraries) {
         this.getReferenceLibraries().then(res => {
           this.libraries = res.results;
@@ -207,7 +236,7 @@ export default {
       }
     });
   },
-  mixins: [dateMixin, citationMixin],
+  mixins: [dateMixin],
   computed: {
     getReferenceType() {
       return this.$i18n.locale === "ee"

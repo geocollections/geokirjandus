@@ -44,7 +44,6 @@ export default {
 </script>
 
 <style scoped>
-
 .fabContainer {
   position: fixed;
   bottom: 0;

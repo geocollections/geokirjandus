@@ -1,7 +1,8 @@
 import mutations from "./mutations";
 import actions from "./actions";
 const state = {
-  language: "ee"
+  language: "ee",
+  citationTemplate: "apa"
 };
 
 export default {

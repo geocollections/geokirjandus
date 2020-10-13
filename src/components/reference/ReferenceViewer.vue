@@ -1,12 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
+      <v-col class="py-0">
         <data-viewer
           :module="$route.meta.object"
           :data="result"
           :count="count"
-          :parameters="parameters"
           :page="page"
           :is-loading="isLoading"
           :paginate-by="paginateBy"
@@ -25,9 +24,10 @@
             <v-expand-transition>
               <v-card-text
                 v-if="showLibraries && libraries && libraries.length > 0"
-                class="px-2 pb-0"
+                class="px-2 py-2"
+                style="background-color: #F6EDDF"
               >
-                <span class="subheading pl-3">Libraries</span>
+                <span class="subheading pl-3">{{$t("common.libraries")}}</span>
                 <v-chip-group
                   :show-arrows="$vuetify.breakpoint.smAndUp"
                   :column="$vuetify.breakpoint.smAndDown"
@@ -35,13 +35,18 @@
                   <v-chip
                     v-for="library in libraries"
                     :key="library.id"
+                    outlined
+                    color="#F0B67F"
+                    text-color="black"
                     @click="$router.push(`/library/${library.id}`)"
                   >
                     {{ library.title }}
                   </v-chip>
                   <v-chip
                     v-if="librariesCount > libraryPage * librariesBy"
-                    @click="getLibraries"
+                    color="#F0B67F"
+                    text-color="black"
+                    @click="getNextLibraries"
                     >{{
                       `+${librariesCount - libraryPage * librariesBy}`
                     }}</v-chip
@@ -67,7 +72,7 @@
             {{ formatDate(item.date_changed) }}
           </template>
           <template v-slot:item.links="{ item }">
-            <reference-links :item="item"/>
+            <reference-links :item="item" />
           </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">
@@ -184,36 +189,37 @@ export default {
     };
   },
   watch: {
-    parameters: {
-      handler() {
-        this.fetch();
-      },
+    referenceParameters: {
+      handler: debounce(function() {
+        this.getReferences();
+      }, 300),
+      deep: true
+    },
+    libraryParameters: {
+      handler: debounce(function() {
+        this.getLibraries(this.libraryPage);
+      }, 300),
       deep: true
     },
     page: {
       handler() {
-        this.fetch();
-      },
-      immediate: true,
-      deep: true
+        this.getReferences();
+      }
     },
     paginateBy: {
       handler() {
-        this.fetch();
-      },
-      deep: true
+        this.getReferences();
+      }
     },
-    sortBy: {
-      handler() {
-        this.fetch();
-      },
-      deep: true
-    },
+    // sortBy: {
+    //   handler() {
+    //     this.getReferences();
+    //   }
+    // },
     sortDesc: {
       handler() {
-        this.fetch();
-      },
-      deep: true
+        this.getReferences();
+      }
     },
     count: {
       handler() {
@@ -238,8 +244,16 @@ export default {
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
     ...mapState("references", ["result", "count"]),
-    parameters() {
+    referenceParameters() {
       return { ...this.advancedSearch.byIds, search: this.search };
+    },
+    libraryParameters() {
+      return {
+        search: this.search,
+        title: this.advancedSearch.byIds.title,
+        year: this.advancedSearch.byIds.year,
+        author: this.advancedSearch.byIds.author
+      };
     },
     fields() {
       return this.advancedSearch.allIds.map(id => {
@@ -249,7 +263,6 @@ export default {
   },
   created() {
     if (this.$route.query) {
-      console.log(this.$route.query);
       this.setSearchFromURL(this.$route.query);
     }
   },
@@ -267,31 +280,17 @@ export default {
       "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
-    getLibraries() {
+    getNextLibraries() {
       this.libraryPage++;
 
-      const libraryParams = {
-        search: this.search,
-        page: this.libraryPage,
-        paginateBy: this.librariesBy,
-        advancedSearch: {
-          author: this.advancedSearch.byIds["author"],
-          year: this.advancedSearch.byIds["year"],
-          title: this.advancedSearch.byIds["title"]
-        }
-      };
-
-      fetchLibraries(libraryParams).then(res => {
-        this.libraries = [...this.libraries, ...res.results];
-        this.librariesCount = res.count;
-      });
+      this.getLibraries(this.libraryPage);
     },
     detailView(item) {
       this.$router.push(`/reference/${item.id}`);
     },
     setURLParameters() {
       let q = Object.fromEntries(
-        Object.entries(this.parameters)
+        Object.entries(this.referenceParameters)
           .filter(([k, v]) => {
             if (!v.hidden) {
               switch (v.type) {
@@ -338,7 +337,26 @@ export default {
       }
       this.$router.replace({ query: q }).catch(() => {});
     },
-    fetch: debounce(function() {
+    getLibraries(page = 1) {
+      if (this.showLibraries) {
+        const libraryParams = {
+          search: this.search,
+          page: page,
+          paginateBy: this.librariesBy,
+          advancedSearch: {
+            author: this.advancedSearch.byIds["author"],
+            year: this.advancedSearch.byIds["year"],
+            title: this.advancedSearch.byIds["title"]
+          }
+        };
+
+        fetchLibraries(libraryParams).then(res => {
+          this.libraries = res.results;
+          this.librariesCount = res.count;
+        });
+      }
+    },
+    getReferences() {
       this.isLoading = true;
       fetchReferences({
         search: this.search,
@@ -361,25 +379,7 @@ export default {
           this.isLoading = false;
         }
       );
-
-      const libraryParams = {
-        search: this.search,
-        page: this.libraryPage,
-        paginateBy: this.librariesBy,
-        advancedSearch: {
-          author: this.advancedSearch.byIds["author"],
-          year: this.advancedSearch.byIds["year"],
-          title: this.advancedSearch.byIds["title"]
-        }
-      };
-
-      fetchLibraries(libraryParams).then(res => {
-        this.libraries = res.results;
-        this.librariesCount = res.count;
-      });
-    }, 500)
+    }
   }
 };
 </script>
-
-<style scoped></style>

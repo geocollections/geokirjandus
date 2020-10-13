@@ -1,7 +1,7 @@
 <template>
   <v-card-actions
     v-if="count > 0"
-    class="d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-0"
+    class="flex-column flex-md-row justify-md-space-between py-0"
   >
     <div class="col-md-3 px-2">
       <v-select
@@ -17,9 +17,9 @@
     </div>
     <div style="font-size: 0.8rem" class="ml-md-auto">{{ getRange }}</div>
     <v-pagination
+
       :value="page"
       color="#F0B67F"
-      class="btn"
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"

@@ -32,7 +32,7 @@
       </v-card-text>
       <v-card-text>
         <h2>
-          <b>{{ $t("common.referenceLibrary") }}</b>
+          <b>{{ $t("common.citation") }}</b>
         </h2>
       </v-card-text>
       <v-card-text class="pt-0">

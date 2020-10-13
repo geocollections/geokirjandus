@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
+      <v-col class="py-0">
         <data-viewer
           :module="$route.meta.object"
           :data="result"

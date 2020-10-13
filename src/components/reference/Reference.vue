@@ -206,7 +206,6 @@
 <script>
 import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
-import citationMixin from "@/mixins/citationMixin";
 import CitationSelect from "@/components/CitationSelect";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 

@@ -35,6 +35,7 @@
           <router-view :search="search" :advancedSearch="advancedSearch" />
         </v-expand-transition>
         <v-footer
+          color="white"
           padless
           :style="{ height: $vuetify.breakpoint.mdAndUp ? '100px' : '125px' }"
         >

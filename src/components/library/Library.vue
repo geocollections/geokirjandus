@@ -1,22 +1,20 @@
 <template>
   <v-container v-if="library">
     <v-card>
-      <v-card-title>
-        <v-col cols="auto">
+      <v-card-actions>
+        <v-col cols="auto" class="py-0 px-2">
           <v-btn large icon @click="$router.go(-1)">
             <v-icon>fas fa-backspace</v-icon>
           </v-btn>
         </v-col>
-        <v-col>
-          <h1>{{ getTitle }}</h1>
-        </v-col>
+      </v-card-actions>
+      <v-card-title class="pt-0">
+        {{ getTitle }}
       </v-card-title>
-      <v-card-subtitle v-if="library.author">
-        <v-col>
-          <h2>{{ library.author }}</h2>
-        </v-col>
-      </v-card-subtitle>
-      <v-card-text>
+      <v-card-text v-if="library.author" class="pb-0">
+        <h2>{{ library.author }}</h2>
+      </v-card-text>
+      <v-card-text class="py-0">
         <v-row>
           <v-col cols="auto">
             <b>{{ $t("common.libraryCreated") }}:</b>
@@ -28,28 +26,28 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-subtitle>
+      <v-card-text class="pt-0">
         <h2>
           <b>{{ $t("common.referenceLibrary") }}</b>
         </h2>
-      </v-card-subtitle>
-      <v-card-text>
+      </v-card-text>
+      <v-card-text class="pt-0">
         <library-citation :library="library" />
       </v-card-text>
-      <v-card-subtitle v-if="library.abstract">
+      <v-card-text v-if="library.abstract" class="pt-0">
         <h2>
           <b>{{ $t("common.summary") }}</b>
         </h2>
-      </v-card-subtitle>
-      <v-card-text v-if="library.abstract">
+      </v-card-text>
+      <v-card-text v-if="library.abstract" class="py-0">
         <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
         <div v-else v-html="library.abstract_en[0]"></div>
       </v-card-text>
-      <v-card-subtitle>
+      <v-card-text class="py-0">
         <h2>
           <b>{{ $t("common.libraryReferences") }}</b>
         </h2>
-      </v-card-subtitle>
+      </v-card-text>
       <reference-viewer
         :search="search"
         :advancedSearch="getAdvancedSearch"

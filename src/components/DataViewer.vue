@@ -14,12 +14,7 @@
         <div
           class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"
         >
-          <v-radio-group
-            class="radio-buttons mt-0 align-self-center mr-auto"
-            v-model="view"
-            row
-            hide-details
-          >
+          <v-radio-group class="mt-0" v-model="view" row hide-details dense>
             <v-radio value="list" :label="$t('common.listView')" />
             <v-radio value="table" :label="$t('common.tableView')" />
           </v-radio-group>
@@ -36,9 +31,9 @@
         </div>
       </v-card-actions>
       <v-expand-transition>
-        <v-card-text v-if="view === 'table'" class="px-2 py-0">
+        <v-card-actions v-if="view === 'table'">
           <v-select
-            class="pa-"
+            class="px-2"
             :value="getHeadersShowing"
             multiple
             dense
@@ -49,12 +44,12 @@
             @change="setHeaders($event)"
           >
             <template v-slot:selection="{ item }">
-              <v-chip outlined dense color="#F0B67F" text-color="black">
+              <v-chip outlined small dense color="#F0B67F" text-color="black">
                 {{ item.text }}
               </v-chip>
             </template>
           </v-select>
-        </v-card-text>
+        </v-card-actions>
       </v-expand-transition>
 
       <view-helper

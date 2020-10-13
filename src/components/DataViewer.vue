@@ -14,7 +14,7 @@
         <div
           class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"
         >
-          <v-radio-group class="mt-0" v-model="view" row hide-details dense>
+          <v-radio-group class="mt-0 mr-auto" v-model="view" row hide-details dense>
             <v-radio value="list" :label="$t('common.listView')" />
             <v-radio value="table" :label="$t('common.tableView')" />
           </v-radio-group>

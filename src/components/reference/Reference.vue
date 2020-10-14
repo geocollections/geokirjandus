@@ -41,6 +41,10 @@
           ><span class="pl-1">URL</span>
         </v-btn>
       </v-card-text>
+      <v-card-text v-if="reference.localities">
+        <h3 class="pb-3">{{$t("common.map")}}</h3>
+        <leaflet-map :markers="getMapMarkers" />
+      </v-card-text>
       <v-card-text class="pt-0">
         <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
         <v-simple-table>
@@ -204,19 +208,25 @@
 </template>
 
 <script>
-import { fetchReference, fetchReferenceLibraries } from "@/utils/apiCalls";
+import {
+  fetchReference,
+  fetchReferenceLibraries,
+  fetchReferenceLocalities
+} from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
 import CitationSelect from "@/components/CitationSelect";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
+import LeafletMap from "@/components/LeafletMap";
 
 export default {
   name: "Reference",
-  components: { ReferenceCitation, CitationSelect },
+  components: { LeafletMap, ReferenceCitation, CitationSelect },
   data() {
     return {
       id: this.$route.params.id,
       reference: null,
-      libraries: null,
+      libraries: [],
+      localities: [],
       error: false
     };
   },
@@ -229,6 +239,12 @@ export default {
         return;
       }
 
+      if (this.reference.localities) {
+        this.getReferenceLocalities().then(res => {
+          this.localities = res.results;
+        });
+      }
+
       if (this.reference.libraries) {
         this.getReferenceLibraries().then(res => {
           this.libraries = res.results;
@@ -238,6 +254,17 @@ export default {
   },
   mixins: [dateMixin],
   computed: {
+    getMapMarkers() {
+      return this.localities.map(locality => {
+        return {
+          title:
+            this.$i18n.locale === "ee"
+              ? locality.locality
+              : locality.locality_en,
+          coordinates: [locality.latitude, locality.longitude]
+        };
+      });
+    },
     getReferenceType() {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_type
@@ -287,6 +314,16 @@ export default {
       return fetchReferenceLibraries({
         search: {
           value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
+          type: "text",
+          lookUpType: "contains"
+        }
+      });
+    },
+    getReferenceLocalities() {
+      const localityIdsStr = this.reference.locality_ids.replaceAll(";", "");
+      return fetchReferenceLocalities({
+        search: {
+          value: `id:${localityIdsStr}`,
           type: "text",
           lookUpType: "contains"
         }

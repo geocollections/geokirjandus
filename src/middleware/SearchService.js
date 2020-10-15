@@ -10,8 +10,8 @@ class SearchService {
       let start = (parameters.page - 1) * parameters.paginateBy;
       let sort = buildSort(parameters.sortBy, parameters.sortDesc);
       let searchFields = buildQueryStr(
-        parameters.queryObject,
-        parameters.filterQueryObject ?? {}
+        parameters.search,
+        parameters.advancedSearch ?? {}
       );
       let url = `${API_URL}/${table}/`;
 

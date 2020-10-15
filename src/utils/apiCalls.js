@@ -5,21 +5,11 @@ export const fetchReference = id => {
 };
 
 export const fetchReferences = data => {
-  const parameters = {
-    queryObject: data.search,
-    filterQueryObject: data.advancedSearch
-  };
-
-  return SearchService.search(parameters, "reference");
+  return SearchService.search(data, "reference");
 };
 
 export const fetchReferenceLibraries = data => {
-  const parameters = {
-    queryObject: data.search,
-    filterQueryObject: data.advancedSearch
-  };
-
-  return SearchService.search(parameters, "library");
+  return SearchService.search(data, "library");
 };
 
 export const fetchLibrary = id => {
@@ -27,30 +17,20 @@ export const fetchLibrary = id => {
 };
 
 export const fetchLibraries = data => {
-  const parameters = {
-    queryObject: data.search,
-    filterQueryObject: data.advancedSearch
-  };
-
-  return SearchService.search(parameters, "library");
+  return SearchService.search(data, "library");
 };
 
 export const fetchLibraryReferences = id => {
-  const parameters = {
+  const data = {
     sortBy: ["author"],
     sortDesc: [false],
-    queryObject: {
+    search: {
       value: `libraries:*|${id}|*`
     }
   };
-  return SearchService.search(parameters, "reference");
+  return SearchService.search(data, "reference");
 };
 
 export const fetchReferenceLocalities = data => {
-  const parameters = {
-    queryObject: data.search,
-    filterQueryObject: data.advancedSearch
-  };
-
-  return SearchService.search(parameters, "locality");
+  return SearchService.search(data, "locality");
 };

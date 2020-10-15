@@ -26,6 +26,10 @@ class SearchService {
         urlParameters.push(`sort=${sort}`);
       }
 
+      if (searchParams.fields) {
+        urlParameters.push(`fl=${searchParams.fields.join(" ")}`);
+      }
+
       urlParameters.push(searchFields);
 
       url = `${url}?${urlParameters.join("&")}`;

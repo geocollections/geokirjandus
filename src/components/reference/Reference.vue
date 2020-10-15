@@ -256,11 +256,14 @@ export default {
   computed: {
     getMapMarkers() {
       return this.localities.map(locality => {
+        const localityTitle =  this.$i18n.locale === "ee"
+            ? locality.locality
+            : locality.locality_en
+
         return {
+          popup: `<div>${localityTitle}</div>`,
           title:
-            this.$i18n.locale === "ee"
-              ? locality.locality
-              : locality.locality_en,
+            localityTitle,
           coordinates: [locality.latitude, locality.longitude]
         };
       });

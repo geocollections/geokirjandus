@@ -27,7 +27,9 @@
                 class="px-2 py-2"
                 style="background-color: #F6EDDF"
               >
-                <span class="subheading pl-3">{{$t("common.libraries")}}</span>
+                <span class="subheading pl-3">{{
+                  $t("common.libraries")
+                }}</span>
                 <v-chip-group
                   :show-arrows="$vuetify.breakpoint.smAndUp"
                   :column="$vuetify.breakpoint.smAndDown"
@@ -72,7 +74,7 @@
             {{ formatDate(item.date_changed) }}
           </template>
           <template v-slot:item.links="{ item }">
-            <reference-links :item="item" />
+            <reference-links small :item="item" />
           </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">
@@ -208,6 +210,7 @@ export default {
     },
     paginateBy: {
       handler() {
+        this.resetPage();
         this.getReferences();
       }
     },

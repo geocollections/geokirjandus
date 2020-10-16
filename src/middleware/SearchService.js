@@ -5,26 +5,28 @@ const FACET_QUERY =
   "q=*&rows=0&facet=on&facet.mincount=1&facet.field=recordbasis&facet.field=highertaxon&facet.field=type_status&facet.field=country&facet.field=datasetowner&facet.field=providername&facet.field=providername&facet.field=providercountry";
 
 class SearchService {
-  static async search(searchParams, table) {
+  static async search(parameters, table) {
     try {
-      let start = (searchParams.page - 1) * searchParams.paginateBy;
-      let sort = buildSort(searchParams.sortBy, searchParams.sortDesc);
-      let searchFields = buildSearchFieldsQuery(
-        searchParams.search,
-        searchParams.advancedSearch ?? {}
+      let start = (parameters.page - 1) * parameters.paginateBy;
+      let sort = buildSort(parameters.sortBy, parameters.sortDesc);
+      let searchFields = buildQueryStr(
+        parameters.search,
+        parameters.advancedSearch ?? {}
       );
       let url = `${API_URL}/${table}/`;
 
       let urlParameters = ["defType=edismax"];
-      if (searchParams.page) {
-        urlParameters.push(`start=${start}`);
-      }
-      if (searchParams.paginateBy) {
-        urlParameters.push(`rows=${searchParams.paginateBy}`);
-      }
-      if (searchParams.sortBy && searchParams.sortDesc) {
+
+      if (parameters.page) urlParameters.push(`start=${start}`);
+
+      if (parameters.paginateBy)
+        urlParameters.push(`rows=${parameters.paginateBy}`);
+
+      if (parameters.sortBy && parameters.sortDesc)
         urlParameters.push(`sort=${sort}`);
-      }
+
+      if (parameters.fields)
+        urlParameters.push(`fl=${parameters.fields.join(" ")}`);
 
       urlParameters.push(searchFields);
 
@@ -71,93 +73,78 @@ function buildSort(sortBy, sortDesc) {
   return sort;
 }
 
-function buildSearchFieldsQuery(search, advancedSearch) {
-  const searchStr = search.value
-    ? `q=${encodeURIComponent(search.value)}`
+function buildQueryStr(queryObject, filterQueryObject) {
+  const queryStr = queryObject.value
+    ? `q=${encodeURIComponent(queryObject.value)}`
     : "q=*";
 
-  const advancedSearchStr = Object.entries(advancedSearch).reduce(
-    (prev, [k, v]) => {
-      const param = v.fields.reduce((prev, curr, idx) => {
-        function buildStr(encodedObject) {
-          let encodedValue;
+  const filterQueryStr = Object.entries(filterQueryObject)
+    .filter(([_, v]) => {
+      if (v.type === "range" && isNaN(v.value[0]) && isNaN(v.value[1]))
+        return false;
+      if (!v.value || v.value.trim().length <= 0) return false;
+      return v.value !== null;
+    })
+    .reduce((prev, [k, v]) => {
+      const filterQueryParam = v.fields.reduce((prev, curr, idx) => {
+        function buildEncodedParameterStr(searchParameter, fieldId) {
+          function buildTextParameter(encodedValue, fieldId) {
+            switch (searchParameter.lookUpType) {
+              case "contains":
+                return `${fieldId}:*${encodedValue}*`;
+              case "equals":
+                return `${fieldId}:"${encodedValue}"`;
+              case "startsWith":
+                return `${fieldId}:${encodedValue}*`;
+              case "endsWith":
+                return `${fieldId}:*${encodedValue}`;
+              case "notContains":
+                return `-${fieldId}:*${encodedValue}*`;
+              default:
+                return null;
+            }
+          }
 
-          if (v.type === "range") {
-            encodedValue = v.value.map(el => {
-              return encodeURIComponent(el);
-            });
-          } else encodedValue = encodeURIComponent(v.value);
-          if (curr === "q") encodedObject = encodedObject.substring(1, 3);
-          if (v.type === "checkbox") {
-            if (curr === "highertaxon_checkbox")
-              encodedObject = "fq=highertaxon:";
-            encodedValue = encodedValue.replace(/%2C/g, " OR ");
-            encodedObject += encodedValue;
-          } else {
-            if (v.lookUpType === "") encodedObject += encodedValue;
-            else if (v.lookUpType === "contains")
-              encodedObject += `*${encodedValue}*`;
-            else if (v.lookUpType === "equals")
-              encodedObject += `"${encodedValue}"`;
-            else if (v.lookUpType === "range") {
+          switch (searchParameter.type) {
+            case "range": {
+              const encodedValue = searchParameter.value.map(el => {
+                return encodeURIComponent(el);
+              });
+
               const start = isNaN(parseInt(encodedValue[0]))
                 ? "*"
                 : encodedValue[0];
               const end = isNaN(parseInt(encodedValue[1]))
                 ? "*"
                 : encodedValue[1];
-              encodedObject += `[${start} TO ${end}]`;
-            } else if (v.lookUpType === "startsWith")
-              encodedObject += `${encodedValue}*`;
-            else if (v.lookUpType === "endsWith")
-              encodedObject += `*${encodedValue}`;
-            else if (v.lookUpType === "notContains")
-              encodedObject = `-${curr}:*${encodedValue}*`;
-            else if (v.lookUpType === "greater than")
-              encodedObject += `[${encodedValue} TO *]`;
-            else if (v.lookUpType === "smaller than")
-              encodedObject += `[* TO ${encodedValue}]`;
-          }
-          return encodedObject;
-        }
-        if (idx === 0) {
-          if (v.type === "range") {
-            if (isNaN(v.value[0]) && isNaN(v.value[1])) {
-              return `${prev}`;
+              return `${fieldId}:[${start} TO ${end}]`;
             }
-            let encodedObject = `${curr}:`;
-            encodedObject = buildStr(encodedObject);
+            case "checkbox": {
+              const encodedValue = encodeURIComponent(searchParameter.value);
+              return `${fieldId}:${encodedValue}`;
+            }
+            case "text": {
+              const encodedValue = encodeURIComponent(searchParameter.value);
 
-            return `${prev}${encodedObject}`;
-          } else if (v.value && v.value.trim().length > 0) {
-            let encodedObject = `${curr}:`;
-            encodedObject = buildStr(encodedObject);
-            return `${prev}${encodedObject}`;
+              return buildTextParameter(encodedValue, fieldId);
+            }
+            default:
+              return null;
           }
-          return `${prev}`;
         }
-        if (v.type === "text" && v.value && v.value.trim().length > 0) {
-          let encodedObject = ` OR ${curr}:`;
-          encodedObject = buildStr(encodedObject);
-          return `${prev}${encodedObject}`;
-        }
-        return `${prev}`;
+
+        if (idx === 0)
+          return `${prev}${buildEncodedParameterStr(v, curr) ?? ""}`;
+        else return `${prev} OR ${buildEncodedParameterStr(v, curr) ?? ""}`;
       }, "");
 
-      if (param.length > 0) {
-        if (prev.length > 0) {
-          return `${prev}&fq=${param}`;
-        }
-
-        return `${prev}fq=${param}`;
-      }
-      return `${prev}`;
-    },
-    ""
-  );
-  return advancedSearchStr.length > 0
-    ? encodeURIComponent(`${searchStr}&${advancedSearchStr}`)
-    : encodeURIComponent(searchStr);
+      if (filterQueryParam === null) return `${prev}`;
+      if (prev.length > 0) return `${prev}&fq=${filterQueryParam}`;
+      return `${prev}fq=${filterQueryParam}`;
+    }, "");
+  return filterQueryStr.length > 0
+    ? encodeURIComponent(`${queryStr}&${filterQueryStr}`)
+    : encodeURIComponent(queryStr);
 }
 
 export default SearchService;

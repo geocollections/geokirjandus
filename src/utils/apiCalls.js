@@ -30,3 +30,7 @@ export const fetchLibraryReferences = id => {
   };
   return SearchService.search(data, "reference");
 };
+
+export const fetchReferenceLocalities = data => {
+  return SearchService.search(data, "locality");
+};

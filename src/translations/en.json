@@ -7,7 +7,8 @@
   },
   "error": {
     "referenceId": "Could not find reference. ID: {text}",
-    "libraryId": "Could not find library. ID: {text}"
+    "libraryId": "Could not find library. ID: {text}",
+    "nothingFound": "No records found"
   },
   "common": {
     "search": "Search",
@@ -39,7 +40,8 @@
     "citationStyle": "Citation style",
     "citation": "Citation",
     "newest": "Newest additions",
-    "viewReferences": "View references"
+    "viewReferences": "View references",
+    "map": "Map"
   },
   "reference": {
     "id": "ID",

@@ -8,6 +8,7 @@ import VueI18n from "vue-i18n";
 
 import "izitoast/dist/css/iziToast.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "academicons/css/academicons.min.css";
 
 Vue.use(VueIziToast);
 Vue.use(VueI18n);

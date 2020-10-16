@@ -4,35 +4,44 @@
       v-if="item.doi"
       link
       outlined
-      x-small
+      :x-small="xSmall"
+      :small="small"
       target="DoiWindow"
       color="blue"
-      class="d-print-none ml-1"
+      class="d-print-none ml-1 my-1"
       :href="getDoiUrl(item.doi)"
-      ><b>DOI</b>
+    >
+      <v-icon :x-small="xSmall" small class=" pr-1">ai ai-doi</v-icon>
+      <b>DOI</b>
     </v-chip>
     <v-chip
       color="red"
       link
       outlined
-      x-small
+      :x-small="xSmall"
+      :small="small"
       v-if="item.attachment__filename"
       target="FileWindow"
-      class="d-print-none ml-1"
+      class="d-print-none ml-1 my-1"
       :href="getFileUrl(item.attachment__filename)"
     >
+      <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
       <b>PDF</b>
     </v-chip>
     <v-chip
       v-if="!item.attachment__filename && item.url && getUrl(item.url)"
       link
       outlined
-      x-small
+      :x-small="xSmall"
+      :small="small"
       color="green"
-      class="d-print-none ml-1"
+      class="d-print-none ml-1 my-1"
       :href="getUrl(item.url)"
       target="UrlWindow d-print-none"
     >
+      <v-icon :x-small="xSmall" small class="pr-1"
+        >fas fa-external-link-square-alt</v-icon
+      >
       <b>URL</b>
     </v-chip>
   </span>
@@ -45,6 +54,14 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    xSmall: {
+      type: Boolean,
+      default: false
+    },
+    small: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

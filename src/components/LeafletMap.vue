@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapElement" style="height: 500px"></div>
+  <div ref="mapElement" style="height: 500px; position: sticky"></div>
 </template>
 
 <script>

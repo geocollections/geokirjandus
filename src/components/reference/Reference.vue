@@ -11,8 +11,11 @@
       <v-card-title style="background-color: #F6EDDF" class="pt-0">
         {{ reference.reference }}
       </v-card-title>
-      <v-card-text>
-        <div class="d-flex pt-3">
+      <v-card-actions class=" pt-3">
+        <reference-links :item="reference" />
+      </v-card-actions>
+      <v-card-text class="pt-1">
+        <div class="d-flex pt-0">
           <h3 class="pr-3 d-flex align-center">{{ $t("common.citation") }}</h3>
           <div class="col-md-3 px-0">
             <citation-select />
@@ -24,25 +27,8 @@
           </div>
         </v-card>
       </v-card-text>
-      <v-card-text
-        class="pt-0"
-        v-if="reference.attachment__filename || reference.url"
-      >
-        <h3 class="pb-3">{{ $t("common.links") }}</h3>
-        <v-btn
-          v-if="reference.attachment__filename"
-          class="mr-2"
-          target="_blank"
-          :href="getFileUrl(reference.attachment__filename)"
-          ><v-icon>fas fa-file</v-icon><span class="pl-1">PDF</span>
-        </v-btn>
-        <v-btn v-if="reference.url" target="_blank" :href="reference.url">
-          <v-icon>fas fa-external-link-square-alt</v-icon
-          ><span class="pl-1">URL</span>
-        </v-btn>
-      </v-card-text>
-      <v-card-text v-if="reference.localities">
-        <h3 class="pb-3">{{$t("common.map")}}</h3>
+      <v-card-text class="pt-0" v-if="getMapMarkers.length > 0">
+        <h3 class="pb-3">{{ $t("common.map") }}</h3>
         <leaflet-map :markers="getMapMarkers" />
       </v-card-text>
       <v-card-text class="pt-0">
@@ -217,10 +203,11 @@ import dateMixin from "@/mixins/dateMixin";
 import CitationSelect from "@/components/CitationSelect";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
+import ReferenceLinks from "@/components/reference/ReferenceLinks";
 
 export default {
   name: "Reference",
-  components: { LeafletMap, ReferenceCitation, CitationSelect },
+  components: { ReferenceLinks, LeafletMap, ReferenceCitation, CitationSelect },
   data() {
     return {
       id: this.$route.params.id,
@@ -255,18 +242,22 @@ export default {
   mixins: [dateMixin],
   computed: {
     getMapMarkers() {
-      return this.localities.map(locality => {
-        const localityTitle =  this.$i18n.locale === "ee"
-            ? locality.locality
-            : locality.locality_en
+      return this.localities
+        .filter(locality => {
+          return !!(locality.latitude && locality.longitude);
+        })
+        .map(locality => {
+          const localityTitle =
+            this.$i18n.locale === "ee"
+              ? locality.locality
+              : locality.locality_en;
 
-        return {
-          popup: `<div>${localityTitle}</div>`,
-          title:
-            localityTitle,
-          coordinates: [locality.latitude, locality.longitude]
-        };
-      });
+          return {
+            popup: `<div>${localityTitle}</div>`,
+            title: localityTitle,
+            coordinates: [locality.latitude, locality.longitude]
+          };
+        });
     },
     getReferenceType() {
       return this.$i18n.locale === "ee"

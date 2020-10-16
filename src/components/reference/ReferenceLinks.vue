@@ -5,13 +5,13 @@
       link
       outlined
       :x-small="xSmall"
-      :large="large"
+      :small="small"
       target="DoiWindow"
       color="blue"
-      class="d-print-none ml-1"
+      class="d-print-none ml-1 my-1"
       :href="getDoiUrl(item.doi)"
     >
-      <v-icon :x-small="xSmall" small class="pr-1">ai ai-doi</v-icon>
+      <v-icon :x-small="xSmall" small class=" pr-1">ai ai-doi</v-icon>
       <b>DOI</b>
     </v-chip>
     <v-chip
@@ -19,10 +19,10 @@
       link
       outlined
       :x-small="xSmall"
-      :large="large"
+      :small="small"
       v-if="item.attachment__filename"
       target="FileWindow"
-      class="d-print-none ml-1"
+      class="d-print-none ml-1 my-1"
       :href="getFileUrl(item.attachment__filename)"
     >
       <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
@@ -33,9 +33,9 @@
       link
       outlined
       :x-small="xSmall"
-      :large="large"
+      :small="small"
       color="green"
-      class="d-print-none ml-1"
+      class="d-print-none ml-1 my-1"
       :href="getUrl(item.url)"
       target="UrlWindow d-print-none"
     >
@@ -59,7 +59,7 @@ export default {
       type: Boolean,
       default: false
     },
-    large: {
+    small: {
       type: Boolean,
       default: false
     }

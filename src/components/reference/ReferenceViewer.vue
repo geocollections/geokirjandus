@@ -74,7 +74,7 @@
             {{ formatDate(item.date_changed) }}
           </template>
           <template v-slot:item.links="{ item }">
-            <reference-links :item="item" />
+            <reference-links small :item="item" />
           </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">

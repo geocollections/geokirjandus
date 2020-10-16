@@ -27,7 +27,8 @@
           </div>
         </v-card>
       </v-card-text>
-      <v-card-text class="pt-0" v-if="getMapMarkers.length > 0">
+      <!--  TODO: Currently shows map with no markers when localities are present but dont have coordinates  -->
+      <v-card-text class="pt-0" v-if="localities">
         <h3 class="pb-3">{{ $t("common.map") }}</h3>
         <leaflet-map :markers="getMapMarkers" />
       </v-card-text>
@@ -313,6 +314,7 @@ export default {
         }
       });
     },
+    // TODO: Currently returns more ids than there are related to reference
     getReferenceLocalities() {
       const localityIdsStr = this.reference.locality_ids.replaceAll(";", "");
       return fetchReferenceLocalities({

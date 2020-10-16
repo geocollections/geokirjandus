@@ -40,7 +40,8 @@ export default {
       const ComponentClass = Vue.extend(ReferenceLinks);
       const instance = new ComponentClass({
         propsData: {
-          item: this.reference
+          item: this.reference,
+          xSmall: true
         }
       });
       instance.$mount();

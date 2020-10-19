@@ -17,25 +17,145 @@
       <v-card-actions class=" pt-3">
         <reference-links :item="reference" />
       </v-card-actions>
-      <v-card-text class="pt-1">
-        <div class="d-flex pt-0">
-          <h3 class="pr-3 d-flex align-center">{{ $t("common.citation") }}</h3>
-          <div class="col-md-3 px-0">
-            <citation-select />
-          </div>
-        </div>
+      <v-card-text>
+        <h3 class="pb-3">{{ $t("common.citation") }}</h3>
         <v-card flat outlined>
           <div class="pa-4">
             <reference-citation :reference="reference" :only-text="true" />
           </div>
         </v-card>
       </v-card-text>
-      <v-card-text class="pt-0" v-if="localities.length > 0">
-        <h3 class="pb-3">{{ $t("common.map") }}</h3>
-        <leaflet-map :markers="localities" />
+      <v-card-text class=" row ma-0">
+        <div class="col-12 col-md pa-0">
+          <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+                <tr v-if="reference.author">
+                  <th>{{ $t("reference.author") }}</th>
+                  <td>{{ reference.author }}</td>
+                </tr>
+                <tr v-if="reference.year">
+                  <th>{{ $t("reference.year") }}</th>
+                  <td>{{ reference.year }}</td>
+                </tr>
+                <tr v-if="reference.title">
+                  <th>{{ $t("reference.title") }}</th>
+                  <td>{{ reference.title }}</td>
+                </tr>
+                <tr v-if="reference.title_translated">
+                  <th>{{ $t("reference.titleTranslated") }}</th>
+                  <td>{{ reference.title_translated }}</td>
+                </tr>
+                <tr v-if="reference.book">
+                  <th>{{ $t("reference.book") }}</th>
+                  <td>{{ reference.book }}</td>
+                </tr>
+                <tr v-if="reference.book_editor">
+                  <th>{{ $t("reference.bookEditor") }}</th>
+                  <td>{{ reference.book_editor }}</td>
+                </tr>
+                <tr v-if="reference.publisher">
+                  <th>{{ $t("reference.publisher") }}</th>
+                  <td>{{ reference.publisher }}</td>
+                </tr>
+                <tr v-if="reference.journal__journal_name">
+                  <th>{{ $t("reference.journalName") }}</th>
+                  <td>{{ reference.journal__journal_name }}</td>
+                </tr>
+                <tr v-if="reference.volume">
+                  <th>{{ $t("reference.volume") }}</th>
+                  <td>{{ reference.volume }}</td>
+                </tr>
+                <tr v-if="reference.pages">
+                  <th>{{ $t("reference.pages") }}</th>
+                  <td>{{ reference.pages }}</td>
+                </tr>
+                <tr v-if="reference.type">
+                  <th>{{ $t("reference.type") }}</th>
+                  <td>{{ getReferenceType }}</td>
+                </tr>
+                <tr v-if="reference.language">
+                  <th>{{ $t("reference.language") }}</th>
+                  <td>
+                    {{ getReferenceLanguage }}
+                  </td>
+                </tr>
+                <tr v-if="reference.doi">
+                  <th>{{ $t("reference.doi") }}</th>
+                  <td>
+                    <a :href="reference.doi_url" target="_blank">{{
+                      reference.doi
+                    }}</a>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </div>
+        <div
+          class="col-12 col-md-6 pa-0 px-md-4 pt-4 pt-md-0"
+          v-if="localities.length > 0"
+        >
+          <h3 class="pb-3">{{ $t("common.map") }}</h3>
+          <leaflet-map :markers="localities" />
+        </div>
       </v-card-text>
-      <v-card-text class="pt-0">
-        <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
+      <v-card-text v-if="reference.abstract">
+        <h3 class="pb-3">{{ $t("reference.abstract") }}</h3>
+        <div v-html="reference.abstract"></div>
+      </v-card-text>
+      <v-card-text v-if="reference.remarks">
+        <h3 class="pb-3">{{ $t("reference.remarks") }}</h3>
+        <div v-html="reference.remarks"></div>
+      </v-card-text>
+      <v-card-text v-if="reference.keywords">
+        <h3 class="pb-3">{{ $t("reference.keywords") }}</h3>
+
+        <span v-for="(keyword, index) in parseKeywords" :key="index">
+          <v-chip
+            outlined
+            class="mr-1 mb-1"
+            :href="`/reference/?keywords_contains=${keyword}`"
+          >
+            {{ keyword }}
+          </v-chip>
+        </span>
+      </v-card-text>
+      <v-card-text
+        v-if="reference.localities || reference.taxa"
+        class="row ma-0"
+      >
+        <div v-if="reference.localities" class="col-12 col-md-6 pa-0">
+          <h3 class="pb-3">{{ $t("reference.localities") }}</h3>
+
+          <ul>
+            <li v-for="locality in parseLocalities" :key="locality.id">
+              <a :href="localityURL(locality.id)" target="_blank">
+                {{ $i18n.locale === "ee" ? locality.name : locality.nameEng }}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div v-if="reference.taxa" class="col-12 col-md-6 pa-0 pt-4 pt-md-0">
+          <h3 class="pb-3">{{ $t("reference.describedTaxa") }}</h3>
+          <ul>
+            <li v-for="taxon in parseTaxa" :key="taxon.id">
+              <a :href="taxonURL(taxon.id)" target="_blank">{{ taxon.name }}</a>
+            </li>
+          </ul>
+        </div>
+      </v-card-text>
+      <v-card-text v-if="libraries.length > 0">
+        <h3 class="pb-3">{{ $t("reference.libraries") }}</h3>
+        <span class="py-3" v-for="(library, index) in libraries" :key="index">
+          <v-chip outlined class="mr-1 mb-1" :href="`/library/${library.id}`">
+            {{ library.title }}
+          </v-chip>
+        </span>
+      </v-card-text>
+      <v-card-text>
+        <h3 class="pb-3">{{ $t("common.misc") }}</h3>
         <v-simple-table>
           <template v-slot:default>
             <tbody>
@@ -46,110 +166,6 @@
               <tr v-if="reference.reference">
                 <th>{{ $t("reference.reference") }}</th>
                 <td>{{ reference.reference }}</td>
-              </tr>
-              <tr v-if="reference.author">
-                <th>{{ $t("reference.author") }}</th>
-                <td>{{ reference.author }}</td>
-              </tr>
-              <tr v-if="reference.year">
-                <th>{{ $t("reference.year") }}</th>
-                <td>{{ reference.year }}</td>
-              </tr>
-              <tr v-if="reference.title">
-                <th>{{ $t("reference.title") }}</th>
-                <td>{{ reference.title }}</td>
-              </tr>
-              <tr v-if="reference.title_translated">
-                <th>{{ $t("reference.titleTranslated") }}</th>
-                <td>{{ reference.title_translated }}</td>
-              </tr>
-              <tr v-if="reference.book">
-                <th>{{ $t("reference.book") }}</th>
-                <td>{{ reference.book }}</td>
-              </tr>
-              <tr v-if="reference.book_editor">
-                <th>{{ $t("reference.bookEditor") }}</th>
-                <td>{{ reference.book_editor }}</td>
-              </tr>
-              <tr v-if="reference.publisher">
-                <th>{{ $t("reference.publisher") }}</th>
-                <td>{{ reference.publisher }}</td>
-              </tr>
-              <tr v-if="reference.journal__journal_name">
-                <th>{{ $t("reference.journalName") }}</th>
-                <td>{{ reference.journal__journal_name }}</td>
-              </tr>
-              <tr v-if="reference.volume">
-                <th>{{ $t("reference.volume") }}</th>
-                <td>{{ reference.volume }}</td>
-              </tr>
-              <tr v-if="reference.pages">
-                <th>{{ $t("reference.pages") }}</th>
-                <td>{{ reference.pages }}</td>
-              </tr>
-              <tr v-if="reference.type">
-                <th>{{ $t("reference.type") }}</th>
-                <td>{{ getReferenceType }}</td>
-              </tr>
-              <tr v-if="reference.language">
-                <th>{{ $t("reference.language") }}</th>
-                <td>
-                  {{ getReferenceLanguage }}
-                </td>
-              </tr>
-              <tr v-if="reference.doi">
-                <th>{{ $t("reference.doi") }}</th>
-                <td>
-                  <a :href="reference.doi_url" target="_blank">{{
-                    reference.doi
-                  }}</a>
-                </td>
-              </tr>
-              <tr v-if="reference.abstract">
-                <th>{{ $t("reference.abstract") }}</th>
-                <td class="py-4" v-html="reference.abstract"></td>
-              </tr>
-              <tr v-if="reference.remarks">
-                <th>{{ $t("reference.remarks") }}</th>
-                <td v-html="reference.remarks"></td>
-              </tr>
-              <tr v-if="reference.keywords">
-                <th>{{ $t("reference.keywords") }}</th>
-                <td class="py-4">
-                  <ul>
-                    <li v-for="(keyword, index) in parseKeywords" :key="index">
-                      <router-link
-                        :to="`/reference/?keywords_contains=${keyword}`"
-                      >
-                        {{ keyword }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              <tr v-if="reference.localities">
-                <th>{{ $t("reference.localities") }}</th>
-                <td class="py-4">
-                  <ul>
-                    <li v-for="locality in parseLocalities" :key="locality.id">
-                      <a :href="localityURL(locality.id)" target="_blank">{{
-                        locality.name
-                      }}</a>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              <tr v-if="reference.taxa">
-                <th>{{ $t("reference.describedTaxa") }}</th>
-                <td class="py-4">
-                  <ul>
-                    <li v-for="taxon in parseTaxa" :key="taxon.id">
-                      <a :href="taxonURL(taxon.id)" target="_blank">{{
-                        taxon.name
-                      }}</a>
-                    </li>
-                  </ul>
-                </td>
               </tr>
               <tr v-if="reference.user_added">
                 <th>{{ $t("reference.userAdded") }}</th>
@@ -170,15 +186,6 @@
             </tbody>
           </template>
         </v-simple-table>
-      </v-card-text>
-      <v-card-text v-if="reference.libraries">
-        <h3 class="pb-0">{{ $t("reference.libraries") }}</h3>
-        <div class="py-3" v-for="(library, index) in libraries" :key="index">
-          <router-link :to="{ path: `/library/${library.id}` }">
-            {{ library.title }}
-          </router-link>
-          <span>{{ ` ${library.author} (${library.year})` }}</span>
-        </div>
       </v-card-text>
     </v-card>
     <v-card v-if="error">
@@ -203,14 +210,13 @@ import {
   fetchReferenceLocalities
 } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
-import CitationSelect from "@/components/CitationSelect";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
 
 export default {
   name: "Reference",
-  components: { ReferenceLinks, LeafletMap, ReferenceCitation, CitationSelect },
+  components: { ReferenceLinks, LeafletMap, ReferenceCitation },
   data() {
     return {
       id: this.$route.params.id,
@@ -292,12 +298,15 @@ export default {
     },
     parseLocalities() {
       const localityNames = this.reference.localities.split(";");
-      const localityIds = this.reference.locality_ids.split(";");
 
+      const localityNamesEng = this.reference.localities_en.split(";");
+      const localityIds = this.reference.locality_ids.split(";");
+      console.log(localityNames);
       return localityIds.map((id, index) => {
         return {
           id: id,
-          name: localityNames[index]
+          name: localityNames[index],
+          nameEng: localityNamesEng[index]
         };
       });
     },
@@ -352,7 +361,6 @@ export default {
         }
       });
     },
-    // TODO: Currently returns more ids than there are related to reference
     getReferenceLocalities() {
       const localityIdsStr = this.reference.locality_ids.replaceAll(";", "");
       return fetchReferenceLocalities({

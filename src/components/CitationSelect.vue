@@ -2,7 +2,6 @@
   <v-select
     :value="citationTemplate"
     :items="templates"
-    dense
     hide-details
     :label="$t('common.citationStyle')"
     @change="changeTemplate($event)"

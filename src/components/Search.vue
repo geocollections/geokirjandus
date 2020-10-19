@@ -1,6 +1,11 @@
 <template>
   <div class="search">
     <v-list class="mt-0 pa-0">
+      <v-list-item>
+        <v-list-item-content class="py-1">
+          <citation-select />
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item class="pt-0">
         <v-list-item-content>
           <v-text-field
@@ -140,9 +145,6 @@
           </v-row>
         </v-list-item>
       </v-list-group>
-      <v-list-item>
-        <citation-select />
-      </v-list-item>
       <v-list-item>
         <v-btn class="deleteSearch" @click="$emit('reset:parameters')" dark>
           <v-icon left>fas fa-trash</v-icon>

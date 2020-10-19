@@ -42,7 +42,8 @@
     "newest": "Newest additions",
     "viewReferences": "View references",
     "map": "Map",
-    "misc": "Miscellaneous"
+    "misc": "Miscellaneous",
+    "searchCommand": "Search"
   },
   "reference": {
     "id": "ID",

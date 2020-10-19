@@ -146,10 +146,17 @@
         </v-list-item>
       </v-list-group>
       <v-list-item>
-        <v-btn class="deleteSearch" @click="$emit('reset:parameters')" dark>
-          <v-icon left>fas fa-trash</v-icon>
-          {{ $t("common.deleteSearch") }}
+        <v-btn
+          icon
+          tile
+          style="border-radius: 4px"
+          class="deleteSearch mr-3"
+          @click="$emit('reset:parameters')"
+          dark
+        >
+          <v-icon>fas fa-trash</v-icon>
         </v-btn>
+        <v-btn large color="primary">{{ $t("common.searchCommand") }}</v-btn>
       </v-list-item>
     </v-list>
   </div>

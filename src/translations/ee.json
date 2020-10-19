@@ -42,7 +42,8 @@
     "newest": "Viimati lisatud",
     "viewReferences": "Vaata kirjandust",
     "map": "Kaart",
-    "misc": "Muu"
+    "misc": "Muu",
+    "searchCommand": "Otsi"
   },
   "reference": {
     "id": "ID",

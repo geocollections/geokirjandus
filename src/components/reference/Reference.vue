@@ -26,7 +26,7 @@
         </v-card>
       </v-card-text>
       <v-card-text class=" row ma-0">
-        <div class="col-12 col-md-6 pa-0">
+        <div class="col-12 col-md pa-0">
           <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
           <v-simple-table>
             <template v-slot:default>
@@ -132,7 +132,7 @@
           <ul>
             <li v-for="locality in parseLocalities" :key="locality.id">
               <a :href="localityURL(locality.id)" target="_blank">
-                {{ locality.name }}
+                {{ $i18n.locale === "ee" ? locality.name : locality.nameEng }}
               </a>
             </li>
           </ul>
@@ -298,12 +298,15 @@ export default {
     },
     parseLocalities() {
       const localityNames = this.reference.localities.split(";");
-      const localityIds = this.reference.locality_ids.split(";");
 
+      const localityNamesEng = this.reference.localities_en.split(";");
+      const localityIds = this.reference.locality_ids.split(";");
+      console.log(localityNames);
       return localityIds.map((id, index) => {
         return {
           id: id,
-          name: localityNames[index]
+          name: localityNames[index],
+          nameEng: localityNamesEng[index]
         };
       });
     },

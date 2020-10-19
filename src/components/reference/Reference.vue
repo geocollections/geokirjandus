@@ -10,7 +10,9 @@
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col">{{ reference.reference }}</div>
+        <div class="col" style="word-break: normal">
+          {{ reference.reference }}
+        </div>
       </v-card-title>
       <v-card-actions class=" pt-3">
         <reference-links :item="reference" />

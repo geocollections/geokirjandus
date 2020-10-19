@@ -10,15 +10,12 @@
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col">{{ getTitle }}</div>
+        <div class="col" style="word-break: normal">{{ getTitle }}</div>
       </v-card-title>
-      <v-card-text
-        v-if="library.author"
-        class="pb-0 pt-3"
-      >
+      <v-card-text v-if="library.author" class="pb-0 pt-3">
         <h2>{{ library.author }}</h2>
       </v-card-text>
-      <v-card-text  class="py-0">
+      <v-card-text class="py-0">
         <v-row>
           <v-col cols="auto" class="pt-2">
             <b>{{ $t("common.libraryCreated") }}:</b>

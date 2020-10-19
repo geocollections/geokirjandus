@@ -128,7 +128,6 @@ export default {
   },
   methods: {
     setupLeafletMap() {
-      console.log(this.markers);
       const mapDiv = L.map(this.$refs["mapElement"], {
         layers: [this.maps[0].leafletObject],
         maxZoom: 12
@@ -154,7 +153,7 @@ export default {
       }
       mapDiv.addLayer(markerClusters);
       let bounds = new L.featureGroup(markers).getBounds();
-      console.log(bounds);
+
       mapDiv.fitBounds(bounds);
 
       this.map = mapDiv;

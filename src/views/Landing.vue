@@ -96,6 +96,6 @@ export default {
 <style scoped>
 .header {
   background-size: cover;
-  background-image: url("https://files.geocollections.info/img/sarv-edit/background_1.jpg");
+  background-image: url("https://geoloogia.info/img/books1.jpg");
 }
 </style>

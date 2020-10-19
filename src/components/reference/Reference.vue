@@ -1,15 +1,18 @@
 <template>
   <v-container>
     <v-card v-if="reference">
-      <v-card-actions style="background-color: #F6EDDF">
-        <v-col cols="auto" class="py-0 px-2">
+      <v-card-title
+        style="background-color: #F6EDDF"
+        class="pt-1 pb-1 d-flex text-center"
+      >
+        <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-      </v-card-actions>
-      <v-card-title style="background-color: #F6EDDF" class="pt-0">
-        {{ reference.reference }}
+        <div class="col" style="word-break: normal">
+          {{ reference.reference }}
+        </div>
       </v-card-title>
       <v-card-actions class=" pt-3">
         <reference-links :item="reference" />
@@ -27,10 +30,9 @@
           </div>
         </v-card>
       </v-card-text>
-      <!--  TODO: Currently shows map with no markers when localities are present but dont have coordinates  -->
-      <v-card-text class="pt-0" v-if="localities">
+      <v-card-text class="pt-0" v-if="localities.length > 0">
         <h3 class="pb-3">{{ $t("common.map") }}</h3>
-        <leaflet-map :markers="getMapMarkers" />
+        <leaflet-map :markers="localities" />
       </v-card-text>
       <v-card-text class="pt-0">
         <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
@@ -117,7 +119,7 @@
                   <ul>
                     <li v-for="(keyword, index) in parseKeywords" :key="index">
                       <router-link
-                          :to="`/reference/?keywords_contains=${keyword}`"
+                        :to="`/reference/?keywords_contains=${keyword}`"
                       >
                         {{ keyword }}
                       </router-link>
@@ -131,8 +133,8 @@
                   <ul>
                     <li v-for="locality in parseLocalities" :key="locality.id">
                       <a :href="localityURL(locality.id)" target="_blank">{{
-                          locality.name
-                        }}</a>
+                        locality.name
+                      }}</a>
                     </li>
                   </ul>
                 </td>
@@ -143,8 +145,8 @@
                   <ul>
                     <li v-for="taxon in parseTaxa" :key="taxon.id">
                       <a :href="taxonURL(taxon.id)" target="_blank">{{
-                          taxon.name
-                        }}</a>
+                        taxon.name
+                      }}</a>
                     </li>
                   </ul>
                 </td>
@@ -229,7 +231,22 @@ export default {
 
       if (this.reference.localities) {
         this.getReferenceLocalities().then(res => {
-          this.localities = res.results;
+          this.localities = res.results
+            .filter(locality => {
+              return !!(locality.latitude && locality.longitude);
+            })
+            .map(locality => {
+              const localityTitle =
+                this.$i18n.locale === "ee"
+                  ? locality.locality
+                  : locality.locality_en;
+
+              return {
+                popup: `<div>${localityTitle}</div>`,
+                title: localityTitle,
+                coordinates: [locality.latitude, locality.longitude]
+              };
+            });
         });
       }
 
@@ -242,6 +259,9 @@ export default {
   },
   mixins: [dateMixin],
   computed: {
+    mapMarkerLength() {
+      return this.getMapMarkers.length;
+    },
     getMapMarkers() {
       return this.localities
         .filter(locality => {
@@ -299,6 +319,24 @@ export default {
     }
   },
   methods: {
+    mapMarkers() {
+      return this.localities
+        .filter(locality => {
+          return !!(locality.latitude && locality.longitude);
+        })
+        .map(locality => {
+          const localityTitle =
+            this.$i18n.locale === "ee"
+              ? locality.locality
+              : locality.locality_en;
+
+          return {
+            popup: `<div>${localityTitle}</div>`,
+            title: localityTitle,
+            coordinates: [locality.latitude, locality.longitude]
+          };
+        });
+    },
     localityURL(id) {
       return `https://geocollections.info/locality/${id}`;
     },

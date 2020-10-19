@@ -1,13 +1,18 @@
 <template>
   <div class="search">
     <v-list class="mt-0 pa-0">
+      <v-list-item>
+        <v-list-item-content class="py-1">
+          <citation-select />
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item class="pt-0">
         <v-list-item-content>
           <v-text-field
             hide-details
             :value="search.value"
             :label="$t('common.search')"
-            @input="$emit('update:search', $event)"
+            @change="$emit('update:search', $event)"
           />
         </v-list-item-content>
       </v-list-item>
@@ -32,7 +37,7 @@
                 disable-lookup
                 hide-details
                 :items="translatedLookUpTypes"
-                @input="
+                @change="
                   $emit('update:advancedSearch', {
                     lookUpType: $event,
                     id: id
@@ -52,7 +57,7 @@
                 :value="advancedSearch.byIds[id].value"
                 :label="$t(advancedSearch.byIds[id].label)"
                 hide-details
-                @input="
+                @change="
                   $emit('update:advancedSearch', {
                     value: $event,
                     id: id,
@@ -81,7 +86,7 @@
                     :placeholder="$t(advancedSearch.byIds[id].placeholders[0])"
                     hide-details
                     type="number"
-                    @input="
+                    @change="
                       $emit('update:advancedSearch', {
                         value: [
                           isNaN($event) ? NaN : parseInt($event),
@@ -105,7 +110,7 @@
                     :placeholder="$t(advancedSearch.byIds[id].placeholders[1])"
                     single-line
                     type="number"
-                    @input="
+                    @change="
                       $emit('update:advancedSearch', {
                         value: [
                           advancedSearch.byIds[id].value[0],
@@ -120,6 +125,7 @@
               </v-row>
             </div>
           </v-row>
+
           <v-row
             v-if="advancedSearch.byIds[id].type === 'checkbox'"
             class="px-1"
@@ -151,9 +157,11 @@
 
 <script>
 import { mapState } from "vuex";
+import CitationSelect from "@/components/CitationSelect";
 
 export default {
   name: "Search",
+  components: { CitationSelect },
   props: {
     search: {
       type: Object

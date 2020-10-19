@@ -1,36 +1,33 @@
 <template>
   <v-container>
     <v-card v-if="library">
-      <v-card-actions style="background-color: #F6EDDF">
-        <v-col cols="auto" class="py-0 px-2">
+      <v-card-title
+        style="background-color: #F6EDDF"
+        class="pt-1 pb-1 d-flex text-center"
+      >
+        <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-      </v-card-actions>
-      <v-card-title style="background-color: #F6EDDF" class="pt-0">
-        {{ getTitle }}
+        <div class="col" style="word-break: normal">{{ getTitle }}</div>
       </v-card-title>
-      <v-card-text
-        style="background-color: #F6EDDF"
-        v-if="library.author"
-        class="pb-0"
-      >
+      <v-card-text v-if="library.author" class="pb-0 pt-3">
         <h2>{{ library.author }}</h2>
       </v-card-text>
-      <v-card-text style="background-color: #F6EDDF" class="py-0">
+      <v-card-text class="py-0">
         <v-row>
-          <v-col cols="auto">
+          <v-col cols="auto" class="pt-2">
             <b>{{ $t("common.libraryCreated") }}:</b>
             {{ formatDate(library.date_added) }}
           </v-col>
-          <v-col cols="auto">
+          <v-col cols="auto" class="pt-2">
             <b>{{ $t("common.libraryChanged") }}:</b>
             {{ formatDate(library.date_changed) }}
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-text>
+      <v-card-text class="pt-0">
         <h2>
           <b>{{ $t("common.citation") }}</b>
         </h2>

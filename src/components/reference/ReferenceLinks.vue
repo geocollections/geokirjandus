@@ -6,9 +6,9 @@
       outlined
       :x-small="xSmall"
       :small="small"
-      target="DoiWindow"
+      target="_blank"
       color="blue"
-      class="d-print-none ml-1 my-1"
+      class="d-print-none ml-1 my-1 link"
       :href="getDoiUrl(item.doi)"
     >
       <v-icon :x-small="xSmall" small class=" pr-1">ai ai-doi</v-icon>
@@ -21,8 +21,8 @@
       :x-small="xSmall"
       :small="small"
       v-if="item.attachment__filename"
-      target="FileWindow"
-      class="d-print-none ml-1 my-1"
+      target="_blank"
+      class="d-print-none ml-1 my-1 link"
       :href="getFileUrl(item.attachment__filename)"
     >
       <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
@@ -35,9 +35,9 @@
       :x-small="xSmall"
       :small="small"
       color="green"
-      class="d-print-none ml-1 my-1"
+      class="d-print-none ml-1 my-1 link"
       :href="getUrl(item.url)"
-      target="UrlWindow d-print-none"
+      target="_blank"
     >
       <v-icon :x-small="xSmall" small class="pr-1"
         >fas fa-external-link-square-alt</v-icon
@@ -100,3 +100,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.link {
+  display: inline-block;
+  line-height: normal;
+  text-decoration: none;
+}
+</style>

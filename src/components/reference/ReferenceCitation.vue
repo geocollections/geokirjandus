@@ -1,8 +1,8 @@
 <template>
   <div v-if="onlyText" class="cite" v-html="citation(getCslJson)"></div>
-  <div v-else>
-    <div class="cite" v-html="citation(getCslJson, append, prepend)"></div>
-  </div>
+  <a :href="ref" class="referenceLink" v-else>
+    <div class="cite" v-html="citation(getCslJson, append)"></div>
+  </a>
 </template>
 
 <script>
@@ -69,3 +69,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.referenceLink {
+  color: black;
+  text-decoration: none;
+}
+
+.referenceLink:hover {
+  text-decoration: underline;
+}
+</style>

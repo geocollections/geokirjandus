@@ -120,6 +120,7 @@
               </v-row>
             </div>
           </v-row>
+
           <v-row
             v-if="advancedSearch.byIds[id].type === 'checkbox'"
             class="px-1"
@@ -140,6 +141,9 @@
         </v-list-item>
       </v-list-group>
       <v-list-item>
+        <citation-select />
+      </v-list-item>
+      <v-list-item>
         <v-btn class="deleteSearch" @click="$emit('reset:parameters')" dark>
           <v-icon left>fas fa-trash</v-icon>
           {{ $t("common.deleteSearch") }}
@@ -151,9 +155,11 @@
 
 <script>
 import { mapState } from "vuex";
+import CitationSelect from "@/components/CitationSelect";
 
 export default {
   name: "Search",
+  components: { CitationSelect },
   props: {
     search: {
       type: Object

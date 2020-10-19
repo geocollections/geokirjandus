@@ -32,8 +32,11 @@
             clipboard-class="data-viewer-table"
           />
         </div>
-        <div class="col-12 col-md-3 order-md-1 px-2">
-          <citation-select />
+        <div class="col-12 col-md-3 order-md-1 px-2 py-0">
+          <span style="font-size: 1.25rem"
+            >{{ $t("common.found") }} <b>{{ count }}</b>
+            {{ $t("common.records") }}</span
+          >
         </div>
       </v-card-actions>
       <v-expand-transition>
@@ -121,7 +124,7 @@ import CitationSelect from "@/components/CitationSelect";
 import ViewHelper from "@/components/ViewHelper";
 export default {
   name: "DataViewer",
-  components: { ViewHelper, CitationSelect, ListView, ExportButtons },
+  components: { ViewHelper, ListView, ExportButtons },
   props: {
     data: {
       type: Array[Object]

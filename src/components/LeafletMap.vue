@@ -129,7 +129,9 @@ export default {
         const markerClusters = L.markerClusterGroup();
         let markers = [];
         for (const m of this.markers) {
-          const markerObj = L.marker(m.coordinates, { title: m.title });
+          const markerObj = new L.CircleMarker(m.coordinates, {
+            title: m.title
+          });
           markers.push(markerObj);
           if (m.popup) markerObj.bindPopup(m.popup);
 

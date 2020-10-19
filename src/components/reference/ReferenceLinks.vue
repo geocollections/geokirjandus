@@ -29,7 +29,7 @@
       <b>PDF</b>
     </v-chip>
     <v-chip
-      v-if="!item.attachment__filename && item.url && getUrl(item.url)"
+      v-if="item.url && getUrl(item.url)"
       link
       outlined
       :x-small="xSmall"

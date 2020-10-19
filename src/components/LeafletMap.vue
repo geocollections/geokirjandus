@@ -123,32 +123,12 @@ export default {
       ]
     };
   },
-  watch: {
-    markers: {
-      handler() {
-        const markerClusters = L.markerClusterGroup();
-        let markers = [];
-        for (const m of this.markers) {
-          const markerObj = new L.CircleMarker(m.coordinates, {
-            title: m.title
-          });
-          markers.push(markerObj);
-          if (m.popup) markerObj.bindPopup(m.popup);
-
-          markerClusters.addLayer(markerObj);
-        }
-        this.map.addLayer(markerClusters);
-        let bounds = new L.featureGroup(markers).getBounds();
-        console.log(bounds);
-        this.map.fitBounds(bounds);
-      }
-    }
-  },
   mounted() {
     this.setupLeafletMap();
   },
   methods: {
     setupLeafletMap() {
+      console.log(this.markers);
       const mapDiv = L.map(this.$refs["mapElement"], {
         layers: [this.maps[0].leafletObject],
         maxZoom: 12
@@ -160,6 +140,23 @@ export default {
       );
 
       L.control.layers(baseMaps).addTo(mapDiv);
+
+      const markerClusters = L.markerClusterGroup();
+      let markers = [];
+      for (const m of this.markers) {
+        const markerObj = new L.CircleMarker(m.coordinates, {
+          title: m.title
+        });
+        markers.push(markerObj);
+        if (m.popup) markerObj.bindPopup(m.popup);
+
+        markerClusters.addLayer(markerObj);
+      }
+      mapDiv.addLayer(markerClusters);
+      let bounds = new L.featureGroup(markers).getBounds();
+      console.log(bounds);
+      mapDiv.fitBounds(bounds);
+
       this.map = mapDiv;
     }
   }

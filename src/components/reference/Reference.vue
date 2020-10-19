@@ -30,10 +30,9 @@
           </div>
         </v-card>
       </v-card-text>
-      <!--  TODO: Currently shows map with no markers when localities are present but dont have coordinates  -->
-      <v-card-text class="pt-0" v-if="localities">
+      <v-card-text class="pt-0" v-if="localities.length > 0">
         <h3 class="pb-3">{{ $t("common.map") }}</h3>
-        <leaflet-map :markers="getMapMarkers" />
+        <leaflet-map :markers="localities" />
       </v-card-text>
       <v-card-text class="pt-0">
         <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
@@ -232,7 +231,22 @@ export default {
 
       if (this.reference.localities) {
         this.getReferenceLocalities().then(res => {
-          this.localities = res.results;
+          this.localities = res.results
+            .filter(locality => {
+              return !!(locality.latitude && locality.longitude);
+            })
+            .map(locality => {
+              const localityTitle =
+                this.$i18n.locale === "ee"
+                  ? locality.locality
+                  : locality.locality_en;
+
+              return {
+                popup: `<div>${localityTitle}</div>`,
+                title: localityTitle,
+                coordinates: [locality.latitude, locality.longitude]
+              };
+            });
         });
       }
 
@@ -245,6 +259,9 @@ export default {
   },
   mixins: [dateMixin],
   computed: {
+    mapMarkerLength() {
+      return this.getMapMarkers.length;
+    },
     getMapMarkers() {
       return this.localities
         .filter(locality => {
@@ -302,6 +319,24 @@ export default {
     }
   },
   methods: {
+    mapMarkers() {
+      return this.localities
+        .filter(locality => {
+          return !!(locality.latitude && locality.longitude);
+        })
+        .map(locality => {
+          const localityTitle =
+            this.$i18n.locale === "ee"
+              ? locality.locality
+              : locality.locality_en;
+
+          return {
+            popup: `<div>${localityTitle}</div>`,
+            title: localityTitle,
+            coordinates: [locality.latitude, locality.longitude]
+          };
+        });
+    },
     localityURL(id) {
       return `https://geocollections.info/locality/${id}`;
     },

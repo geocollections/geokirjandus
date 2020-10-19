@@ -3,11 +3,11 @@
     <v-card v-if="reference">
       <v-card-title
         style="background-color: #F6EDDF"
-        class="pt-0 d-flex text-center"
+        class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
         <div class="col">{{ reference.reference }}</div>

@@ -1,18 +1,34 @@
 <template>
-  <div v-if="data.length > 0">
-    <v-card-text class="py-0" v-for="(entity, index) in data" :key="entity.id">
-      <v-divider v-if="index !== 0" />
-      <reference-item class="my-2" :reference="entity" />
-    </v-card-text>
+  <div v-if="data.length > 0" style="height: 500px">
+    <DynamicScroller
+      class="scroller"
+      :min-item-size="100"
+      :items="data"
+      key-field="id"
+      v-slot="{ item, index, active }"
+    >
+      <DynamicScrollerItem
+        :item="item"
+        :active="active"
+        :size-dependencies="[item.title]"
+        :index="index"
+      >
+        <v-card-text class="py-0">
+          <v-divider v-if="index !== 0" />
+          <reference-item class="my-2" :reference="item" />
+        </v-card-text>
+      </DynamicScrollerItem>
+    </DynamicScroller>
   </div>
 </template>
 
 <script>
 import ReferenceItem from "@/components/reference/ReferenceItem";
-
+import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 export default {
   name: "ReferenceListView",
-  components: { ReferenceItem },
+  components: { ReferenceItem, DynamicScroller, DynamicScrollerItem },
   props: {
     data: {
       type: Array
@@ -20,3 +36,15 @@ export default {
   }
 };
 </script>
+<style scoped>
+.scroller {
+  height: 100%;
+}
+
+.user {
+  height: 32%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+</style>

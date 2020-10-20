@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data.length > 0" style="height: 500px">
+  <div v-if="data.length > 0" style="height: 65vh">
     <DynamicScroller
       class="scroller"
       :min-item-size="100"

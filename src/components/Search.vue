@@ -16,148 +16,151 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-group :value="true">
+
+      <v-list-item>
+        <v-btn
+          icon
+          small
+          tile
+          style="border-radius: 4px"
+          class="deleteSearch ml-auto mr-3"
+          @click="$emit('reset:parameters')"
+          dark
+        >
+          <v-icon small>fas fa-trash</v-icon>
+        </v-btn>
+        <v-btn color="primary">
+          <v-icon class="pr-2" small>fas fa-search</v-icon>
+          {{ $t("common.searchCommand") }}
+        </v-btn>
+      </v-list-item>
+
+      <div :key="index" v-for="(id, index) in advancedSearch.allIds">
+        <v-list-item v-if="advancedSearch.byIds[id].type === 'checkbox'" dense>
+          <v-checkbox
+            dense
+            :label="$t(advancedSearch.byIds[id].label)"
+            class="checkbox mt-0 py-0"
+            :false-value="null"
+            true-value="1"
+            hide-details
+            :input-value="advancedSearch.byIds[id].value"
+            @change="updateCheckbox($event, id)"
+          />
+        </v-list-item>
+      </div>
+      <v-list-group :value="false">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
           }}</v-list-item-title>
         </template>
-
-        <v-list-item
-          dense
-          class=""
-          :key="index"
-          v-for="(id, index) in advancedSearch.allIds"
-        >
+        <div :key="index" v-for="(id, index) in advancedSearch.allIds">
           <!-- REGULAR SEARCH FIELD -->
-          <v-row class="pa-1" v-if="advancedSearch.byIds[id].type === 'text'">
-            <v-col cols="3" class="py-0 px-1">
-              <v-select
-                :value="advancedSearch.byIds[id].lookUpType || 'contains'"
-                disable-lookup
-                hide-details
-                :items="translatedLookUpTypes"
-                @change="
-                  $emit('update:advancedSearch', {
-                    lookUpType: $event,
-                    id: id
-                  })
-                "
-              >
-                <template v-slot:selection="{ item }">
-                  <div class="font-weight-bold">
-                    {{ item.symbol }}
-                  </div>
-                </template>
-              </v-select>
-            </v-col>
+          <v-list-item v-if="advancedSearch.byIds[id].type === 'text'" dense>
+            <v-row class="pa-1">
+              <v-col cols="3" class="py-0 px-1">
+                <v-select
+                  :value="advancedSearch.byIds[id].lookUpType || 'contains'"
+                  disable-lookup
+                  hide-details
+                  :items="translatedLookUpTypes"
+                  @change="
+                    $emit('update:advancedSearch', {
+                      lookUpType: $event,
+                      id: id
+                    })
+                  "
+                >
+                  <template v-slot:selection="{ item }">
+                    <div class="font-weight-bold">
+                      {{ item.symbol }}
+                    </div>
+                  </template>
+                </v-select>
+              </v-col>
 
-            <v-col cols="9" class="py-0 px-1">
-              <v-text-field
-                :value="advancedSearch.byIds[id].value"
-                :label="$t(advancedSearch.byIds[id].label)"
-                hide-details
-                @change="
-                  $emit('update:advancedSearch', {
-                    value: $event,
-                    id: id,
-                    type: advancedSearch.byIds[id].type
-                  })
-                "
-              ></v-text-field>
-            </v-col>
-          </v-row>
-
-          <!--  RANGE  -->
-          <v-row
-            class="pa-1"
+              <v-col cols="9" class="py-0 px-1">
+                <v-text-field
+                  :value="advancedSearch.byIds[id].value"
+                  :label="$t(advancedSearch.byIds[id].label)"
+                  hide-details
+                  @change="
+                    $emit('update:advancedSearch', {
+                      value: $event,
+                      id: id,
+                      type: advancedSearch.byIds[id].type
+                    })
+                  "
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-list-item>
+          <v-list-item
             v-else-if="advancedSearch.byIds[id].type === 'range'"
+            dense
           >
-            <div class="col py-0">
-              <v-row>
-                <v-col cols="6" class="py-0 px-1">
-                  <v-text-field
-                    :value="
-                      isNaN(advancedSearch.byIds[id].value[0])
-                        ? ''
-                        : advancedSearch.byIds[id].value[0]
-                    "
-                    :label="$t(advancedSearch.byIds[id].label)"
-                    :placeholder="$t(advancedSearch.byIds[id].placeholders[0])"
-                    hide-details
-                    type="number"
-                    @change="
-                      $emit('update:advancedSearch', {
-                        value: [
-                          isNaN($event) ? NaN : parseInt($event),
-                          advancedSearch.byIds[id].value[1]
-                        ],
-                        id: id,
-                        type: advancedSearch.byIds[id].type
-                      })
-                    "
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6" class="py-0 px-1">
-                  <v-text-field
-                    :value="
-                      isNaN(advancedSearch.byIds[id].value[1])
-                        ? ''
-                        : advancedSearch.byIds[id].value[1]
-                    "
-                    hide-details
-                    :placeholder="$t(advancedSearch.byIds[id].placeholders[1])"
-                    single-line
-                    type="number"
-                    @change="
-                      $emit('update:advancedSearch', {
-                        value: [
-                          advancedSearch.byIds[id].value[0],
-                          isNaN($event) ? NaN : parseInt($event)
-                        ],
-                        id: id,
-                        type: advancedSearch.byIds[id].type
-                      })
-                    "
-                  />
-                </v-col>
-              </v-row>
-            </div>
-          </v-row>
-
-          <v-row
-            v-if="advancedSearch.byIds[id].type === 'checkbox'"
-            class="px-1"
-          >
-            <v-col class="py-0">
-              <v-checkbox
-                dense
-                :label="$t(advancedSearch.byIds[id].label)"
-                class="checkbox mt-0 pr-6"
-                :false-value="null"
-                true-value="1"
-                hide-details
-                :input-value="advancedSearch.byIds[id].value"
-                @change="updateCheckbox($event, id)"
-              />
-            </v-col>
-          </v-row>
-        </v-list-item>
+            <!--  RANGE  -->
+            <v-row class="pa-1">
+              <div class="col py-0">
+                <v-row>
+                  <v-col cols="6" class="py-0 px-1">
+                    <v-text-field
+                      :value="
+                        isNaN(advancedSearch.byIds[id].value[0])
+                          ? ''
+                          : advancedSearch.byIds[id].value[0]
+                      "
+                      :label="$t(advancedSearch.byIds[id].label)"
+                      :placeholder="
+                        $t(advancedSearch.byIds[id].placeholders[0])
+                      "
+                      hide-details
+                      type="number"
+                      @change="
+                        $emit('update:advancedSearch', {
+                          value: [
+                            isNaN($event) ? NaN : parseInt($event),
+                            advancedSearch.byIds[id].value[1]
+                          ],
+                          id: id,
+                          type: advancedSearch.byIds[id].type
+                        })
+                      "
+                    >
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="6" class="py-0 px-1">
+                    <v-text-field
+                      :value="
+                        isNaN(advancedSearch.byIds[id].value[1])
+                          ? ''
+                          : advancedSearch.byIds[id].value[1]
+                      "
+                      hide-details
+                      :placeholder="
+                        $t(advancedSearch.byIds[id].placeholders[1])
+                      "
+                      single-line
+                      type="number"
+                      @change="
+                        $emit('update:advancedSearch', {
+                          value: [
+                            advancedSearch.byIds[id].value[0],
+                            isNaN($event) ? NaN : parseInt($event)
+                          ],
+                          id: id,
+                          type: advancedSearch.byIds[id].type
+                        })
+                      "
+                    />
+                  </v-col>
+                </v-row>
+              </div>
+            </v-row>
+          </v-list-item>
+        </div>
       </v-list-group>
-      <v-list-item>
-        <v-btn
-          icon
-          tile
-          style="border-radius: 4px"
-          class="deleteSearch mr-3"
-          @click="$emit('reset:parameters')"
-          dark
-        >
-          <v-icon>fas fa-trash</v-icon>
-        </v-btn>
-        <v-btn large color="primary">{{ $t("common.searchCommand") }}</v-btn>
-      </v-list-item>
     </v-list>
   </div>
 </template>

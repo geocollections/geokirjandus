@@ -4,8 +4,8 @@ import mutations from "./mutations";
 const state = {
   page: 1,
   paginateBy: 50,
-  sortBy: ["date_changed"],
-  sortDesc: [true],
+  sortBy: [],
+  sortDesc: [],
   search: {
     id: "search",
     value: null,

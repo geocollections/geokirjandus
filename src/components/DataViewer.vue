@@ -1,7 +1,7 @@
 <template>
   <div class="data-viewer">
     <!-- DATA TABLE -->
-    <v-card elevation="4" class=" my-1" color="#F8FBEF">
+    <v-card elevation="4" class=" my-1" color="#F6EDDF">
       <template v-slot:progress>
         <v-progress-linear indeterminate color="#F0B67F"></v-progress-linear>
       </template>
@@ -109,6 +109,7 @@
           multi-sort
           :header-props="headerProps"
           class=" data-viewer-table"
+          style="background-color: #F6EDDF"
         >
           <template
             v-for="(_, slotName) in $scopedSlots"

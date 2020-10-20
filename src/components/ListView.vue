@@ -1,5 +1,5 @@
 <template>
-  <div class="list-view white">
+  <div class="list-view " style="background-color: #F6EDDF">
     <slot> </slot>
   </div>
 </template>

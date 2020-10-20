@@ -119,12 +119,6 @@
           </template>
         </v-data-table>
       </div>
-      <view-helper
-        v-on="$listeners"
-        :page="page"
-        :paginate-by="paginateBy"
-        :count="count"
-      />
     </v-card>
   </div>
 </template>

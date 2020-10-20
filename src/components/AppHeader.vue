@@ -1,5 +1,11 @@
 <template>
-  <v-app-bar clipped-left app flat class="appBar" src="https://geoloogia.info/img/books1.jpg">
+  <v-app-bar
+    clipped-left
+    app
+    flat
+    class="appBar"
+    src="https://geoloogia.info/img/books1.jpg"
+  >
     <v-btn
       v-if="$vuetify.breakpoint.smAndUp"
       @click="$emit('update:showSearch')"
@@ -97,5 +103,4 @@ export default {
 
 .search
   color: whitesmoke !important
-
 </style>

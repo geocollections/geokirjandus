@@ -1,8 +1,8 @@
 <template>
   <div class="search fill-height" style="background-color: #F6EDDF">
     <v-list class="mt-0 pa-0">
-      <v-list-item style="background-color: #F2E4CF" class="pb-2">
-        <v-list-item-content class="py-1">
+      <v-list-item style="background-color: #F2E4CF" class="py-0">
+        <v-list-item-content>
           <citation-select />
         </v-list-item-content>
       </v-list-item>
@@ -47,7 +47,7 @@
           />
         </v-list-item>
       </div>
-      <v-list-group :value="false">
+      <v-list-group color="#F0B67F" :value="false">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -208,10 +208,6 @@ export default {
         value: event,
         id: id
       });
-    },
-    updateDate(event, fieldId, index) {
-      this.$emit("update:searchParameters", event, fieldId);
-      this.calendarMenus[fieldId] = false;
     }
   }
 };

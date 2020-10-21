@@ -131,6 +131,8 @@
         <span v-for="(keyword, index) in parseKeywords" :key="index">
           <v-chip
             outlined
+            color="#F0B67F"
+            text-color="black"
             class="mr-1 mb-1"
             :href="`/reference/?keywords_contains=${keyword}`"
           >
@@ -165,7 +167,13 @@
       <v-card-text v-if="libraries.length > 0">
         <h3 class="pb-3">{{ $t("reference.libraries") }}</h3>
         <span class="py-3" v-for="(library, index) in libraries" :key="index">
-          <v-chip outlined class="mr-1 mb-1" :href="`/library/${library.id}`">
+          <v-chip
+            outlined
+            color="#F0B67F"
+            text-color="black"
+            class="mr-1 mb-1"
+            :href="`/library/${library.id}`"
+          >
             {{ library.title }}
           </v-chip>
         </span>
@@ -277,27 +285,6 @@ export default {
   },
   mixins: [dateMixin],
   computed: {
-    mapMarkerLength() {
-      return this.getMapMarkers.length;
-    },
-    getMapMarkers() {
-      return this.localities
-        .filter(locality => {
-          return !!(locality.latitude && locality.longitude);
-        })
-        .map(locality => {
-          const localityTitle =
-            this.$i18n.locale === "ee"
-              ? locality.locality
-              : locality.locality_en;
-
-          return {
-            popup: `<div>${localityTitle}</div>`,
-            title: localityTitle,
-            coordinates: [locality.latitude, locality.longitude]
-          };
-        });
-    },
     getReferenceType() {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_type
@@ -340,24 +327,6 @@ export default {
     }
   },
   methods: {
-    mapMarkers() {
-      return this.localities
-        .filter(locality => {
-          return !!(locality.latitude && locality.longitude);
-        })
-        .map(locality => {
-          const localityTitle =
-            this.$i18n.locale === "ee"
-              ? locality.locality
-              : locality.locality_en;
-
-          return {
-            popup: `<div>${localityTitle}</div>`,
-            title: localityTitle,
-            coordinates: [locality.latitude, locality.longitude]
-          };
-        });
-    },
     localityURL(id) {
       return `https://geocollections.info/locality/${id}`;
     },

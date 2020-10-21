@@ -82,9 +82,9 @@
     "describedTaxa": "Kirjeldatud taksonid"
   },
   "link": {
-    "geocollections": "GeoCollections",
-    "fossiilid": "Fossiilid",
-    "kivid": "Kivid",
+    "geocollections": "Geokogude portaal",
+    "fossiilid": "fossiilid.info",
+    "kivid": "kivid.info",
     "sarvAPI": "SARV API",
     "sarvDOI": "SARV DOI",
     "sarvEdit": "SARV andmehaldus",

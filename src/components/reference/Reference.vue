@@ -179,10 +179,6 @@
                 <th>{{ $t("reference.id") }}</th>
                 <td>{{ reference.id }}</td>
               </tr>
-              <tr v-if="reference.reference">
-                <th>{{ $t("reference.reference") }}</th>
-                <td>{{ reference.reference }}</td>
-              </tr>
               <tr v-if="reference.user_added">
                 <th>{{ $t("reference.userAdded") }}</th>
                 <td>

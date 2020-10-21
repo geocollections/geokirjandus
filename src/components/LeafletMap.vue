@@ -140,18 +140,21 @@ export default {
 
       L.control.layers(baseMaps).addTo(mapDiv);
 
-      const markerClusters = L.markerClusterGroup();
+      const markerClusters = L.markerClusterGroup({ maxClusterRadius: 30 });
       let markers = [];
       for (const m of this.markers) {
         const markerObj = new L.CircleMarker(m.coordinates, {
-          title: m.title
+          title: m.title,
+          radius: 3
         });
         markers.push(markerObj);
         if (m.popup) markerObj.bindPopup(m.popup);
 
         markerClusters.addLayer(markerObj);
       }
-      mapDiv.addLayer(markerClusters);
+      if (markers.length > 100) {
+        mapDiv.addLayer(markerClusters);
+      } else mapDiv.addLayer(L.layerGroup(markers));
       let bounds = new L.featureGroup(markers).getBounds();
 
       mapDiv.fitBounds(bounds);

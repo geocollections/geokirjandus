@@ -43,7 +43,7 @@
       </v-main>
     </div>
     <div v-if="isPrint" class="d-none d-print-block">
-      <reference-list-view :data="result"></reference-list-view>
+      <reference-list-print-view :data="result"></reference-list-print-view>
     </div>
   </div>
 </template>
@@ -53,12 +53,12 @@ import AppHeader from "@/components/AppHeader";
 import { mapState, mapActions } from "vuex";
 import Search from "@/components/Search";
 import Fabs from "@/components/Fabs";
-import ReferenceListView from "@/components/reference/ReferenceListView";
+import ReferenceListPrintView from "@/components/reference/ReferenceListPrintView";
 
 export default {
   name: "Home",
   components: {
-    ReferenceListView,
+    ReferenceListPrintView,
     Fabs,
     Search,
     AppHeader

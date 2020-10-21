@@ -43,7 +43,7 @@
           style="height: 60px; padding: 0 10px;"
       /></a>
     </div>
-    <small class="text-center">
+    <small class="text-center" style="max-width: 800px">
       Siin leiduvad materjalid on enamasti kasutamiseks
       <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a>
       litsentsi alusel, kui pole näidatud teisiti. Portaal on osaks

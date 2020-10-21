@@ -2,7 +2,7 @@
   <v-container>
     <v-card v-if="reference">
       <v-card-title
-        style="background-color: #F6EDDF"
+        style="background-color: #F2E4CF"
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">

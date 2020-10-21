@@ -2,7 +2,7 @@
   <v-container>
     <v-card v-if="library">
       <v-card-title
-        style="background-color: #F6EDDF"
+        style="background-color: #F2E4CF"
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
+import { fetchLibrary } from "@/utils/apiCalls";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
 import LibraryCitation from "@/components/library/LibraryCitation";
@@ -132,7 +132,6 @@ export default {
 
       if (this.library === undefined) {
         this.error = true;
-        return;
       }
     });
   },

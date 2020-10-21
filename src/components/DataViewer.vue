@@ -2,10 +2,6 @@
   <div class="data-viewer">
     <!-- DATA TABLE -->
     <v-card elevation="4" class=" my-1" color="#F6EDDF">
-      <template v-slot:progress>
-        <v-progress-linear indeterminate color="#F0B67F"></v-progress-linear>
-      </template>
-
       <slot name="prepend"></slot>
       <!--  TODO: Use slot to add inputs to header  -->
       <v-card-actions
@@ -67,58 +63,58 @@
         :paginate-by="paginateBy"
         :count="count"
       />
+      <div style="background-color: white;border-radius: 12px">
+        <v-card-text v-if="count <= 0" class="text-center">
+          <h3>{{ $t("error.nothingFound") }}</h3>
+        </v-card-text>
+        <v-card-text v-if="isLoading" class="text-center">
+          <v-progress-circular indeterminate :size="50"></v-progress-circular>
+        </v-card-text>
+        <div v-else>
+          <!--  LIST VIEW  -->
+          <v-expand-transition>
+            <list-view
+              v-if="view === 'list' && count > 0"
+              :module="module"
+              class="py-2"
+            >
+              <template>
+                <slot name="list-view" v-bind:data="data"></slot>
+              </template>
+            </list-view>
+          </v-expand-transition>
+          <!--  TABLE VIEW  -->
 
-      <v-card-text v-if="count <= 0" class="d-flex justify-center">
-        <h3>{{ $t("error.nothingFound") }}</h3>
-      </v-card-text>
-
-      <v-card-text v-if="isLoading" class="d-flex justify-center">
-        <v-progress-circular
-          indeterminate
-          :size="50"
-          color="#F0B67F"
-        ></v-progress-circular>
-      </v-card-text>
-
-      <div v-else>
-        <!--  LIST VIEW  -->
-        <v-expand-transition>
-          <list-view
-            v-if="view === 'list' && count > 0"
-            :module="module"
-            class="py-2"
+          <v-data-table
+            v-if="view === 'table' && count > 0"
+            :headers="getHeadersShowing"
+            :items="data"
+            hide-default-footer
+            :items-per-page="paginateBy"
+            :page="page"
+            :sort-by="getSortBy"
+            :sort-desc="getSortDesc"
+            v-on:update:sort-by="$emit('update:sortBy', $event)"
+            v-on:update:sort-desc="$emit('update:sortDesc', $event)"
+            multi-sort
+            :header-props="headerProps"
+            class=" data-viewer-table"
           >
-            <template>
-              <slot name="list-view" v-bind:data="data"></slot>
+            <template
+              v-for="(_, slotName) in $scopedSlots"
+              v-slot:[slotName]="context"
+            >
+              <slot :name="slotName" v-bind="context" />
             </template>
-          </list-view>
-        </v-expand-transition>
-        <!--  TABLE VIEW  -->
-
-        <v-data-table
-          v-if="view === 'table' && count > 0"
-          :headers="getHeadersShowing"
-          :items="data"
-          hide-default-footer
-          :items-per-page="paginateBy"
-          :page="page"
-          :sort-by="getSortBy"
-          :sort-desc="getSortDesc"
-          v-on:update:sort-by="$emit('update:sortBy', $event)"
-          v-on:update:sort-desc="$emit('update:sortDesc', $event)"
-          multi-sort
-          :header-props="headerProps"
-          class=" data-viewer-table"
-          style="background-color: #F6EDDF"
-        >
-          <template
-            v-for="(_, slotName) in $scopedSlots"
-            v-slot:[slotName]="context"
-          >
-            <slot :name="slotName" v-bind="context" />
-          </template>
-        </v-data-table>
+          </v-data-table>
+        </div>
       </div>
+      <view-helper
+        v-on="$listeners"
+        :page="page"
+        :paginate-by="paginateBy"
+        :count="count"
+      />
     </v-card>
   </div>
 </template>
@@ -126,7 +122,6 @@
 <script>
 import ExportButtons from "../components/ExportButtons";
 import ListView from "@/components/ListView";
-import CitationSelect from "@/components/CitationSelect";
 import ViewHelper from "@/components/ViewHelper";
 export default {
   name: "DataViewer",
@@ -235,5 +230,9 @@ export default {
 <style scoped>
 .mobile-row >>> .v-data-table__mobile-row {
   height: initial !important;
+}
+
+.data-viewer-table {
+  border-radius: 12px;
 }
 </style>

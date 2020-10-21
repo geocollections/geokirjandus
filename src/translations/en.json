@@ -82,9 +82,9 @@
     "describedTaxa": "Described taxa"
   },
   "link": {
-    "geocollections": "GeoCollections",
-    "fossiilid": "Fossiilid",
-    "kivid": "Kivid",
+    "geocollections": "Geocollections portal",
+    "fossiilid": "fossiilid.info",
+    "kivid": "kivid.info",
     "sarvAPI": "SARV API",
     "sarvDOI": "SARV DOI",
     "sarvEdit": "SARV data management",

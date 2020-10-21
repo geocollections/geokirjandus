@@ -2,7 +2,7 @@
   <v-container>
     <v-card v-if="reference">
       <v-card-title
-        style="background-color: #F6EDDF"
+        style="background-color: #F2E4CF"
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
@@ -11,7 +11,7 @@
           </v-btn>
         </v-col>
         <div class="col" style="word-break: normal">
-          {{ reference.reference }}
+          {{ `(${reference.reference}) ${reference.title}` }}
         </div>
       </v-card-title>
       <v-card-actions class=" pt-3">
@@ -131,6 +131,8 @@
         <span v-for="(keyword, index) in parseKeywords" :key="index">
           <v-chip
             outlined
+            color="#F0B67F"
+            text-color="black"
             class="mr-1 mb-1"
             :href="`/reference/?keywords_contains=${keyword}`"
           >
@@ -165,7 +167,13 @@
       <v-card-text v-if="libraries.length > 0">
         <h3 class="pb-3">{{ $t("reference.libraries") }}</h3>
         <span class="py-3" v-for="(library, index) in libraries" :key="index">
-          <v-chip outlined class="mr-1 mb-1" :href="`/library/${library.id}`">
+          <v-chip
+            outlined
+            color="#F0B67F"
+            text-color="black"
+            class="mr-1 mb-1"
+            :href="`/library/${library.id}`"
+          >
             {{ library.title }}
           </v-chip>
         </span>
@@ -178,10 +186,6 @@
               <tr>
                 <th>{{ $t("reference.id") }}</th>
                 <td>{{ reference.id }}</td>
-              </tr>
-              <tr v-if="reference.reference">
-                <th>{{ $t("reference.reference") }}</th>
-                <td>{{ reference.reference }}</td>
               </tr>
               <tr v-if="reference.user_added">
                 <th>{{ $t("reference.userAdded") }}</th>
@@ -229,7 +233,8 @@ import dateMixin from "@/mixins/dateMixin";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
-
+import { mapState } from "vuex";
+import debounce from "lodash/debounce";
 export default {
   name: "Reference",
   components: { ReferenceLinks, LeafletMap, ReferenceCitation },
@@ -279,28 +284,19 @@ export default {
       }
     });
   },
+  watch: {
+    referenceParameters: {
+      handler: debounce(function() {
+        this.setURLParameters();
+      }, 300),
+      deep: true
+    }
+  },
   mixins: [dateMixin],
   computed: {
-    mapMarkerLength() {
-      return this.getMapMarkers.length;
-    },
-    getMapMarkers() {
-      return this.localities
-        .filter(locality => {
-          return !!(locality.latitude && locality.longitude);
-        })
-        .map(locality => {
-          const localityTitle =
-            this.$i18n.locale === "ee"
-              ? locality.locality
-              : locality.locality_en;
-
-          return {
-            popup: `<div>${localityTitle}</div>`,
-            title: localityTitle,
-            coordinates: [locality.latitude, locality.longitude]
-          };
-        });
+    ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
+    referenceParameters() {
+      return { ...this.advancedSearch.byIds, search: this.search };
     },
     getReferenceType() {
       return this.$i18n.locale === "ee"
@@ -344,24 +340,6 @@ export default {
     }
   },
   methods: {
-    mapMarkers() {
-      return this.localities
-        .filter(locality => {
-          return !!(locality.latitude && locality.longitude);
-        })
-        .map(locality => {
-          const localityTitle =
-            this.$i18n.locale === "ee"
-              ? locality.locality
-              : locality.locality_en;
-
-          return {
-            popup: `<div>${localityTitle}</div>`,
-            title: localityTitle,
-            coordinates: [locality.latitude, locality.longitude]
-          };
-        });
-    },
     localityURL(id) {
       return `https://geocollections.info/locality/${id}`;
     },
@@ -395,6 +373,56 @@ export default {
         0,
         2
       )}/${uuid.substring(2, 4)}/${uuid}`;
+    },
+    // TODO: Refactor into a mixin (same function is in ReferenceViewer as well)
+    setURLParameters() {
+      let q = Object.fromEntries(
+        Object.entries(this.referenceParameters)
+          .filter(([k, v]) => {
+            if (!v.hidden) {
+              switch (v.type) {
+                case "range": {
+                  return isNaN(v.value[0]) && isNaN(v.value[1])
+                    ? null
+                    : v.value;
+                }
+                case "checkbox": {
+                  return k === "isEstonianAuthor" || k === "isEstonianReference"
+                    ? false
+                    : v.value;
+                }
+                default: {
+                  return v.value;
+                }
+              }
+            }
+          })
+          .map(([k, v]) => {
+            switch (v.type) {
+              case "range": {
+                const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
+                const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
+
+                return [k, `${start}-${end}`];
+              }
+              case "checkbox": {
+                return [k, v.value];
+              }
+              default: {
+                return k === "search"
+                  ? [k, v.value]
+                  : [`${k}_${v.lookUpType}`, v.value];
+              }
+            }
+          })
+      );
+      if (this.page > 1) {
+        q.page = this.page;
+      }
+      if (this.paginateBy !== 50) {
+        q.paginateBy = this.paginateBy;
+      }
+      this.$router.push({ query: q, path: "/reference" }).catch(() => {});
     }
   }
 };

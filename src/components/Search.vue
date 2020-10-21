@@ -1,20 +1,18 @@
 <template>
-  <div class="search">
+  <div class="search fill-height" style="background-color: #F6EDDF">
     <v-list class="mt-0 pa-0">
-      <v-list-item>
+      <v-list-item style="background-color: #F2E4CF" class="pb-2">
         <v-list-item-content class="py-1">
           <citation-select />
         </v-list-item-content>
       </v-list-item>
       <v-list-item class="pt-0">
-        <v-list-item-content>
-          <v-text-field
-            hide-details
-            :value="search.value"
-            :label="$t('common.search')"
-            @change="$emit('update:search', $event)"
-          />
-        </v-list-item-content>
+        <v-text-field
+          hide-details
+          :value="search.value"
+          :label="$t('common.search')"
+          @change="$emit('update:search', $event)"
+        />
       </v-list-item>
 
       <v-list-item>

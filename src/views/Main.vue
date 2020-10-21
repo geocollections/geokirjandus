@@ -34,12 +34,7 @@
         <v-expand-transition>
           <router-view :search="search" :advancedSearch="advancedSearch" />
         </v-expand-transition>
-        <v-footer
-          color="white"
-          padless
-          :style="{ height: $vuetify.breakpoint.mdAndUp ? '100px' : '125px' }"
-        >
-        </v-footer>
+        <app-footer />
       </v-main>
     </div>
     <div v-if="isPrint" class="d-none d-print-block">
@@ -54,10 +49,12 @@ import { mapState, mapActions } from "vuex";
 import Search from "@/components/Search";
 import Fabs from "@/components/Fabs";
 import ReferenceListPrintView from "@/components/reference/ReferenceListPrintView";
+import AppFooter from "@/components/AppFooter";
 
 export default {
   name: "Home",
   components: {
+    AppFooter,
     ReferenceListPrintView,
     Fabs,
     Search,
@@ -103,9 +100,6 @@ export default {
 </script>
 
 <style scoped>
-.container--fluid {
-  max-width: 100%;
-}
 @media (min-width: 1904px) {
   .container {
     max-width: 1264px !important;

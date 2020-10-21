@@ -39,6 +39,7 @@
         </v-card>
       </v-col>
     </v-row>
+    <app-footer />
   </v-container>
 </template>
 
@@ -47,9 +48,10 @@ import LangButtons from "@/components/LangButtons";
 import Links from "@/components/Links";
 import { fetchReferences } from "@/utils/apiCalls";
 import ReferenceListView from "@/components/reference/ReferenceListView";
+import AppFooter from "@/components/AppFooter";
 export default {
   name: "Landing",
-  components: { ReferenceListView, LangButtons, Links },
+  components: { AppFooter, ReferenceListView, LangButtons, Links },
   data() {
     return {
       searchStr: "",

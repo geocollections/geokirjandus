@@ -2,10 +2,6 @@
   <div class="data-viewer">
     <!-- DATA TABLE -->
     <v-card elevation="4" class=" my-1" color="#F6EDDF">
-      <template v-slot:progress>
-        <v-progress-linear indeterminate color="#F0B67F"></v-progress-linear>
-      </template>
-
       <slot name="prepend"></slot>
       <!--  TODO: Use slot to add inputs to header  -->
       <v-card-actions
@@ -80,7 +76,7 @@
         ></v-progress-circular>
       </v-card-text>
 
-      <div v-else>
+      <div style="background-color: white" v-else>
         <!--  LIST VIEW  -->
         <v-expand-transition>
           <list-view
@@ -109,7 +105,6 @@
           multi-sort
           :header-props="headerProps"
           class=" data-viewer-table"
-          style="background-color: #F6EDDF"
         >
           <template
             v-for="(_, slotName) in $scopedSlots"
@@ -119,6 +114,12 @@
           </template>
         </v-data-table>
       </div>
+      <view-helper
+        v-on="$listeners"
+        :page="page"
+        :paginate-by="paginateBy"
+        :count="count"
+      />
     </v-card>
   </div>
 </template>
@@ -126,7 +127,6 @@
 <script>
 import ExportButtons from "../components/ExportButtons";
 import ListView from "@/components/ListView";
-import CitationSelect from "@/components/CitationSelect";
 import ViewHelper from "@/components/ViewHelper";
 export default {
   name: "DataViewer",

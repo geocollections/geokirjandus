@@ -30,7 +30,7 @@
         :show-search="showSearch"
         v-on:update:showSearch="showSearch = !showSearch"
       />
-      <v-main>
+      <v-main style="background-color: #F6EDDF">
         <v-expand-transition>
           <router-view :search="search" :advancedSearch="advancedSearch" />
         </v-expand-transition>

@@ -6,7 +6,7 @@
           <span :class="classObject" style="height: 28px ; width: 28px" />
         </v-btn>
       </template>
-      <v-list>
+      <v-list color="#F6EDDF">
         <div v-for="(language, idx) in languages" :key="idx">
           <v-list-item @click="changeLang(language.value)">
             <v-list-item-title class="d-flex ">

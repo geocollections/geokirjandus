@@ -11,7 +11,7 @@
         {{ $t("common.links") }}
       </v-btn>
     </template>
-    <v-list>
+    <v-list color="#F6EDDF">
       <div v-for="(link, idx) in links" :key="idx">
         <v-list-item :href="link.url" target="_blank">
           <v-list-item-title>{{ $t(link.name) }}</v-list-item-title>

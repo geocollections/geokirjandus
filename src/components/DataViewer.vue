@@ -64,22 +64,25 @@
         :count="count"
       />
 
-      <v-card-text v-if="count <= 0" class="d-flex justify-center">
+      <v-card-text
+        v-if="count <= 0"
+        class="text-center"
+        style="background-color: white"
+      >
         <h3>{{ $t("error.nothingFound") }}</h3>
       </v-card-text>
-
-      <v-card-text v-if="isLoading" class="d-flex justify-center">
-        <v-progress-circular
-          indeterminate
-          :size="50"
-          color="#F0B67F"
-        ></v-progress-circular>
+      <v-card-text
+        v-if="isLoading"
+        class="text-center"
+        style="background-color: white"
+      >
+        <v-progress-circular indeterminate :size="50"></v-progress-circular>
       </v-card-text>
-
-      <div style="background-color: white" v-else>
+      <div v-else>
         <!--  LIST VIEW  -->
         <v-expand-transition>
           <list-view
+            style="background-color: white"
             v-if="view === 'list' && count > 0"
             :module="module"
             class="py-2"

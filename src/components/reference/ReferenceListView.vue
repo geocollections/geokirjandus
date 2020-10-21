@@ -9,7 +9,6 @@
 
 <script>
 import ReferenceItem from "@/components/reference/ReferenceItem";
-import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 export default {
   name: "ReferenceListView",
   components: { ReferenceItem },

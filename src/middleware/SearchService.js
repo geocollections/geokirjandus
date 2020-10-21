@@ -82,7 +82,8 @@ function buildQueryStr(queryObject, filterQueryObject) {
     .filter(([_, v]) => {
       if (v.type === "range" && isNaN(v.value[0]) && isNaN(v.value[1]))
         return false;
-      if (!v.value || v.value.trim().length <= 0) return false;
+      if (v.type === "text" && (!v.value || v.value.trim().length <= 0))
+        return false;
       return v.value !== null;
     })
     .reduce((prev, [k, v]) => {

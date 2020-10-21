@@ -233,7 +233,8 @@ import dateMixin from "@/mixins/dateMixin";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
-
+import { mapState } from "vuex";
+import debounce from "lodash/debounce";
 export default {
   name: "Reference",
   components: { ReferenceLinks, LeafletMap, ReferenceCitation },
@@ -283,8 +284,20 @@ export default {
       }
     });
   },
+  watch: {
+    referenceParameters: {
+      handler: debounce(function() {
+        this.setURLParameters();
+      }, 300),
+      deep: true
+    }
+  },
   mixins: [dateMixin],
   computed: {
+    ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
+    referenceParameters() {
+      return { ...this.advancedSearch.byIds, search: this.search };
+    },
     getReferenceType() {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_type
@@ -360,6 +373,55 @@ export default {
         0,
         2
       )}/${uuid.substring(2, 4)}/${uuid}`;
+    },
+    setURLParameters() {
+      let q = Object.fromEntries(
+        Object.entries(this.referenceParameters)
+          .filter(([k, v]) => {
+            if (!v.hidden) {
+              switch (v.type) {
+                case "range": {
+                  return isNaN(v.value[0]) && isNaN(v.value[1])
+                    ? null
+                    : v.value;
+                }
+                case "checkbox": {
+                  return k === "isEstonianAuthor" || k === "isEstonianReference"
+                    ? false
+                    : v.value;
+                }
+                default: {
+                  return v.value;
+                }
+              }
+            }
+          })
+          .map(([k, v]) => {
+            switch (v.type) {
+              case "range": {
+                const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
+                const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
+
+                return [k, `${start}-${end}`];
+              }
+              case "checkbox": {
+                return [k, v.value];
+              }
+              default: {
+                return k === "search"
+                  ? [k, v.value]
+                  : [`${k}_${v.lookUpType}`, v.value];
+              }
+            }
+          })
+      );
+      if (this.page > 1) {
+        q.page = this.page;
+      }
+      if (this.paginateBy !== 50) {
+        q.paginateBy = this.paginateBy;
+      }
+      this.$router.push({ query: q, path: "/reference" }).catch(() => {});
     }
   }
 };

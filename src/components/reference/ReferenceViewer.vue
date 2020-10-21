@@ -204,9 +204,9 @@ export default {
       deep: true
     },
     page: {
-      handler() {
+      handler: debounce(function() {
         this.getReferences();
-      }
+      }, 300)
     },
     paginateBy: {
       handler() {

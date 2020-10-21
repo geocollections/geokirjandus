@@ -140,7 +140,7 @@ export default {
 
       L.control.layers(baseMaps).addTo(mapDiv);
 
-      const markerClusters = L.markerClusterGroup();
+      const markerClusters = L.markerClusterGroup({maxClusterRadius: 30});
       let markers = [];
       for (const m of this.markers) {
         const markerObj = new L.CircleMarker(m.coordinates, {

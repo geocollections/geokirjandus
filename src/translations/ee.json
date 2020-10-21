@@ -5,6 +5,9 @@
   "messages": {
     "langChange": "Keel vahetatud"
   },
+  "tooltip": {
+    "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
+  },
   "error": {
     "referenceId": "Ei leidnud kirjandust. ID: {text}",
     "libraryId": "Ei leidnud kogumikku. ID: {text}",

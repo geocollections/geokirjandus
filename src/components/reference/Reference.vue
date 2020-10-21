@@ -97,7 +97,23 @@
           class="col-12 col-md-6 pa-0 px-md-4 pt-4 pt-md-0"
           v-if="localities.length > 0"
         >
-          <h3 class="pb-3">{{ $t("common.map") }}</h3>
+          <span class="d-flex">
+            <h3 class="pb-3">{{ $t("common.map") }}</h3>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  class="px-1 align-self-start"
+                  color="primary"
+                  dark
+                  x-small
+                  v-bind="attrs"
+                  v-on="on"
+                  >fas fa-info</v-icon
+                >
+              </template>
+              <span>{{ $t("tooltip.map") }}</span>
+            </v-tooltip>
+          </span>
           <leaflet-map :markers="localities" />
         </div>
       </v-card-text>

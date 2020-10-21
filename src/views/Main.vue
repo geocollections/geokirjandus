@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <div class="d-print-none">
+  <div class="home fill-height">
+    <div class="d-print-none fill-height">
       <app-header
         class="d-print-none"
         v-on:update:showSearch="showSearch = !showSearch"
@@ -30,11 +30,11 @@
         :show-search="showSearch"
         v-on:update:showSearch="showSearch = !showSearch"
       />
-      <v-main style="background-color: #F6EDDF">
-        <v-expand-transition>
+      <v-main class="fill-height" style="background-color: #F6EDDF">
+        <div class="fill-height d-flex flex-wrap align-content-space-between">
           <router-view :search="search" :advancedSearch="advancedSearch" />
-        </v-expand-transition>
-        <app-footer />
+          <app-footer />
+        </div>
       </v-main>
     </div>
     <div v-if="isPrint" class="d-none d-print-block">

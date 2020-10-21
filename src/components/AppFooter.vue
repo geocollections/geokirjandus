@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="#E0C190" class="d-flex flex-column">
+  <v-footer color="#E0C190" class="d-flex flex-column" style="width: 100%">
     <div class="text-center">
       <a href="https://natarc.ut.ee" target="_blank" rel="noopener"
         ><img

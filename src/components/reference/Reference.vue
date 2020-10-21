@@ -374,6 +374,7 @@ export default {
         2
       )}/${uuid.substring(2, 4)}/${uuid}`;
     },
+    // TODO: Refactor into a mixin (same function is in ReferenceViewer as well)
     setURLParameters() {
       let q = Object.fromEntries(
         Object.entries(this.referenceParameters)

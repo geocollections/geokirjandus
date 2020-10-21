@@ -63,59 +63,51 @@
         :paginate-by="paginateBy"
         :count="count"
       />
+      <div style="background-color: white;border-radius: 12px">
+        <v-card-text v-if="count <= 0" class="text-center">
+          <h3>{{ $t("error.nothingFound") }}</h3>
+        </v-card-text>
+        <v-card-text v-if="isLoading" class="text-center">
+          <v-progress-circular indeterminate :size="50"></v-progress-circular>
+        </v-card-text>
+        <div v-else>
+          <!--  LIST VIEW  -->
+          <v-expand-transition>
+            <list-view
+              v-if="view === 'list' && count > 0"
+              :module="module"
+              class="py-2"
+            >
+              <template>
+                <slot name="list-view" v-bind:data="data"></slot>
+              </template>
+            </list-view>
+          </v-expand-transition>
+          <!--  TABLE VIEW  -->
 
-      <v-card-text
-        v-if="count <= 0"
-        class="text-center"
-        style="background-color: white"
-      >
-        <h3>{{ $t("error.nothingFound") }}</h3>
-      </v-card-text>
-      <v-card-text
-        v-if="isLoading"
-        class="text-center"
-        style="background-color: white"
-      >
-        <v-progress-circular indeterminate :size="50"></v-progress-circular>
-      </v-card-text>
-      <div v-else>
-        <!--  LIST VIEW  -->
-        <v-expand-transition>
-          <list-view
-            style="background-color: white"
-            v-if="view === 'list' && count > 0"
-            :module="module"
-            class="py-2"
+          <v-data-table
+            v-if="view === 'table' && count > 0"
+            :headers="getHeadersShowing"
+            :items="data"
+            hide-default-footer
+            :items-per-page="paginateBy"
+            :page="page"
+            :sort-by="getSortBy"
+            :sort-desc="getSortDesc"
+            v-on:update:sort-by="$emit('update:sortBy', $event)"
+            v-on:update:sort-desc="$emit('update:sortDesc', $event)"
+            multi-sort
+            :header-props="headerProps"
+            class=" data-viewer-table"
           >
-            <template>
-              <slot name="list-view" v-bind:data="data"></slot>
+            <template
+              v-for="(_, slotName) in $scopedSlots"
+              v-slot:[slotName]="context"
+            >
+              <slot :name="slotName" v-bind="context" />
             </template>
-          </list-view>
-        </v-expand-transition>
-        <!--  TABLE VIEW  -->
-
-        <v-data-table
-          v-if="view === 'table' && count > 0"
-          :headers="getHeadersShowing"
-          :items="data"
-          hide-default-footer
-          :items-per-page="paginateBy"
-          :page="page"
-          :sort-by="getSortBy"
-          :sort-desc="getSortDesc"
-          v-on:update:sort-by="$emit('update:sortBy', $event)"
-          v-on:update:sort-desc="$emit('update:sortDesc', $event)"
-          multi-sort
-          :header-props="headerProps"
-          class=" data-viewer-table"
-        >
-          <template
-            v-for="(_, slotName) in $scopedSlots"
-            v-slot:[slotName]="context"
-          >
-            <slot :name="slotName" v-bind="context" />
-          </template>
-        </v-data-table>
+          </v-data-table>
+        </div>
       </div>
       <view-helper
         v-on="$listeners"
@@ -238,5 +230,9 @@ export default {
 <style scoped>
 .mobile-row >>> .v-data-table__mobile-row {
   height: initial !important;
+}
+
+.data-viewer-table {
+  border-radius: 12px;
 }
 </style>

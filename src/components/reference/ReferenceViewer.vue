@@ -25,7 +25,7 @@
               <v-card-text
                 v-if="showLibraries && libraries && libraries.length > 0"
                 class="px-2 py-2"
-                style="background-color: #F2E4CF"
+                style="background-color: #F2E4CF; border-radius: 6px"
               >
                 <span class="subheading pl-3">{{
                   $t("common.libraries")

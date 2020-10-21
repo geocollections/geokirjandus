@@ -49,9 +49,6 @@ export default {
         { text: "pagination", value: 25 },
         { text: "pagination", value: 50 },
         { text: "pagination", value: 100 },
-        { text: "pagination", value: 250 },
-        { text: "pagination", value: 500 },
-        { text: "pagination", value: 1000 }
       ]
     };
   },

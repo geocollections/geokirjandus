@@ -27,7 +27,7 @@
           @click="$emit('reset:parameters')"
           dark
         >
-          <v-icon small>fas fa-trash</v-icon>
+          <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
         <v-btn color="primary">
           <v-icon class="pr-2" small>fas fa-search</v-icon>

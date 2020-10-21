@@ -11,7 +11,7 @@
           </v-btn>
         </v-col>
         <div class="col" style="word-break: normal">
-          {{ reference.reference }}
+          {{ `(${reference.reference}) ${reference.title}` }}
         </div>
       </v-card-title>
       <v-card-actions class=" pt-3">

@@ -1,20 +1,18 @@
 <template>
-  <div class="search">
+  <div class="search fill-height" style="background-color: #F6EDDF">
     <v-list class="mt-0 pa-0">
-      <v-list-item>
-        <v-list-item-content class="py-1">
+      <v-list-item style="background-color: #F2E4CF" class="py-0">
+        <v-list-item-content>
           <citation-select />
         </v-list-item-content>
       </v-list-item>
       <v-list-item class="pt-0">
-        <v-list-item-content>
-          <v-text-field
-            hide-details
-            :value="search.value"
-            :label="$t('common.search')"
-            @change="$emit('update:search', $event)"
-          />
-        </v-list-item-content>
+        <v-text-field
+          hide-details
+          :value="search.value"
+          :label="$t('common.search')"
+          @change="$emit('update:search', $event)"
+        />
       </v-list-item>
 
       <v-list-item>
@@ -27,7 +25,7 @@
           @click="$emit('reset:parameters')"
           dark
         >
-          <v-icon small>fas fa-trash</v-icon>
+          <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
         <v-btn color="primary">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
@@ -49,7 +47,7 @@
           />
         </v-list-item>
       </div>
-      <v-list-group :value="false">
+      <v-list-group color="#F0B67F" :value="false">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -210,10 +208,6 @@ export default {
         value: event,
         id: id
       });
-    },
-    updateDate(event, fieldId, index) {
-      this.$emit("update:searchParameters", event, fieldId);
-      this.calendarMenus[fieldId] = false;
     }
   }
 };

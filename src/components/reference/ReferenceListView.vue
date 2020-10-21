@@ -1,37 +1,24 @@
 <template>
-  <span>
-    <div v-if="data.length > 0" style="height: 65vh" class="d-print-none">
-      <DynamicScroller
-        class="scroller"
-        :min-item-size="100"
-        :items="data"
-        key-field="id"
-        v-slot="{ item, index, active }"
-      >
-        <DynamicScrollerItem
-          :item="item"
-          :active="active"
-          :size-dependencies="[item.title]"
-          :index="index"
-        >
-          <v-card-text class="py-0">
-            <v-divider v-if="index !== 0" />
-            <reference-item class="my-2" :reference="item" />
-          </v-card-text>
-        </DynamicScrollerItem>
-      </DynamicScroller>
-    </div>
-    <div v-if="data.length > 0" class="d-none d-print-block">
-      <v-card-text
-        class="py-0"
-        v-for="(entity, index) in data"
-        :key="entity.id"
-      >
-        <v-divider v-if="index !== 0" />
-        <reference-item class="my-2" :reference="entity" />
-      </v-card-text>
-    </div>
-  </span>
+  <DynamicScroller
+    v-if="data.length > 0"
+    style="height: 68vh"
+    class="scroller"
+    :min-item-size="100"
+    :items="data"
+    key-field="id"
+    v-slot="{ item, index, active }"
+  >
+    <DynamicScrollerItem
+      :item="item"
+      :active="active"
+      :size-dependencies="[item.title]"
+      :index="index"
+      class="v-card__text py-0"
+    >
+      <v-divider v-if="index !== 0" />
+      <reference-item class="my-2" :reference="item" />
+    </DynamicScrollerItem>
+  </DynamicScroller>
 </template>
 
 <script>

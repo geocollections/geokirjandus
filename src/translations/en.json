@@ -5,6 +5,9 @@
   "messages": {
     "langChange": "Language changed"
   },
+  "tooltip": {
+    "map": "Shows localities with coordinates. Full list of localities is available below."
+  },
   "error": {
     "referenceId": "Could not find reference. ID: {text}",
     "libraryId": "Could not find library. ID: {text}",

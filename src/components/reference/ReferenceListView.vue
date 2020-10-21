@@ -13,11 +13,10 @@
           :active="active"
           :size-dependencies="[item.title]"
           :index="index"
+          class="v-card__text py-0"
         >
-          <v-card-text class="py-0">
-            <v-divider v-if="index !== 0" />
-            <reference-item class="my-2" :reference="item" />
-          </v-card-text>
+          <v-divider v-if="index !== 0" />
+          <reference-item class="my-2" :reference="item" />
         </DynamicScrollerItem>
       </DynamicScroller>
     </div>

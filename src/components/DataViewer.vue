@@ -64,7 +64,7 @@
         :count="count"
       />
       <div style="background-color: white;border-radius: 12px">
-        <v-card-text v-if="count <= 0" class="text-center">
+        <v-card-text v-if="!isLoading && count <= 0" class="text-center">
           <h3>{{ $t("error.nothingFound") }}</h3>
         </v-card-text>
         <v-card-text v-if="isLoading" class="text-center">

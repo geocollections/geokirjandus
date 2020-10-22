@@ -31,9 +31,12 @@ class SearchService {
       urlParameters.push(searchFields);
 
       url = `${url}?${urlParameters.join("&")}`;
+
       const res = await axios.get(url);
+
       return res.data;
     } catch (err) {
+      console.error(err);
       throw new Error(err);
     }
   }
@@ -84,6 +87,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
         return false;
       if (v.type === "text" && (!v.value || v.value.trim().length <= 0))
         return false;
+      if (v.type === "select" && v.value === null) return false;
       return v.value !== null;
     })
     .reduce((prev, [k, v]) => {
@@ -123,6 +127,11 @@ function buildQueryStr(queryObject, filterQueryObject) {
             case "checkbox": {
               const encodedValue = encodeURIComponent(searchParameter.value);
               return `${fieldId}:${encodedValue}`;
+            }
+            case "select": {
+              return `${fieldId}: (${encodeURIComponent(
+                searchParameter.value.join(" ")
+              )})`;
             }
             case "text": {
               const encodedValue = encodeURIComponent(searchParameter.value);

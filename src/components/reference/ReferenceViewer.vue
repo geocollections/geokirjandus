@@ -94,6 +94,7 @@ import ReferenceListView from "@/components/reference/ReferenceListView";
 import DataViewer from "@/components/DataViewer";
 import dateMixin from "@/mixins/dateMixin";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
+import urlMixin from "@/mixins/urlMixin";
 
 export default {
   name: "ReferenceViewer",
@@ -269,7 +270,7 @@ export default {
       this.setSearchFromURL(this.$route.query);
     }
   },
-  mixins: [dateMixin],
+  mixins: [dateMixin, urlMixin],
   methods: {
     ...mapActions("search", [
       "setSearchFromURL",
@@ -290,55 +291,6 @@ export default {
     },
     detailView(item) {
       this.$router.push(`/reference/${item.id}`);
-    },
-    setURLParameters() {
-      let q = Object.fromEntries(
-        Object.entries(this.referenceParameters)
-          .filter(([k, v]) => {
-            if (!v.hidden) {
-              switch (v.type) {
-                case "range": {
-                  return isNaN(v.value[0]) && isNaN(v.value[1])
-                    ? null
-                    : v.value;
-                }
-                case "checkbox": {
-                  return k === "isEstonianAuthor" || k === "isEstonianReference"
-                    ? false
-                    : v.value;
-                }
-                default: {
-                  return v.value;
-                }
-              }
-            }
-          })
-          .map(([k, v]) => {
-            switch (v.type) {
-              case "range": {
-                const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
-                const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
-
-                return [k, `${start}-${end}`];
-              }
-              case "checkbox": {
-                return [k, v.value];
-              }
-              default: {
-                return k === "search"
-                  ? [k, v.value]
-                  : [`${k}_${v.lookUpType}`, v.value];
-              }
-            }
-          })
-      );
-      if (this.page > 1) {
-        q.page = this.page;
-      }
-      if (this.paginateBy !== 50) {
-        q.paginateBy = this.paginateBy;
-      }
-      this.$router.replace({ query: q }).catch(() => {});
     },
     getLibraries(page = 1) {
       if (this.showLibraries) {
@@ -374,7 +326,11 @@ export default {
             this.$router.push(`/reference/${response.results[0].id}`);
           } else {
             this.setReferences(response);
-            this.setURLParameters();
+            this.setURLParameters(
+              this.referenceParameters,
+              this.page,
+              this.paginateBy
+            );
           }
           this.isLoading = false;
         },

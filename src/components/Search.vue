@@ -58,6 +58,30 @@
             </v-row>
           </v-list-item>
           <v-list-item
+            v-else-if="advancedSearch.byIds[id].type === 'select'"
+            dense
+          >
+            <!--  SELECT  -->
+            <v-row class="pa-1">
+              <div class="col py-0">
+                <v-select
+                  multiple
+                  label="Type"
+                  :value="advancedSearch.byIds[id].value"
+                  :items="referenceTypes"
+                  @change="
+                    $emit('update:advancedSearch', {
+                      value: $event,
+                      id: id,
+                      type: advancedSearch.byIds[id].type
+                    })
+                  "
+                >
+                </v-select>
+              </div>
+            </v-row>
+          </v-list-item>
+          <v-list-item
             v-else-if="advancedSearch.byIds[id].type === 'range'"
             dense
           >
@@ -131,7 +155,6 @@
           class="deleteSearch ml-auto mr-3"
           @click="$emit('reset:parameters')"
           dark
-          aria-label="delete search"
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
@@ -140,7 +163,6 @@
           {{ $t("common.searchCommand") }}
         </v-btn>
       </v-list-item>
-
       <div :key="index" v-for="(id, index) in advancedSearch.allIds">
         <v-list-item v-if="advancedSearch.byIds[id].type === 'checkbox'" dense>
           <v-checkbox
@@ -199,7 +221,12 @@ export default {
     range: [1900, 2000],
     date_start: false,
     date_end: false,
-    calendarMenus: ["date_start", "date_end"]
+    calendarMenus: ["date_start", "date_end"],
+    referenceTypes: [
+      { value: 13, text: "abstrakt" },
+      { value: 14, text: "voldik jms" }
+    ],
+    referenceTypeValue: []
   }),
   methods: {
     updateCheckbox(event, id) {

@@ -131,6 +131,7 @@
           class="deleteSearch ml-auto mr-3"
           @click="$emit('reset:parameters')"
           dark
+          aria-label="delete search"
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>

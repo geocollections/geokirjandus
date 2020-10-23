@@ -51,17 +51,6 @@ class SearchService {
       throw new Error(err);
     }
   }
-
-  static async getFacets() {
-    try {
-      let url = `${API_URL}?${FACET_QUERY}`;
-
-      const res = await axios.get(url);
-      return res.data;
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
 }
 
 function buildSort(sortBy, sortDesc) {
@@ -134,7 +123,9 @@ function buildQueryStr(queryObject, filterQueryObject) {
               )})`;
             }
             case "text": {
-              const encodedValue = encodeURIComponent(searchParameter.value);
+              const value = searchParameter.value.replaceAll(" ", "\\ ");
+
+              const encodedValue = encodeURIComponent(value);
 
               return buildTextParameter(encodedValue, fieldId);
             }

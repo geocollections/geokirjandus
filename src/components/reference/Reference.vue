@@ -339,9 +339,14 @@ export default {
       });
     },
     parseKeywords() {
-      return this.reference.keywords.split(";").filter(keyword => {
-        return keyword !== " ";
-      });
+      return this.reference.keywords
+        .split(";")
+        .filter(keyword => {
+          return keyword !== " ";
+        })
+        .map(keyword => {
+          return keyword.trim();
+        });
     }
   },
   methods: {

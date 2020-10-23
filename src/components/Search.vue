@@ -220,12 +220,13 @@ export default {
     getReferenceTypes() {
       let types = [];
       for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
-
         types.push({
           value: this.facet.facet_fields.type[i],
-          text: `${this.facet.facet_fields.reference_type[i]} [${
-            this.facet.facet_fields.reference_type[i + 1]
-          }]`
+          text: `${
+            this.$i18n.locale === "ee"
+              ? this.facet.facet_fields.reference_type[i]
+              : this.facet.facet_fields.reference_type_en[i]
+          } [${this.facet.facet_fields.reference_type[i + 1]}]`
         });
       }
       return types;

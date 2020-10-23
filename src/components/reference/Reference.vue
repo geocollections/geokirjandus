@@ -6,12 +6,12 @@
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
-          <v-btn large icon @click="$router.go(-1)">
+          <v-btn large icon @click="$router.go(-1)" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
         <div class="col" style="word-break: normal">
-          {{ `(${reference.reference}) ${reference.title}` }}
+          {{ `${reference.reference}: ${reference.title}` }}
         </div>
       </v-card-title>
       <v-card-actions class=" pt-3">
@@ -235,6 +235,7 @@ import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
 import { mapState } from "vuex";
 import debounce from "lodash/debounce";
+import urlMixin from "@/mixins/urlMixin";
 export default {
   name: "Reference",
   components: { ReferenceLinks, LeafletMap, ReferenceCitation },
@@ -244,8 +245,14 @@ export default {
       reference: null,
       libraries: [],
       localities: [],
-      error: false
+      error: false,
+      prevRoute: null
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.prevRoute = from.path;
+    });
   },
   created() {
     this.getReference().then(res => {
@@ -287,12 +294,17 @@ export default {
   watch: {
     referenceParameters: {
       handler: debounce(function() {
-        this.setURLParameters();
+        this.setURLParameters(
+          this.referenceParameters,
+          this.page,
+          this.paginateBy,
+          this.prevRoute
+        );
       }, 300),
       deep: true
     }
   },
-  mixins: [dateMixin],
+  mixins: [dateMixin, urlMixin],
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
     referenceParameters() {
@@ -313,7 +325,7 @@ export default {
 
       const localityNamesEng = this.reference.localities_en.split(";");
       const localityIds = this.reference.locality_ids.split(";");
-      console.log(localityNames);
+
       return localityIds.map((id, index) => {
         return {
           id: id,
@@ -334,9 +346,14 @@ export default {
       });
     },
     parseKeywords() {
-      return this.reference.keywords.split(";").filter(keyword => {
-        return keyword !== " ";
-      });
+      return this.reference.keywords
+        .split(";")
+        .filter(keyword => {
+          return keyword !== " ";
+        })
+        .map(keyword => {
+          return keyword.trim();
+        });
     }
   },
   methods: {
@@ -373,56 +390,6 @@ export default {
         0,
         2
       )}/${uuid.substring(2, 4)}/${uuid}`;
-    },
-    // TODO: Refactor into a mixin (same function is in ReferenceViewer as well)
-    setURLParameters() {
-      let q = Object.fromEntries(
-        Object.entries(this.referenceParameters)
-          .filter(([k, v]) => {
-            if (!v.hidden) {
-              switch (v.type) {
-                case "range": {
-                  return isNaN(v.value[0]) && isNaN(v.value[1])
-                    ? null
-                    : v.value;
-                }
-                case "checkbox": {
-                  return k === "isEstonianAuthor" || k === "isEstonianReference"
-                    ? false
-                    : v.value;
-                }
-                default: {
-                  return v.value;
-                }
-              }
-            }
-          })
-          .map(([k, v]) => {
-            switch (v.type) {
-              case "range": {
-                const start = isNaN(v.value[0]) ? "" : `${v.value[0]}`;
-                const end = isNaN(v.value[1]) ? "" : `${v.value[1]}`;
-
-                return [k, `${start}-${end}`];
-              }
-              case "checkbox": {
-                return [k, v.value];
-              }
-              default: {
-                return k === "search"
-                  ? [k, v.value]
-                  : [`${k}_${v.lookUpType}`, v.value];
-              }
-            }
-          })
-      );
-      if (this.page > 1) {
-        q.page = this.page;
-      }
-      if (this.paginateBy !== 50) {
-        q.paginateBy = this.paginateBy;
-      }
-      this.$router.push({ query: q, path: "/reference" }).catch(() => {});
     }
   }
 };

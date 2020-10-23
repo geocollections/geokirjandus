@@ -99,6 +99,14 @@ const mutations = {
             resetAdvancedSearchObj[searchFieldName].value = range;
             break;
           }
+          case "select": {
+            const types = v.split(",").map(type => {
+              return type;
+            });
+            resetAdvancedSearchObj[searchFieldName].value = types;
+
+            break;
+          }
           case "checkbox": {
             resetAdvancedSearchObj[searchFieldName].value = v;
 

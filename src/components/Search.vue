@@ -1,6 +1,6 @@
 <template>
-  <div class="search fill-height" style="background-color: #F6EDDF">
-    <v-list class="mt-0 pa-0">
+  <div class="search fill-height " style="background-color: #F6EDDF">
+    <v-list class="mt-0 pb-10 pa-0">
       <v-list-item class="pt-0 pb-3">
         <v-text-field
           hide-details
@@ -55,6 +55,32 @@
                   "
                 ></v-text-field>
               </v-col>
+            </v-row>
+          </v-list-item>
+          <v-list-item
+              class="px-3"
+            v-else-if="advancedSearch.byIds[id].type === 'select'"
+          >
+            <!--  SELECT  -->
+            <v-row class="">
+              <div class="col py-1">
+                <v-select
+                  multiple
+                  :label="$t('reference.type')"
+                  :value="advancedSearch.byIds[id].value"
+                  :items="getReferenceTypes"
+                  :menu-props="{bottom: true, offsetY: true}"
+                  hide-details
+                  @change="
+                    $emit('update:advancedSearch', {
+                      value: $event,
+                      id: id,
+                      type: advancedSearch.byIds[id].type
+                    })
+                  "
+                >
+                </v-select>
+              </div>
             </v-row>
           </v-list-item>
           <v-list-item
@@ -139,7 +165,6 @@
           {{ $t("common.searchCommand") }}
         </v-btn>
       </v-list-item>
-
       <div :key="index" v-for="(id, index) in advancedSearch.allIds">
         <v-list-item v-if="advancedSearch.byIds[id].type === 'checkbox'" dense>
           <v-checkbox
@@ -185,6 +210,7 @@ export default {
   },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
+    ...mapState("references", ["facet"]),
     translatedLookUpTypes() {
       return this.lookUpTypes.map(item => {
         return {
@@ -192,13 +218,28 @@ export default {
           text: this.$t(item.text)
         };
       });
+    },
+    getReferenceTypes() {
+      let types = [];
+      for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
+        types.push({
+          value: this.facet.facet_fields.type[i],
+          text: `${
+            this.$i18n.locale === "ee"
+              ? this.facet.facet_fields.reference_type[i]
+              : this.facet.facet_fields.reference_type_en[i]
+          } [${this.facet.facet_fields.reference_type[i + 1]}]`
+        });
+      }
+      return types;
     }
   },
   data: () => ({
     range: [1900, 2000],
     date_start: false,
     date_end: false,
-    calendarMenus: ["date_start", "date_end"]
+    calendarMenus: ["date_start", "date_end"],
+    referenceTypeValue: []
   }),
   methods: {
     updateCheckbox(event, id) {

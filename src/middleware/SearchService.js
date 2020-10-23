@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
-const FACET_QUERY =
-  "q=*&rows=0&facet=on&facet.mincount=1&facet.field=recordbasis&facet.field=highertaxon&facet.field=type_status&facet.field=country&facet.field=datasetowner&facet.field=providername&facet.field=providername&facet.field=providercountry";
+const FACET_QUERY_REFERENCE =
+  "facet=on&facet.field={!ex=type}type&facet.field={!ex=type}reference_type&facet.field={!ex=type}reference_type_en";
 
 class SearchService {
   static async search(parameters, table) {
@@ -16,6 +16,8 @@ class SearchService {
       let url = `${API_URL}/${table}/`;
 
       let urlParameters = ["defType=edismax"];
+
+      if (table === "reference") urlParameters.push(FACET_QUERY_REFERENCE);
 
       if (parameters.page) urlParameters.push(`start=${start}`);
 
@@ -31,9 +33,12 @@ class SearchService {
       urlParameters.push(searchFields);
 
       url = `${url}?${urlParameters.join("&")}`;
+
       const res = await axios.get(url);
+
       return res.data;
     } catch (err) {
+      console.error(err);
       throw new Error(err);
     }
   }
@@ -41,17 +46,6 @@ class SearchService {
   static async getDetailView(id, table) {
     try {
       let url = `${API_URL}/${table}/?q=id:${decodeURIComponent(id)}`;
-
-      const res = await axios.get(url);
-      return res.data;
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
-  static async getFacets() {
-    try {
-      let url = `${API_URL}?${FACET_QUERY}`;
 
       const res = await axios.get(url);
       return res.data;
@@ -84,6 +78,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
         return false;
       if (v.type === "text" && (!v.value || v.value.trim().length <= 0))
         return false;
+      if (v.type === "select" && v.value === null || v.value.length < 1) return false;
       return v.value !== null;
     })
     .reduce((prev, [k, v]) => {
@@ -124,8 +119,15 @@ function buildQueryStr(queryObject, filterQueryObject) {
               const encodedValue = encodeURIComponent(searchParameter.value);
               return `${fieldId}:${encodedValue}`;
             }
+            case "select": {
+              return `{!tag=${fieldId}}${fieldId}:(${encodeURIComponent(
+                searchParameter.value.join(" ")
+              )})`;
+            }
             case "text": {
-              const encodedValue = encodeURIComponent(searchParameter.value);
+              const value = searchParameter.value.replaceAll(" ", "\\ ");
+
+              const encodedValue = encodeURIComponent(value);
 
               return buildTextParameter(encodedValue, fieldId);
             }

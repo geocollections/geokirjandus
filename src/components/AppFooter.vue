@@ -18,7 +18,7 @@
           alt="SARV"
           title="TalTech geoloogia instituut"
           class="footerLogo"
-          style="height: 50px;"
+          style="height: 50px; padding: 0 10px;"
       /></a>
       <a
         href="http://www.natmuseum.ut.ee/et/content/geoloogiakogud"

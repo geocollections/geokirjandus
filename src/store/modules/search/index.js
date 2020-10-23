@@ -55,6 +55,13 @@ const state = {
         label: "reference.book",
         fields: ["book"]
       },
+      referenceType: {
+        type: "select",
+        id: "referenceType",
+        value: [],
+        label: "reference.type",
+        fields: ["type"]
+      },
       journal: {
         type: "text",
         id: "journal",
@@ -112,6 +119,7 @@ const state = {
       "journal",
       "abstract",
       "localities",
+      "referenceType",
       "keywords",
       "userAdded",
       "isEstonianAuthor",

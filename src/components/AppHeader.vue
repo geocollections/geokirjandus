@@ -7,6 +7,7 @@
     src="https://geoloogia.info/img/books1.jpg"
   >
     <v-btn
+      aria-label="show search"
       v-if="$vuetify.breakpoint.smAndUp"
       @click="$emit('update:showSearch')"
       icon

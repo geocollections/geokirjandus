@@ -7,7 +7,8 @@
       :x-small="xSmall"
       :small="small"
       target="_blank"
-      color="blue"
+      color="blue darken-4"
+      rel="noopener"
       class="d-print-none ml-1 my-1 link"
       :href="getDoiUrl(item.doi)"
     >
@@ -15,13 +16,15 @@
       <b>DOI</b>
     </v-chip>
     <v-chip
-      color="red"
+      color="red darken-4"
       link
       outlined
       :x-small="xSmall"
       :small="small"
       v-if="item.attachment__filename"
       target="_blank"
+
+      rel="noopener"
       class="d-print-none ml-1 my-1 link"
       :href="getFileUrl(item.attachment__filename)"
     >
@@ -34,10 +37,11 @@
       outlined
       :x-small="xSmall"
       :small="small"
-      color="green"
+      color="green darken-4"
       class="d-print-none ml-1 my-1 link"
       :href="getUrl(item.url)"
       target="_blank"
+      rel="noopener"
     >
       <v-icon :x-small="xSmall" small class="pr-1"
         >fas fa-external-link-square-alt</v-icon

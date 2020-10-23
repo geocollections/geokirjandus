@@ -60,8 +60,7 @@ const state = {
         id: "referenceType",
         value: [],
         label: "reference.type",
-        fields: ["type"],
-        facetFields: ["type", "reference_type", "reference_type_en"]
+        fields: ["type"]
       },
       journal: {
         type: "text",

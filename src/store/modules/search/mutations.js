@@ -101,7 +101,7 @@ const mutations = {
           }
           case "select": {
             const types = v.split(",").map(type => {
-              return parseInt(type);
+              return type;
             });
             resetAdvancedSearchObj[searchFieldName].value = types;
 

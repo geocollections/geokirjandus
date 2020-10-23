@@ -66,9 +66,9 @@
               <div class="col py-0">
                 <v-select
                   multiple
-                  label="Type"
+                  :label="$t('reference.type')"
                   :value="advancedSearch.byIds[id].value"
-                  :items="referenceTypes"
+                  :items="getReferenceTypes"
                   @change="
                     $emit('update:advancedSearch', {
                       value: $event,
@@ -208,6 +208,7 @@ export default {
   },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
+    ...mapState("references", ["facet"]),
     translatedLookUpTypes() {
       return this.lookUpTypes.map(item => {
         return {
@@ -215,6 +216,19 @@ export default {
           text: this.$t(item.text)
         };
       });
+    },
+    getReferenceTypes() {
+      let types = [];
+      for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
+
+        types.push({
+          value: this.facet.facet_fields.type[i],
+          text: `${this.facet.facet_fields.reference_type[i]} [${
+            this.facet.facet_fields.reference_type[i + 1]
+          }]`
+        });
+      }
+      return types;
     }
   },
   data: () => ({
@@ -222,10 +236,6 @@ export default {
     date_start: false,
     date_end: false,
     calendarMenus: ["date_start", "date_end"],
-    referenceTypes: [
-      { value: 13, text: "abstrakt" },
-      { value: 14, text: "voldik jms" }
-    ],
     referenceTypeValue: []
   }),
   methods: {

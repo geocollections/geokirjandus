@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
-const FACET_QUERY =
-  "q=*&rows=0&facet=on&facet.mincount=1&facet.field=recordbasis&facet.field=highertaxon&facet.field=type_status&facet.field=country&facet.field=datasetowner&facet.field=providername&facet.field=providername&facet.field=providercountry";
+const FACET_QUERY_REFERENCE =
+  "facet=on&facet.field=type&facet.field=reference_type&facet.field=reference_type_en";
 
 class SearchService {
   static async search(parameters, table) {
@@ -16,6 +16,8 @@ class SearchService {
       let url = `${API_URL}/${table}/`;
 
       let urlParameters = ["defType=edismax"];
+
+      if (table === "reference") urlParameters.push(FACET_QUERY_REFERENCE);
 
       if (parameters.page) urlParameters.push(`start=${start}`);
 
@@ -76,7 +78,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
         return false;
       if (v.type === "text" && (!v.value || v.value.trim().length <= 0))
         return false;
-      if (v.type === "select" && v.value === null) return false;
+      if (v.type === "select" && v.value === null || v.value.length < 1) return false;
       return v.value !== null;
     })
     .reduce((prev, [k, v]) => {
@@ -118,7 +120,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
               return `${fieldId}:${encodedValue}`;
             }
             case "select": {
-              return `${fieldId}: (${encodeURIComponent(
+              return `${fieldId}:(${encodeURIComponent(
                 searchParameter.value.join(" ")
               )})`;
             }

@@ -1,6 +1,6 @@
 <template>
-  <div class="search fill-height" style="background-color: #F6EDDF">
-    <v-list class="mt-0 pa-0">
+  <div class="search fill-height " style="background-color: #F6EDDF">
+    <v-list class="mt-0 pb-10 pa-0">
       <v-list-item class="pt-0 pb-3">
         <v-text-field
           hide-details
@@ -58,17 +58,19 @@
             </v-row>
           </v-list-item>
           <v-list-item
+              class="px-3"
             v-else-if="advancedSearch.byIds[id].type === 'select'"
-            dense
           >
             <!--  SELECT  -->
-            <v-row class="pa-1">
-              <div class="col py-0">
+            <v-row class="">
+              <div class="col py-1">
                 <v-select
                   multiple
                   :label="$t('reference.type')"
                   :value="advancedSearch.byIds[id].value"
                   :items="getReferenceTypes"
+                  :menu-props="{bottom: true, offsetY: true}"
+                  hide-details
                   @change="
                     $emit('update:advancedSearch', {
                       value: $event,

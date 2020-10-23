@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
 const FACET_QUERY_REFERENCE =
-  "facet=on&facet.field=type&facet.field=reference_type&facet.field=reference_type_en";
+  "facet=on&facet.field={!ex=type}type&facet.field={!ex=type}reference_type&facet.field={!ex=type}reference_type_en";
 
 class SearchService {
   static async search(parameters, table) {
@@ -120,7 +120,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
               return `${fieldId}:${encodedValue}`;
             }
             case "select": {
-              return `${fieldId}:(${encodeURIComponent(
+              return `{!tag=${fieldId}}${fieldId}:(${encodeURIComponent(
                 searchParameter.value.join(" ")
               )})`;
             }

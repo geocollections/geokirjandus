@@ -245,8 +245,14 @@ export default {
       reference: null,
       libraries: [],
       localities: [],
-      error: false
+      error: false,
+      prevRoute: null
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.prevRoute = from.path;
+    });
   },
   created() {
     this.getReference().then(res => {
@@ -291,7 +297,8 @@ export default {
         this.setURLParameters(
           this.referenceParameters,
           this.page,
-          this.paginateBy
+          this.paginateBy,
+          this.prevRoute
         );
       }, 300),
       deep: true
@@ -318,7 +325,7 @@ export default {
 
       const localityNamesEng = this.reference.localities_en.split(";");
       const localityIds = this.reference.locality_ids.split(";");
-      console.log(localityNames);
+
       return localityIds.map((id, index) => {
         return {
           id: id,

@@ -46,7 +46,8 @@
     "viewReferences": "View references",
     "map": "Map",
     "misc": "Miscellaneous",
-    "searchCommand": "Search"
+    "searchCommand": "Search",
+    "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia"
   },
   "reference": {
     "id": "ID",

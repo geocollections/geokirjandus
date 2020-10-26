@@ -46,7 +46,8 @@
     "viewReferences": "Vaata kirjandust",
     "map": "Kaart",
     "misc": "Muu",
-    "searchCommand": "Otsi"
+    "searchCommand": "Otsi",
+    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis"
   },
   "reference": {
     "id": "ID",

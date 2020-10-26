@@ -1,6 +1,12 @@
 <template>
   <div class="search fill-height " style="background-color: #F6EDDF">
     <v-list class="mt-0 pb-10 pa-0">
+      <v-list-item v-if="infoAlert" class="py-2">
+        <v-alert class="ma-0" width="100%" dense type="info">
+          {{ $t(infoAlert) }}
+        </v-alert>
+      </v-list-item>
+
       <v-list-item class="pt-0 pb-3">
         <v-text-field
           hide-details
@@ -58,7 +64,7 @@
             </v-row>
           </v-list-item>
           <v-list-item
-              class="px-3"
+            class="px-3"
             v-else-if="advancedSearch.byIds[id].type === 'select'"
           >
             <!--  SELECT  -->
@@ -69,7 +75,7 @@
                   :label="$t('reference.type')"
                   :value="advancedSearch.byIds[id].value"
                   :items="getReferenceTypes"
-                  :menu-props="{bottom: true, offsetY: true}"
+                  :menu-props="{ bottom: true, offsetY: true }"
                   hide-details
                   @change="
                     $emit('update:advancedSearch', {
@@ -208,6 +214,18 @@ export default {
       default: 6
     }
   },
+  watch: {
+    $route: {
+      handler(to, from) {
+        if (to.name === "library" || from !== undefined && from.name === "library" && to.name === "reference") {
+          this.infoAlert = "alert.infoLibrarySearch";
+        } else if (to.name === "search") {
+          this.infoAlert = null;
+        }
+      },
+      immediate: true
+    }
+  },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
     ...mapState("references", ["facet"]),
@@ -240,7 +258,8 @@ export default {
     date_end: false,
     calendarMenus: ["date_start", "date_end"],
     referenceTypeValue: [],
-    showAdvancedSearch: false
+    showAdvancedSearch: false,
+    infoAlert: null
   }),
   methods: {
     updateCheckbox(event, id) {

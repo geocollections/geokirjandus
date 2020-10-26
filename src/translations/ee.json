@@ -81,7 +81,9 @@
     "journal": "Ajakiri",
     "years": "Aastad",
     "describedTaxa": "Kirjeldatud taksonid",
-    "titleOriginal": "Originaal pealkiri"
+    "titleOriginal": "Originaal pealkiri",
+    "authorOriginal": "Originaal autor",
+    "parentReference": "Ülem reference"
   },
   "link": {
     "geocollections": "Geokogude portaal",

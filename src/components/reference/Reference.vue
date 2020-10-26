@@ -35,6 +35,10 @@
                   <th>{{ $t("reference.author") }}</th>
                   <td>{{ reference.author }}</td>
                 </tr>
+                <tr v-if="reference.author_original">
+                  <th>{{ $t("reference.authorOriginal") }}</th>
+                  <td>{{ reference.author_original }}</td>
+                </tr>
                 <tr v-if="reference.year">
                   <th>{{ $t("reference.year") }}</th>
                   <td>{{ reference.year }}</td>
@@ -66,6 +70,17 @@
                 <tr v-if="reference.journal__journal_name">
                   <th>{{ $t("reference.journalName") }}</th>
                   <td>{{ reference.journal__journal_name }}</td>
+                </tr>
+                <tr v-if="reference.parent_reference">
+                  <th>{{ $t("reference.parentReference") }}</th>
+                  <td>
+                    <router-link
+                      :to="{ path: `${reference.parent_reference}` }"
+                      replace
+                    >
+                      {{ reference.parent_reference__reference }}
+                    </router-link>
+                  </td>
                 </tr>
                 <tr v-if="reference.volume">
                   <th>{{ $t("reference.volume") }}</th>
@@ -243,9 +258,13 @@ import urlMixin from "@/mixins/urlMixin";
 export default {
   name: "Reference",
   components: { ReferenceLinks, LeafletMap, ReferenceCitation },
+  props: {
+    id: {
+      type: String
+    }
+  },
   data() {
     return {
-      id: this.$route.params.id,
       reference: null,
       libraries: [],
       localities: [],
@@ -256,44 +275,12 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.prevRoute = from.path;
+      vm.getReference(vm.id);
     });
   },
-  created() {
-    this.getReference().then(res => {
-      this.reference = res.results[0];
-
-      if (this.reference === undefined) {
-        this.error = true;
-        return;
-      }
-
-      if (this.reference.localities) {
-        this.getReferenceLocalities().then(res => {
-          this.localities = res.results
-            .filter(locality => {
-              return !!(locality.latitude && locality.longitude);
-            })
-            .map(locality => {
-              const localityTitle =
-                this.$i18n.locale === "ee"
-                  ? locality.locality
-                  : locality.locality_en;
-
-              return {
-                popup: `<div>${localityTitle}</div>`,
-                title: localityTitle,
-                coordinates: [locality.latitude, locality.longitude]
-              };
-            });
-        });
-      }
-
-      if (this.reference.libraries) {
-        this.getReferenceLibraries().then(res => {
-          this.libraries = res.results;
-        });
-      }
-    });
+  beforeRouteUpdate(to, from, next) {
+    this.getReference(to.params.id);
+    next();
   },
   watch: {
     referenceParameters: {
@@ -386,8 +373,42 @@ export default {
         }
       });
     },
-    getReference() {
-      return fetchReference(this.$route.params.id);
+    getReference(id) {
+      fetchReference(id).then(res => {
+        this.reference = res.results[0];
+
+        if (this.reference === undefined) {
+          this.error = true;
+          return;
+        }
+
+        if (this.reference.localities) {
+          this.getReferenceLocalities().then(res => {
+            this.localities = res.results
+              .filter(locality => {
+                return !!(locality.latitude && locality.longitude);
+              })
+              .map(locality => {
+                const localityTitle =
+                  this.$i18n.locale === "ee"
+                    ? locality.locality
+                    : locality.locality_en;
+
+                return {
+                  popup: `<div>${localityTitle}</div>`,
+                  title: localityTitle,
+                  coordinates: [locality.latitude, locality.longitude]
+                };
+              });
+          });
+        }
+
+        if (this.reference.libraries) {
+          this.getReferenceLibraries().then(res => {
+            this.libraries = res.results;
+          });
+        }
+      });
     },
     getFileUrl(uuid) {
       return `https://files.geocollections.info/${uuid.substring(

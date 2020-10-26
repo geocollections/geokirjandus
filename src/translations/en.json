@@ -81,7 +81,9 @@
     "journal": "Journal",
     "years": "Years",
     "describedTaxa": "Described taxa",
-    "titleOriginal": "Original title"
+    "titleOriginal": "Original title",
+    "authorOriginal": "Original author",
+    "parentReference": "Parent reference"
   },
   "link": {
     "geocollections": "Geocollections portal",

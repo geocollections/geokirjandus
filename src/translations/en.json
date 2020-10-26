@@ -79,7 +79,8 @@
     "remarks": "Remarks",
     "journal": "Journal",
     "years": "Years",
-    "describedTaxa": "Described taxa"
+    "describedTaxa": "Described taxa",
+    "titleOriginal": "Original title"
   },
   "link": {
     "geocollections": "Geocollections portal",

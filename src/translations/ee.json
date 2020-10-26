@@ -79,7 +79,8 @@
     "remarks": "Märkused",
     "journal": "Ajakiri",
     "years": "Aastad",
-    "describedTaxa": "Kirjeldatud taksonid"
+    "describedTaxa": "Kirjeldatud taksonid",
+    "titleOriginal": "Originaal pealkiri"
   },
   "link": {
     "geocollections": "Geokogude portaal",

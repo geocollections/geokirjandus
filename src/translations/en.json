@@ -85,7 +85,8 @@
     "authorOriginal": "Author original",
     "parentReference": "Parent reference",
     "bookTranslated": "Book title translated",
-    "bookOriginal": "Book title original"
+    "bookOriginal": "Book title original",
+    "figures": "Figures"
   },
   "link": {
     "geocollections": "Geocollections portal",

@@ -85,7 +85,8 @@
     "authorOriginal": "Autor originaal",
     "parentReference": "Ülem viide",
     "bookTranslated": "Raamatu pealkiri tõlgitud",
-    "bookOriginal": "Raamatu pealkiri originaal"
+    "bookOriginal": "Raamatu pealkiri originaal",
+    "figures": "Joonised"
   },
   "link": {
     "geocollections": "Geokogude portaal",

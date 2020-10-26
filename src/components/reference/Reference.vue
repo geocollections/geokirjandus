@@ -102,6 +102,10 @@
                   <th>{{ $t("reference.type") }}</th>
                   <td>{{ getReferenceType }}</td>
                 </tr>
+                <tr v-if="reference.figures">
+                  <th>{{ $t("reference.figures") }}</th>
+                  <td>{{ reference.figures }}</td>
+                </tr>
                 <tr v-if="reference.language">
                   <th>{{ $t("reference.language") }}</th>
                   <td>

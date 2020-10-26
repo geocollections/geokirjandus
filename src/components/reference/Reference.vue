@@ -153,7 +153,7 @@
             color="#F0B67F"
             text-color="black"
             class="mr-1 mb-1"
-            :href="`/reference/?keywords_contains=${keyword}`"
+            @click="$router.push(`/reference/?keywords_contains=${keyword}`)"
           >
             {{ keyword }}
           </v-chip>
@@ -191,7 +191,7 @@
             color="#F0B67F"
             text-color="black"
             class="mr-1 mb-1"
-            :href="`/library/${library.id}`"
+            @click="$router.push(`/library/${library.id}`)"
           >
             {{ library.title }}
           </v-chip>

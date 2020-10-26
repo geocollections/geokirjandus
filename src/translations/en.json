@@ -74,14 +74,19 @@
     "doi": "DOI",
     "abstract": "Abstract",
     "dateChanged": "Date changed",
-    "titleTranslated": "Translated title",
+    "titleTranslated": "Title translated",
     "publisher": "Publisher",
     "userChanged": "User changed",
     "remarks": "Remarks",
     "journal": "Journal",
     "years": "Years",
     "describedTaxa": "Described taxa",
-    "titleOriginal": "Original title"
+    "titleOriginal": "Title original",
+    "authorOriginal": "Author original",
+    "parentReference": "Parent reference",
+    "bookTranslated": "Book title translated",
+    "bookOriginal": "Book title original",
+    "figures": "Figures"
   },
   "link": {
     "geocollections": "Geocollections portal",

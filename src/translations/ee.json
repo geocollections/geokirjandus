@@ -74,14 +74,19 @@
     "doi": "DOI",
     "abstract": "Abstrakt",
     "dateChanged": "Viimati muudetud",
-    "titleTranslated": "Tõlgitud pealkiri",
+    "titleTranslated": "Pealkiri tõlgitud",
     "publisher": "Kirjastaja",
     "userChanged": "Muutnud kasutaja",
     "remarks": "Märkused",
     "journal": "Ajakiri",
     "years": "Aastad",
     "describedTaxa": "Kirjeldatud taksonid",
-    "titleOriginal": "Originaal pealkiri"
+    "titleOriginal": "Pealkiri originaal",
+    "authorOriginal": "Autor originaal",
+    "parentReference": "Ülem viide",
+    "bookTranslated": "Raamatu pealkiri tõlgitud",
+    "bookOriginal": "Raamatu pealkiri originaal",
+    "figures": "Joonised"
   },
   "link": {
     "geocollections": "Geokogude portaal",

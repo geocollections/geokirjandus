@@ -28,7 +28,7 @@
             clipboard-class="data-viewer-table"
           />
         </div>
-        <div class="col-12 col-md-3 order-md-1 px-2 py-0">
+        <div class="col-12 col-md order-md-1 px-2 py-0">
           <span style="font-size: 1.25rem"
             >{{ $t("common.found") }} <b>{{ count }}</b>
             {{ $t("common.records") }}</span

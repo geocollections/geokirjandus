@@ -50,7 +50,7 @@ export default {
     getCslJson() {
       return {
         id: this.reference.id,
-        type: "article-journal",
+        type: this.reference.reference_type,
         title: this.reference.title,
         DOI: this.reference.doi,
         author: this.parseNames(this.reference.author),

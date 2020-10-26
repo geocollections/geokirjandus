@@ -10,7 +10,7 @@
         />
       </v-list-item>
 
-      <v-list-group color="#F0B67F" :value="false">
+      <v-list-group color="#F0B67F" v-model="showAdvancedSearch">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -239,7 +239,8 @@ export default {
     date_start: false,
     date_end: false,
     calendarMenus: ["date_start", "date_end"],
-    referenceTypeValue: []
+    referenceTypeValue: [],
+    showAdvancedSearch: false
   }),
   methods: {
     updateCheckbox(event, id) {

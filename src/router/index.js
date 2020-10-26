@@ -21,6 +21,7 @@ const routes = [
     children: [
       {
         path: "",
+        name: "search",
         component: ReferenceViewer,
         meta: {
           table: "reference",
@@ -30,6 +31,7 @@ const routes = [
       },
       {
         path: ":id",
+        name: "reference",
         component: Reference,
         props: true,
         meta: {
@@ -41,12 +43,13 @@ const routes = [
     ]
   },
   {
-    path: "/library/:id(\\d+)",
+    path: "/library",
     props: true,
     component: Main,
     children: [
       {
-        path: "",
+        path: ":id(\\d+)",
+        name: "library",
         component: () => import("../components/library/Library.vue"),
         meta: {
           table: "library",

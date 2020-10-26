@@ -8,6 +8,9 @@
   "tooltip": {
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
   },
+  "alert": {
+    "infoLibrarySearch": "Otsing toimub kogumikus"
+  },
   "error": {
     "referenceId": "Ei leidnud kirjandust. ID: {text}",
     "libraryId": "Ei leidnud kogumikku. ID: {text}",

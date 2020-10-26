@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Main.vue";
+import Main from "../views/Main.vue";
 import Landing from "@/views/Landing";
 import Reference from "@/components/reference/Reference";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: "/reference",
-    component: Home,
+    component: Main,
     meta: {
       object: "reference"
     },
@@ -27,17 +27,11 @@ const routes = [
           heading: "editReference.heading",
           object: "reference"
         }
-      }
-    ]
-  },
-  {
-    path: "/reference/:id(\\d+)",
-    props: true,
-    component: Home,
-    children: [
+      },
       {
-        path: "",
+        path: ":id",
         component: Reference,
+        props: true,
         meta: {
           table: "reference",
           heading: "editReference.heading",
@@ -49,7 +43,7 @@ const routes = [
   {
     path: "/library/:id(\\d+)",
     props: true,
-    component: Home,
+    component: Main,
     children: [
       {
         path: "",

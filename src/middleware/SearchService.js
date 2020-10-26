@@ -78,7 +78,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
         return false;
       if (v.type === "text" && (!v.value || v.value.trim().length <= 0))
         return false;
-      if (v.type === "select" && v.value === null || v.value.length < 1) return false;
+      if (v.type === "select" && (v.value === null || v.value.length < 1)) return false;
       return v.value !== null;
     })
     .reduce((prev, [k, v]) => {

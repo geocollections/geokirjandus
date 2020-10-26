@@ -46,7 +46,8 @@
     "viewReferences": "Vaata kirjandust",
     "map": "Kaart",
     "misc": "Muu",
-    "searchCommand": "Otsi"
+    "searchCommand": "Otsi",
+    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis"
   },
   "reference": {
     "id": "ID",
@@ -79,7 +80,8 @@
     "remarks": "Märkused",
     "journal": "Ajakiri",
     "years": "Aastad",
-    "describedTaxa": "Kirjeldatud taksonid"
+    "describedTaxa": "Kirjeldatud taksonid",
+    "titleOriginal": "Originaal pealkiri"
   },
   "link": {
     "geocollections": "Geokogude portaal",

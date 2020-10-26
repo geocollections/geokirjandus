@@ -46,7 +46,8 @@
     "viewReferences": "View references",
     "map": "Map",
     "misc": "Miscellaneous",
-    "searchCommand": "Search"
+    "searchCommand": "Search",
+    "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia"
   },
   "reference": {
     "id": "ID",
@@ -79,7 +80,8 @@
     "remarks": "Remarks",
     "journal": "Journal",
     "years": "Years",
-    "describedTaxa": "Described taxa"
+    "describedTaxa": "Described taxa",
+    "titleOriginal": "Original title"
   },
   "link": {
     "geocollections": "Geocollections portal",

@@ -17,19 +17,19 @@ export default {
   mixins: [citationMixin, dateMixin],
   computed: {
     append() {
-      return ` ${this.$t("common.visited")} ${this.formatDate(Date.now())}`;
+      return ` ${this.$t("common.visited")}: ${this.formatDate(Date.now())}`;
     },
     getCslJson() {
       return {
         id: this.library.id,
         type: "webpage",
-        title: this.library.title,
         author: this.parseNames(this.library.author),
         issued: [
           {
             "date-parts": [this.library.year]
           }
         ],
+        publisher: this.$t("common.libraryPublisher"),
         "container-title": this.library.title,
         URL: `https:/rmtk.geoloogia.info/library/${this.library.id}`
       };

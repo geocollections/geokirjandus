@@ -47,6 +47,10 @@
                   <th>{{ $t("reference.titleTranslated") }}</th>
                   <td>{{ reference.title_translated }}</td>
                 </tr>
+                <tr v-if="reference.title_original">
+                  <th>{{ $t("reference.titleOriginal") }}</th>
+                  <td>{{ reference.title_original }}</td>
+                </tr>
                 <tr v-if="reference.book">
                   <th>{{ $t("reference.book") }}</th>
                   <td>{{ reference.book }}</td>

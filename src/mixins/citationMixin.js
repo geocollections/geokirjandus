@@ -15,7 +15,7 @@ const citationMixin = {
         { text: "MLA", value: "mla" },
         { text: "IEEE", value: "ieee" },
         { text: "APA", value: "apa" },
-        { text: "Sedimentology", value: "sedimentlology" }
+        { text: "Sedimentology", value: "sedimentology" }
       ]
     };
   },

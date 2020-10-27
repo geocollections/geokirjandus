@@ -48,7 +48,7 @@
       <b>URL</b>
     </v-chip>
     <v-chip
-      v-if="item.parent_reference__attachment__filename"
+      v-if="!item.attachment_filename && item.parent_reference__attachment__filename"
       link
       outlined
       :x-small="xSmall"
@@ -63,7 +63,7 @@
       <b>PDF</b>
     </v-chip>
     <v-chip
-      v-if="item.parent_reference__url"
+      v-if="!item.url && item.parent_reference__url"
       link
       outlined
       :x-small="xSmall"

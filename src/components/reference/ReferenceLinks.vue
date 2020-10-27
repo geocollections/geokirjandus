@@ -23,7 +23,6 @@
       :small="small"
       v-if="item.attachment__filename"
       target="_blank"
-
       rel="noopener"
       class="d-print-none ml-1 my-1 link"
       :href="getFileUrl(item.attachment__filename)"
@@ -40,6 +39,38 @@
       color="green darken-4"
       class="d-print-none ml-1 my-1 link"
       :href="getUrl(item.url)"
+      target="_blank"
+      rel="noopener"
+    >
+      <v-icon :x-small="xSmall" small class="pr-1"
+        >fas fa-external-link-square-alt</v-icon
+      >
+      <b>URL</b>
+    </v-chip>
+    <v-chip
+      v-if="item.parent_reference__attachment__filename"
+      link
+      outlined
+      :x-small="xSmall"
+      :small="small"
+      color="gray"
+      class="d-print-none ml-1 my-1 link"
+      :href="getFileUrl(item.parent_reference__attachment__filename)"
+      target="_blank"
+      rel="noopener"
+    >
+      <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
+      <b>PDF</b>
+    </v-chip>
+    <v-chip
+      v-if="item.parent_reference__url"
+      link
+      outlined
+      :x-small="xSmall"
+      :small="small"
+      color="gray"
+      class="d-print-none ml-1 my-1 link"
+      :href="getUrl(item.parent_reference__url)"
       target="_blank"
       rel="noopener"
     >

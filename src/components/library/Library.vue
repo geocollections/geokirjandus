@@ -2,7 +2,7 @@
   <v-container>
     <v-card v-if="library">
       <v-card-title
-        style="background-color: #F2E4CF"
+        style="background-color: #F1CDA7"
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
@@ -10,11 +10,10 @@
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col" style="word-break: normal">{{ getTitle }}</div>
+        <div class="col" style="word-break: normal">
+          {{ `${library.author}, ${library.year}: ${getTitle}` }}
+        </div>
       </v-card-title>
-      <v-card-text v-if="library.author" class="pb-0 pt-3">
-        <h2>{{ library.author }}</h2>
-      </v-card-text>
       <v-card-text class="py-0">
         <v-row>
           <v-col cols="auto" class="pt-2">
@@ -27,13 +26,15 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-text class="pt-0">
-        <h2>
+      <v-card-text>
+        <h2 class="pb-3">
           <b>{{ $t("common.citation") }}</b>
         </h2>
-      </v-card-text>
-      <v-card-text class="pt-0">
-        <library-citation :library="library" />
+        <v-card flat outlined>
+          <div class="pa-4">
+            <library-citation :library="library" />
+          </div>
+        </v-card>
       </v-card-text>
       <v-card-text v-if="library.abstract" class="pt-0">
         <h2>

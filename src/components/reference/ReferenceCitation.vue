@@ -1,17 +1,21 @@
 <template>
   <div v-if="onlyText" class="cite" v-html="citation(getCslJson)"></div>
-  <router-link :to="ref" class="referenceLink" v-else>
-    <div class="cite" v-html="citation(getCslJson, append)"></div>
-  </router-link>
+  <div v-else>
+    <router-link
+      class="cite referenceLink"
+      :to="ref"
+      v-html="citation(getCslJson)"
+    />
+    <reference-links :item="reference" x-small />
+  </div>
 </template>
 
 <script>
 import citationMixin from "@/mixins/citationMixin";
-import Vue from "vue";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
-import ReferenceCitationPrepend from "@/components/reference/ReferenceCitationPrepend";
 export default {
   name: "ReferenceCitation",
+  components: { ReferenceLinks },
   props: {
     reference: {
       type: Object,
@@ -25,27 +29,6 @@ export default {
   computed: {
     ref() {
       return `/reference/${this.reference.id}`;
-    },
-    prepend() {
-      const ComponentClass = Vue.extend(ReferenceCitationPrepend);
-      const instance = new ComponentClass({
-        propsData: {
-          id: this.reference.id
-        }
-      });
-      instance.$mount();
-      return instance.$el.innerHTML;
-    },
-    append() {
-      const ComponentClass = Vue.extend(ReferenceLinks);
-      const instance = new ComponentClass({
-        propsData: {
-          item: this.reference,
-          xSmall: true
-        }
-      });
-      instance.$mount();
-      return instance.$el.innerHTML;
     },
     getCslJson() {
       return {
@@ -80,5 +63,13 @@ export default {
 
 .referenceLink:hover {
   text-decoration: underline;
+}
+
+.referenceLink >>> .csl-bib-body {
+  display: inline;
+}
+
+.referenceLink >>> .csl-entry {
+  display: inline;
 }
 </style>

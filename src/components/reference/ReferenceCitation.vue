@@ -1,8 +1,8 @@
 <template>
-  <div v-if="onlyText" class="cite" v-html="citation(getCslJson)"></div>
+  <div v-if="onlyText" v-html="citation(getCslJson)"></div>
   <div v-else>
     <router-link
-      class="cite referenceLink"
+      class="referenceLink"
       :to="ref"
       v-html="citation(getCslJson)"
     />

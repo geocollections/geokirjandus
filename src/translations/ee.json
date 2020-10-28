@@ -16,6 +16,16 @@
     "libraryId": "Ei leidnud kogumikku. ID: {text}",
     "nothingFound": "Ei leidnud otsingule vastavaid kirjeid"
   },
+  "tabs": {
+    "references": "Viited",
+    "libraries": "Kogumikud"
+  },
+  "viewer": {
+    "title": {
+      "reference_html": "Leitud <b>{num}</b> viidet",
+      "library_html": "Leitud <b>{num}</b> kogumikku"
+    }
+  },
   "common": {
     "search": "Otsing",
     "advancedSearch": "Detailotsing",
@@ -90,6 +100,13 @@
     "bookTranslated": "Raamatu pealkiri tõlgitud",
     "bookOriginal": "Raamatu pealkiri originaal",
     "figures": "Joonised"
+  },
+  "library": {
+    "id": "ID",
+    "author": "Autor",
+    "year": "Aasta",
+    "title": "Pealkiri",
+    "dateChanged": "Viimati muudetud"
   },
   "link": {
     "geocollections": "Geokogude portaal",

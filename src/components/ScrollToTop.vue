@@ -4,7 +4,7 @@
       v-scroll="onScroll"
       v-show="showFab"
       fab
-      color="#F0B67F"
+      color="#ECA15B"
       dark
       @click="toTop"
       style="z-index: 1500"

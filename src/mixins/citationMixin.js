@@ -12,13 +12,13 @@ const citationMixin = {
   data() {
     return {
       templates: [
-        { text: "MLA", value: "mla" },
-        { text: "IEEE", value: "ieee" },
-        { text: "APA", value: "apa" },
+        { text: "APA 7", value: "apa" },
         { text: "Sedimentology", value: "sedimentology" },
         { text: "Geological magazine", value: "geol-mag" },
         { text: "Holocene", value: "holocene" },
         { text: "Nature", value: "nature" },
+        { text: "Geology", value: "geology" },
+        { text: "Palaeo3", value: "palaeo3" }
       ]
     };
   },

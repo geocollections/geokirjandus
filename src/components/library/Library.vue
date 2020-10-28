@@ -125,8 +125,13 @@ export default {
       };
     }
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (from.name === "searchLib") vm.resetSearch();
+    });
+  },
   created() {
-    this.resetSearch();
+    // this.resetSearch();
     this.resetPage();
     this.getLibrary().then(res => {
       this.library = res.results[0];

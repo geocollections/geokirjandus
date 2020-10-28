@@ -32,7 +32,11 @@
       />
       <v-main class="fill-height" style="background-color: #F6EDDF">
         <div class="fill-height d-flex flex-wrap align-content-space-between">
-          <router-view :search="search" :advancedSearch="advancedSearch" />
+          <router-view
+            :tabs="true"
+            :search="search"
+            :advancedSearch="advancedSearch"
+          />
           <app-footer />
         </div>
       </v-main>

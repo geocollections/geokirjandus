@@ -5,16 +5,17 @@ import VuexPersistence from "vuex-persist";
 import settings from "./modules/settings";
 import search from "./modules/search";
 import references from "./modules/references";
+import library from "./modules/library";
 
 Vue.use(Vuex);
-//
+
 const vuexLocal = new VuexPersistence({
   key: "geoloogia.geokirjandus",
   storage: window.localStorage
 });
 
 export default new Vuex.Store({
-  modules: { settings, search, references },
+  modules: { settings, search, references, library },
   plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"
 });

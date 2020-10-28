@@ -29,10 +29,8 @@
           />
         </div>
         <div class="col-12 col-md order-md-1 px-2 py-0">
-          <span style="font-size: 1.25rem"
-            >{{ $t("common.found") }} <b>{{ count }}</b>
-            {{ $t("common.records") }}</span
-          >
+          <span v-html="$t(title, { num: count })" style="font-size: 1.25rem">
+          </span>
         </div>
       </v-card-actions>
       <v-expand-transition>
@@ -165,14 +163,14 @@ export default {
     headers: {
       type: Array[Object]
     },
-    detailView: {
-      type: Function
-    },
     page: {
       type: Number
     },
     paginateBy: {
       type: Number
+    },
+    title: {
+      type: String
     }
   },
   data() {

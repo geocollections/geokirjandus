@@ -2,19 +2,16 @@
   <div v-if="data.length > 0">
     <v-card-text class="py-0" v-for="(entity, index) in data" :key="entity.id">
       <v-divider v-if="index !== 0" />
-      <reference-citation
-        class="py-3 px-3"
-        :reference="entity"
-      ></reference-citation>
+      <library-citation class="py-3 px-3" :library="entity" short />
     </v-card-text>
   </div>
 </template>
 
 <script>
-import ReferenceCitation from "@/components/reference/ReferenceCitation";
+import LibraryCitation from "@/components/library/LibraryCitation";
 export default {
-  name: "ReferenceListView",
-  components: { ReferenceCitation },
+  name: "LibraryListView",
+  components: { LibraryCitation },
   props: {
     data: {
       type: Array
@@ -22,4 +19,5 @@ export default {
   }
 };
 </script>
+
 <style scoped></style>

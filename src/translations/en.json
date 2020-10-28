@@ -17,6 +17,16 @@
     "libraryId": "Could not find library. ID: {text}",
     "nothingFound": "No records found"
   },
+  "tabs": {
+    "references": "References",
+    "libraries": "Libraries"
+  },
+  "viewer": {
+    "title": {
+      "reference_html": "Found <b>{num}</b> references",
+      "library_html":"Found <b>{num}</b> libraries"
+    }
+  },
   "common": {
     "search": "Search",
     "advancedSearch": "Filter",
@@ -91,6 +101,13 @@
     "bookTranslated": "Book title translated",
     "bookOriginal": "Book title original",
     "figures": "Figures"
+  },
+  "library": {
+    "id": "ID",
+    "author": "Author",
+    "year": "Year",
+    "title": "Title",
+    "dateChanged": "Date changed"
   },
   "link": {
     "geocollections": "Geocollections portal",

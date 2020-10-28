@@ -4,6 +4,7 @@ import Main from "../views/Main.vue";
 import Landing from "@/views/Landing";
 import Reference from "@/components/reference/Reference";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
+import LibraryViewer from "@/components/library/LibraryViewer";
 
 Vue.use(VueRouter);
 
@@ -44,9 +45,18 @@ const routes = [
   },
   {
     path: "/library",
-    props: true,
     component: Main,
     children: [
+      {
+        path: "",
+        name: "searchLib",
+        component: LibraryViewer,
+        meta: {
+          table: "library",
+          heading: "editReference.heading",
+          object: "library"
+        }
+      },
       {
         path: ":id(\\d+)",
         name: "library",

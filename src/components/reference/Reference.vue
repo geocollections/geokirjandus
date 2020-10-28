@@ -297,6 +297,7 @@ export default {
   watch: {
     referenceParameters: {
       handler: debounce(function() {
+        console.log(this.prevRoute);
         this.setURLParameters(
           this.referenceParameters,
           this.page,

@@ -15,7 +15,7 @@
     <div style="font-size: 0.8rem" class="ml-md-auto">{{ getRange }}</div>
     <v-pagination
       :value="page"
-      color="#F0B67F"
+      color="#ECA15B"
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"
@@ -48,7 +48,7 @@ export default {
         { text: "pagination", value: 10 },
         { text: "pagination", value: 25 },
         { text: "pagination", value: 50 },
-        { text: "pagination", value: 100 },
+        { text: "pagination", value: 100 }
       ]
     };
   },

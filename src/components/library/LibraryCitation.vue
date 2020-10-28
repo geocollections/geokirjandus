@@ -1,5 +1,12 @@
 <template>
-  <div v-html="citation(getCslJson, append)"></div>
+  <router-link
+    v-if="short"
+    class="libraryLink"
+    :to="`/library/${library.id}`"
+    tag="div"
+    v-html="citation(getCslJson)"
+  />
+  <div v-else v-html="citation(getCslJson, append)"></div>
 </template>
 
 <script>
@@ -12,6 +19,10 @@ export default {
     library: {
       type: Object,
       required: true
+    },
+    short: {
+      type: Boolean,
+      default: false
     }
   },
   mixins: [citationMixin, dateMixin],
@@ -37,3 +48,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.libraryLink {
+  color: black;
+  text-decoration: none;
+}
+
+.libraryLink:hover {
+  text-decoration: underline;
+}
+</style>

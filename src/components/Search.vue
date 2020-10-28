@@ -24,7 +24,7 @@
         />
       </v-list-item>
 
-      <v-list-group color="#F0B67F" v-model="showAdvancedSearch">
+      <v-list-group color="#ECA15B" v-model="showAdvancedSearch">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -201,17 +201,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import CitationSelect from "@/components/CitationSelect";
+import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
+import debounce from "lodash/debounce";
+import urlMixin from "@/mixins/urlMixin";
+import queryMixin from "@/mixins/queryMixin";
 
 export default {
   name: "Search",
   components: { CitationSelect },
   props: {
     search: {
-      type: Object
-    },
-    searchParameters: {
       type: Object
     },
     advancedSearch: {
@@ -223,6 +224,25 @@ export default {
     }
   },
   watch: {
+    referenceParameters: {
+      handler: debounce(function() {
+        this.getReferences();
+      }, 300),
+      deep: true
+    },
+    libraryParameters: {
+      handler: debounce(function() {
+        this.getLibraries(this.libraryPage);
+      }, 300),
+      deep: true
+    },
+    count: {
+      handler() {
+        if (this.count === 1) {
+          this.$router.push(`/reference/${this.result[0].id}`);
+        }
+      }
+    },
     $route: {
       handler(to, from) {
         if (
@@ -232,8 +252,11 @@ export default {
             to.name === "reference")
         ) {
           this.infoAlert = "alert.infoLibrarySearch";
-        } else if (to.name === "search") {
+        } else if (to.name === "search" || to.name === "searchLib") {
           this.infoAlert = null;
+          if (this.$route.query) {
+            this.setSearchFromURL(this.$route.query);
+          }
         }
       },
       immediate: true
@@ -241,7 +264,18 @@ export default {
   },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
-    ...mapState("references", ["facet"]),
+    ...mapState("references", ["facet", "result", "count"]),
+    referenceParameters() {
+      return { ...this.advancedSearch.byIds, search: this.search };
+    },
+    libraryParameters() {
+      return {
+        search: this.search,
+        title: this.advancedSearch.byIds.title,
+        year: this.advancedSearch.byIds.year,
+        author: this.advancedSearch.byIds.author
+      };
+    },
     translatedLookUpTypes() {
       return this.lookUpTypes.map(item => {
         return {
@@ -252,6 +286,9 @@ export default {
     },
     getReferenceTypes() {
       let types = [];
+
+      if (!this.facet.facet_fields) return types;
+
       for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
         types.push({
           value: this.facet.facet_fields.type[i],
@@ -262,6 +299,7 @@ export default {
           } [${this.facet.facet_fields.reference_type[i + 1]}]`
         });
       }
+
       return types;
     }
   },
@@ -274,7 +312,9 @@ export default {
     showAdvancedSearch: false,
     infoAlert: null
   }),
+  mixins: [urlMixin, queryMixin],
   methods: {
+    ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
     updateCheckbox(event, id) {
       this.$emit("update:advancedSearch", {
         value: event,

@@ -11,6 +11,7 @@ Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence({
   key: "geoloogia.geokirjandus",
+  reducer: state => ({ search: state.search, settings: state.settings }),
   storage: window.localStorage
 });
 

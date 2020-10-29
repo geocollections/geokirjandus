@@ -2,6 +2,11 @@ import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
 import { mapActions, mapState } from "vuex";
 
 const queryMixin = {
+  data() {
+    return {
+      isLoading: false
+    };
+  },
   computed: {
     ...mapState("search", [
       "lookUpTypes",
@@ -64,19 +69,25 @@ const queryMixin = {
               sortDesc: this.sortDesc,
               advancedSearch: this.advancedSearch.byIds
             };
-
-      fetchReferences(searchObj).then(response => {
-        if (response.count === 1) {
-          this.$router.push(`/reference/${response.results[0].id}`);
-        } else {
-          this.setReferences(response);
-          this.setURLParameters(
-            this.referenceParameters,
-            this.page,
-            this.paginateBy
-          );
+      this.isLoading = true;
+      fetchReferences(searchObj).then(
+        response => {
+          if (response.count === 1) {
+            this.$router.push(`/reference/${response.results[0].id}`);
+          } else {
+            this.setReferences(response);
+            this.setURLParameters(
+              this.referenceParameters,
+              this.page,
+              this.paginateBy
+            );
+          }
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
         }
-      });
+      );
     },
     getLibraries(page = 1) {
       const libraryParams = {
@@ -91,10 +102,21 @@ const queryMixin = {
           title: this.advancedSearch.byIds["title"]
         }
       };
-
-      fetchLibraries(libraryParams).then(res => {
-        this.setLibraries(res);
-      });
+      this.isLoading = true;
+      fetchLibraries(libraryParams).then(
+        res => {
+          this.setLibraries(res);
+          this.setURLParameters(
+            this.referenceParameters,
+            this.page,
+            this.paginateBy
+          );
+          this.isLoading = false;
+        },
+        () => {
+          this.isLoading = false;
+        }
+      );
     }
   }
 };

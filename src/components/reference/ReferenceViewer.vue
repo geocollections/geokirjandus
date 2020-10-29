@@ -72,7 +72,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       headers: [
         {
           text: `${this.$t("common.actions")}`,

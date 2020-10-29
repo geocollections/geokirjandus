@@ -152,8 +152,6 @@ export default {
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
     ...mapActions("search", [
-      "updateSearch",
-      "updateAdvancedSearch",
       "updatePage",
       "updatePaginateBy",
       "updateSortBy",

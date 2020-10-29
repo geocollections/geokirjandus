@@ -133,6 +133,7 @@ export default {
   created() {
     // this.resetSearch();
     this.resetPage();
+    this.setSearchFromURL(this.$route.query);
     this.getLibrary().then(res => {
       this.library = res.results[0];
 
@@ -143,7 +144,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage"]),
+    ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
     getDoiUrl(doi) {
       return `https://doi.org/${doi}`;
     },

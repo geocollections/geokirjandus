@@ -2,7 +2,10 @@
   <router-link
     v-if="short"
     class="libraryLink"
-    :to="`/library/${library.id}`"
+    :to="{
+      path: `/library/${library.id}`,
+      query: { paginateBy: $route.query.paginateBy }
+    }"
     tag="div"
     v-html="citation(getCslJson)"
   />

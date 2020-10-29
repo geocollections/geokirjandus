@@ -245,14 +245,20 @@ export default {
     },
     $route: {
       handler(to, from) {
-        if (
-          to.name === "library" ||
-          (from !== undefined &&
-            from.name === "library" &&
-            to.name === "reference")
+        if (to.name === "library" && to.params.id) {
+          this.resetSearch();
+          this.infoAlert = "alert.infoLibrarySearch";
+          if (this.$route.query) {
+            this.setSearchFromURL(this.$route.query);
+          }
+        } else if (
+          from !== undefined &&
+          from.name === "library" &&
+          to.name === "reference"
         ) {
           this.infoAlert = "alert.infoLibrarySearch";
         } else if (to.name === "search" || to.name === "searchLib") {
+          this.resetSearch();
           this.infoAlert = null;
           if (this.$route.query) {
             this.setSearchFromURL(this.$route.query);
@@ -262,6 +268,9 @@ export default {
       immediate: true
     }
   },
+  // created() {
+  //   this.resetSearch();
+  // },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
     ...mapState("references", ["facet", "result", "count"]),

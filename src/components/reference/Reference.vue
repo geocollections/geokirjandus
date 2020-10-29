@@ -297,12 +297,12 @@ export default {
   watch: {
     referenceParameters: {
       handler: debounce(function() {
-        console.log(this.prevRoute);
         this.setURLParameters(
           this.referenceParameters,
           this.page,
           this.paginateBy,
-          this.prevRoute
+          this.prevRoute,
+          true
         );
       }, 300),
       deep: true

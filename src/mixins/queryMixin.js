@@ -92,8 +92,8 @@ const queryMixin = {
     getLibraries(page = 1) {
       const libraryParams = {
         search: this.search,
-        page: this.page,
-        paginateBy: this.paginateBy,
+        page: 1,
+        paginateBy: 100,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         advancedSearch: {

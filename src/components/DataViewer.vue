@@ -22,6 +22,7 @@
           </v-radio-group>
 
           <export-buttons
+            v-if="exportButtons"
             :filename="module"
             :table-data="data"
             :small="$vuetify.breakpoint.mdAndUp"
@@ -147,14 +148,6 @@ export default {
     sortDesc: {
       type: Array[String],
       default: [false]
-    },
-    useListView: {
-      type: Boolean,
-      default: false
-    },
-    useImageView: {
-      type: Boolean,
-      default: false
     },
     isLoading: {
       type: Boolean,

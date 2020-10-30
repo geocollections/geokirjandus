@@ -154,12 +154,6 @@ export default {
     };
   },
   props: {
-    search: {
-      type: Object
-    },
-    advancedSearch: {
-      type: Object
-    },
     tabs: {
       type: Boolean,
       default: false

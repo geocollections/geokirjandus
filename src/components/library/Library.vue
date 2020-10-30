@@ -42,8 +42,8 @@
         </h2>
       </v-card-text>
       <v-card-text v-if="library.abstract" class="py-0">
-        <div v-if="$i18n.locale === 'ee'" v-html="library.abstract[0]"></div>
-        <div v-else v-html="library.abstract_en[0]"></div>
+        <div v-if="$i18n.locale === 'ee'" v-html="library.abstract"></div>
+        <div v-else v-html="library.abstract_en"></div>
       </v-card-text>
       <v-card-text class="pb-0">
         <h2>
@@ -114,8 +114,8 @@ export default {
           libraries: {
             type: "text",
             id: "libraries",
-            lookUpType: "contains",
-            value: `|${this.library.id}|`,
+            lookUpType: null,
+            value: `${this.library.id}`,
             label: "reference.libraries",
             fields: ["libraries"],
             hidden: true

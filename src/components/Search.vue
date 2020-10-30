@@ -252,12 +252,17 @@ export default {
           to.name === "reference"
         ) {
           this.infoAlert = "alert.infoLibrarySearch";
-        } else if ((to.name === "search" || to.name === "searchLib") && from === undefined) {
+        } else if (
+          (to.name === "search" || to.name === "searchLib") &&
+          from === undefined
+        ) {
           this.resetSearch();
           this.infoAlert = null;
           if (this.$route.query) {
             this.setSearchFromURL(this.$route.query);
           }
+        } else {
+          this.infoAlert = null;
         }
       },
       immediate: true

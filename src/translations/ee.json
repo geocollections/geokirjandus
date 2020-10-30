@@ -1,5 +1,5 @@
 {
-  "title": "e-maapõu",
+  "title": "Eesti maapõue teavikute register",
   "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
   "messages": {
@@ -17,17 +17,17 @@
     "nothingFound": "Ei leidnud otsingule vastavaid kirjeid"
   },
   "tabs": {
-    "references": "Viited",
+    "references": "Kirjandus",
     "libraries": "Kogumikud"
   },
   "viewer": {
     "title": {
-      "reference_html": "Leitud <b>{num}</b> viidet",
+      "reference_html": "Leitud <b>{num}</b> kirjet",
       "library_html": "Leitud <b>{num}</b> kogumikku"
     }
   },
   "common": {
-    "search": "Otsing",
+    "search": "Otsi",
     "advancedSearch": "Detailotsing",
     "found": "Leitud",
     "records": "kirjet",
@@ -55,8 +55,8 @@
     "loading": "Otsin",
     "citationStyle": "Viitamise stiil",
     "citation": "Viide",
-    "newest": "Viimati lisatud",
-    "viewReferences": "Vaata kirjandust",
+    "newest": "Viimati muudetud teavikud",
+    "viewReferences": "Sirvi",
     "map": "Kaart",
     "misc": "Muu",
     "searchCommand": "Otsi",
@@ -76,7 +76,7 @@
     "isEstonianReference": "Eesti kirjandus",
     "viewReference": "Vaata viitet",
     "pages": "Leheküljed",
-    "reference": "Viide",
+    "reference": "Kirje",
     "book": "Raamat",
     "bookEditor": "Toimetaja",
     "journalName": "Ajakiri",
@@ -96,7 +96,7 @@
     "describedTaxa": "Kirjeldatud taksonid",
     "titleOriginal": "Pealkiri originaal",
     "authorOriginal": "Autor originaal",
-    "parentReference": "Ülem viide",
+    "parentReference": "Raamat",
     "bookTranslated": "Raamatu pealkiri tõlgitud",
     "bookOriginal": "Raamatu pealkiri originaal",
     "figures": "Joonised"

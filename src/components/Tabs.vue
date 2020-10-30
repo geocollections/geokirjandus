@@ -1,11 +1,17 @@
 <template>
-  <v-tabs grow background-color="#F2E4CF" color="#ECA15B">
-    <v-tab :to="{ path: 'reference', query: this.$route.query }">{{
-      `${$t("tabs.references")} (${referenceCount})`
-    }}</v-tab>
-    <v-tab :to="{ path: 'library', query: this.$route.query }">{{
-      `${$t("tabs.libraries")} (${libraryCount})`
-    }}</v-tab>
+  <v-tabs grow background-color="#E5C99F" color="#B76315">
+    <v-tab
+      active-class="active"
+      link
+      :to="{ path: 'reference', query: this.$route.query }"
+      >{{ `${$t("tabs.references")} (${referenceCount})` }}</v-tab
+    >
+    <v-tab
+      active-class="active"
+      link
+      :to="{ path: 'library', query: this.$route.query }"
+      >{{ `${$t("tabs.libraries")} (${libraryCount})` }}</v-tab
+    >
   </v-tabs>
 </template>
 
@@ -23,4 +29,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.active {
+  background-color: #f6eddf;
+}
+</style>

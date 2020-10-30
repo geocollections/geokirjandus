@@ -134,12 +134,6 @@ export default {
     }
   },
   props: {
-    search: {
-      type: Object
-    },
-    advancedSearch: {
-      type: Object
-    },
     showLibraries: {
       type: Boolean,
       default: true

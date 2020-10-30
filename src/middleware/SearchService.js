@@ -68,9 +68,10 @@ function buildSort(sortBy, sortDesc) {
 }
 
 function buildQueryStr(queryObject, filterQueryObject) {
-  const queryStr = queryObject.value
-    ? `q=${encodeURIComponent(queryObject.value)}`
-    : "q=*";
+  const queryStr =
+    queryObject && queryObject.value
+      ? `q=${encodeURIComponent(queryObject.value)}`
+      : "q=*";
 
   const filterQueryStr = Object.entries(filterQueryObject)
     .filter(([_, v]) => {
@@ -78,7 +79,8 @@ function buildQueryStr(queryObject, filterQueryObject) {
         return false;
       if (v.type === "text" && (!v.value || v.value.trim().length <= 0))
         return false;
-      if (v.type === "select" && (v.value === null || v.value.length < 1)) return false;
+      if (v.type === "select" && (v.value === null || v.value.length < 1))
+        return false;
       return v.value !== null;
     })
     .reduce((prev, [k, v]) => {

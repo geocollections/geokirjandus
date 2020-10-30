@@ -6,7 +6,12 @@
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
-          <v-btn large icon @click="$router.go(-1)" aria-label="back">
+          <v-btn
+            large
+            icon
+            @click="$router.replace(prevRoute)"
+            aria-label="back"
+          >
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
@@ -91,7 +96,8 @@ export default {
       id: this.$route.params.id,
       library: null,
       isLoading: true,
-      error: false
+      error: false,
+      prevRoute: null
     };
   },
   mixins: [dateMixin, citationMixin],
@@ -106,6 +112,8 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.prevRoute = from.path;
+
       if (from.name === "searchLib") vm.resetSearch();
     });
   },

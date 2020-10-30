@@ -213,12 +213,6 @@ export default {
   name: "Search",
   components: { CitationSelect },
   props: {
-    search: {
-      type: Object
-    },
-    advancedSearch: {
-      type: Object
-    },
     colSize: {
       type: Number,
       default: 6
@@ -258,7 +252,7 @@ export default {
           to.name === "reference"
         ) {
           this.infoAlert = "alert.infoLibrarySearch";
-        } else if (to.name === "search" || to.name === "searchLib") {
+        } else if ((to.name === "search" || to.name === "searchLib") && from === undefined) {
           this.resetSearch();
           this.infoAlert = null;
           if (this.$route.query) {

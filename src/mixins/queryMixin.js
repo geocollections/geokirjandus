@@ -40,8 +40,8 @@ const queryMixin = {
           ? {
               type: "text",
               id: "libraries",
-              lookUpType: "contains",
-              value: `|${this.$route.params.id}|`,
+              lookUpType: null,
+              value: `${this.$route.params.id}`,
               label: "reference.libraries",
               fields: ["libraries"],
               hidden: true

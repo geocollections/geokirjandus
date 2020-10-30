@@ -99,7 +99,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
               case "notContains":
                 return `-${fieldId}:*${encodedValue}*`;
               default:
-                return null;
+                return `${fieldId}:${encodedValue}`;
             }
           }
 

@@ -29,7 +29,7 @@
         <v-col cols="12" md="6">
           <v-card>
             <v-card-title style="background-color: #F6EDDF">
-              <h6>{{ intro.title_en }}</h6>
+              <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
             <v-card-text class="py-3" v-if="intro" v-html="getIntroText">
             </v-card-text>
@@ -84,6 +84,12 @@ export default {
         return this.intro.content_et;
       }
       return this.intro.content_en;
+    },
+    getIntroTitle() {
+      if (this.$i18n.locale === "ee") {
+        return this.intro.title_et;
+      }
+      return this.intro.title_en;
     }
   },
   methods: {

@@ -22,10 +22,17 @@
           <v-btn @click="search()">{{ $t("common.search") }}</v-btn>
         </span>
       </v-row>
-      <v-row class="d-flex justify-center" style="background-color: #F6EDDF">
+      <v-row
+        class="d-flex flex-column align-center justify-center"
+        style="background-color: #F6EDDF"
+      >
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-text v-if="intro" v-html="getIntroText"> </v-card-text>
+            <v-card-title style="background-color: #F6EDDF">
+              <h6>{{ getIntroTitle }}</h6>
+            </v-card-title>
+            <v-card-text class="py-3" v-if="intro" v-html="getIntroText">
+            </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
@@ -77,6 +84,12 @@ export default {
         return this.intro.content_et;
       }
       return this.intro.content_en;
+    },
+    getIntroTitle() {
+      if (this.$i18n.locale === "ee") {
+        return this.intro.title_et;
+      }
+      return this.intro.title_en;
     }
   },
   methods: {

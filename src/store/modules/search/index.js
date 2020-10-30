@@ -34,7 +34,7 @@ const state = {
       title: {
         type: "text",
         id: "title",
-        lookUpType: "contains",
+        lookUpType: null,
         value: null,
         label: "reference.title",
         fields: ["title"]

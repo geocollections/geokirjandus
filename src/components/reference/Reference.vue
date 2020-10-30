@@ -6,7 +6,12 @@
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
-          <v-btn large icon @click="$router.go(-1)" aria-label="back">
+          <v-btn
+            large
+            icon
+            @click="$router.replace(prevRoute)"
+            aria-label="back"
+          >
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>

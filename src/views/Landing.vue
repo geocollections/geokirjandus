@@ -1,46 +1,52 @@
 <template>
-  <v-container fluid class="landing pa-0">
-    <v-row class="header d-flex justify-center pb-5">
-      <span style="position: absolute; right: 0;top: 0" class="d-flex ma-4">
-        <links />
-        <lang-buttons />
-      </span>
-      <v-col cols="4" class="text-center">
-        <h1 class="white--text">{{ $t("title") }}</h1>
-        <p class="white--text">{{ $t("subtitle") }}</p>
-        <v-text-field
-          v-model="searchStr"
-          :label="$t('common.search')"
-          prepend-inner-icon="fas fa-search"
-          class="shrink"
-          solo
-        >
-        </v-text-field>
-        <v-btn class="mr-3" @click="search()">{{ $t("common.search") }}</v-btn>
-        <v-btn dark color="#F0B67F" to="/reference">{{
-          $t("common.viewReferences")
-        }}</v-btn>
-      </v-col>
-    </v-row>
-    <v-row class="d-flex justify-center ">
-      <v-col cols="6">
-        <v-card>
-          <v-card-title style="background-color: #F6EDDF">{{
-            $t("common.newest")
-          }}</v-card-title>
+  <div class="fill-height d-flex flex-wrap align-content-space-between">
+    <v-container fluid class="landing py-0">
+      <v-row class="header d-flex flex-column pb-5">
+        <span class="d-flex justify-end mt-4 mb-2 mr-4">
+          <links />
+          <lang-buttons />
+        </span>
 
-          <v-expand-transition>
-            <reference-list-view
-              class="pb-3"
-              v-if="references"
-              :data="references"
-            ></reference-list-view>
-          </v-expand-transition>
-        </v-card>
-      </v-col>
-    </v-row>
+        <h1 class="white--text text-center">{{ $t("title") }}</h1>
+        <span class="text-center align-self-center col-12 col-md-4">
+          <v-text-field
+            v-model="searchStr"
+            :label="$t('common.search')"
+            prepend-inner-icon="fas fa-search"
+            solo
+          >
+          </v-text-field>
+          <v-btn dark class="mr-3" color="#ECA15B" to="/reference">{{
+            $t("common.viewReferences")
+          }}</v-btn>
+          <v-btn @click="search()">{{ $t("common.search") }}</v-btn>
+        </span>
+      </v-row>
+      <v-row class="d-flex justify-center" style="background-color: #F6EDDF">
+        <v-col cols="12" md="6">
+          <v-card>
+            <v-card-text v-if="intro" v-html="getIntroText"> </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-card>
+            <v-card-title style="background-color: #F6EDDF">
+              <h6>{{ $t("common.newest") }}</h6>
+            </v-card-title>
+
+            <v-expand-transition>
+              <reference-list-view
+                class="pb-3"
+                v-if="references"
+                :data="references"
+              ></reference-list-view>
+            </v-expand-transition>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
     <app-footer />
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -49,19 +55,36 @@ import Links from "@/components/Links";
 import { fetchReferences } from "@/utils/apiCalls";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 import AppFooter from "@/components/AppFooter";
+import axios from "axios";
+
 export default {
   name: "Landing",
-  components: { AppFooter, ReferenceListView, LangButtons, Links },
+  components: { AppFooter, Links, LangButtons, ReferenceListView },
   data() {
     return {
       searchStr: "",
-      references: null
+      references: null,
+      intro: null
     };
   },
   created() {
     this.getReferences();
+    this.getIntroduction();
+  },
+  computed: {
+    getIntroText() {
+      if (this.$i18n.locale === "ee") {
+        return this.intro.content_et;
+      }
+      return this.intro.content_en;
+    }
   },
   methods: {
+    getIntroduction() {
+      axios.get("https://api.geocollections.info/page/75").then(res => {
+        this.intro = res.data.results[0];
+      });
+    },
     search() {
       this.$router.push({
         path: "/reference",

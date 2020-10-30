@@ -82,7 +82,7 @@ const state = {
         type: "checkbox",
         id: "isEstonianAuthor",
         lookUpType: "contains",
-        value: "1",
+        value: null,
         label: "reference.isEstonianAuthor",
         fields: ["is_estonian_author"]
       },
@@ -122,8 +122,8 @@ const state = {
       "referenceType",
       "keywords",
       "userAdded",
-      "isEstonianAuthor",
-      "isEstonianReference"
+      "isEstonianReference",
+      "isEstonianAuthor"
     ]
   },
   lookUpTypes: [

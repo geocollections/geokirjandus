@@ -6,16 +6,16 @@
           :module="$route.meta.object"
           :data="result"
           :count="count"
-          :page="page"
+          :page="1"
           :is-loading="isLoading"
-          :paginate-by="paginateBy"
+          :paginate-by="100"
           :sort-by="sortBy"
           :sort-desc="sortDesc"
           :headers="headers"
           title="viewer.title.library_html"
+          :export-buttons="false"
           v-on:update:paginateBy="updatePaginateBy"
           v-on:update:page="updatePage"
-          v-on:reset:page="resetPage"
           v-on:update:sortBy="updateSortBy"
           v-on:update:sortDesc="updateSortDesc"
           v-on:update:headers="headers = $event"
@@ -69,10 +69,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      libraries: null,
-      libraryPage: 1,
-      librariesCount: 0,
-      librariesBy: 5,
       headers: [
         {
           text: `${this.$t("common.actions")}`,
@@ -151,32 +147,17 @@ export default {
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("library", ["result", "count"]),
-
-    fields() {
-      return this.advancedSearch.allIds.map(id => {
-        return this.advancedSearch.byIds[id];
-      });
-    }
+    ...mapState("library", ["result", "count"])
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
     ...mapActions("search", [
-      "setSearchFromURL",
-      "updateSearch",
-      "updateAdvancedSearch",
       "updatePage",
       "updatePaginateBy",
       "updateSortBy",
       "updateSortDesc",
-      "resetSearch",
       "resetPage"
-    ]),
-    getNextLibraries() {
-      this.libraryPage++;
-
-      this.getLibraries(this.libraryPage);
-    }
+    ])
   }
 };
 </script>

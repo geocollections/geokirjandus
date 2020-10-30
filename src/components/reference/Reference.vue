@@ -171,6 +171,25 @@
           </v-chip>
         </span>
       </v-card-text>
+      <v-card-text v-if="childReferences">
+        <h3 class="pb-3">{{ $t("reference.contains") }}</h3>
+        <v-simple-table dense>
+          <tbody>
+            <tr
+              v-for="childReference in childReferences"
+              :key="childReference.id"
+            >
+              <td>
+                <router-link replace :to="`/reference/${childReference.id}`">
+                  {{ childReference.author }}
+                </router-link>
+              </td>
+              <td>{{ childReference.title }}</td>
+              <td>{{ childReference.pages }}</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-card-text>
       <v-card-text
         v-if="reference.localities || reference.taxa"
         class="row ma-0"
@@ -258,7 +277,8 @@
 import {
   fetchReference,
   fetchReferenceLibraries,
-  fetchReferenceLocalities
+  fetchReferenceLocalities,
+  fetchReferences
 } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
@@ -281,7 +301,8 @@ export default {
       libraries: [],
       localities: [],
       error: false,
-      prevRoute: null
+      prevRoute: null,
+      childReferences: null
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -297,12 +318,12 @@ export default {
   watch: {
     referenceParameters: {
       handler: debounce(function() {
-        console.log(this.prevRoute);
         this.setURLParameters(
           this.referenceParameters,
           this.page,
           this.paginateBy,
-          this.prevRoute
+          this.prevRoute,
+          true
         );
       }, 300),
       deep: true
@@ -386,6 +407,22 @@ export default {
         }
       });
     },
+    getChildReferences() {
+      return fetchReferences({
+        advancedSearch: {
+          parent_reference_id: {
+            type: "text",
+            id: "parent_reference_id",
+            value: this.reference.id,
+            lookUpType: "equals",
+            fields: ["parent_reference_id"]
+          }
+        },
+        sortBy: ["pages_start"],
+        sortDesc: [false],
+        fields: ["id", "author", "pages", "title"]
+      });
+    },
     getReference(id) {
       fetchReference(id).then(res => {
         this.reference = res.results[0];
@@ -421,6 +458,10 @@ export default {
             this.libraries = res.results;
           });
         }
+
+        this.getChildReferences().then(res => {
+          if (res.count > 0) this.childReferences = res.results;
+        });
       });
     },
     getFileUrl(uuid) {

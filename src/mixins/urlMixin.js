@@ -1,6 +1,12 @@
 const urlMixin = {
   methods: {
-    setURLParameters(parameters, page, paginateBy, route = "") {
+    setURLParameters(
+      parameters,
+      page,
+      paginateBy,
+      route = "",
+      replace = false
+    ) {
       let q = Object.fromEntries(
         Object.entries(parameters)
           .filter(([k, v]) => {
@@ -55,7 +61,12 @@ const urlMixin = {
       if (paginateBy !== 50) {
         q.paginateBy = paginateBy;
       }
-      this.$router.replace({ query: q, path: route }).catch(() => {});
+
+      if (replace) {
+        this.$router.replace({ query: q, path: route }).catch(() => {});
+      } else {
+        this.$router.push({ query: q, path: route }).catch(() => {});
+      }
     }
   }
 };

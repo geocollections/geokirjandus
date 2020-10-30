@@ -74,7 +74,7 @@ export default {
   },
   data() {
     return {
-      showSearch: this.$vuetify.breakpoint.mdAndUp,
+      showSearch: this.$vuetify.breakpoint.smAndUp,
       showAdvancedSearch: true,
       isPrint: false
     };

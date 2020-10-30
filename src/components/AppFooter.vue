@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="#E0C190" class="d-flex flex-column" style="width: 100%">
+  <v-footer color="#E0C190" class="d-flex flex-column py-4" style="width: 100%">
     <div class="text-center">
       <a href="https://natarc.ut.ee" target="_blank" rel="noopener"
         ><img
@@ -43,7 +43,7 @@
           style="height: 60px; padding: 0 10px;"
       /></a>
     </div>
-    <small class="text-center" style="max-width: 800px">
+    <small class="text-center pt-4" style="max-width: 800px">
       Siin leiduvad materjalid on enamasti kasutamiseks
       <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a>
       litsentsi alusel, kui pole näidatud teisiti. Portaal on osaks

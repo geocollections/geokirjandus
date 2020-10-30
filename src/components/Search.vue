@@ -15,8 +15,9 @@
         </v-alert>
       </v-list-item>
 
-      <v-list-item class="pt-0 pb-3">
+      <v-list-item class="py-4">
         <v-text-field
+          solo
           hide-details
           :value="search.value"
           :label="$t('common.search')"
@@ -24,7 +25,7 @@
         />
       </v-list-item>
 
-      <v-list-group color="#ECA15B" v-model="showAdvancedSearch">
+      <v-list-group color="#B76315" v-model="showAdvancedSearch">
         <template v-slot:activator>
           <v-list-item-title>{{
             $t("common.advancedSearch")
@@ -34,28 +35,28 @@
           <!-- REGULAR SEARCH FIELD -->
           <v-list-item v-if="advancedSearch.byIds[id].type === 'text'" dense>
             <v-row class="pa-1">
-              <v-col cols="3" class="py-0 px-1">
-                <v-select
-                  :value="advancedSearch.byIds[id].lookUpType || 'contains'"
-                  disable-lookup
-                  hide-details
-                  :items="translatedLookUpTypes"
-                  @change="
-                    $emit('update:advancedSearch', {
-                      lookUpType: $event,
-                      id: id
-                    })
-                  "
-                >
-                  <template v-slot:selection="{ item }">
-                    <div class="font-weight-bold">
-                      {{ item.symbol }}
-                    </div>
-                  </template>
-                </v-select>
-              </v-col>
+              <!--              <v-col cols="3" class="py-0 px-1">-->
+              <!--                <v-select-->
+              <!--                  :value="advancedSearch.byIds[id].lookUpType || 'contains'"-->
+              <!--                  disable-lookup-->
+              <!--                  hide-details-->
+              <!--                  :items="translatedLookUpTypes"-->
+              <!--                  @change="-->
+              <!--                    $emit('update:advancedSearch', {-->
+              <!--                      lookUpType: $event,-->
+              <!--                      id: id-->
+              <!--                    })-->
+              <!--                  "-->
+              <!--                >-->
+              <!--                  <template v-slot:selection="{ item }">-->
+              <!--                    <div class="font-weight-bold">-->
+              <!--                      {{ item.symbol }}-->
+              <!--                    </div>-->
+              <!--                  </template>-->
+              <!--                </v-select>-->
+              <!--              </v-col>-->
 
-              <v-col cols="9" class="py-0 px-1">
+              <v-col cols="12" class="py-0 px-1">
                 <v-text-field
                   :value="advancedSearch.byIds[id].value"
                   :label="$t(advancedSearch.byIds[id].label)"
@@ -245,14 +246,20 @@ export default {
     },
     $route: {
       handler(to, from) {
-        if (
-          to.name === "library" ||
-          (from !== undefined &&
-            from.name === "library" &&
-            to.name === "reference")
+        if (to.name === "library" && to.params.id) {
+          this.resetSearch();
+          this.infoAlert = "alert.infoLibrarySearch";
+          if (this.$route.query) {
+            this.setSearchFromURL(this.$route.query);
+          }
+        } else if (
+          from !== undefined &&
+          from.name === "library" &&
+          to.name === "reference"
         ) {
           this.infoAlert = "alert.infoLibrarySearch";
         } else if (to.name === "search" || to.name === "searchLib") {
+          this.resetSearch();
           this.infoAlert = null;
           if (this.$route.query) {
             this.setSearchFromURL(this.$route.query);
@@ -262,6 +269,9 @@ export default {
       immediate: true
     }
   },
+  // created() {
+  //   this.resetSearch();
+  // },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
     ...mapState("references", ["facet", "result", "count"]),

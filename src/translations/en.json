@@ -1,5 +1,5 @@
 {
-  "title": "e-maapõu",
+  "title": "Estonian geological literature register",
   "subtitle": "Estonian geological literature register",
   "pagination": "{num} results",
   "messages": {
@@ -57,7 +57,7 @@
     "citationStyle": "Citation style",
     "citation": "Citation",
     "newest": "Newest additions",
-    "viewReferences": "View references",
+    "viewReferences": "Browse",
     "map": "Map",
     "misc": "Miscellaneous",
     "searchCommand": "Search",
@@ -100,7 +100,8 @@
     "parentReference": "Parent reference",
     "bookTranslated": "Book title translated",
     "bookOriginal": "Book title original",
-    "figures": "Figures"
+    "figures": "Figures",
+    "contains": "Contains"
   },
   "library": {
     "id": "ID",

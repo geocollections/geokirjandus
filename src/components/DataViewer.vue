@@ -22,6 +22,7 @@
           </v-radio-group>
 
           <export-buttons
+            v-if="exportButtons"
             :filename="module"
             :table-data="data"
             :small="$vuetify.breakpoint.mdAndUp"
@@ -43,7 +44,7 @@
             chips
             :label="$t('common.fields')"
             hide-details
-            :items="getSelectItems"
+            :items="getHeaderOptions"
             @change="setHeaders($event)"
           >
             <template v-slot:selection="{ item }">
@@ -148,14 +149,6 @@ export default {
       type: Array[String],
       default: [false]
     },
-    useListView: {
-      type: Boolean,
-      default: false
-    },
-    useImageView: {
-      type: Boolean,
-      default: false
-    },
     isLoading: {
       type: Boolean,
       default: false
@@ -175,7 +168,6 @@ export default {
   },
   data() {
     return {
-      filterTable: "",
       view: "list",
       headerProps: {
         sortByText: this.$t("common.sortBy")
@@ -183,16 +175,7 @@ export default {
     };
   },
   computed: {
-    getRange() {
-      return `${
-        this.count > 0 ? this.paginateBy * this.page - (this.paginateBy - 1) : 0
-      } - ${
-        this.paginateBy * this.page > this.count
-          ? this.count
-          : this.paginateBy * this.page
-      } (${this.count})`;
-    },
-    getSelectItems() {
+    getHeaderOptions() {
       return this.headers
         .filter(header => {
           return !header.fixed;
@@ -225,6 +208,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .mobile-row >>> .v-data-table__mobile-row {
   height: initial !important;

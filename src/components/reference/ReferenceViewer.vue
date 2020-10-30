@@ -15,7 +15,6 @@
           title="viewer.title.reference_html"
           v-on:update:paginateBy="updatePaginateBy"
           v-on:update:page="updatePage"
-          v-on:reset:page="resetPage"
           v-on:update:sortBy="updateSortBy"
           v-on:update:sortDesc="updateSortDesc"
           v-on:update:headers="headers = $event"
@@ -73,11 +72,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
-      libraries: null,
-      libraryPage: 1,
-      librariesCount: 0,
-      librariesBy: 5,
       headers: [
         {
           text: `${this.$t("common.actions")}`,
@@ -166,10 +160,6 @@ export default {
     advancedSearch: {
       type: Object
     },
-    showLibraries: {
-      type: Boolean,
-      default: true
-    },
     tabs: {
       type: Boolean,
       default: false
@@ -177,35 +167,22 @@ export default {
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("references", ["result", "count"]),
-    fields() {
-      return this.advancedSearch.allIds.map(id => {
-        return this.advancedSearch.byIds[id];
-      });
-    }
-  },
-  created() {
-    if (this.$route.query) {
-      this.setSearchFromURL(this.$route.query);
-    }
+    ...mapState("references", ["result", "count"])
   },
   watch: {
     page: {
       handler: debounce(function() {
-        console.log("page");
         this.getReferences();
       }, 300)
     },
     paginateBy: {
       handler() {
-        console.log("paginate");
         this.resetPage();
         this.getReferences();
       }
     },
     sortDesc: {
       handler() {
-        console.log("sort");
         this.getReferences();
       }
     }
@@ -213,14 +190,10 @@ export default {
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
     ...mapActions("search", [
-      "setSearchFromURL",
-      "updateSearch",
-      "updateAdvancedSearch",
       "updatePage",
       "updatePaginateBy",
       "updateSortBy",
       "updateSortDesc",
-      "resetSearch",
       "resetPage"
     ])
   }

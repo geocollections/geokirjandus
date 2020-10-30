@@ -8,7 +8,7 @@
   >
     <v-btn
       aria-label="show search"
-      v-if="$vuetify.breakpoint.smAndUp"
+      v-if="$vuetify.breakpoint.mdAndUp"
       @click="$emit('update:showSearch')"
       icon
       dark
@@ -21,7 +21,7 @@
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <links />
+    <links v-if="$vuetify.breakpoint.smAndUp"/>
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
     <v-menu
@@ -36,21 +36,10 @@
           <v-icon>fas fa-bars</v-icon>
         </v-btn>
       </template>
-      <v-list>
-        <v-menu transition="slide-y-transition" offset-y bottom right>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on">
-              {{ $t("common.links") }}
-            </v-btn>
-          </template>
-          <v-list>
-            <div v-for="(link, idx) in links" :key="idx">
-              <v-list-item :href="link.url" target="_blank">
-                <v-list-item-title>{{ $t(link.name) }}</v-list-item-title>
-              </v-list-item>
-            </div>
-          </v-list>
-        </v-menu>
+      <v-list color="#F6EDDF">
+        <div class="pb-2">
+          <links :isDark="false"/>
+        </div>
         <div class="px-3">
           <lang-buttons />
         </div>
@@ -64,30 +53,13 @@ import LangButtons from "@/components/LangButtons";
 import Links from "@/components/Links";
 export default {
   name: "AppHeader",
-  data() {
-    return {
-      links: [
-        { name: "link.geocollections", url: "https://geocollections.info" },
-        { name: "link.fossiilid", url: "https://fossiilid.info" },
-        { name: "link.kivid", url: "https://kivid.info" },
-        { name: "link.sarvAPI", url: "https://api.geocollections.info" },
-        { name: "link.sarvDOI", url: "https://doi.geocollections.info" },
-        {
-          name: "link.sarvEdit",
-          url: "https://edit2.geocollections.info"
-        },
-        { name: "link.egt", url: "https://fond.egt.ee/fond" },
-        { name: "link.natarc", url: "https://natarc.ut.ee" }
-      ]
-    };
-  },
+  components: { Links, LangButtons },
   methods: {
     home() {
       this.$emit("home");
       this.$router.push("/").catch(() => {});
     }
-  },
-  components: { Links, LangButtons }
+  }
 };
 </script>
 

@@ -44,8 +44,8 @@ export default {
           }
         ],
         publisher: this.$t("common.libraryPublisher"),
-        "container-title": this.library.title,
-        URL: `https:/rmtk.geoloogia.info/library/${this.library.id}`
+        title: this.library.title,
+        URL: `https://geoloogia.info/library/${this.library.id}`
       };
     }
   }

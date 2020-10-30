@@ -13,7 +13,9 @@ const queryMixin = {
       "page",
       "paginateBy",
       "sortBy",
-      "sortDesc"
+      "sortDesc",
+      "search",
+      "advancedSearch"
     ]),
     ...mapState("references", ["facet", "result", "count"]),
     referenceParameters() {

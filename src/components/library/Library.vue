@@ -50,11 +50,7 @@
           <b>{{ $t("common.libraryReferences") }}</b>
         </h2>
       </v-card-text>
-      <reference-viewer
-        :search="search"
-        :advancedSearch="getAdvancedSearch"
-        :show-libraries="false"
-      ></reference-viewer>
+      <reference-viewer />
     </v-card>
     <v-card v-if="error">
       <v-card-actions style="background-color: #F6EDDF">
@@ -106,23 +102,6 @@ export default {
       } else {
         return this.library.title_en;
       }
-    },
-    getAdvancedSearch() {
-      return {
-        byIds: {
-          ...this.advancedSearch.byIds,
-          libraries: {
-            type: "text",
-            id: "libraries",
-            lookUpType: null,
-            value: `${this.library.id}`,
-            label: "reference.libraries",
-            fields: ["libraries"],
-            hidden: true
-          }
-        },
-        allIds: [...this.advancedSearch.allIds, "libraries"]
-      };
     }
   },
   beforeRouteEnter(to, from, next) {

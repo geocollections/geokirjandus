@@ -99,7 +99,8 @@
     "parentReference": "Raamat",
     "bookTranslated": "Raamatu pealkiri tõlgitud",
     "bookOriginal": "Raamatu pealkiri originaal",
-    "figures": "Joonised"
+    "figures": "Joonised",
+    "contains": "Sisaldab"
   },
   "library": {
     "id": "ID",

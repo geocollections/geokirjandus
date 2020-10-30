@@ -100,7 +100,8 @@
     "parentReference": "Parent reference",
     "bookTranslated": "Book title translated",
     "bookOriginal": "Book title original",
-    "figures": "Figures"
+    "figures": "Figures",
+    "contains": "Contains"
   },
   "library": {
     "id": "ID",

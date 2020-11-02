@@ -28,7 +28,7 @@
       >
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title style="background-color: #F6EDDF">
+            <v-card-title v-if="intro" style="background-color: #F6EDDF">
               <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
             <v-card-text class="py-3" v-if="intro" v-html="getIntroText">

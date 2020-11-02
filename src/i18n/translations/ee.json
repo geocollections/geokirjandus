@@ -1,0 +1,129 @@
+{
+  "title": "Eesti maapõue teavikute register",
+  "subtitle": "Eesti maapõue teavikute register",
+  "pagination": "{num} kaupa",
+  "messages": {
+    "langChange": "Keel vahetatud"
+  },
+  "tooltip": {
+    "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
+  },
+  "alert": {
+    "infoLibrarySearch": "Otsing toimub kogumikus"
+  },
+  "error": {
+    "referenceId": "Ei leidnud kirjandust. ID: {text}",
+    "libraryId": "Ei leidnud kogumikku. ID: {text}",
+    "nothingFound": "Ei leidnud otsingule vastavaid kirjeid"
+  },
+  "tabs": {
+    "references": "Kirjandus",
+    "libraries": "Kogumikud"
+  },
+  "viewer": {
+    "title": {
+      "reference_html": "Leitud <b>{num}</b> kirjet",
+      "library_html": "Leitud <b>{num}</b> kogumikku"
+    }
+  },
+  "common": {
+    "search": "Otsi",
+    "advancedSearch": "Detailotsing",
+    "found": "Leitud",
+    "records": "kirjet",
+    "listView": "List",
+    "tableView": "Tabel",
+    "export": "Ekspordi",
+    "copy": "Kopeeri",
+    "links": "Lingid",
+    "deleteSearch": "Tühjenda väljad",
+    "lookUpType": "Filter",
+    "fields": "Väljad",
+    "libraryCreated": "Kogumik loodud",
+    "libraryChanged": "Kogumik muudetud",
+    "summary": "Kokkuvõte",
+    "libraryReferences": "Kogumiku artiklid",
+    "visited": "Külastatud",
+    "referenceLibrary": "Kogumikule viitamine",
+    "generalInfo": "Üldinfo",
+    "libraries": "Kogumikud",
+    "paginateBy": "Kuva",
+    "actions": "",
+    "sortBy": "Sorteeri",
+    "start": "Algus",
+    "end": "Lõpp",
+    "loading": "Otsin",
+    "citationStyle": "Viitamise stiil",
+    "citation": "Viide",
+    "newest": "Viimati muudetud teavikud",
+    "viewReferences": "Sirvi",
+    "map": "Kaart",
+    "misc": "Muu",
+    "searchCommand": "Otsi",
+    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis"
+  },
+  "reference": {
+    "id": "ID",
+    "author": "Autor",
+    "year": "Aasta",
+    "title": "Pealkiri",
+    "bookJournal": "Raamat/Ajakiri",
+    "abstractRemarks": "Abstrakt/Märkused",
+    "localities": "Lokaliteedid",
+    "keywords": "Märksõnad",
+    "userAdded": "Lisanud kasutaja",
+    "isEstonianAuthor": "Eesti autor",
+    "isEstonianReference": "Eesti kirjandus",
+    "viewReference": "Vaata viitet",
+    "pages": "Leheküljed",
+    "reference": "Kirje",
+    "book": "Raamat",
+    "bookEditor": "Toimetaja",
+    "journalName": "Ajakiri",
+    "volume": "Köide",
+    "type": "Tüüp",
+    "language": "Keel",
+    "libraries": "Kogumikud",
+    "doi": "DOI",
+    "abstract": "Abstrakt",
+    "dateChanged": "Viimati muudetud",
+    "titleTranslated": "Pealkiri tõlgitud",
+    "publisher": "Kirjastaja",
+    "userChanged": "Muutnud kasutaja",
+    "remarks": "Märkused",
+    "journal": "Ajakiri",
+    "years": "Aastad",
+    "describedTaxa": "Kirjeldatud taksonid",
+    "titleOriginal": "Pealkiri originaal",
+    "authorOriginal": "Autor originaal",
+    "parentReference": "Raamat",
+    "bookTranslated": "Raamatu pealkiri tõlgitud",
+    "bookOriginal": "Raamatu pealkiri originaal",
+    "figures": "Joonised",
+    "contains": "Sisaldab"
+  },
+  "library": {
+    "id": "ID",
+    "author": "Autor",
+    "year": "Aasta",
+    "title": "Pealkiri",
+    "dateChanged": "Viimati muudetud"
+  },
+  "link": {
+    "geocollections": "Geokogude portaal",
+    "fossiilid": "fossiilid.info",
+    "kivid": "kivid.info",
+    "sarvAPI": "SARV API",
+    "sarvDOI": "SARV DOI",
+    "sarvEdit": "SARV andmehaldus",
+    "egt": "EGT Geoloogiafond",
+    "natarc": "NATARC"
+  },
+  "lookUpType": {
+    "equals": "= võrdne",
+    "contains": "* sisaldab",
+    "startsWith": "=* algab",
+    "endsWith": "*= lõppeb",
+    "notContains": "!* ei sisalda"
+  }
+}

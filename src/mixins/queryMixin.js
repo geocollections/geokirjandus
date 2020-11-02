@@ -75,14 +75,12 @@ const queryMixin = {
       fetchReferences(searchObj).then(
         response => {
           if (response.count === 1) {
-            this.$router.push(`/reference/${response.results[0].id}`);
+            this.$router.push({
+              name: "reference",
+              params: { id: response.results[0].id }
+            });
           } else {
             this.setReferences(response);
-            this.setURLParameters(
-              this.referenceParameters,
-              this.page,
-              this.paginateBy
-            );
           }
           this.isLoading = false;
         },
@@ -108,11 +106,6 @@ const queryMixin = {
       fetchLibraries(libraryParams).then(
         res => {
           this.setLibraries(res);
-          this.setURLParameters(
-            this.referenceParameters,
-            this.page,
-            this.paginateBy
-          );
           this.isLoading = false;
         },
         () => {

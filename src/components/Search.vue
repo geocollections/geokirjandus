@@ -234,18 +234,25 @@ export default {
     count: {
       handler() {
         if (this.count === 1) {
-          this.$router.push(`/reference/${this.result[0].id}`);
+          this.$router.push({
+            name: "reference",
+            params: { ...this.$route.params, id: this.result[0].id }
+          });
         }
       }
     },
     $route: {
       handler(to, from) {
-        if (to.name === "library" && to.params.id) {
+        if (
+          to.name === "library" &&
+          to.params.id &&
+          from &&
+          from.name === "searchLibrary"
+        ) {
           this.resetSearch();
           this.infoAlert = "alert.infoLibrarySearch";
-          if (this.$route.query) {
-            this.setSearchFromURL(this.$route.query);
-          }
+        } else if (to.name === "library" && to.params.id) {
+          this.infoAlert = "alert.infoLibrarySearch";
         } else if (
           from !== undefined &&
           from.name === "library" &&
@@ -253,14 +260,20 @@ export default {
         ) {
           this.infoAlert = "alert.infoLibrarySearch";
         } else if (
-          (to.name === "search" || to.name === "searchLib") &&
+          (to.name === "searchReference" || to.name === "searchLibrary") &&
           from === undefined
         ) {
           this.resetSearch();
           this.infoAlert = null;
-          if (this.$route.query) {
-            this.setSearchFromURL(this.$route.query);
-          }
+          this.getReferences();
+          this.getLibraries();
+        } else if (
+          from &&
+          from.name === "library" &&
+          to.name === "searchLibrary"
+        ) {
+          this.resetSearch();
+          this.infoAlert = null;
         } else {
           this.infoAlert = null;
         }

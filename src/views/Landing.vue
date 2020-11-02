@@ -16,9 +16,13 @@
             solo
           >
           </v-text-field>
-          <v-btn dark class="mr-3" color="#ECA15B" to="/reference">{{
-            $t("common.viewReferences")
-          }}</v-btn>
+          <v-btn
+            dark
+            class="mr-3"
+            color="#ECA15B"
+            :to="{ name: 'searchReference' }"
+            >{{ $t("common.viewReferences") }}</v-btn
+          >
           <v-btn @click="search()">{{ $t("common.search") }}</v-btn>
         </span>
       </v-row>
@@ -28,7 +32,7 @@
       >
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title style="background-color: #F6EDDF">
+            <v-card-title v-if="intro" style="background-color: #F6EDDF">
               <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
             <v-card-text class="py-3" v-if="intro" v-html="getIntroText">
@@ -63,6 +67,7 @@ import { fetchReferences } from "@/utils/apiCalls";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 import AppFooter from "@/components/AppFooter";
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   name: "Landing",
@@ -93,15 +98,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions("search", ["updateSearch"]),
     getIntroduction() {
       axios.get("https://api.geocollections.info/page/75").then(res => {
         this.intro = res.data.results[0];
       });
     },
     search() {
+      this.updateSearch(this.searchStr);
       this.$router.push({
-        path: "/reference",
-        query: { search: this.searchStr }
+        name: "searchReference"
       });
     },
     getReferences() {

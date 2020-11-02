@@ -21,7 +21,7 @@
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <links v-if="$vuetify.breakpoint.smAndUp"/>
+    <links v-if="$vuetify.breakpoint.smAndUp" />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
     <v-menu
@@ -38,7 +38,7 @@
       </template>
       <v-list color="#F6EDDF">
         <div class="pb-2">
-          <links :isDark="false"/>
+          <links :isDark="false" />
         </div>
         <div class="px-3">
           <lang-buttons />
@@ -57,7 +57,9 @@ export default {
   methods: {
     home() {
       this.$emit("home");
-      this.$router.push("/").catch(() => {});
+      this.$router
+        .replace({ name: "landing", params: this.$route.params })
+        .catch(() => {});
     }
   }
 };

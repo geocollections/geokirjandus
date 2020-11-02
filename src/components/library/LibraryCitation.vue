@@ -3,8 +3,8 @@
     v-if="short"
     class="libraryLink"
     :to="{
-      path: `/library/${library.id}`,
-      query: { paginateBy: $route.query.paginateBy }
+      name: `library`,
+      params: { ...this.$route.params, id: this.library.id }
     }"
     tag="div"
     v-html="citation(getCslJson)"

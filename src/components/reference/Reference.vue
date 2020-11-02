@@ -6,12 +6,7 @@
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
-          <v-btn
-            large
-            icon
-            @click="$router.replace(prevRoute)"
-            aria-label="back"
-          >
+          <v-btn large icon @click="handleBack()" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
@@ -165,12 +160,13 @@
         <h3 class="pb-3">{{ $t("reference.keywords") }}</h3>
 
         <span v-for="(keyword, index) in parseKeywords" :key="index">
+          <!--  FIXME: Does not work with keywords that contain spaces  -->
           <v-chip
             outlined
             color="#F0B67F"
             text-color="black"
             class="mr-1 mb-1"
-            @click="$router.push(`/reference/?keywords_contains=${keyword}`)"
+            @click="handleKeyword(keyword)"
           >
             {{ keyword }}
           </v-chip>
@@ -185,7 +181,13 @@
               :key="childReference.id"
             >
               <td>
-                <router-link replace :to="`/reference/${childReference.id}`">
+                <router-link
+                  replace
+                  :to="{
+                    name: 'reference',
+                    params: { ...$route.params, id: childReference.id }
+                  }"
+                >
                   {{ childReference.author }}
                 </router-link>
               </td>
@@ -227,7 +229,9 @@
             color="#F0B67F"
             text-color="black"
             class="mr-1 mb-1"
-            @click="$router.push(`/library/${library.id}`)"
+            @click="
+              $router.push({ name: `library`, params: { id: library.id } })
+            "
           >
             {{ library.title }}
           </v-chip>
@@ -289,9 +293,11 @@ import dateMixin from "@/mixins/dateMixin";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
+import queryMixin from "@/mixins/queryMixin";
+
 export default {
   name: "Reference",
   components: { ReferenceLinks, LeafletMap, ReferenceCitation },
@@ -312,29 +318,28 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.prevRoute = from.path;
+      if (!from.name)
+        vm.prevRoute = { name: "searchReference", params: vm.$route.params };
+      else vm.prevRoute = from;
       vm.getReference(vm.id);
     });
   },
   beforeRouteUpdate(to, from, next) {
     this.getReference(to.params.id);
+    this.childReferences = [];
+    this.localities = [];
+    this.prevRoute = { name: from.name, params: from.params };
     next();
   },
   watch: {
     referenceParameters: {
       handler: debounce(function() {
-        this.setURLParameters(
-          this.referenceParameters,
-          this.page,
-          this.paginateBy,
-          this.prevRoute,
-          true
-        );
+        this.$router.push(this.prevRoute).catch(() => {});
       }, 300),
       deep: true
     }
   },
-  mixins: [dateMixin, urlMixin],
+  mixins: [dateMixin, urlMixin, queryMixin],
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
     referenceParameters() {
@@ -387,6 +392,23 @@ export default {
     }
   },
   methods: {
+    ...mapActions("search", ["updateAdvancedSearch"]),
+    handleBack() {
+      if (this.prevRoute) {
+        this.$router.replace(this.prevRoute);
+      } else {
+        this.$router.go(-1);
+      }
+    },
+    handleKeyword(keyword) {
+      this.updateAdvancedSearch({
+        value: keyword,
+        id: "keywords"
+      });
+      this.getReferences();
+      this.getLibraries();
+      this.handleBack();
+    },
     localityURL(id) {
       return `https://geocollections.info/locality/${id}`;
     },

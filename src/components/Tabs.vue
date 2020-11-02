@@ -3,13 +3,13 @@
     <v-tab
       active-class="active"
       link
-      :to="{ path: 'reference', query: this.$route.query }"
+      :to="{ name: 'searchReference', params: this.$route.params }"
       >{{ referenceTabTitle }}</v-tab
     >
     <v-tab
       active-class="active"
       link
-      :to="{ path: 'library', query: this.$route.query }"
+      :to="{ name: 'searchLibrary', params: this.$route.params }"
       >{{ libraryTabTitle }}</v-tab
     >
   </v-tabs>

@@ -3,7 +3,10 @@
   <div v-else>
     <router-link
       class="referenceLink"
-      :to="ref"
+      :to="{
+        name: `reference`,
+        params: { ...this.$route.params, id: this.reference.id }
+      }"
       v-html="citation(getCslJson)"
     />
     <reference-links :item="reference" x-small />
@@ -28,7 +31,7 @@ export default {
   mixins: [citationMixin],
   computed: {
     ref() {
-      return `/reference/${this.reference.id}`;
+      return { path: this.reference.id, params: this.$route.params };
     },
     getCslJson() {
       return {

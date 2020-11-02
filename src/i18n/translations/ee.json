@@ -60,7 +60,9 @@
     "map": "Kaart",
     "misc": "Muu",
     "searchCommand": "Otsi",
-    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis"
+    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
+    "yes": "jah",
+    "libraryCreatedBy": "Kogumiku koostas(id)"
   },
   "reference": {
     "id": "ID",

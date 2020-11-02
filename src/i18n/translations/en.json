@@ -56,12 +56,14 @@
     "loading": "Loading",
     "citationStyle": "Citation style",
     "citation": "Citation",
-    "newest": "Newest additions",
+    "newest": "Latest changes",
     "viewReferences": "Browse",
     "map": "Map",
     "misc": "Miscellaneous",
     "searchCommand": "Search",
-    "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia"
+    "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia",
+    "yes": "yes",
+    "libraryCreatedBy": "Created by"
   },
   "reference": {
     "id": "ID",

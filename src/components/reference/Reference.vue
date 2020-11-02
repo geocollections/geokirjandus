@@ -120,6 +120,19 @@
                     }}</a>
                   </td>
                 </tr>
+                <tr v-if="reference.is_estonian_reference">
+                  <th>{{ $t("reference.isEstonianReference") }}</th>
+                  <td>
+                    {{ $t("common.yes") }}
+                  </td>
+                </tr>
+
+                <tr v-if="reference.is_estonian_author">
+                  <th>{{ $t("reference.isEstonianAuthor") }}</th>
+                  <td>
+                    {{ $t("common.yes") }}
+                  </td>
+                </tr>
               </tbody>
             </template>
           </v-simple-table>

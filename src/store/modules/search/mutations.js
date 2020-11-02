@@ -54,7 +54,6 @@ const mutations = {
         state.advancedSearch.byIds[payload.id].value = payload.value;
         break;
       case "checkbox":
-        console.log(payload);
         state.advancedSearch.byIds[payload.id].value = payload.value;
         break;
       default: {

@@ -5,67 +5,92 @@ import Landing from "@/views/Landing";
 import Reference from "@/components/reference/Reference";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import LibraryViewer from "@/components/library/LibraryViewer";
+import store from "@/store";
+import App from "@/App";
+import i18n from "../i18n";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    component: Landing
+    name: "root",
+    beforeEnter(to, from, next) {
+      next(store.state.settings.language);
+    }
   },
   {
-    path: "/reference",
-    component: Main,
-    meta: {
-      object: "reference"
+    path: "/:lang",
+    component: App,
+    beforeEnter(to, from, next) {
+      const languages = ["ee", "en"];
+      let lang = to.params.lang;
+      if (languages.includes(lang)) {
+        if (store.state.settings.language !== lang) {
+          i18n.locale = lang;
+          store.dispatch("settings/updateLanguage", lang);
+        }
+        return next();
+      }
+      return next({ path: store.state.settings.language });
     },
     children: [
+      { path: "", name: "landing", component: Landing },
       {
-        path: "",
-        name: "search",
-        component: ReferenceViewer,
+        path: "reference",
+        component: Main,
         meta: {
-          table: "reference",
-          heading: "editReference.heading",
           object: "reference"
-        }
+        },
+        children: [
+          {
+            path: "",
+            name: "searchReference",
+            component: ReferenceViewer,
+            meta: {
+              table: "reference",
+              heading: "editReference.heading",
+              object: "reference"
+            }
+          },
+          {
+            path: ":id",
+            name: "reference",
+            component: Reference,
+            props: true,
+            meta: {
+              table: "reference",
+              heading: "editReference.heading",
+              object: "reference"
+            }
+          }
+        ]
       },
       {
-        path: ":id",
-        name: "reference",
-        component: Reference,
-        props: true,
-        meta: {
-          table: "reference",
-          heading: "editReference.heading",
-          object: "reference"
-        }
-      }
-    ]
-  },
-  {
-    path: "/library",
-    component: Main,
-    children: [
-      {
-        path: "",
-        name: "searchLib",
-        component: LibraryViewer,
-        meta: {
-          table: "library",
-          heading: "editReference.heading",
-          object: "library"
-        }
-      },
-      {
-        path: ":id(\\d+)",
-        name: "library",
-        component: () => import("../components/library/Library.vue"),
-        meta: {
-          table: "library",
-          heading: "editReference.heading",
-          object: "library"
-        }
+        path: "library",
+        component: Main,
+        children: [
+          {
+            path: "",
+            name: "searchLibrary",
+            component: LibraryViewer,
+            meta: {
+              table: "library",
+              heading: "editReference.heading",
+              object: "library"
+            }
+          },
+          {
+            path: ":id(\\d+)",
+            name: "library",
+            component: () => import("../components/library/Library.vue"),
+            meta: {
+              table: "library",
+              heading: "editReference.heading",
+              object: "library"
+            }
+          }
+        ]
       }
     ]
   },

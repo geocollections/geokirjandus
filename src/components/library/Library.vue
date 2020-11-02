@@ -6,12 +6,7 @@
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">
-          <v-btn
-            large
-            icon
-            @click="$router.replace(prevRoute)"
-            aria-label="back"
-          >
+          <v-btn large icon @click="handleBack()" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
@@ -79,18 +74,11 @@ import { mapActions } from "vuex";
 import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
 import LibraryCitation from "@/components/library/LibraryCitation";
+import queryMixin from "@/mixins/queryMixin";
 
 export default {
   name: "Library",
   components: { LibraryCitation, ReferenceViewer },
-  props: {
-    search: {
-      type: Object
-    },
-    advancedSearch: {
-      type: Object
-    }
-  },
   data() {
     return {
       id: this.$route.params.id,
@@ -100,7 +88,7 @@ export default {
       prevRoute: null
     };
   },
-  mixins: [dateMixin, citationMixin],
+  mixins: [dateMixin, citationMixin, queryMixin],
   computed: {
     getTitle() {
       if (this.$i18n.locale === "ee") {
@@ -112,15 +100,16 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.prevRoute = from.path;
-
-      if (from.name === "searchLib") vm.resetSearch();
+      if (!from.name)
+        vm.prevRoute = { name: "searchLibrary", params: vm.$route.params };
+      if (from.name === "searchLibrary") vm.resetSearch();
+      vm.getReferences();
     });
   },
   created() {
     // this.resetSearch();
     this.resetPage();
-    this.setSearchFromURL(this.$route.query);
+    // this.setSearchFromURL(this.$route.query);
     this.getLibrary().then(res => {
       this.library = res.results[0];
 
@@ -132,6 +121,13 @@ export default {
 
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
+    handleBack() {
+      if (this.prevRoute) {
+        this.$router.replace(this.prevRoute);
+      } else {
+        this.$router.go(-1);
+      }
+    },
     getDoiUrl(doi) {
       return `https://doi.org/${doi}`;
     },

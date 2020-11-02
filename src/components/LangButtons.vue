@@ -2,7 +2,14 @@
   <div class="lang-buttons">
     <v-menu transition="slide-y-transition" offset-y bottom right>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn aria-label="select language" class="ml-auto d-block" icon dark v-bind="attrs" v-on="on">
+        <v-btn
+          aria-label="select language"
+          class="ml-auto d-block"
+          icon
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
           <span :class="classObject" style="height: 28px ; width: 28px" />
         </v-btn>
       </template>
@@ -55,11 +62,16 @@ export default {
     classObject() {
       return {
         flag: true,
-        "flag-en": this.$i18n.locale === "en",
-        "flag-ee": this.$i18n.locale === "ee",
+        "flag-en": this.language === "en",
+        "flag-ee": this.language === "ee",
         "flag-squared": true,
         "flag-circle": true
       };
+    }
+  },
+  watch: {
+    language() {
+      this.$router.replace({ params: { lang: this.language } }).catch(() => {});
     }
   },
   methods: {

@@ -11,21 +11,16 @@
           </v-btn>
         </v-col>
         <div class="col" style="word-break: normal">
-          {{ `${library.author}, ${library.year}: ${getTitle}` }}
+          {{ getTitle }}
         </div>
       </v-card-title>
-      <v-card-text class="py-0">
-        <v-row>
-          <v-col cols="auto" class="pt-2">
-            <b>{{ $t("common.libraryCreated") }}:</b>
-            {{ formatDate(library.date_added) }}
-          </v-col>
-          <v-col cols="auto" class="pt-2">
-            <b>{{ $t("common.libraryChanged") }}:</b>
-            {{ formatDate(library.date_changed) }}
-          </v-col>
-        </v-row>
+      <v-card-text class="pt-4">
+        <h2>
+          {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+          {{ library.year }}
+        </h2>
       </v-card-text>
+
       <v-card-text>
         <h2 class="pb-3">
           <b>{{ $t("common.citation") }}</b>
@@ -51,6 +46,18 @@
         </h2>
       </v-card-text>
       <reference-viewer />
+      <v-card-text class="py-0">
+        <v-row>
+          <v-col cols="auto" class="pt-2">
+            <b>{{ $t("common.libraryCreated") }}:</b>
+            {{ formatDate(library.date_added) }}
+          </v-col>
+          <v-col cols="auto" class="pt-2">
+            <b>{{ $t("common.libraryChanged") }}:</b>
+            {{ formatDate(library.date_changed) }}
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
     <v-card v-if="error">
       <v-card-actions style="background-color: #F6EDDF">

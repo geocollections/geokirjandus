@@ -272,7 +272,6 @@ export default {
           (to.name === "searchReference" || to.name === "searchLibrary") &&
           from === undefined
         ) {
-          this.resetSearch();
           this.infoAlert = null;
           this.getReferences();
           this.getLibraries();

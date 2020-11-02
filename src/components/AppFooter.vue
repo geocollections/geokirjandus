@@ -1,6 +1,13 @@
 <template>
   <v-footer color="#E0C190" class="d-flex flex-column py-4" style="width: 100%">
     <div class="text-center">
+      <a href="https://kik.ee" target="_blank" rel="noopener"
+        ><img
+          src="https://files.geocollections.info/img/kik_valge.png"
+          alt="KIK"
+          title="KIK"
+          style="height: 55px; padding: 5px 10px;"
+      /></a>
       <a href="https://natarc.ut.ee" target="_blank" rel="noopener"
         ><img
           src="https://files.geocollections.info/img/natarclogovalge1.png"

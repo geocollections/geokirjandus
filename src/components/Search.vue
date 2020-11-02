@@ -3,15 +3,24 @@
     <v-list class="mt-0 pb-10 pa-0">
       <v-list-item v-if="infoAlert" class="py-2">
         <v-alert
-          class="ma-0"
-          width="100%"
           dense
+          v-if="infoAlert"
+          prominent
           colored-border
           border="right"
           type="info"
           color="#F1CDA7"
         >
-          {{ $t(infoAlert) }}
+          <v-row align="center">
+            <v-col class="grow">
+              {{ $t(infoAlert) }}
+            </v-col>
+            <v-col class="shrink">
+              <v-btn x-small icon @click="handleExitLibrary()"
+                ><v-icon>fa fa-times</v-icon></v-btn
+              >
+            </v-col>
+          </v-row>
         </v-alert>
       </v-list-item>
 
@@ -337,6 +346,12 @@ export default {
   mixins: [urlMixin, queryMixin],
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
+    handleExitLibrary() {
+      this.resetSearch();
+      this.getReferences();
+      this.getLibraries();
+      this.$router.replace({ name: "searchReference" });
+    },
     updateCheckbox(event, id) {
       this.$emit("update:advancedSearch", {
         value: event,

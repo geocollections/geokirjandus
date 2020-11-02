@@ -29,7 +29,7 @@
   },
   "common": {
     "search": "Search",
-    "advancedSearch": "Filter",
+    "advancedSearch": "Additional filters",
     "found": "Found",
     "records": "records",
     "listView": "List",

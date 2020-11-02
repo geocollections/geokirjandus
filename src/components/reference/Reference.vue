@@ -407,6 +407,8 @@ export default {
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
     handleBack() {
+      this.getReferences();
+      this.getLibraries();
       if (this.prevRoute) {
         this.$router.replace(this.prevRoute);
       } else {

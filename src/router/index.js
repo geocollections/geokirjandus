@@ -7,7 +7,7 @@ import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import LibraryViewer from "@/components/library/LibraryViewer";
 
 import App from "@/App";
-
+import store from "@/store";
 Vue.use(VueRouter);
 
 const routes = [
@@ -73,6 +73,14 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: "/query",
+    name: "query",
+    beforeEnter: (to, from, next) => {
+      store.dispatch("search/setSearchFromURL", to.query);
+      next({ name: "searchReference" });
+    }
   },
   {
     path: "*",

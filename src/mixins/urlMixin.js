@@ -1,12 +1,6 @@
 const urlMixin = {
   methods: {
-    setURLParameters(
-      parameters,
-      page,
-      paginateBy,
-      route = "",
-      replace = false
-    ) {
+    setURLParameters(parameters, route = "") {
       let q = Object.fromEntries(
         Object.entries(parameters)
           .filter(([k, v]) => {
@@ -19,9 +13,7 @@ const urlMixin = {
                     : v.value;
                 }
                 case "checkbox": {
-                  return k === "isEstonianAuthor" || k === "isEstonianReference"
-                    ? false
-                    : v.value;
+                  return v.value;
                 }
                 case "select": {
                   return v.value === null || v.value.length < 1
@@ -55,18 +47,10 @@ const urlMixin = {
             }
           })
       );
-      if (page > 1) {
-        q.page = page;
-      }
-      if (paginateBy !== 50) {
-        q.paginateBy = paginateBy;
-      }
 
-      if (replace) {
-        this.$router.replace({ query: q, path: route }).catch(() => {});
-      } else {
-        this.$router.push({ query: q, path: route }).catch(() => {});
-      }
+      // TODO: Add language to query params
+
+      return q;
     }
   }
 };

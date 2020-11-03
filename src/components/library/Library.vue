@@ -127,7 +127,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
+    ...mapActions("search", ["resetSearch", "resetPage"]),
     handleBack() {
       if (this.prevRoute) {
         this.$router.replace(this.prevRoute);

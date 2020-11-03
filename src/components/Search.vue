@@ -178,12 +178,14 @@
           small
           tile
           style="border-radius: 4px"
-          class="deleteSearch ml-auto mr-3"
+          class="deleteSearch ml-auto"
           @click="$emit('reset:parameters')"
           dark
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
+        <share-button />
+
         <v-btn color="primary">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
@@ -217,10 +219,11 @@ import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
+import ShareButton from "@/components/ShareButton";
 
 export default {
   name: "Search",
-  components: { CitationSelect },
+  components: { ShareButton, CitationSelect },
   props: {
     colSize: {
       type: Number,
@@ -279,9 +282,6 @@ export default {
       immediate: true
     }
   },
-  // created() {
-  //   this.resetSearch();
-  // },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
     ...mapState("references", ["facet", "result", "count"]),
@@ -307,15 +307,22 @@ export default {
     getReferenceTypes() {
       let types = [];
 
-      if (!this.facet.facet_fields) return types;
+      if (!this.facet.facet_fields && !this.facet.facet_pivot) return types;
 
       for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
+        // TODO: Query from pivot only once. Remove the need for using find function.
         types.push({
           value: this.facet.facet_fields.type[i],
           text: `${
             this.$i18n.locale === "ee"
-              ? this.facet.facet_pivot["type,reference_type,reference_type_en"].find(o => o.value === this.facet.facet_fields.type[i]).pivot[0].value
-              : this.facet.facet_pivot["type,reference_type,reference_type_en"].find(o => o.value === this.facet.facet_fields.type[i]).pivot[0].pivot[0].value
+              ? this.facet.facet_pivot[
+                  "type,reference_type,reference_type_en"
+                ].find(o => o.value === this.facet.facet_fields.type[i])
+                  .pivot[0].value
+              : this.facet.facet_pivot[
+                  "type,reference_type,reference_type_en"
+                ].find(o => o.value === this.facet.facet_fields.type[i])
+                  .pivot[0].pivot[0].value
           } [${this.facet.facet_fields.type[i + 1]}]`
         });
       }
@@ -334,7 +341,7 @@ export default {
   }),
   mixins: [urlMixin, queryMixin],
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
+    ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {
       this.resetSearch();
       this.getReferences();

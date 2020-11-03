@@ -3,7 +3,8 @@
   "subtitle": "Estonian geological literature register",
   "pagination": "{num} results",
   "messages": {
-    "langChange": "Language changed"
+    "langChange": "Language changed",
+    "copyURL": "Copied URL"
   },
   "tooltip": {
     "map": "Shows localities with coordinates. Full list of localities is available below."
@@ -24,7 +25,7 @@
   "viewer": {
     "title": {
       "reference_html": "Found <b>{num}</b> references",
-      "library_html":"Found <b>{num}</b> libraries"
+      "library_html": "Found <b>{num}</b> libraries"
     }
   },
   "common": {

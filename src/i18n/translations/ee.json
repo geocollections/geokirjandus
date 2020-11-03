@@ -3,7 +3,8 @@
   "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
   "messages": {
-    "langChange": "Keel vahetatud"
+    "langChange": "Keel vahetatud",
+    "copyURL": "Lehekülg kopeeritud"
   },
   "tooltip": {
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."

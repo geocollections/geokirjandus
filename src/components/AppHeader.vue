@@ -57,9 +57,7 @@ export default {
   methods: {
     home() {
       this.$emit("home");
-      this.$router
-        .replace({ name: "landing", params: this.$route.params })
-        .catch(() => {});
+      this.$router.replace({ name: "landing" }).catch(() => {});
     }
   }
 };

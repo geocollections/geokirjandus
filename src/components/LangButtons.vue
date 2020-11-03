@@ -69,11 +69,6 @@ export default {
       };
     }
   },
-  watch: {
-    language() {
-      this.$router.replace({ params: { lang: this.language } }).catch(() => {});
-    }
-  },
   methods: {
     ...mapActions("settings", ["updateLanguage"]),
     changeLang(newLang) {

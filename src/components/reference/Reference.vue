@@ -198,7 +198,7 @@
                   replace
                   :to="{
                     name: 'reference',
-                    params: { ...$route.params, id: childReference.id }
+                    params: { id: childReference.id }
                   }"
                 >
                   {{ childReference.author }}
@@ -331,8 +331,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (!from.name)
-        vm.prevRoute = { name: "searchReference", params: vm.$route.params };
+      if (!from.name) vm.prevRoute = { name: "searchReference" };
       else vm.prevRoute = from;
       vm.getReference(vm.id);
     });

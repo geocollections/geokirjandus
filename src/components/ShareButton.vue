@@ -4,6 +4,7 @@
       <v-btn
         icon
         dark
+        small
         style="border-radius: 4px; background-color: #E58124"
         class="mx-2"
         v-bind="attrs"

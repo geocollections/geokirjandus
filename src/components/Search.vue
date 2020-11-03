@@ -178,7 +178,7 @@
           small
           tile
           style="border-radius: 4px"
-          class="deleteSearch ml-auto"
+          class="deleteSearch"
           @click="$emit('reset:parameters')"
           dark
         >
@@ -186,7 +186,7 @@
         </v-btn>
         <share-button />
 
-        <v-btn color="primary">
+        <v-btn color="primary" class="ml-auto">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>

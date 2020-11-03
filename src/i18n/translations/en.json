@@ -4,7 +4,8 @@
   "pagination": "{num} results",
   "messages": {
     "langChange": "Language changed",
-    "copyURL": "Copied URL"
+    "copyURL": "Copied URL",
+    "copyCitation": "Copied citation"
   },
   "tooltip": {
     "map": "Shows localities with coordinates. Full list of localities is available below."

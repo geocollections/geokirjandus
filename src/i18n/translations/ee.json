@@ -4,7 +4,8 @@
   "pagination": "{num} kaupa",
   "messages": {
     "langChange": "Keel vahetatud",
-    "copyURL": "Lehekülg kopeeritud"
+    "copyURL": "Lehekülg kopeeritud",
+    "copyCitation": "Viide kopeeritud"
   },
   "tooltip": {
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."

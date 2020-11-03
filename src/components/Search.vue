@@ -3,15 +3,24 @@
     <v-list class="mt-0 pb-10 pa-0">
       <v-list-item v-if="infoAlert" class="py-2">
         <v-alert
-          class="ma-0"
-          width="100%"
           dense
+          v-if="infoAlert"
+          prominent
           colored-border
           border="right"
           type="info"
           color="#F1CDA7"
         >
-          {{ $t(infoAlert) }}
+          <v-row align="center">
+            <v-col class="grow">
+              {{ $t(infoAlert) }}
+            </v-col>
+            <v-col class="shrink">
+              <v-btn x-small icon @click="handleExitLibrary()"
+                ><v-icon>fa fa-times</v-icon></v-btn
+              >
+            </v-col>
+          </v-row>
         </v-alert>
       </v-list-item>
 
@@ -169,13 +178,15 @@
           small
           tile
           style="border-radius: 4px"
-          class="deleteSearch ml-auto mr-3"
+          class="deleteSearch"
           @click="$emit('reset:parameters')"
           dark
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
-        <v-btn color="primary">
+        <share-button />
+
+        <v-btn color="primary" class="ml-auto">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>
@@ -208,10 +219,11 @@ import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
+import ShareButton from "@/components/ShareButton";
 
 export default {
   name: "Search",
-  components: { CitationSelect },
+  components: { ShareButton, CitationSelect },
   props: {
     colSize: {
       type: Number,
@@ -230,16 +242,6 @@ export default {
         this.getLibraries(this.libraryPage);
       }, 300),
       deep: true
-    },
-    count: {
-      handler() {
-        if (this.count === 1) {
-          this.$router.push({
-            name: "reference",
-            params: { ...this.$route.params, id: this.result[0].id }
-          });
-        }
-      }
     },
     $route: {
       handler(to, from) {
@@ -263,7 +265,6 @@ export default {
           (to.name === "searchReference" || to.name === "searchLibrary") &&
           from === undefined
         ) {
-          this.resetSearch();
           this.infoAlert = null;
           this.getReferences();
           this.getLibraries();
@@ -281,9 +282,6 @@ export default {
       immediate: true
     }
   },
-  // created() {
-  //   this.resetSearch();
-  // },
   computed: {
     ...mapState("search", ["lookUpTypes"]),
     ...mapState("references", ["facet", "result", "count"]),
@@ -309,16 +307,23 @@ export default {
     getReferenceTypes() {
       let types = [];
 
-      if (!this.facet.facet_fields) return types;
+      if (!this.facet.facet_fields && !this.facet.facet_pivot) return types;
 
       for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
+        // TODO: Query from pivot only once. Remove the need for using find function.
         types.push({
           value: this.facet.facet_fields.type[i],
           text: `${
             this.$i18n.locale === "ee"
-              ? this.facet.facet_fields.reference_type[i]
-              : this.facet.facet_fields.reference_type_en[i]
-          } [${this.facet.facet_fields.reference_type[i + 1]}]`
+              ? this.facet.facet_pivot[
+                  "type,reference_type,reference_type_en"
+                ].find(o => o.value === this.facet.facet_fields.type[i])
+                  .pivot[0].value
+              : this.facet.facet_pivot[
+                  "type,reference_type,reference_type_en"
+                ].find(o => o.value === this.facet.facet_fields.type[i])
+                  .pivot[0].pivot[0].value
+          } [${this.facet.facet_fields.type[i + 1]}]`
         });
       }
 
@@ -336,7 +341,13 @@ export default {
   }),
   mixins: [urlMixin, queryMixin],
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
+    ...mapActions("search", ["resetSearch", "resetPage"]),
+    handleExitLibrary() {
+      this.resetSearch();
+      this.getReferences();
+      this.getLibraries();
+      this.$router.replace({ name: "searchReference" });
+    },
     updateCheckbox(event, id) {
       this.$emit("update:advancedSearch", {
         value: event,

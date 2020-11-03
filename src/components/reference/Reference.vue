@@ -18,16 +18,34 @@
         <reference-links :item="reference" />
       </v-card-actions>
       <v-card-text>
-        <h3 class="pb-3">{{ $t("common.citation") }}</h3>
+        <div class="d-flex pb-3">
+          <h3 class="align-self-center">
+            <b>{{ $t("common.citation") }}</b>
+          </h3>
+          <!--
+            TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
+            TODO: Citation text style is not copied right now (bold, italic)
+          -->
+          <copy-button
+            :text="citation(getCslJson, null, null, 'string')"
+            :message="$t('messages.copyCitation')"
+          />
+        </div>
         <v-card flat outlined>
           <div class="pa-4">
-            <reference-citation :reference="reference" :only-text="true" />
+            <reference-citation
+              ref="textToCopy"
+              :reference="reference"
+              :only-text="true"
+            />
           </div>
         </v-card>
       </v-card-text>
       <v-card-text class=" row ma-0">
         <div class="col-12 col-md pa-0">
-          <h3 class="pb-3">{{ $t("common.generalInfo") }}</h3>
+          <h3 class="pb-3">
+            <b>{{ $t("common.generalInfo") }}</b>
+          </h3>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
@@ -120,6 +138,19 @@
                     }}</a>
                   </td>
                 </tr>
+                <tr v-if="reference.is_estonian_reference">
+                  <th>{{ $t("reference.isEstonianReference") }}</th>
+                  <td>
+                    {{ $t("common.yes") }}
+                  </td>
+                </tr>
+
+                <tr v-if="reference.is_estonian_author">
+                  <th>{{ $t("reference.isEstonianAuthor") }}</th>
+                  <td>
+                    {{ $t("common.yes") }}
+                  </td>
+                </tr>
               </tbody>
             </template>
           </v-simple-table>
@@ -129,7 +160,9 @@
           v-if="localities.length > 0"
         >
           <span class="d-flex">
-            <h3 class="pb-3">{{ $t("common.map") }}</h3>
+            <h3 class="pb-3">
+              <b>{{ $t("common.map") }}</b>
+            </h3>
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
@@ -149,15 +182,21 @@
         </div>
       </v-card-text>
       <v-card-text v-if="reference.abstract">
-        <h3 class="pb-3">{{ $t("reference.abstract") }}</h3>
+        <h3 class="pb-3">
+          <b>{{ $t("reference.abstract") }}</b>
+        </h3>
         <div v-html="reference.abstract"></div>
       </v-card-text>
       <v-card-text v-if="reference.remarks">
-        <h3 class="pb-3">{{ $t("reference.remarks") }}</h3>
+        <h3 class="pb-3">
+          <b>{{ $t("reference.remarks") }}</b>
+        </h3>
         <div v-html="reference.remarks"></div>
       </v-card-text>
       <v-card-text v-if="reference.keywords">
-        <h3 class="pb-3">{{ $t("reference.keywords") }}</h3>
+        <h3 class="pb-3">
+          <b>{{ $t("reference.keywords") }}</b>
+        </h3>
 
         <span v-for="(keyword, index) in parseKeywords" :key="index">
           <!--  FIXME: Does not work with keywords that contain spaces  -->
@@ -173,7 +212,9 @@
         </span>
       </v-card-text>
       <v-card-text v-if="childReferences">
-        <h3 class="pb-3">{{ $t("reference.contains") }}</h3>
+        <h3 class="pb-3">
+          <b>{{ $t("reference.contains") }}</b>
+        </h3>
         <v-simple-table dense>
           <tbody>
             <tr
@@ -185,7 +226,7 @@
                   replace
                   :to="{
                     name: 'reference',
-                    params: { ...$route.params, id: childReference.id }
+                    params: { id: childReference.id }
                   }"
                 >
                   {{ childReference.author }}
@@ -202,7 +243,9 @@
         class="row ma-0"
       >
         <div v-if="reference.localities" class="col-12 col-md-6 pa-0">
-          <h3 class="pb-3">{{ $t("reference.localities") }}</h3>
+          <h3 class="pb-3">
+            <b>{{ $t("reference.localities") }}</b>
+          </h3>
 
           <ul>
             <li v-for="locality in parseLocalities" :key="locality.id">
@@ -222,7 +265,9 @@
         </div>
       </v-card-text>
       <v-card-text v-if="libraries.length > 0">
-        <h3 class="pb-3">{{ $t("reference.libraries") }}</h3>
+        <h3 class="pb-3">
+          <b>{{ $t("reference.libraries") }}</b>
+        </h3>
         <span class="py-3" v-for="(library, index) in libraries" :key="index">
           <v-chip
             outlined
@@ -238,7 +283,9 @@
         </span>
       </v-card-text>
       <v-card-text>
-        <h3 class="pb-3">{{ $t("common.misc") }}</h3>
+        <h3 class="pb-3">
+          <b>{{ $t("common.misc") }}</b>
+        </h3>
         <v-simple-table>
           <template v-slot:default>
             <tbody>
@@ -297,10 +344,12 @@ import { mapState, mapActions } from "vuex";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
+import CopyButton from "@/components/CopyButton";
+import citationMixin from "@/mixins/citationMixin";
 
 export default {
   name: "Reference",
-  components: { ReferenceLinks, LeafletMap, ReferenceCitation },
+  components: { CopyButton, ReferenceLinks, LeafletMap, ReferenceCitation },
   props: {
     id: {
       type: String
@@ -318,8 +367,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (!from.name)
-        vm.prevRoute = { name: "searchReference", params: vm.$route.params };
+      if (!from.name) vm.prevRoute = { name: "searchReference" };
       else vm.prevRoute = from;
       vm.getReference(vm.id);
     });
@@ -339,9 +387,30 @@ export default {
       deep: true
     }
   },
-  mixins: [dateMixin, urlMixin, queryMixin],
+  mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
+    getCslJson() {
+      return {
+        id: this.reference.id,
+        type: this.reference.reference_csl_type,
+        title: this.reference.title,
+        DOI: this.reference.doi,
+        author: this.parseNames(this.reference.author),
+        issued: [
+          {
+            "date-parts": [this.reference.year]
+          }
+        ],
+        "container-title": this.reference.book ?? this.reference.journal_name,
+        volume: this.reference.volume,
+        number: this.reference.number,
+        publisher: this.reference.publisher,
+        "publisher-place": this.reference.publisher_place,
+        page: this.reference.pages,
+        URL: this.reference.url
+      };
+    },
     referenceParameters() {
       return { ...this.advancedSearch.byIds, search: this.search };
     },
@@ -393,7 +462,17 @@ export default {
   },
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
+    copyText() {
+      this.$nextTick(() => {
+        console.log(this.$refs);
+      });
+      let textToCopy = this.$refs.textToCopy.$el.innerHTML;
+      console.log(textToCopy);
+      return "asd";
+    },
     handleBack() {
+      this.getReferences();
+      this.getLibraries();
       if (this.prevRoute) {
         this.$router.replace(this.prevRoute);
       } else {

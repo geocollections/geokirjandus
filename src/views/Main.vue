@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     ...mapActions("search", [
-      "setSearchFromURL",
       "updateSearch",
       "updateAdvancedSearch",
       "resetSearch",

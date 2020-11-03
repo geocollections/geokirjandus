@@ -11,9 +11,51 @@
           </v-btn>
         </v-col>
         <div class="col" style="word-break: normal">
-          {{ `${library.author}, ${library.year}: ${getTitle}` }}
+          {{ getTitle }}
         </div>
       </v-card-title>
+      <v-card-text class="pt-4">
+        <h3>
+          {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+          {{ library.year }}
+        </h3>
+      </v-card-text>
+
+      <v-card-text>
+        <div class="d-flex pb-3">
+          <h3 class="align-self-center">
+            <b>{{ $t("common.citation") }}</b>
+          </h3>
+          <!--
+              TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
+              TODO: Citation text style is not copied right now (bold, italic)
+            -->
+          <copy-button
+            :text="citation(getCslJson, append, null, 'string')"
+            :message="$t('messages.copyCitation')"
+          />
+        </div>
+        <v-card flat outlined>
+          <div class="pa-4">
+            <library-citation :library="library" />
+          </div>
+        </v-card>
+      </v-card-text>
+      <v-card-text v-if="library.abstract" class="pt-0">
+        <h3>
+          <b>{{ $t("common.summary") }}</b>
+        </h3>
+      </v-card-text>
+      <v-card-text v-if="library.abstract" class="py-0">
+        <div v-if="$i18n.locale === 'ee'" v-html="library.abstract"></div>
+        <div v-else v-html="library.abstract_en"></div>
+      </v-card-text>
+      <v-card-text class="pb-0">
+        <h3>
+          <b>{{ $t("common.libraryReferences") }}</b>
+        </h3>
+      </v-card-text>
+      <reference-viewer />
       <v-card-text class="py-0">
         <v-row>
           <v-col cols="auto" class="pt-2">
@@ -26,31 +68,6 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-text>
-        <h2 class="pb-3">
-          <b>{{ $t("common.citation") }}</b>
-        </h2>
-        <v-card flat outlined>
-          <div class="pa-4">
-            <library-citation :library="library" />
-          </div>
-        </v-card>
-      </v-card-text>
-      <v-card-text v-if="library.abstract" class="pt-0">
-        <h2>
-          <b>{{ $t("common.summary") }}</b>
-        </h2>
-      </v-card-text>
-      <v-card-text v-if="library.abstract" class="py-0">
-        <div v-if="$i18n.locale === 'ee'" v-html="library.abstract"></div>
-        <div v-else v-html="library.abstract_en"></div>
-      </v-card-text>
-      <v-card-text class="pb-0">
-        <h2>
-          <b>{{ $t("common.libraryReferences") }}</b>
-        </h2>
-      </v-card-text>
-      <reference-viewer />
     </v-card>
     <v-card v-if="error">
       <v-card-actions style="background-color: #F6EDDF">
@@ -75,10 +92,10 @@ import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
 import LibraryCitation from "@/components/library/LibraryCitation";
 import queryMixin from "@/mixins/queryMixin";
-
+import CopyButton from "@/components/CopyButton";
 export default {
   name: "Library",
-  components: { LibraryCitation, ReferenceViewer },
+  components: { LibraryCitation, ReferenceViewer, CopyButton },
   data() {
     return {
       id: this.$route.params.id,
@@ -90,12 +107,30 @@ export default {
   },
   mixins: [dateMixin, citationMixin, queryMixin],
   computed: {
+    append() {
+      return ` ${this.$t("common.visited")}: ${this.formatDate(Date.now())}`;
+    },
     getTitle() {
       if (this.$i18n.locale === "ee") {
         return this.library.title;
       } else {
         return this.library.title_en;
       }
+    },
+    getCslJson() {
+      return {
+        id: this.library.id,
+        type: "webpage",
+        author: this.parseNames(this.library.author),
+        issued: [
+          {
+            "date-parts": [this.library.year]
+          }
+        ],
+        publisher: this.$t("common.libraryPublisher"),
+        title: this.library.title,
+        URL: `https://geoloogia.info/library/${this.library.id}`
+      };
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -120,7 +155,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage", "setSearchFromURL"]),
+    ...mapActions("search", ["resetSearch", "resetPage"]),
     handleBack() {
       if (this.prevRoute) {
         this.$router.replace(this.prevRoute);

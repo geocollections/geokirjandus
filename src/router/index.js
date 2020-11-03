@@ -5,35 +5,15 @@ import Landing from "@/views/Landing";
 import Reference from "@/components/reference/Reference";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import LibraryViewer from "@/components/library/LibraryViewer";
-import store from "@/store";
-import App from "@/App";
-import i18n from "../i18n";
 
+import App from "@/App";
+import store from "@/store";
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "root",
-    beforeEnter(to, from, next) {
-      next(store.state.settings.language);
-    }
-  },
-  {
-    path: "/:lang",
     component: App,
-    beforeEnter(to, from, next) {
-      const languages = ["ee", "en"];
-      let lang = to.params.lang;
-      if (languages.includes(lang)) {
-        if (store.state.settings.language !== lang) {
-          i18n.locale = lang;
-          store.dispatch("settings/updateLanguage", lang);
-        }
-        return next();
-      }
-      return next({ path: store.state.settings.language });
-    },
     children: [
       { path: "", name: "landing", component: Landing },
       {
@@ -93,6 +73,14 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: "/query",
+    name: "query",
+    beforeEnter: (to, from, next) => {
+      store.dispatch("search/setSearchFromURL", to.query);
+      next({ name: "searchReference" });
+    }
   },
   {
     path: "*",

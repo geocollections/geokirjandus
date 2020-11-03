@@ -14,6 +14,7 @@
           :headers="headers"
           title="viewer.title.library_html"
           :export-buttons="false"
+          :helpers="false"
           v-on:update:paginateBy="updatePaginateBy"
           v-on:update:page="updatePage"
           v-on:update:sortBy="updateSortBy"

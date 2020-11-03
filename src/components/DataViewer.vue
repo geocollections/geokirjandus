@@ -57,6 +57,7 @@
       </v-expand-transition>
 
       <view-helper
+        v-if="helpers"
         v-on="$listeners"
         :page="page"
         :paginate-by="paginateBy"
@@ -109,6 +110,7 @@
         </div>
       </div>
       <view-helper
+        v-if="helpers"
         v-on="$listeners"
         :page="page"
         :paginate-by="paginateBy"
@@ -164,6 +166,10 @@ export default {
     },
     title: {
       type: String
+    },
+    helpers: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

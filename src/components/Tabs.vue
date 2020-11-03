@@ -1,17 +1,11 @@
 <template>
   <v-tabs grow background-color="#E5C99F" color="#B76315" ref="tabs">
-    <v-tab
-      active-class="active"
-      link
-      :to="{ name: 'searchReference', params: this.$route.params }"
-      >{{ referenceTabTitle }}</v-tab
-    >
-    <v-tab
-      active-class="active"
-      link
-      :to="{ name: 'searchLibrary', params: this.$route.params }"
-      >{{ libraryTabTitle }}</v-tab
-    >
+    <v-tab active-class="active" link :to="{ name: 'searchReference' }">{{
+      referenceTabTitle
+    }}</v-tab>
+    <v-tab active-class="active" link :to="{ name: 'searchLibrary' }">{{
+      libraryTabTitle
+    }}</v-tab>
   </v-tabs>
 </template>
 

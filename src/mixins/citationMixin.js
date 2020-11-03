@@ -46,9 +46,17 @@ const citationMixin = {
 
       return authors;
     },
-    citation(clsJson, append = null, prepend = null) {
+    citation(clsJson, append = null, prepend = null, format = "html") {
+      if (format === "html") {
+        return Cite(clsJson).format("bibliography", {
+          format: "html",
+          template: this.citationTemplate,
+          lang: "en-US",
+          prepend: prepend,
+          append: append
+        });
+      }
       return Cite(clsJson).format("bibliography", {
-        format: "html",
         template: this.citationTemplate,
         lang: "en-US",
         prepend: prepend,

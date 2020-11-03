@@ -3,7 +3,9 @@
   "subtitle": "Estonian geological literature register",
   "pagination": "{num} results",
   "messages": {
-    "langChange": "Language changed"
+    "langChange": "Language changed",
+    "copyURL": "Copied URL",
+    "copyCitation": "Copied citation"
   },
   "tooltip": {
     "map": "Shows localities with coordinates. Full list of localities is available below."
@@ -24,12 +26,12 @@
   "viewer": {
     "title": {
       "reference_html": "Found <b>{num}</b> references",
-      "library_html":"Found <b>{num}</b> libraries"
+      "library_html": "Found <b>{num}</b> libraries"
     }
   },
   "common": {
     "search": "Search",
-    "advancedSearch": "Filter",
+    "advancedSearch": "Additional filters",
     "found": "Found",
     "records": "records",
     "listView": "List",
@@ -56,12 +58,14 @@
     "loading": "Loading",
     "citationStyle": "Citation style",
     "citation": "Citation",
-    "newest": "Newest additions",
+    "newest": "Latest changes",
     "viewReferences": "Browse",
     "map": "Map",
     "misc": "Miscellaneous",
     "searchCommand": "Search",
-    "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia"
+    "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia",
+    "yes": "yes",
+    "libraryCreatedBy": "Created by"
   },
   "reference": {
     "id": "ID",

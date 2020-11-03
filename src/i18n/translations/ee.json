@@ -3,7 +3,9 @@
   "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
   "messages": {
-    "langChange": "Keel vahetatud"
+    "langChange": "Keel vahetatud",
+    "copyURL": "Lehekülg kopeeritud",
+    "copyCitation": "Viide kopeeritud"
   },
   "tooltip": {
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
@@ -60,7 +62,9 @@
     "map": "Kaart",
     "misc": "Muu",
     "searchCommand": "Otsi",
-    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis"
+    "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
+    "yes": "jah",
+    "libraryCreatedBy": "Kogumiku koostas(id)"
   },
   "reference": {
     "id": "ID",

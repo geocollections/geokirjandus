@@ -2,7 +2,6 @@
   <span>
     <v-chip
       v-if="item.doi"
-      link
       outlined
       :x-small="xSmall"
       :small="small"
@@ -10,14 +9,13 @@
       color="blue darken-4"
       rel="noopener"
       class="d-print-none ml-1 my-1 link"
-      :href="getDoiUrl(item.doi)"
+      @click.stop="openDOI(item.doi)"
     >
       <v-icon :x-small="xSmall" small class=" pr-1">ai ai-doi</v-icon>
       <b>DOI</b>
     </v-chip>
     <v-chip
       color="red darken-4"
-      link
       outlined
       :x-small="xSmall"
       :small="small"
@@ -25,20 +23,19 @@
       target="_blank"
       rel="noopener"
       class="d-print-none ml-1 my-1 link"
-      :href="getFileUrl(item.attachment__filename)"
+      @click.stop="openPdf(item.attachment__filename)"
     >
       <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
       <b>PDF</b>
     </v-chip>
     <v-chip
       v-if="item.url && getUrl(item.url)"
-      link
       outlined
       :x-small="xSmall"
       :small="small"
       color="green darken-4"
       class="d-print-none ml-1 my-1 link"
-      :href="getUrl(item.url)"
+      @click.stop="openUrl(item.url)"
       target="_blank"
       rel="noopener"
     >
@@ -48,14 +45,15 @@
       <b>URL</b>
     </v-chip>
     <v-chip
-      v-if="!item.attachment_filename && item.parent_reference__attachment__filename"
-      link
+      v-if="
+        !item.attachment_filename && item.parent_reference__attachment__filename
+      "
       outlined
       :x-small="xSmall"
       :small="small"
       color="gray"
       class="d-print-none ml-1 my-1 link"
-      :href="getFileUrl(item.parent_reference__attachment__filename)"
+      @click.stop="openPdf(item.parent_reference__attachment__filename)"
       target="_blank"
       rel="noopener"
     >
@@ -64,13 +62,12 @@
     </v-chip>
     <v-chip
       v-if="!item.url && item.parent_reference__url"
-      link
       outlined
       :x-small="xSmall"
       :small="small"
       color="gray"
       class="d-print-none ml-1 my-1 link"
-      :href="getUrl(item.parent_reference__url)"
+      @click.stop="openUrl(item.parent_reference__url)"
       target="_blank"
       rel="noopener"
     >
@@ -124,13 +121,15 @@ export default {
           uuid.substring(2, 4) +
           "/" +
           uuid,
-        "",
-        "width=1000,height=900"
+        "_blank"
       );
+    },
+    openUrl(url) {
+      window.open(url, "_blank");
     },
     openDOI(doi) {
       // TODO: Check for correct doi address
-      window.open("https://doi.org/" + doi, "", "width=1000,height=900");
+      window.open("https://doi.org/" + doi, "_blank");
     }
   }
 };

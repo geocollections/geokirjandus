@@ -97,6 +97,7 @@
             v-on:update:sort-by="$emit('update:sortBy', $event)"
             v-on:update:sort-desc="$emit('update:sortDesc', $event)"
             multi-sort
+            @click:row="$emit('open', $event)"
             :header-props="headerProps"
             class=" data-viewer-table"
           >

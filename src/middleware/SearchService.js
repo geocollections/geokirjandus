@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
 const FACET_QUERY_REFERENCE =
-  "facet=on&facet.field={!ex=type}type&facet.field={!ex=type}reference_type&facet.field={!ex=type}reference_type_en";
+  "facet.field={!ex=dt}type&facet=on&facet.pivot={!ex=type}type,reference_type,reference_type_en";
 
 class SearchService {
   static async search(parameters, table) {
@@ -85,6 +85,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
     })
     .reduce((prev, [k, v]) => {
       const filterQueryParam = v.fields.reduce((prev, curr, idx) => {
+
         function buildEncodedParameterStr(searchParameter, fieldId) {
           function buildTextParameter(encodedValue, fieldId) {
             switch (searchParameter.lookUpType) {
@@ -122,7 +123,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
               return `${fieldId}:${encodedValue}`;
             }
             case "select": {
-              return `{!tag=${fieldId}}${fieldId}:(${encodeURIComponent(
+              return `${fieldId}:(${encodeURIComponent(
                 searchParameter.value.join(" ")
               )})`;
             }
@@ -143,9 +144,14 @@ function buildQueryStr(queryObject, filterQueryObject) {
         else return `${prev} OR ${buildEncodedParameterStr(v, curr) ?? ""}`;
       }, "");
 
+      let tag = "{!tag=type}";
+      if (v.id === "referenceType") {
+        tag = "{!tag=type,dt}"
+      }
+
       if (filterQueryParam === null) return `${prev}`;
-      if (prev.length > 0) return `${prev}&fq=${filterQueryParam}`;
-      return `${prev}fq=${filterQueryParam}`;
+      if (prev.length > 0) return `${prev}&fq=${tag}${filterQueryParam}`;
+      return `${prev}fq=${tag}${filterQueryParam}`;
     }, "");
   return filterQueryStr.length > 0
     ? encodeURIComponent(`${queryStr}&${filterQueryStr}`)

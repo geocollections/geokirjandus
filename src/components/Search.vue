@@ -324,9 +324,9 @@ export default {
           value: this.facet.facet_fields.type[i],
           text: `${
             this.$i18n.locale === "ee"
-              ? this.facet.facet_fields.reference_type[i]
-              : this.facet.facet_fields.reference_type_en[i]
-          } [${this.facet.facet_fields.reference_type[i + 1]}]`
+              ? this.facet.facet_pivot["type,reference_type,reference_type_en"].find(o => o.value === this.facet.facet_fields.type[i]).pivot[0].value
+              : this.facet.facet_pivot["type,reference_type,reference_type_en"].find(o => o.value === this.facet.facet_fields.type[i]).pivot[0].pivot[0].value
+          } [${this.facet.facet_fields.type[i + 1]}]`
         });
       }
 

@@ -74,14 +74,8 @@ const queryMixin = {
       this.isLoading = true;
       fetchReferences(searchObj).then(
         response => {
-          if (response.count === 1) {
-            this.$router.push({
-              name: "reference",
-              params: { id: response.results[0].id }
-            });
-          } else {
-            this.setReferences(response);
-          }
+          this.setReferences(response);
+
           this.isLoading = false;
         },
         () => {

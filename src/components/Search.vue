@@ -240,16 +240,6 @@ export default {
       }, 300),
       deep: true
     },
-    count: {
-      handler() {
-        if (this.count === 1) {
-          this.$router.push({
-            name: "reference",
-            params: { ...this.$route.params, id: this.result[0].id }
-          });
-        }
-      }
-    },
     $route: {
       handler(to, from) {
         if (

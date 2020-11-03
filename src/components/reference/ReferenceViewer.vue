@@ -13,6 +13,7 @@
           :sort-desc="sortDesc"
           :headers="headers"
           title="viewer.title.reference_html"
+          v-on:open="open"
           v-on:update:paginateBy="updatePaginateBy"
           v-on:update:page="updatePage"
           v-on:update:sortBy="updateSortBy"
@@ -24,11 +25,6 @@
           </template>
 
           <!--  TABLE VIEW CUSTOM TEMPLATES  -->
-          <template v-slot:item.actions="{ item }">
-            <v-btn icon @click="$router.push(`/reference/${item.id}`)">
-              <v-icon>fas fa-eye</v-icon>
-            </v-btn>
-          </template>
           <template v-slot:item.bookJournal="{ item }">
             <div v-if="item.book">{{ item.book }}</div>
             <div v-else-if="item.journal__journal_name">
@@ -73,13 +69,6 @@ export default {
   data() {
     return {
       headers: [
-        {
-          text: `${this.$t("common.actions")}`,
-          sortable: false,
-          value: "actions",
-          show: true,
-          fixed: true
-        },
         {
           text: `${this.$t("reference.id")}`,
           value: "id",
@@ -189,7 +178,10 @@ export default {
       "updateSortBy",
       "updateSortDesc",
       "resetPage"
-    ])
+    ]),
+    open(event) {
+      this.$router.push(`/reference/${event.id}`);
+    }
   }
 };
 </script>

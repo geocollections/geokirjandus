@@ -15,6 +15,7 @@
           title="viewer.title.library_html"
           :export-buttons="false"
           :helpers="false"
+          v-on:open="open"
           v-on:update:paginateBy="updatePaginateBy"
           v-on:update:page="updatePage"
           v-on:update:sortBy="updateSortBy"
@@ -26,11 +27,6 @@
           </template>
 
           <!--  TABLE VIEW CUSTOM TEMPLATES  -->
-          <template v-slot:item.actions="{ item }">
-            <v-btn icon @click="$router.push(`/library/${item.id}`)">
-              <v-icon>fas fa-eye</v-icon>
-            </v-btn>
-          </template>
           <template v-slot:item.bookJournal="{ item }">
             <div v-if="item.book">{{ item.book }}</div>
             <div v-else-if="item.journal__journal_name">
@@ -152,7 +148,11 @@ export default {
       "updateSortBy",
       "updateSortDesc",
       "resetPage"
-    ])
+    ]),
+
+    open(event) {
+      this.$router.push(`/library/${event.id}`);
+    }
   }
 };
 </script>

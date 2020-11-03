@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
 const FACET_QUERY_REFERENCE =
-  "facet.field={!ex=dt}type&facet=on&facet.pivot={!ex=type}type,reference_type,reference_type_en";
+  "facet.field={!ex=dt}type&facet=on&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0";
 
 class SearchService {
   static async search(parameters, table) {
@@ -15,7 +15,7 @@ class SearchService {
       );
       let url = `${API_URL}/${table}/`;
 
-      let urlParameters = ["defType=edismax"];
+      let urlParameters = [];
 
       if (table === "reference") urlParameters.push(FACET_QUERY_REFERENCE);
 
@@ -70,7 +70,7 @@ function buildSort(sortBy, sortDesc) {
 function buildQueryStr(queryObject, filterQueryObject) {
   const queryStr =
     queryObject && queryObject.value
-      ? `q=${encodeURIComponent(queryObject.value)}`
+      ? `q={!tag=type}${encodeURIComponent(queryObject.value)}`
       : "q=*";
 
   const filterQueryStr = Object.entries(filterQueryObject)
@@ -85,7 +85,6 @@ function buildQueryStr(queryObject, filterQueryObject) {
     })
     .reduce((prev, [k, v]) => {
       const filterQueryParam = v.fields.reduce((prev, curr, idx) => {
-
         function buildEncodedParameterStr(searchParameter, fieldId) {
           function buildTextParameter(encodedValue, fieldId) {
             switch (searchParameter.lookUpType) {
@@ -146,7 +145,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
 
       let tag = "{!tag=type}";
       if (v.id === "referenceType") {
-        tag = "{!tag=type,dt}"
+        tag = "{!tag=type,dt}";
       }
 
       if (filterQueryParam === null) return `${prev}`;

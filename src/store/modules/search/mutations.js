@@ -119,6 +119,7 @@ const mutations = {
         }
       }
     });
+
     state.advancedSearch = {
       ...state.advancedSearch,
       byIds: resetAdvancedSearchObj

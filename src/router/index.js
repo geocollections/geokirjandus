@@ -78,7 +78,11 @@ const routes = [
     path: "/query",
     name: "query",
     beforeEnter: (to, from, next) => {
-      store.dispatch("search/setSearchFromURL", to.query);
+      const { lang, ...query } = to.query;
+
+      store.dispatch("search/setSearchFromURL", query);
+      store.dispatch("settings/updateLanguage", lang);
+
       next({ name: "searchReference" });
     }
   },

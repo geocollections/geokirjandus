@@ -34,121 +34,141 @@
         />
       </v-list-item>
 
-      <v-list-group color="#B76315" v-model="showAdvancedSearch">
+      <v-list-group
+        color="#B76315"
+        v-model="showAdvancedSearch"
+        style="background-color: #F2E4CF"
+      >
         <template v-slot:activator>
-          <v-list-item-title>{{
-            $t("common.advancedSearch")
-          }}</v-list-item-title>
-        </template>
-        <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
-          <!-- REGULAR SEARCH FIELD -->
-          <v-list-item v-if="getAdvancedSearch.byIds[id].type === 'text'" dense>
-            <v-row class="pa-1">
-              <v-col cols="12" class="py-0 px-1">
-                <v-text-field
-                  :value="getAdvancedSearch.byIds[id].value"
-                  :label="$t(getAdvancedSearch.byIds[id].label)"
-                  hide-details
-                  @change="
-                    $emit('update:advancedSearch', {
-                      value: $event,
-                      id: id,
-                      type: getAdvancedSearch.byIds[id].type
-                    })
-                  "
-                ></v-text-field>
+          <v-list-item-title>
+            <v-row>
+              <v-col cols>
+                {{ $t("common.advancedSearch") }}
+              </v-col>
+              <v-col
+                v-if="getAdvancedSearchParametersAppliedCount > 0"
+                cols="auto"
+              >
+                <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
+                <v-icon small color="#E58124">fas fa-filter</v-icon>
               </v-col>
             </v-row>
-          </v-list-item>
-          <v-list-item
-            class="px-3"
-            v-else-if="getAdvancedSearch.byIds[id].type === 'select'"
-          >
-            <!--  SELECT  -->
-            <v-row class="">
-              <div class="col py-1">
-                <v-select
-                  multiple
-                  :label="$t('reference.type')"
-                  :value="getAdvancedSearch.byIds[id].value"
-                  :items="getReferenceTypes"
-                  :menu-props="{ bottom: true, offsetY: true }"
-                  hide-details
-                  @change="
-                    $emit('update:advancedSearch', {
-                      value: $event,
-                      id: id,
-                      type: getAdvancedSearch.byIds[id].type
-                    })
-                  "
-                >
-                </v-select>
-              </div>
-            </v-row>
-          </v-list-item>
-          <v-list-item
-            v-else-if="getAdvancedSearch.byIds[id].type === 'range'"
-            dense
-          >
-            <!--  RANGE  -->
-            <v-row class="pa-1">
-              <div class="col py-0">
-                <v-row>
-                  <v-col cols="6" class="py-0 px-1">
-                    <v-text-field
-                      :value="
-                        isNaN(getAdvancedSearch.byIds[id].value[0])
-                          ? ''
-                          : getAdvancedSearch.byIds[id].value[0]
-                      "
-                      :label="$t(getAdvancedSearch.byIds[id].label)"
-                      :placeholder="
-                        $t(getAdvancedSearch.byIds[id].placeholders[0])
-                      "
-                      hide-details
-                      type="number"
-                      @change="
-                        $emit('update:advancedSearch', {
-                          value: [
-                            isNaN($event) ? NaN : parseInt($event),
-                            getAdvancedSearch.byIds[id].value[1]
-                          ],
-                          id: id,
-                          type: getAdvancedSearch.byIds[id].type
-                        })
-                      "
-                    >
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="6" class="py-0 px-1">
-                    <v-text-field
-                      :value="
-                        isNaN(getAdvancedSearch.byIds[id].value[1])
-                          ? ''
-                          : getAdvancedSearch.byIds[id].value[1]
-                      "
-                      hide-details
-                      :placeholder="
-                        $t(getAdvancedSearch.byIds[id].placeholders[1])
-                      "
-                      single-line
-                      type="number"
-                      @change="
-                        $emit('update:advancedSearch', {
-                          value: [
-                            getAdvancedSearch.byIds[id].value[0],
-                            isNaN($event) ? NaN : parseInt($event)
-                          ],
-                          id: id,
-                          type: getAdvancedSearch.byIds[id].type
-                        })
-                      "
-                    />
-                  </v-col>
-                </v-row>
-              </div>
-            </v-row>
-          </v-list-item>
+          </v-list-item-title>
+        </template>
+        <div class="pb-3">
+          <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
+            <!-- REGULAR SEARCH FIELD -->
+            <v-list-item
+              v-if="getAdvancedSearch.byIds[id].type === 'text'"
+              dense
+            >
+              <v-row class="pa-1">
+                <v-col cols="12" class="py-0 px-1">
+                  <v-text-field
+                    :value="getAdvancedSearch.byIds[id].value"
+                    :label="$t(getAdvancedSearch.byIds[id].label)"
+                    hide-details
+                    @change="
+                      $emit('update:advancedSearch', {
+                        value: $event,
+                        id: id,
+                        type: getAdvancedSearch.byIds[id].type
+                      })
+                    "
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-list-item>
+            <v-list-item
+              class="px-3"
+              v-else-if="getAdvancedSearch.byIds[id].type === 'select'"
+            >
+              <!--  SELECT  -->
+              <v-row class="">
+                <div class="col py-1">
+                  <v-select
+                    multiple
+                    :label="$t('reference.type')"
+                    :value="getAdvancedSearch.byIds[id].value"
+                    :items="getReferenceTypes"
+                    :menu-props="{ bottom: true, offsetY: true }"
+                    hide-details
+                    @change="
+                      $emit('update:advancedSearch', {
+                        value: $event,
+                        id: id,
+                        type: getAdvancedSearch.byIds[id].type
+                      })
+                    "
+                  >
+                  </v-select>
+                </div>
+              </v-row>
+            </v-list-item>
+            <v-list-item
+              v-else-if="getAdvancedSearch.byIds[id].type === 'range'"
+              dense
+            >
+              <!--  RANGE  -->
+              <v-row class="pa-1">
+                <div class="col py-0">
+                  <v-row>
+                    <v-col cols="6" class="py-0 px-1">
+                      <v-text-field
+                        :value="
+                          isNaN(getAdvancedSearch.byIds[id].value[0])
+                            ? ''
+                            : getAdvancedSearch.byIds[id].value[0]
+                        "
+                        :label="$t(getAdvancedSearch.byIds[id].label)"
+                        :placeholder="
+                          $t(getAdvancedSearch.byIds[id].placeholders[0])
+                        "
+                        hide-details
+                        type="number"
+                        @change="
+                          $emit('update:advancedSearch', {
+                            value: [
+                              isNaN($event) ? NaN : parseInt($event),
+                              getAdvancedSearch.byIds[id].value[1]
+                            ],
+                            id: id,
+                            type: getAdvancedSearch.byIds[id].type
+                          })
+                        "
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="6" class="py-0 px-1">
+                      <v-text-field
+                        :value="
+                          isNaN(getAdvancedSearch.byIds[id].value[1])
+                            ? ''
+                            : getAdvancedSearch.byIds[id].value[1]
+                        "
+                        hide-details
+                        :placeholder="
+                          $t(getAdvancedSearch.byIds[id].placeholders[1])
+                        "
+                        single-line
+                        type="number"
+                        @change="
+                          $emit('update:advancedSearch', {
+                            value: [
+                              getAdvancedSearch.byIds[id].value[0],
+                              isNaN($event) ? NaN : parseInt($event)
+                            ],
+                            id: id,
+                            type: getAdvancedSearch.byIds[id].type
+                          })
+                        "
+                      />
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-row>
+            </v-list-item>
+          </div>
         </div>
       </v-list-group>
       <v-list-item>
@@ -283,6 +303,38 @@ export default {
         author: this.advancedSearch.byIds.author
       };
     },
+    getAdvancedSearchParametersAppliedCount() {
+      let count = 0;
+
+      this.getAdvancedSearch.allIds.forEach(id => {
+        const obj = this.getAdvancedSearch.byIds[id];
+        if (obj.type === "text") {
+          if (this.getAdvancedSearch.byIds[id].value !== null) {
+            count++;
+          }
+        }
+
+        if (obj.type === "select") {
+          if (this.getAdvancedSearch.byIds[id].value.length > 0) {
+            count++;
+          }
+        }
+
+        if (obj.type === "range") {
+          const start = this.getAdvancedSearch.byIds[id].value[0];
+          const end = this.getAdvancedSearch.byIds[id].value[1];
+
+          if (
+            (typeof start === "number" && isFinite(start)) ||
+            (typeof end === "number" && isFinite(end))
+          ) {
+            count++;
+          }
+        }
+      });
+
+      return count;
+    },
     getReferenceTypes() {
       let types = [];
 
@@ -316,7 +368,8 @@ export default {
     calendarMenus: ["date_start", "date_end"],
     referenceTypeValue: [],
     showAdvancedSearch: false,
-    infoAlert: null
+    infoAlert: null,
+    filterCount: 2
   }),
   mixins: [urlMixin, queryMixin],
   methods: {

@@ -13,6 +13,9 @@ const resetAdvancedSearch = advancedSearch => {
           cloneAdvancedSearch[id].value = null;
         }
         break;
+      case "select":
+        cloneAdvancedSearch[id].value = [];
+        break;
       default: {
         cloneAdvancedSearch[id].value = null;
         cloneAdvancedSearch[id].lookUpType = "contains";
@@ -116,6 +119,7 @@ const mutations = {
         }
       }
     });
+
     state.advancedSearch = {
       ...state.advancedSearch,
       byIds: resetAdvancedSearchObj

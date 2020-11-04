@@ -68,10 +68,15 @@ function buildSort(sortBy, sortDesc) {
 }
 
 function buildQueryStr(queryObject, filterQueryObject) {
-  const queryStr =
-    queryObject && queryObject.value
-      ? `q={!tag=type}*${encodeURIComponent(queryObject.value)}*`
-      : "q=*";
+  let queryStr = "q=*";
+
+  if (queryObject && queryObject.value) {
+    if (queryObject.lookUpType === "contains") {
+      queryStr = `q={!tag=type}*${encodeURIComponent(queryObject.value)}*`;
+    } else {
+      queryStr = `q={!tag=type}${encodeURIComponent(queryObject.value)}`;
+    }
+  }
 
   const filterQueryStr = Object.entries(filterQueryObject)
     .filter(([_, v]) => {

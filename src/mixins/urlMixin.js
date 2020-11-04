@@ -1,4 +1,9 @@
+import { mapState } from "vuex";
+
 const urlMixin = {
+  computed: {
+    ...mapState("settings", ["language"])
+  },
   methods: {
     setURLParameters(parameters, route = "") {
       let q = Object.fromEntries(
@@ -48,7 +53,9 @@ const urlMixin = {
           })
       );
 
-      // TODO: Add language to query params
+      q["lang"] = this.language;
+
+      console.log(q);
 
       return q;
     }

@@ -460,14 +460,6 @@ export default {
   },
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
-    copyText() {
-      this.$nextTick(() => {
-        console.log(this.$refs);
-      });
-      let textToCopy = this.$refs.textToCopy.$el.innerHTML;
-      console.log(textToCopy);
-      return "asd";
-    },
     handleBack() {
       if (this.prevRoute.name === "reference") {
         this.$router.back();
@@ -497,8 +489,7 @@ export default {
       return fetchReferenceLibraries({
         search: {
           value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
-          type: "text",
-          lookUpType: "contains"
+          type: "text"
         }
       });
     },
@@ -507,8 +498,7 @@ export default {
       return fetchReferenceLocalities({
         search: {
           value: `id:(${localityIdsStr})`,
-          type: "text",
-          lookUpType: "contains"
+          type: "text"
         }
       });
     },

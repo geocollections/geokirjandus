@@ -6,18 +6,18 @@
           :module="$route.meta.object"
           :data="result"
           :count="count"
-          :page="page"
+          :page="getPage"
           :is-loading="isLoading"
-          :paginate-by="paginateBy"
-          :sort-by="sortBy"
-          :sort-desc="sortDesc"
+          :paginate-by="getPaginateBy"
+          :sort-by="getSortBy"
+          :sort-desc="getSortDesc"
           :headers="headers"
           title="viewer.title.reference_html"
           v-on:open="open"
-          v-on:update:paginateBy="updatePaginateBy"
-          v-on:update:page="updatePage"
-          v-on:update:sortBy="updateSortBy"
-          v-on:update:sortDesc="updateSortDesc"
+          v-on:update:paginateBy="handleUpdatePaginateBy"
+          v-on:update:page="handleUpdatePage"
+          v-on:update:sortBy="handleUpdateSortBy"
+          v-on:update:sortDesc="handleUpdateSortDesc"
           v-on:update:headers="headers = $event"
         >
           <template v-if="tabs" v-slot:prepend>
@@ -153,20 +153,23 @@ export default {
     ...mapState("references", ["result", "count"])
   },
   watch: {
-    page: {
+    getPage: {
       handler: debounce(function() {
-        this.getReferences();
+        if (this.$route.name === "library") this.getReferencesInLibrary();
+        else this.getReferences();
       }, 300)
     },
-    paginateBy: {
+    getPaginateBy: {
       handler() {
         this.resetPage();
-        this.getReferences();
+        if (this.$route.name === "library") this.getReferencesInLibrary();
+        else this.getReferences();
       }
     },
-    sortDesc: {
+    getSortDesc: {
       handler() {
-        this.getReferences();
+        if (this.$route.name === "library") this.getReferencesInLibrary();
+        else this.getReferences();
       }
     }
   },
@@ -181,6 +184,26 @@ export default {
     ]),
     open(event) {
       this.$router.push(`/reference/${event.id}`);
+    },
+    handleUpdatePage(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/updatePage", event);
+      else this.updatePage(event);
+    },
+    handleUpdatePaginateBy(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/updatePaginateBy", event);
+      else this.updatePaginateBy(event);
+    },
+    handleUpdateSortBy(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/updateSortBy", event);
+      else this.updateSortBy(event);
+    },
+    handleUpdateSortDesc(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/updateSortDesc", event);
+      else this.updateSortDesc(event);
     }
   }
 };

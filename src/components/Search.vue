@@ -28,7 +28,7 @@
         <v-text-field
           solo
           hide-details
-          :value="search.value"
+          :value="getSearch.value"
           :label="$t('common.search')"
           @change="$emit('update:search', $event)"
         />
@@ -40,41 +40,20 @@
             $t("common.advancedSearch")
           }}</v-list-item-title>
         </template>
-        <div :key="index" v-for="(id, index) in advancedSearch.allIds">
+        <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
           <!-- REGULAR SEARCH FIELD -->
-          <v-list-item v-if="advancedSearch.byIds[id].type === 'text'" dense>
+          <v-list-item v-if="getAdvancedSearch.byIds[id].type === 'text'" dense>
             <v-row class="pa-1">
-              <!--              <v-col cols="3" class="py-0 px-1">-->
-              <!--                <v-select-->
-              <!--                  :value="advancedSearch.byIds[id].lookUpType || 'contains'"-->
-              <!--                  disable-lookup-->
-              <!--                  hide-details-->
-              <!--                  :items="translatedLookUpTypes"-->
-              <!--                  @change="-->
-              <!--                    $emit('update:advancedSearch', {-->
-              <!--                      lookUpType: $event,-->
-              <!--                      id: id-->
-              <!--                    })-->
-              <!--                  "-->
-              <!--                >-->
-              <!--                  <template v-slot:selection="{ item }">-->
-              <!--                    <div class="font-weight-bold">-->
-              <!--                      {{ item.symbol }}-->
-              <!--                    </div>-->
-              <!--                  </template>-->
-              <!--                </v-select>-->
-              <!--              </v-col>-->
-
               <v-col cols="12" class="py-0 px-1">
                 <v-text-field
-                  :value="advancedSearch.byIds[id].value"
-                  :label="$t(advancedSearch.byIds[id].label)"
+                  :value="getAdvancedSearch.byIds[id].value"
+                  :label="$t(getAdvancedSearch.byIds[id].label)"
                   hide-details
                   @change="
                     $emit('update:advancedSearch', {
                       value: $event,
                       id: id,
-                      type: advancedSearch.byIds[id].type
+                      type: getAdvancedSearch.byIds[id].type
                     })
                   "
                 ></v-text-field>
@@ -83,7 +62,7 @@
           </v-list-item>
           <v-list-item
             class="px-3"
-            v-else-if="advancedSearch.byIds[id].type === 'select'"
+            v-else-if="getAdvancedSearch.byIds[id].type === 'select'"
           >
             <!--  SELECT  -->
             <v-row class="">
@@ -91,7 +70,7 @@
                 <v-select
                   multiple
                   :label="$t('reference.type')"
-                  :value="advancedSearch.byIds[id].value"
+                  :value="getAdvancedSearch.byIds[id].value"
                   :items="getReferenceTypes"
                   :menu-props="{ bottom: true, offsetY: true }"
                   hide-details
@@ -99,7 +78,7 @@
                     $emit('update:advancedSearch', {
                       value: $event,
                       id: id,
-                      type: advancedSearch.byIds[id].type
+                      type: getAdvancedSearch.byIds[id].type
                     })
                   "
                 >
@@ -108,7 +87,7 @@
             </v-row>
           </v-list-item>
           <v-list-item
-            v-else-if="advancedSearch.byIds[id].type === 'range'"
+            v-else-if="getAdvancedSearch.byIds[id].type === 'range'"
             dense
           >
             <!--  RANGE  -->
@@ -118,13 +97,13 @@
                   <v-col cols="6" class="py-0 px-1">
                     <v-text-field
                       :value="
-                        isNaN(advancedSearch.byIds[id].value[0])
+                        isNaN(getAdvancedSearch.byIds[id].value[0])
                           ? ''
-                          : advancedSearch.byIds[id].value[0]
+                          : getAdvancedSearch.byIds[id].value[0]
                       "
-                      :label="$t(advancedSearch.byIds[id].label)"
+                      :label="$t(getAdvancedSearch.byIds[id].label)"
                       :placeholder="
-                        $t(advancedSearch.byIds[id].placeholders[0])
+                        $t(getAdvancedSearch.byIds[id].placeholders[0])
                       "
                       hide-details
                       type="number"
@@ -132,10 +111,10 @@
                         $emit('update:advancedSearch', {
                           value: [
                             isNaN($event) ? NaN : parseInt($event),
-                            advancedSearch.byIds[id].value[1]
+                            getAdvancedSearch.byIds[id].value[1]
                           ],
                           id: id,
-                          type: advancedSearch.byIds[id].type
+                          type: getAdvancedSearch.byIds[id].type
                         })
                       "
                     >
@@ -144,24 +123,24 @@
                   <v-col cols="6" class="py-0 px-1">
                     <v-text-field
                       :value="
-                        isNaN(advancedSearch.byIds[id].value[1])
+                        isNaN(getAdvancedSearch.byIds[id].value[1])
                           ? ''
-                          : advancedSearch.byIds[id].value[1]
+                          : getAdvancedSearch.byIds[id].value[1]
                       "
                       hide-details
                       :placeholder="
-                        $t(advancedSearch.byIds[id].placeholders[1])
+                        $t(getAdvancedSearch.byIds[id].placeholders[1])
                       "
                       single-line
                       type="number"
                       @change="
                         $emit('update:advancedSearch', {
                           value: [
-                            advancedSearch.byIds[id].value[0],
+                            getAdvancedSearch.byIds[id].value[0],
                             isNaN($event) ? NaN : parseInt($event)
                           ],
                           id: id,
-                          type: advancedSearch.byIds[id].type
+                          type: getAdvancedSearch.byIds[id].type
                         })
                       "
                     />
@@ -191,16 +170,19 @@
           {{ $t("common.searchCommand") }}
         </v-btn>
       </v-list-item>
-      <div :key="index" v-for="(id, index) in advancedSearch.allIds">
-        <v-list-item v-if="advancedSearch.byIds[id].type === 'checkbox'" dense>
+      <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
+        <v-list-item
+          v-if="getAdvancedSearch.byIds[id].type === 'checkbox'"
+          dense
+        >
           <v-checkbox
             dense
-            :label="$t(advancedSearch.byIds[id].label)"
+            :label="$t(getAdvancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
             :false-value="null"
             true-value="1"
             hide-details
-            :input-value="advancedSearch.byIds[id].value"
+            :input-value="getAdvancedSearch.byIds[id].value"
             @change="updateCheckbox($event, id)"
           />
         </v-list-item>
@@ -237,6 +219,12 @@ export default {
       }, 300),
       deep: true
     },
+    libraryReferenceParameters: {
+      handler: debounce(function() {
+        this.getReferencesInLibrary();
+      }, 300),
+      deep: true
+    },
     libraryParameters: {
       handler: debounce(function() {
         this.getLibraries(this.libraryPage);
@@ -251,7 +239,6 @@ export default {
           from &&
           from.name === "searchLibrary"
         ) {
-          this.resetSearch();
           this.infoAlert = "alert.infoLibrarySearch";
         } else if (to.name === "library" && to.params.id) {
           this.infoAlert = "alert.infoLibrarySearch";
@@ -273,7 +260,8 @@ export default {
           from.name === "library" &&
           to.name === "searchLibrary"
         ) {
-          this.resetSearch();
+          this.getReferences();
+          this.getLibraries();
           this.infoAlert = null;
         } else {
           this.infoAlert = null;
@@ -283,7 +271,6 @@ export default {
     }
   },
   computed: {
-    ...mapState("search", ["lookUpTypes"]),
     ...mapState("references", ["facet", "result", "count"]),
     referenceParameters() {
       return { ...this.advancedSearch.byIds, search: this.search };
@@ -295,14 +282,6 @@ export default {
         year: this.advancedSearch.byIds.year,
         author: this.advancedSearch.byIds.author
       };
-    },
-    translatedLookUpTypes() {
-      return this.lookUpTypes.map(item => {
-        return {
-          ...item,
-          text: this.$t(item.text)
-        };
-      });
     },
     getReferenceTypes() {
       let types = [];
@@ -343,7 +322,6 @@ export default {
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {
-      this.resetSearch();
       this.getReferences();
       this.getLibraries();
       this.$router.replace({ name: "searchReference" });

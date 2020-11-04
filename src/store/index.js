@@ -16,7 +16,7 @@ const vuexLocal = new VuexPersistence({
 });
 
 export default new Vuex.Store({
-  modules: { settings, search, references, library },
+  modules: { settings, search, references, library, librarySearch: search },
   plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"
 });

@@ -18,11 +18,9 @@
         <template v-slot:default>
           <search
             :col-size="12"
-            :search="search"
-            :advanced-search="advancedSearch"
-            v-on:update:search="updateSearch"
-            v-on:update:advancedSearch="updateAdvancedSearch"
-            v-on:reset:parameters="resetSearch"
+            v-on:update:search="handleUpdateSearch"
+            v-on:update:advancedSearch="handleUpdateAdvancedSearch"
+            v-on:reset:parameters="handleResetSearch"
           />
         </template>
       </v-navigation-drawer>
@@ -97,7 +95,22 @@ export default {
       "resetSearch",
       "resetPage"
     ]),
-    ...mapActions("references", ["setReferences"])
+    ...mapActions("references", ["setReferences"]),
+    handleUpdateSearch(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/updateSearch", event);
+      else this.updateSearch(event);
+    },
+    handleUpdateAdvancedSearch(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/updateAdvancedSearch", event);
+      else this.updateAdvancedSearch(event);
+    },
+    handleResetSearch(event) {
+      if (this.$route.name === "library")
+        this.$store.dispatch("librarySearch/resetSearch", event);
+      else this.resetSearch(event);
+    }
   }
 };
 </script>

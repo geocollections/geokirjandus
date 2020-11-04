@@ -70,7 +70,7 @@ function buildSort(sortBy, sortDesc) {
 function buildQueryStr(queryObject, filterQueryObject) {
   const queryStr =
     queryObject && queryObject.value
-      ? `q={!tag=type}${encodeURIComponent(queryObject.value)}`
+      ? `q={!tag=type}*${encodeURIComponent(queryObject.value)}*`
       : "q=*";
 
   const filterQueryStr = Object.entries(filterQueryObject)

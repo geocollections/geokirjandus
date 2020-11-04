@@ -138,24 +138,27 @@ export default {
       if (!from.name)
         vm.prevRoute = { name: "searchLibrary", params: vm.$route.params };
       if (from.name === "searchLibrary") vm.resetSearch();
-      vm.getReferences();
-    });
-  },
-  created() {
-    // this.resetSearch();
-    this.resetPage();
-    // this.setSearchFromURL(this.$route.query);
-    this.getLibrary().then(res => {
-      this.library = res.results[0];
+      vm.getLibrary().then(res => {
+        vm.library = res.results[0];
 
-      if (this.library === undefined) {
-        this.error = true;
-      }
+        if (vm.library === undefined) {
+          vm.error = true;
+        }
+      });
+      vm.resetPage();
+      vm.updateSortBy(["author", "year"]);
+      vm.updateSortDesc([false, false]);
+      vm.getReferencesInLibrary();
     });
   },
 
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage"]),
+    ...mapActions("librarySearch", [
+      "resetSearch",
+      "resetPage",
+      "updateSortBy",
+      "updateSortDesc"
+    ]),
     handleBack() {
       if (this.prevRoute) {
         this.$router.replace(this.prevRoute);

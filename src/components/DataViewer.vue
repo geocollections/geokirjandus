@@ -90,7 +90,7 @@
             :headers="getHeadersShowing"
             :items="data"
             hide-default-footer
-            :items-per-page="paginateBy"
+            :server-items-length="paginateBy"
             :page="page"
             :sort-by="getSortBy"
             :sort-desc="getSortDesc"

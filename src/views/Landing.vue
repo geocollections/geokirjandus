@@ -9,7 +9,7 @@
 
         <h1 class="white--text text-center">{{ $t("title") }}</h1>
         <span
-          class="text-center d-md-flex flex-md-row align-self-center align-center col-12 col-md-4 mt-6"
+          class="text-center d-md-flex flex-md-row align-self-center align-center col-12 col-md-6 col-lg-4 mt-6"
         >
           <v-text-field
             v-model="searchStr"

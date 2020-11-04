@@ -11,7 +11,7 @@ const state = () => {
       id: "search",
       value: null,
       type: "text",
-      lookUpType: "contains"
+      lookUpType: null
     },
     advancedSearch: {
       byIds: {

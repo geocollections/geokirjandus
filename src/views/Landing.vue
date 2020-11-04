@@ -8,22 +8,35 @@
         </span>
 
         <h1 class="white--text text-center">{{ $t("title") }}</h1>
-        <span class="text-center align-self-center col-12 col-md-4">
+        <span
+          class="text-center d-flex flex-row align-self-center align-center col-12 col-md-4 mt-6"
+        >
           <v-text-field
             v-model="searchStr"
+            :autofocus="true"
+            @keyup.native="search"
+            hide-details
             :label="$t('common.search')"
-            prepend-inner-icon="fas fa-search"
             solo
           >
+            <template v-slot:prepend-inner>
+              <v-icon small class="px-2">fas fa-search</v-icon>
+            </template>
           </v-text-field>
+          <!--          <v-btn-->
+          <!--            dark-->
+          <!--            class="mr-3"-->
+          <!--            color="#ECA15B"-->
+          <!--            :to="{ name: 'searchReference' }"-->
+          <!--            >{{ $t("common.viewReferences") }}</v-btn-->
+          <!--          >-->
           <v-btn
-            dark
-            class="mr-3"
+            class="ml-3 align-center"
             color="#ECA15B"
-            :to="{ name: 'searchReference' }"
+            dark
+            @click="search"
             >{{ $t("common.viewReferences") }}</v-btn
           >
-          <v-btn @click="search()">{{ $t("common.search") }}</v-btn>
         </span>
       </v-row>
       <v-row
@@ -104,7 +117,14 @@ export default {
         this.intro = res.data.results[0];
       });
     },
-    search() {
+    search(event) {
+      if (
+        event.type !== "click" &&
+        event.keyCode !== 13 &&
+        event.key !== "Enter"
+      )
+        return;
+
       this.updateSearch(this.searchStr);
       this.$router.push({
         name: "searchReference"

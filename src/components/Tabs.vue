@@ -1,5 +1,11 @@
 <template>
-  <v-tabs grow background-color="#E5C99F" color="#B76315" ref="tabs">
+  <v-tabs
+    :vertical="$vuetify.breakpoint.xsOnly"
+    grow
+    background-color="#E5C99F"
+    color="#B76315"
+    ref="tabs"
+  >
     <v-tab active-class="active" link :to="{ name: 'searchReference' }">{{
       referenceTabTitle
     }}</v-tab>

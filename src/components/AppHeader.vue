@@ -4,7 +4,7 @@
     app
     flat
     class="appBar"
-    src="https://geoloogia.info/img/books1.jpg"
+    :src="require('@/assets/books1.jpg')"
   >
     <v-btn
       aria-label="show search"

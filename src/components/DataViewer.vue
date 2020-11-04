@@ -12,7 +12,8 @@
         >
           <v-radio-group
             class="mt-0 mr-auto"
-            v-model="view"
+            :value="view"
+            @change="updateView"
             row
             hide-details
             dense
@@ -125,6 +126,8 @@
 import ExportButtons from "../components/ExportButtons";
 import ListView from "@/components/ListView";
 import ViewHelper from "@/components/ViewHelper";
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "DataViewer",
   components: { ViewHelper, ListView, ExportButtons },
@@ -175,13 +178,13 @@ export default {
   },
   data() {
     return {
-      view: "list",
       headerProps: {
         sortByText: this.$t("common.sortBy")
       }
     };
   },
   computed: {
+    ...mapState("settings", ["view"]),
     getHeaderOptions() {
       return this.headers
         .filter(header => {
@@ -204,6 +207,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("settings", ["updateView"]),
     setHeaders(event) {
       const headers = this.headers.map(header => {
         if (event.includes(header.value)) return { ...header, show: true };

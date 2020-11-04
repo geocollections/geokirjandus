@@ -2,7 +2,8 @@ import mutations from "./mutations";
 import actions from "./actions";
 const state = {
   language: "ee",
-  citationTemplate: "apa"
+  citationTemplate: "apa",
+  view: "list"
 };
 
 export default {

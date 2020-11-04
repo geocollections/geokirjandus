@@ -102,7 +102,6 @@
                   <td>
                     <router-link
                       :to="{ path: `${reference.parent_reference}` }"
-                      replace
                     >
                       {{ reference.parent_reference__reference }}
                     </router-link>
@@ -223,7 +222,6 @@
             >
               <td>
                 <router-link
-                  replace
                   :to="{
                     name: 'reference',
                     params: { id: childReference.id }
@@ -471,12 +469,13 @@ export default {
       return "asd";
     },
     handleBack() {
-      this.getReferences();
-      this.getLibraries();
-      if (this.prevRoute) {
-        this.$router.replace(this.prevRoute);
+      if (this.prevRoute.name === "reference") {
+        this.$router.back();
       } else {
-        this.$router.go(-1);
+        this.getReferences();
+        this.getLibraries();
+
+        this.$router.replace(this.prevRoute);
       }
     },
     handleKeyword(keyword) {

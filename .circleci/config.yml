@@ -5,7 +5,7 @@ version: 2.1
 parameters:
   package-version:
     type: string
-    default: "v1.0"
+    default: "v1.1.0"
 
 jobs:
   checkout_code:
@@ -28,6 +28,9 @@ jobs:
           key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Npm disabling progress bar and adding depth 0
+          command: npm set progress=false && npm config set depth 0
       - run:
           name: Installing packages
           command: npm install
@@ -54,6 +57,24 @@ jobs:
           paths:
             - ~/geocollections/geokirjandus
 
+  deploy_to_dev:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/geocollections/geokirjandus
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Directory update
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geokirjandus/script && . directory_update.sh'
+      - run:
+          name: Copying built files to production
+          command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geokirjandus
+
   deploy_to_prod:
     docker:
       - image: circleci/node:lts
@@ -67,10 +88,10 @@ jobs:
           key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Removing current production files
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geokirjandus && rm -rf css/ fonts/ img/ js/ favicon.ico index.html'
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geoloogia && rm -rf css/ fonts/ img/ js/ favicon.ico index.html'
       - run:
           name: Copying built files to production
-          command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geokirjandus
+          command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geoloogia
 
 workflows:
   version: 2
@@ -85,7 +106,13 @@ workflows:
             - bundle_dependencies
           filters:
             branches:
-              only: master
+              only: [development, master]
+      - deploy_to_dev:
+          requires:
+            - build_dependencies
+          filters:
+            branches:
+              only: development
       - deploy_to_prod:
           requires:
             - build_dependencies

@@ -380,7 +380,9 @@ export default {
   watch: {
     referenceParameters: {
       handler: debounce(function() {
-        this.$router.push(this.prevRoute).catch(() => {});
+        if (this.prevRoute.name === "landing")
+          this.$router.replace({ name: "searchReference" });
+        else this.$router.push(this.prevRoute).catch(() => {});
       }, 300),
       deep: true
     }
@@ -461,6 +463,7 @@ export default {
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
     handleBack() {
+      console.log("back");
       if (this.prevRoute.name === "reference") {
         this.$router.back();
       } else {

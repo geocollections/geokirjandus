@@ -1,7 +1,12 @@
 <template>
   <div class="fill-height d-flex flex-wrap align-content-space-between">
     <v-container fluid class="landing py-0">
-      <v-row class="header d-flex flex-column pb-5">
+      <v-row
+        :style="
+          `background-image: url(&quot;${require('@/assets/books1.jpg')}&quot;)`
+        "
+        class="header d-flex flex-column pb-5"
+      >
         <span class="d-flex justify-end mt-4 mb-2 mr-4">
           <links />
           <lang-buttons />
@@ -153,6 +158,6 @@ export default {
 <style scoped>
 .header {
   background-size: cover;
-  background-image: url("https://geoloogia.info/img/books1.jpg");
+  /*background-image: url("https://geoloogia.info/img/books1.jpg");*/
 }
 </style>

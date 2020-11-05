@@ -463,7 +463,6 @@ export default {
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
     handleBack() {
-      console.log("back");
       if (this.prevRoute.name === "reference") {
         this.$router.back();
       } else {

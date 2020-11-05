@@ -65,7 +65,8 @@
     "searchCommand": "Search",
     "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia",
     "yes": "yes",
-    "libraryCreatedBy": "Created by"
+    "libraryCreatedBy": "Created by",
+    "close": "Close"
   },
   "reference": {
     "id": "ID",

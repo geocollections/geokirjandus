@@ -32,7 +32,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text @click="open = false">
-          Close
+          {{ $t("common.close") }}
         </v-btn>
       </v-card-actions>
     </v-card>

@@ -64,7 +64,8 @@
     "searchCommand": "Otsi",
     "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
     "yes": "jah",
-    "libraryCreatedBy": "Kogumiku koostas(id)"
+    "libraryCreatedBy": "Kogumiku koostas(id)",
+    "close": "Sulge"
   },
   "reference": {
     "id": "ID",

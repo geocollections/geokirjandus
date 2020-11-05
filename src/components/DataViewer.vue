@@ -43,7 +43,7 @@
           </span>
         </div>
       </v-card-actions>
-      <v-expand-transition>
+      <v-scroll-y-transition>
         <v-card-actions v-if="view === 'table'">
           <v-select
             class="px-2"
@@ -63,7 +63,7 @@
             </template>
           </v-select>
         </v-card-actions>
-      </v-expand-transition>
+      </v-scroll-y-transition>
 
       <view-helper
         v-if="helpers"
@@ -81,7 +81,7 @@
         </v-card-text>
         <div v-else>
           <!--  LIST VIEW  -->
-          <v-expand-transition>
+          <v-scroll-y-transition>
             <list-view
               v-if="view === 'list' && count > 0"
               :module="module"
@@ -91,7 +91,7 @@
                 <slot name="list-view" v-bind:data="data"></slot>
               </template>
             </list-view>
-          </v-expand-transition>
+          </v-scroll-y-transition>
           <!--  TABLE VIEW  -->
 
           <v-data-table

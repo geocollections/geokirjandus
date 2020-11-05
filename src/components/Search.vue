@@ -1,28 +1,29 @@
 <template>
   <div class="search fill-height " style="background-color: #F6EDDF">
     <v-list class="mt-0 pb-10 pa-0">
-      <v-list-item v-if="infoAlert" class="py-2">
-        <v-alert
-          dense
-          v-if="infoAlert"
-          prominent
-          colored-border
-          border="right"
-          type="info"
-          color="#DDB77E"
-        >
-          <v-row align="center">
-            <v-col class="grow">
-              {{ $t(infoAlert) }}
-            </v-col>
-            <v-col class="shrink">
-              <v-btn x-small icon @click="handleExitLibrary()"
-                ><v-icon>fa fa-times</v-icon></v-btn
-              >
-            </v-col>
-          </v-row>
-        </v-alert>
-      </v-list-item>
+      <v-fade-transition>
+        <v-list-item v-if="showAlert" class="pt-2 ">
+          <v-alert
+            dense
+            colored-border
+            border="right"
+            type="info"
+            color="#DDB77E"
+            class="mb-0"
+          >
+            <v-row align="center">
+              <v-col class="grow py-0">
+                {{ $t("alert.infoLibrarySearch") }}
+              </v-col>
+              <v-col class="shrink">
+                <v-btn x-small icon @click="handleExitLibrary()"
+                  ><v-icon>fa fa-times</v-icon></v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-alert>
+        </v-list-item>
+      </v-fade-transition>
 
       <v-list-item class="py-4">
         <v-text-field
@@ -267,20 +268,20 @@ export default {
           from &&
           from.name === "searchLibrary"
         ) {
-          this.infoAlert = "alert.infoLibrarySearch";
+          this.showAlert = true;
         } else if (to.name === "library" && to.params.id) {
-          this.infoAlert = "alert.infoLibrarySearch";
+          this.showAlert = true;
         } else if (
           from !== undefined &&
           from.name === "library" &&
           to.name === "reference"
         ) {
-          this.infoAlert = "alert.infoLibrarySearch";
+          this.showAlert = true;
         } else if (
           (to.name === "searchReference" || to.name === "searchLibrary") &&
           from === undefined
         ) {
-          this.infoAlert = null;
+          this.showAlert = false;
           this.getReferences();
           this.getLibraries();
         } else if (
@@ -290,9 +291,10 @@ export default {
         ) {
           this.getReferences();
           this.getLibraries();
-          this.infoAlert = null;
+
+          this.showAlert = false;
         } else {
-          this.infoAlert = null;
+          this.showAlert = false;
         }
       },
       immediate: true
@@ -377,7 +379,8 @@ export default {
     referenceTypeValue: [],
     showAdvancedSearch: false,
     infoAlert: null,
-    filterCount: 2
+    filterCount: 2,
+    showAlert: false
   }),
   mixins: [urlMixin, queryMixin],
   methods: {

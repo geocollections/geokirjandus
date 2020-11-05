@@ -6,6 +6,7 @@
         small
         outlined
         tile
+        aria-label="share"
         color="#E58124"
         style="border-radius: 4px"
         class="mx-2"

@@ -5,7 +5,7 @@
         :style="
           `background-image: url(&quot;${require('@/assets/books1.jpg')}&quot;)`
         "
-        class="header d-flex flex-column pb-5"
+        class="header d-flex flex-column pb-5 "
       >
         <span class="d-flex justify-end mt-4 mb-2 mr-4">
           <links />
@@ -30,7 +30,7 @@
           </v-text-field>
           <v-btn
             class="mt-3 align-center"
-            color="blue lighten-1"
+            color="primary"
             dark
             @click="search"
             >{{ $t("common.viewReferences") }}</v-btn

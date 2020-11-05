@@ -35,7 +35,7 @@
       </v-list-item>
 
       <v-list-group
-        color="#B76315"
+        color="#924f11"
         v-model="showAdvancedSearch"
         style="background-color: #EEDBBF"
       >
@@ -176,7 +176,7 @@
           </div>
         </div>
       </v-list-group>
-      <v-list-item>
+      <v-list-item class="mt-2">
         <v-btn
           icon
           small
@@ -185,13 +185,14 @@
           color="red"
           style="border-radius: 4px"
           class="deleteSearch"
+          aria-label="delete"
           @click="$emit('reset:parameters')"
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
         <share-button />
 
-        <v-btn color="blue lighten-1" dark class="ml-auto">
+        <v-btn color="primary" dark class="ml-auto">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>

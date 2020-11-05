@@ -3,7 +3,7 @@
     :vertical="$vuetify.breakpoint.xsOnly"
     grow
     background-color="#F6EDDF"
-    color="#B76315"
+    color="#924F11"
     ref="tabs"
   >
     <v-tab active-class="active" link :to="{ name: 'searchReference' }">{{

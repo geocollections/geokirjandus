@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on }">
       <v-btn
         :icon="$vuetify.breakpoint.smAndDown"
-        color="primary"
+        color="#E58124"
         dark
         v-on="on"
         :small="small"

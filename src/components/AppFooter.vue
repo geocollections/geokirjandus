@@ -1,54 +1,62 @@
 <template>
   <v-footer color="#E0C190" class="d-flex flex-column py-4" style="width: 100%">
     <div class="text-center">
-      <a href="https://kik.ee" target="_blank" rel="noopener"
-        ><img
+      <a href="https://kik.ee" target="_blank" rel="noopener">
+        <img
           src="https://files.geocollections.info/img/kik_valge.png"
           alt="KIK"
           title="KIK"
-          style="height: 55px; padding: 5px 10px;"
-      /></a>
-      <a href="https://natarc.ut.ee" target="_blank" rel="noopener"
-        ><img
+          style="height: 60px; width: auto; padding: 5px 10px;"
+        />
+      </a>
+      <a href="https://natarc.ut.ee" target="_blank" rel="noopener">
+        <img
           src="https://files.geocollections.info/img/natarclogovalge1.png"
           alt="NATARC"
           title="NATARC"
           class="footerLogo"
-          style="height: 50px; padding: 0 10px;"
-      /></a>
+          style="height: 50px; width: auto; padding: 0 10px;"
+        />
+      </a>
       <a
         href="https://taltech.ee/geoloogia-instituut"
         target="_blank"
         rel="noopener"
-        ><img
+      >
+        <img
           src="https://files.geocollections.info/img/tutaltech2.png"
           alt="SARV"
           title="TalTech geoloogia instituut"
           class="footerLogo"
-          style="height: 50px; padding: 0 10px;"
-      /></a>
+          style="height: 50px; width: auto; padding: 0 10px;"
+        />
+      </a>
       <a
         href="http://www.natmuseum.ut.ee/et/content/geoloogiakogud"
         target="_blank"
         rel="noopener"
-        ><img
+      >
+        <img
           src="https://files.geocollections.info/img/TY_logo_ring_jooneta_valge.png"
           alt="TÜ Loodusmuuseumi geokogud"
           title="TÜ Loodusmuuseumi geokogud"
           class="footerLogo"
-          style="height: 60px; padding: 0 10px;"
-      /></a>
+          style="height: 60px; width: auto; padding: 0 10px;"
+        />
+      </a>
       <a
         href="https://loodusmuuseum.ee/geoloogilised-kogud"
         target="_blank"
         rel="noopener"
-        ><img
+      >
+        <img
           src="https://files.geocollections.info/img/ELM_logo_white1.png"
           alt="Eesti Loodusmuuseumi geoloogia osakond"
           title="Eesti Loodusmuuseumi geoloogia osakond"
           class="footerLogo"
-          style="height: 60px; padding: 0 10px;"
-      /></a>
+          style="height: 60px; width: auto; padding: 0 10px;"
+        />
+      </a>
     </div>
     <small class="text-center pt-4" style="max-width: 800px">
       Siin leiduvad materjalid on enamasti kasutamiseks

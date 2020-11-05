@@ -25,7 +25,7 @@
           </v-text-field>
           <v-btn
             class="mt-3 align-center"
-            color="#ECA15B"
+            color="blue lighten-1"
             dark
             @click="search"
             >{{ $t("common.viewReferences") }}</v-btn
@@ -38,7 +38,7 @@
       >
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title v-if="intro" style="background-color: #F6EDDF">
+            <v-card-title v-if="intro" style="background-color: #EEDBBF">
               <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
             <v-card-text class="py-3" v-if="intro" v-html="getIntroText">
@@ -47,7 +47,7 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title style="background-color: #F6EDDF">
+            <v-card-title style="background-color: #EEDBBF">
               <h6>{{ $t("common.newest") }}</h6>
             </v-card-title>
 

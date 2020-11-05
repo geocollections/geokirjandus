@@ -1,7 +1,7 @@
 <template>
   <div class="data-viewer">
     <!-- DATA TABLE -->
-    <v-card elevation="4" class=" my-1" color="#F6EDDF">
+    <v-card elevation="4" class=" my-1" color="#EEDBBF">
       <slot name="prepend"></slot>
       <!--  TODO: Use slot to add inputs to header  -->
       <v-card-actions
@@ -18,8 +18,16 @@
             hide-details
             dense
           >
-            <v-radio value="list" :label="$t('common.listView')" />
-            <v-radio value="table" :label="$t('common.tableView')" />
+            <v-radio
+              color="#E58124"
+              value="list"
+              :label="$t('common.listView')"
+            />
+            <v-radio
+              color="#E58124"
+              value="table"
+              :label="$t('common.tableView')"
+            />
           </v-radio-group>
 
           <export-buttons
@@ -49,7 +57,7 @@
             @change="setHeaders($event)"
           >
             <template v-slot:selection="{ item }">
-              <v-chip outlined small dense color="#F0B67F" text-color="black">
+              <v-chip outlined small dense color="#E58124" text-color="black">
                 {{ item.text }}
               </v-chip>
             </template>

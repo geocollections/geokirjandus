@@ -2,7 +2,7 @@
   <v-tabs
     :vertical="$vuetify.breakpoint.xsOnly"
     grow
-    background-color="#E5C99F"
+    background-color="#F6EDDF"
     color="#B76315"
     ref="tabs"
   >
@@ -49,6 +49,6 @@ export default {
 
 <style scoped>
 .active {
-  background-color: #f6eddf;
+  background-color: #eedbbf;
 }
 </style>

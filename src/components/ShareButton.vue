@@ -3,9 +3,11 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         icon
-        dark
         small
-        style="border-radius: 4px; background-color: #E58124"
+        outlined
+        tile
+        color="#E58124"
+        style="border-radius: 4px"
         class="mx-2"
         v-bind="attrs"
         v-on="on"

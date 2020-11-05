@@ -2,7 +2,7 @@
   <v-container>
     <v-card v-if="library">
       <v-card-title
-        style="background-color: #F1CDA7"
+        style="background-color: #DDB77E"
         class="pt-1 pb-1 d-flex text-center"
       >
         <v-col cols="auto" class="py-0 px-0">

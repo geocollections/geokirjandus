@@ -9,7 +9,7 @@
           colored-border
           border="right"
           type="info"
-          color="#F1CDA7"
+          color="#DDB77E"
         >
           <v-row align="center">
             <v-col class="grow">
@@ -37,7 +37,7 @@
       <v-list-group
         color="#B76315"
         v-model="showAdvancedSearch"
-        style="background-color: #F2E4CF"
+        style="background-color: #EEDBBF"
       >
         <template v-slot:activator>
           <v-list-item-title>
@@ -65,6 +65,7 @@
               <v-row class="pa-1">
                 <v-col cols="12" class="py-0 px-1">
                   <v-text-field
+                    color="#B76315"
                     :value="getAdvancedSearch.byIds[id].value"
                     :label="$t(getAdvancedSearch.byIds[id].label)"
                     hide-details
@@ -88,9 +89,11 @@
                 <div class="col py-1">
                   <v-select
                     multiple
+                    color="#B76315"
                     :label="$t('reference.type')"
                     :value="getAdvancedSearch.byIds[id].value"
                     :items="getReferenceTypes"
+                    item-color="#E58124"
                     :menu-props="{ bottom: true, offsetY: true }"
                     hide-details
                     @change="
@@ -115,6 +118,7 @@
                   <v-row>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[0])
                             ? ''
@@ -141,6 +145,7 @@
                     </v-col>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[1])
                             ? ''
@@ -175,17 +180,18 @@
         <v-btn
           icon
           small
+          outlined
           tile
+          color="red"
           style="border-radius: 4px"
           class="deleteSearch"
           @click="$emit('reset:parameters')"
-          dark
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
         <share-button />
 
-        <v-btn color="primary" class="ml-auto">
+        <v-btn color="blue lighten-1" dark class="ml-auto">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>
@@ -199,6 +205,7 @@
             dense
             :label="$t(getAdvancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
+            color="#E58124"
             :false-value="null"
             true-value="1"
             hide-details
@@ -391,7 +398,7 @@ export default {
 
 <style scoped lang="sass">
 @import 'src/sass/variables.sass'
-
-.deleteSearch
-  background-color: $danger !important
+//
+//.deleteSearch
+//  background-color: $danger !important
 </style>

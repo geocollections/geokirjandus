@@ -3,8 +3,9 @@
     <div class="col-md-3 px-2">
       <v-select
         :value="paginateBy"
-        color="primary"
+        color="#B76315"
         dense
+        :menu-props="{ bottom: true, offsetY: true }"
         :items="paginateByOptionsTranslated"
         item-color="black"
         :label="$t('common.paginateBy')"
@@ -15,7 +16,7 @@
     <div style="font-size: 0.8rem" class="ml-md-auto">{{ getRange }}</div>
     <v-pagination
       :value="page"
-      color="#ECA15B"
+      color="#E58124"
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"

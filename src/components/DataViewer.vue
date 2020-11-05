@@ -73,15 +73,19 @@
         :count="count"
       />
       <div style="background-color: white;border-radius: 12px">
-        <v-card-text v-if="!isLoading && count <= 0" class="text-center">
-          <h3>{{ $t("error.nothingFound") }}</h3>
-        </v-card-text>
-        <v-card-text v-if="isLoading" class="text-center">
-          <v-progress-circular indeterminate :size="50"></v-progress-circular>
-        </v-card-text>
-        <div v-else>
+        <v-scroll-y-transition leave-absolute group>
+          <v-card-text
+            key="noResults"
+            v-if="!isLoading && count <= 0"
+            class="text-center"
+          >
+            <h3>{{ $t("error.nothingFound") }}</h3>
+          </v-card-text>
+          <v-card-text key="loading" v-if="isLoading" class="text-center">
+            <v-progress-circular indeterminate :size="50"></v-progress-circular>
+          </v-card-text>
           <!--  LIST VIEW  -->
-          <v-scroll-y-transition>
+          <div key="view" v-else>
             <list-view
               v-if="view === 'list' && count > 0"
               :module="module"
@@ -91,33 +95,33 @@
                 <slot name="list-view" v-bind:data="data"></slot>
               </template>
             </list-view>
-          </v-scroll-y-transition>
-          <!--  TABLE VIEW  -->
+            <!--  TABLE VIEW  -->
 
-          <v-data-table
-            v-if="view === 'table' && count > 0"
-            :headers="getHeadersShowing"
-            :items="data"
-            hide-default-footer
-            :server-items-length="paginateBy"
-            :page="page"
-            :sort-by="getSortBy"
-            :sort-desc="getSortDesc"
-            v-on:update:sort-by="$emit('update:sortBy', $event)"
-            v-on:update:sort-desc="$emit('update:sortDesc', $event)"
-            multi-sort
-            @click:row="$emit('open', $event)"
-            :header-props="headerProps"
-            class=" data-viewer-table"
-          >
-            <template
-              v-for="(_, slotName) in $scopedSlots"
-              v-slot:[slotName]="context"
+            <v-data-table
+              v-if="view === 'table' && count > 0"
+              :headers="getHeadersShowing"
+              :items="data"
+              hide-default-footer
+              :server-items-length="paginateBy"
+              :page="page"
+              :sort-by="getSortBy"
+              :sort-desc="getSortDesc"
+              v-on:update:sort-by="$emit('update:sortBy', $event)"
+              v-on:update:sort-desc="$emit('update:sortDesc', $event)"
+              multi-sort
+              @click:row="$emit('open', $event)"
+              :header-props="headerProps"
+              class=" data-viewer-table"
             >
-              <slot :name="slotName" v-bind="context" />
-            </template>
-          </v-data-table>
-        </div>
+              <template
+                v-for="(_, slotName) in $scopedSlots"
+                v-slot:[slotName]="context"
+              >
+                <slot :name="slotName" v-bind="context" />
+              </template>
+            </v-data-table>
+          </div>
+        </v-scroll-y-transition>
       </div>
       <view-helper
         v-if="helpers"

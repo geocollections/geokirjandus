@@ -9,7 +9,7 @@
 
         <h1 class="white--text text-center">{{ $t("title") }}</h1>
         <span
-          class="text-center d-md-flex flex-md-row align-self-center align-center col-12 col-md-6 col-lg-4 mt-6"
+          class="text-center align-self-center col-12 col-sm-6 col-md-4 mt-6"
         >
           <v-text-field
             v-model="searchStr"
@@ -23,15 +23,8 @@
               <v-icon small class="px-2">fas fa-search</v-icon>
             </template>
           </v-text-field>
-          <!--          <v-btn-->
-          <!--            dark-->
-          <!--            class="mr-3"-->
-          <!--            color="#ECA15B"-->
-          <!--            :to="{ name: 'searchReference' }"-->
-          <!--            >{{ $t("common.viewReferences") }}</v-btn-->
-          <!--          >-->
           <v-btn
-            class="ma-3 align-center"
+            class="mt-3 align-center"
             color="#ECA15B"
             dark
             @click="search"

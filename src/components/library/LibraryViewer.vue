@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="py-0">
     <v-row>
       <v-col class="py-0">
         <data-viewer

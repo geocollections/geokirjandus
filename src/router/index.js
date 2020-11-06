@@ -3,19 +3,15 @@ import VueRouter from "vue-router";
 
 import store from "@/store";
 
-const Tabs = () => import(/* webpackPreload: true */ "@/components/Tabs");
-const LibraryViewer = () =>
-  import(/* webpackPreload: true */ "@/components/library/LibraryViewer");
-const ReferenceViewer = () =>
-  import(/* webpackPreload: true */ "@/components/reference/ReferenceViewer");
-const Reference = () =>
-  import(/* webpackPreload: true */ "@/components/reference/Reference");
-const Library = () =>
-  import(/* webpackPreload: true */ "@/components/library/Library");
+const Tabs = () => import("@/components/Tabs");
+const LibraryViewer = () => import("@/components/library/LibraryViewer");
+const ReferenceViewer = () => import("@/components/reference/ReferenceViewer");
+const Reference = () => import("@/components/reference/Reference");
+const Library = () => import("@/components/library/Library");
 
-const App = () => import(/* webpackPreload: true */ "@/App");
-const Main = () => import(/* webpackPreload: true */ "@/views/Main");
-const Landing = () => import(/* webpackPreload: true */ "@/views/Landing");
+const App = () => import("@/App");
+const Main = () => import("@/views/Main");
+const Landing = () => import("@/views/Landing");
 
 Vue.use(VueRouter);
 

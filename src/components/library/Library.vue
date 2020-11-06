@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <v-card v-if="library">
       <v-card-title
         style="background-color: #DDB77E"
@@ -55,7 +55,7 @@
           <b>{{ $t("common.libraryReferences") }}</b>
         </h3>
       </v-card-text>
-      <v-card elevation="4" class="mx-3 my-3" color="#EEDBBF">
+      <v-card elevation="4" class="mx-2 my-3 mx-sm-3" color="#EEDBBF">
         <reference-viewer />
       </v-card>
       <v-card-text class="py-0">

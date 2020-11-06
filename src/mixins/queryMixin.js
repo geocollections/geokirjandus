@@ -17,7 +17,7 @@ const queryMixin = {
       "search",
       "advancedSearch"
     ]),
-    ...mapState("references", ["facet", "result", "count"]),
+    ...mapState("references", ["facet", "count"]),
     referenceParameters() {
       return {
         ...this.advancedSearch.byIds,
@@ -81,17 +81,10 @@ const queryMixin = {
         sortDesc: this.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
-      this.isLoading = true;
-      fetchReferences(searchObj).then(
-        response => {
-          this.setReferences(response);
-
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+      return fetchReferences(searchObj).then(response => {
+        this.setReferences(response);
+        return response;
+      });
     },
     getReferencesInLibrary() {
       const state = this.$store.state.librarySearch;
@@ -119,18 +112,10 @@ const queryMixin = {
           libraries: librariesObj
         }
       };
-
-      this.isLoading = true;
-      fetchReferences(searchObj).then(
-        response => {
-          this.setReferences(response);
-
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+      return fetchReferences(searchObj).then(response => {
+        this.setReferences(response);
+        return response;
+      });
     },
     getLibraries(page = 1) {
       const libraryParams = {
@@ -145,16 +130,10 @@ const queryMixin = {
           title: this.advancedSearch.byIds["title"]
         }
       };
-      this.isLoading = true;
-      fetchLibraries(libraryParams).then(
-        res => {
-          this.setLibraries(res);
-          this.isLoading = false;
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+      return fetchLibraries(libraryParams).then(res => {
+        this.setLibraries(res);
+        return res;
+      });
     }
   }
 };

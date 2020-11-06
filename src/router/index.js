@@ -8,6 +8,7 @@ import LibraryViewer from "@/components/library/LibraryViewer";
 
 import App from "@/App";
 import store from "@/store";
+import Tabs from "@/components/Tabs";
 Vue.use(VueRouter);
 
 const routes = [
@@ -26,7 +27,10 @@ const routes = [
           {
             path: "",
             name: "searchReference",
-            component: ReferenceViewer,
+            components: {
+              default: ReferenceViewer,
+              tabs: Tabs
+            },
             meta: {
               table: "reference",
               heading: "editReference.heading",
@@ -53,7 +57,7 @@ const routes = [
           {
             path: "",
             name: "searchLibrary",
-            component: LibraryViewer,
+            components: { default: LibraryViewer, tabs: Tabs },
             meta: {
               table: "library",
               heading: "editReference.heading",

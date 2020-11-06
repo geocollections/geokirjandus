@@ -242,24 +242,6 @@ export default {
     }
   },
   watch: {
-    referenceParameters: {
-      handler: debounce(function() {
-        this.getReferences();
-      }, 300),
-      deep: true
-    },
-    libraryReferenceParameters: {
-      handler: debounce(function() {
-        this.getReferencesInLibrary();
-      }, 300),
-      deep: true
-    },
-    libraryParameters: {
-      handler: debounce(function() {
-        this.getLibraries(this.libraryPage);
-      }, 300),
-      deep: true
-    },
     $route: {
       handler(to, from) {
         if (
@@ -282,16 +264,11 @@ export default {
           from === undefined
         ) {
           this.showAlert = false;
-          this.getReferences();
-          this.getLibraries();
         } else if (
           from &&
           from.name === "library" &&
           to.name === "searchLibrary"
         ) {
-          this.getReferences();
-          this.getLibraries();
-
           this.showAlert = false;
         } else {
           this.showAlert = false;
@@ -302,17 +279,6 @@ export default {
   },
   computed: {
     ...mapState("references", ["facet", "result", "count"]),
-    referenceParameters() {
-      return { ...this.advancedSearch.byIds, search: this.search };
-    },
-    libraryParameters() {
-      return {
-        search: this.search,
-        title: this.advancedSearch.byIds.title,
-        year: this.advancedSearch.byIds.year,
-        author: this.advancedSearch.byIds.author
-      };
-    },
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
 
@@ -386,8 +352,8 @@ export default {
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {
-      this.getReferences();
-      this.getLibraries();
+      // this.getReferences();
+      // this.getLibraries();
       this.$router.replace({ name: "searchReference" });
     },
     updateCheckbox(event, id) {

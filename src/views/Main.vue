@@ -30,28 +30,41 @@
       />
       <v-main class="fill-height" style="background-color: #F6EDDF">
         <div class="fill-height d-flex flex-wrap align-content-space-between">
-          <router-view
-            :tabs="true"
-            :search="search"
-            :advancedSearch="advancedSearch"
-          />
+          <div class="container">
+            <v-card
+              v-if="
+                $route.name === 'searchReference' ||
+                  $route.name === 'searchLibrary'
+              "
+              elevation="4"
+              class=" my-1"
+              color="#EEDBBF"
+            >
+              <router-view name="tabs" />
+              <router-view />
+            </v-card>
+            <router-view v-else />
+          </div>
           <app-footer />
         </div>
       </v-main>
     </div>
     <div v-if="isPrint" class="d-none d-print-block">
-      <reference-list-print-view :data="result"></reference-list-print-view>
+      <reference-list-print-view
+        :data="printResult"
+      ></reference-list-print-view>
     </div>
   </div>
 </template>
 
 <script>
 import AppHeader from "@/components/AppHeader";
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import Search from "@/components/Search";
 import Fabs from "@/components/Fabs";
 import ReferenceListPrintView from "@/components/reference/ReferenceListPrintView";
 import AppFooter from "@/components/AppFooter";
+import queryMixin from "@/mixins/queryMixin";
 
 export default {
   name: "Home",
@@ -65,21 +78,24 @@ export default {
   created() {
     window.onbeforeprint = () => {
       this.isPrint = true;
+      this.getReferences().then(res => {
+        this.printResult = res.results;
+      });
     };
     window.onafterprint = () => {
       this.isPrint = false;
     };
   },
+  mixins: [queryMixin],
   data() {
     return {
       showSearch: this.$vuetify.breakpoint.mdAndUp,
       showAdvancedSearch: true,
-      isPrint: false
+      isPrint: false,
+      printResult: []
     };
   },
   computed: {
-    ...mapState("search", ["search", "advancedSearch"]),
-    ...mapState("references", ["result"]),
     getDateLocale() {
       if (this.$i18n.locale === "ee") {
         return "et-EE";

@@ -55,7 +55,9 @@
           <b>{{ $t("common.libraryReferences") }}</b>
         </h3>
       </v-card-text>
-      <reference-viewer />
+      <v-card elevation="4" class="mx-3 my-3" color="#EEDBBF">
+        <reference-viewer />
+      </v-card>
       <v-card-text class="py-0">
         <v-row>
           <v-col cols="auto" class="pt-2">
@@ -148,7 +150,6 @@ export default {
       vm.resetPage();
       vm.updateSortBy(["author", "year"]);
       vm.updateSortDesc([false, false]);
-      vm.getReferencesInLibrary();
     });
   },
 

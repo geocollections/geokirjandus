@@ -119,10 +119,9 @@ const state = () => {
         "book",
         "journal",
         "abstract",
-        "localities",
-        "referenceType",
         "keywords",
-        "userAdded",
+        "referenceType",
+        "localities",
         "isEstonianReference",
         "isEstonianAuthor"
       ]

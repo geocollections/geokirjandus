@@ -467,7 +467,6 @@ export default {
         this.$router.back();
       } else {
         this.getReferences();
-        this.getLibraries();
 
         this.$router.replace(this.prevRoute);
       }

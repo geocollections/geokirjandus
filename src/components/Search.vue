@@ -284,18 +284,14 @@ export default {
       this.getAdvancedSearch.allIds.forEach(id => {
         const obj = this.getAdvancedSearch.byIds[id];
         if (obj.type === "text") {
-          if (this.getAdvancedSearch.byIds[id].value !== null) {
+          if (this.getAdvancedSearch.byIds[id].value?.length > 0) {
             count++;
           }
-        }
-
-        if (obj.type === "select") {
+        } else if (obj.type === "select") {
           if (this.getAdvancedSearch.byIds[id].value.length > 0) {
             count++;
           }
-        }
-
-        if (obj.type === "range") {
+        } else if (obj.type === "range") {
           const start = this.getAdvancedSearch.byIds[id].value[0];
           const end = this.getAdvancedSearch.byIds[id].value[1];
 

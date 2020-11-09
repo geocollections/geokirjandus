@@ -1,5 +1,5 @@
 <template>
-  <div class="search fill-height " style="background-color: #F6EDDF">
+  <div class="search fill-height ">
     <v-list class="mt-0 pb-10 pa-0">
       <v-fade-transition>
         <v-list-item v-if="showAlert" class="pt-2 ">
@@ -38,7 +38,7 @@
       <v-list-group
         color="#924f11"
         v-model="showAdvancedSearch"
-        style="background-color: #EEDBBF"
+        class="advancedSearch"
       >
         <template v-slot:activator>
           <v-list-item-title>
@@ -184,7 +184,6 @@
           outlined
           tile
           color="red"
-          style="border-radius: 4px"
           class="deleteSearch"
           aria-label="delete"
           @click="$emit('reset:parameters')"
@@ -368,7 +367,13 @@ export default {
 
 <style scoped lang="sass">
 @import 'src/sass/variables.sass'
-//
-//.deleteSearch
-//  background-color: $danger !important
+
+.search
+  background-color: #F6EDDF
+
+.advancedSearch
+  background-color: #EEDBBF
+
+.deleteSearch
+  border-radius: 4px
 </style>

@@ -1,16 +1,13 @@
 <template>
   <v-container>
     <v-card v-if="reference">
-      <v-card-title
-        style="background-color: #EEDBBF"
-        class="pt-1 pb-1 d-flex text-center"
-      >
+      <v-card-title class="pt-1 pb-1 d-flex text-center referenceTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col" style="word-break: normal">
+        <div class="col titleText">
           {{ `${reference.reference}: ${reference.title}` }}
         </div>
       </v-card-title>
@@ -313,16 +310,16 @@
       </v-card-text>
     </v-card>
     <v-card v-if="error">
-      <v-card-actions style="background-color: #F6EDDF">
-        <v-col cols="auto" class="py-0 px-2">
-          <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+      <v-card-actions class="referenceTitle">
+        <v-col cols="auto" class="py-0 px-0">
+          <v-btn large icon @click="handleBack()" aria-label="back">
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
+        <div class="col titleText">
+          {{ $t("error.referenceId", { text: id }) }}
+        </div>
       </v-card-actions>
-      <v-card-title style="background-color: #F6EDDF" class="pt-0">
-        {{ $t("error.referenceId", { text: id }) }}
-      </v-card-title>
     </v-card>
   </v-container>
 </template>
@@ -569,3 +566,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.referenceTitle {
+  background-color: #eedbbf;
+}
+
+.titleText {
+  word-break: normal;
+}
+</style>

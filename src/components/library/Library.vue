@@ -1,16 +1,13 @@
 <template>
   <v-container class="pa-0">
     <v-card v-if="library">
-      <v-card-title
-        style="background-color: #DDB77E"
-        class="pt-1 pb-1 d-flex text-center"
-      >
+      <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col" style="word-break: normal">
+        <div class="col titleText">
           {{ getTitle }}
         </div>
       </v-card-title>
@@ -72,16 +69,16 @@
       </v-card-text>
     </v-card>
     <v-card v-if="error">
-      <v-card-actions style="background-color: #F6EDDF">
-        <v-col cols="auto" class="py-0 px-2">
-          <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+      <v-card-actions class="libraryTitle">
+        <v-col cols="auto" class="py-0 px-0">
+          <v-btn large icon @click="handleBack()" aria-label="back">
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
+        <div class="col titleText">
+          {{ $t("error.libraryId", { text: id }) }}
+        </div>
       </v-card-actions>
-      <v-card-title style="background-color: #F6EDDF" class="pt-0">
-        {{ $t("error.libraryId", { text: id }) }}
-      </v-card-title>
     </v-card>
   </v-container>
 </template>
@@ -190,3 +187,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.libraryTitle {
+  background-color: #ddb77e;
+}
+
+.titleText {
+  word-break: normal;
+}
+</style>

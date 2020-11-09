@@ -28,7 +28,7 @@
         :show-search="showSearch"
         v-on:update:showSearch="showSearch = !showSearch"
       />
-      <v-main class="fill-height" style="background-color: #F6EDDF">
+      <v-main class="fill-height main">
         <div class="fill-height d-flex flex-wrap align-content-space-between">
           <div class="container">
             <v-card
@@ -136,5 +136,9 @@ export default {
   .container {
     max-width: 1264px !important;
   }
+}
+
+.main {
+  background-color: #f6eddf;
 }
 </style>

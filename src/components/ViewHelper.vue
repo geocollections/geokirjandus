@@ -13,7 +13,7 @@
         @change="$emit('update:paginateBy', $event)"
       />
     </div>
-    <div style="font-size: 0.8rem" class="ml-md-auto">{{ getRange }}</div>
+    <div class="ml-md-auto range">{{ getRange }}</div>
     <v-pagination
       :value="page"
       color="#E58124"
@@ -78,5 +78,9 @@ export default {
 <style>
 button {
   outline: none !important;
+}
+
+.range {
+  font-size: 0.8rem;
 }
 </style>

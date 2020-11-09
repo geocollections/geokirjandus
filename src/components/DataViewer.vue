@@ -39,8 +39,7 @@
         />
       </div>
       <div class="col-12 col-md order-md-1 px-2 py-0">
-        <span v-html="$t(title, { num: count })" style="font-size: 1.25rem">
-        </span>
+        <span v-html="$t(title, { num: count })" class="title"> </span>
       </div>
     </v-card-actions>
     <v-scroll-y-transition>
@@ -72,7 +71,7 @@
       :paginate-by="paginateBy"
       :count="count"
     />
-    <div style="background-color: white;border-radius: 12px">
+    <div class="content">
       <v-scroll-y-transition leave-absolute group>
         <v-card-text
           key="noResults"
@@ -232,6 +231,15 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  font-size: 1.25rem;
+}
+
+.content {
+  background-color: white;
+  border-radius: 12px;
+}
+
 .mobile-row >>> .v-data-table__mobile-row {
   height: initial !important;
 }

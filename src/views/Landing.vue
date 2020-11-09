@@ -37,13 +37,10 @@
           >
         </span>
       </v-row>
-      <v-row
-        class="d-flex flex-column align-center justify-center"
-        style="background-color: #F6EDDF"
-      >
+      <v-row class="d-flex flex-column align-center justify-center main">
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title v-if="intro" style="background-color: #EEDBBF">
+            <v-card-title v-if="intro" class="cardTitle">
               <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
             <v-card-text class="py-3" v-if="intro" v-html="getIntroText">
@@ -52,7 +49,7 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-card>
-            <v-card-title style="background-color: #EEDBBF">
+            <v-card-title class="cardTitle">
               <h6>{{ $t("common.newest") }}</h6>
             </v-card-title>
 
@@ -156,6 +153,12 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  background-color: #f6eddf;
+}
+.cardTitle {
+  background-color: #eedbbf;
+}
 .header {
   background-size: cover;
   /*background-image: url("https://geoloogia.info/img/books1.jpg");*/

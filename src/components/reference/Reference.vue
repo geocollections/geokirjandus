@@ -408,9 +408,6 @@ export default {
         URL: this.reference.url
       };
     },
-    referenceParameters() {
-      return { ...this.advancedSearch.byIds, search: this.search };
-    },
     getReferenceType() {
       return this.$i18n.locale === "ee"
         ? this.reference.reference_type
@@ -518,12 +515,12 @@ export default {
     },
     getReference(id) {
       fetchReference(id).then(res => {
-        this.reference = res.results[0];
-
-        if (this.reference === undefined) {
+        if (res.results[0] === undefined) {
           this.error = true;
           return;
         }
+
+        this.reference = res.results[0];
 
         if (this.reference.localities) {
           this.getReferenceLocalities().then(res => {

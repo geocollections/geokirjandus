@@ -351,8 +351,6 @@ export default {
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {
-      // this.getReferences();
-      // this.getLibraries();
       this.$router.replace({ name: "searchReference" });
     },
     updateCheckbox(event, id) {

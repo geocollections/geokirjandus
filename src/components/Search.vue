@@ -43,9 +43,10 @@
         <template v-slot:activator>
           <v-list-item-title>
             <v-row>
-              <v-col cols>
+              <v-col cols="auto" class="pr-0">
                 {{ $t("common.advancedSearch") }}
               </v-col>
+              <v-spacer />
               <v-col
                 v-if="getAdvancedSearchParametersAppliedCount > 0"
                 cols="auto"

@@ -103,13 +103,13 @@ const state = () => {
           label: "reference.keywords",
           fields: ["keywords"]
         },
-        userAdded: {
+        publisher: {
           type: "text",
-          id: "userAdded",
+          id: "publisher",
           lookUpType: "contains",
           value: null,
-          label: "reference.userAdded",
-          fields: ["user_added"]
+          label: "reference.publisher",
+          fields: ["publisher"]
         }
       },
       allIds: [
@@ -120,6 +120,7 @@ const state = () => {
         "journal",
         "abstract",
         "keywords",
+        "publisher",
         "referenceType",
         "localities",
         "isEstonianReference",

@@ -63,6 +63,13 @@ const state = () => {
           label: "reference.type",
           fields: ["type"]
         },
+        language: {
+          type: "select",
+          id: "language",
+          value: [],
+          label: "reference.language",
+          fields: ["language"]
+        },
         journal: {
           type: "text",
           id: "journal",
@@ -122,6 +129,7 @@ const state = () => {
         "keywords",
         "publisher",
         "referenceType",
+        "language",
         "localities",
         "isEstonianReference",
         "isEstonianAuthor"

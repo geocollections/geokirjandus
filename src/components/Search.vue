@@ -91,9 +91,9 @@
                   <v-select
                     multiple
                     color="#B76315"
-                    :label="$t('reference.type')"
+                    :label="$t(getAdvancedSearch.byIds[id].label)"
                     :value="getAdvancedSearch.byIds[id].value"
-                    :items="getReferenceTypes"
+                    :items="getSelectItems(id)"
                     item-color="#E58124"
                     :menu-props="{ bottom: true, offsetY: true }"
                     hide-details
@@ -306,6 +306,7 @@ export default {
 
       return count;
     },
+
     getReferenceTypes() {
       let types = [];
 
@@ -330,6 +331,34 @@ export default {
       }
 
       return types;
+    },
+
+    getReferenceLanguages() {
+      let languages = [];
+
+      if (!this.facet.facet_fields && !this.facet.facet_pivot) return languages;
+
+      for (let i = 0; i < this.facet.facet_fields.language.length; i += 2) {
+        languages.push({
+          value: this.facet.facet_fields.language[i],
+          text: `${
+            this.$i18n.locale === "ee"
+              ? this.facet.facet_pivot[
+                  "language,reference_language,reference_language_en"
+                ].find(
+                  o =>
+                    o.value.toString() === this.facet.facet_fields.language[i]
+                ).pivot[0].value
+              : this.facet.facet_pivot[
+                  "language,reference_language,reference_language_en"
+                ].find(
+                  o =>
+                    o.value.toString() === this.facet.facet_fields.language[i]
+                ).pivot[0].pivot[0].value
+          } [${this.facet.facet_fields.language[i + 1]}]`
+        });
+      }
+      return languages;
     }
   },
   data: () => ({
@@ -354,6 +383,11 @@ export default {
         value: event,
         id: id
       });
+    },
+    getSelectItems(id) {
+      if (id === "referenceType") return this.getReferenceTypes;
+      else if (id === "language") return this.getReferenceLanguages;
+      return [];
     }
   }
 };

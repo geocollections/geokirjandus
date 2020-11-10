@@ -5,37 +5,39 @@
         :style="
           `background-image: url(&quot;${require('@/assets/books1.jpg')}&quot;)`
         "
-        class="header d-flex flex-column pb-5 "
+        class="d-flex flex-column"
       >
-        <span class="d-flex justify-end mt-4 mb-2 mr-4">
-          <links />
-          <lang-buttons />
-        </span>
+        <div class="elevation-4 header d-flex flex-column pb-5">
+          <span class="d-flex justify-end mt-4 mb-2 mr-4">
+            <links />
+            <lang-buttons />
+          </span>
 
-        <h1 class="white--text text-center">{{ $t("title") }}</h1>
-        <span
-          class="text-center align-self-center col-12 col-sm-6 col-md-4 mt-6"
-        >
-          <v-text-field
-            v-model="searchStr"
-            :autofocus="true"
-            @keyup.native="search"
-            hide-details
-            :label="$t('common.search')"
-            solo
+          <h1 class="white--text text-center">{{ $t("title") }}</h1>
+          <span
+            class="text-center align-self-center col-12 col-sm-6 col-md-4 mt-6"
           >
-            <template v-slot:prepend-inner>
-              <v-icon small class="px-2">fas fa-search</v-icon>
-            </template>
-          </v-text-field>
-          <v-btn
-            class="mt-3 align-center"
-            color="primary"
-            dark
-            @click="search"
-            >{{ $t("common.viewReferences") }}</v-btn
-          >
-        </span>
+            <v-text-field
+              v-model="searchStr"
+              :autofocus="true"
+              @keyup.native="search"
+              hide-details
+              :label="$t('common.search')"
+              solo
+            >
+              <template v-slot:prepend-inner>
+                <v-icon small class="px-2">fas fa-search</v-icon>
+              </template>
+            </v-text-field>
+            <v-btn
+              class="mt-3 align-center"
+              color="primary"
+              dark
+              @click="search"
+              >{{ $t("common.viewReferences") }}</v-btn
+            >
+          </span>
+        </div>
       </v-row>
       <v-row class="d-flex flex-column align-center justify-center main">
         <v-col cols="12" sm="11" lg="10">

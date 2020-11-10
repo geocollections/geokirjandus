@@ -29,6 +29,13 @@
       "library_html": "Found <b>{num}</b> libraries"
     }
   },
+  "charts": {
+    "keywords": "Subjects",
+    "language": "Languages",
+    "types": "Types",
+    "byDecade": "Records by decade",
+    "title_html": "<h2>Total records:</h2> <h1 class='px-3'>{num}</h1>"
+  },
   "common": {
     "search": "Search",
     "advancedSearch": "Additional filters",
@@ -66,7 +73,8 @@
     "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia",
     "yes": "yes",
     "libraryCreatedBy": "Created by",
-    "close": "Close"
+    "close": "Close",
+    "statistics": "Statistics"
   },
   "reference": {
     "id": "ID",

@@ -28,6 +28,12 @@
       "library_html": "Leitud <b>{num}</b> kogumikku"
     }
   },
+  "charts": {
+    "keywords": "Valdkonnad",
+    "language": "Keeled",
+    "types": "Tüübid",
+    "byDecade": "Kirjeid kümnendi kaupa"
+  },
   "common": {
     "search": "Otsi",
     "advancedSearch": "Detailotsing",
@@ -65,7 +71,8 @@
     "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
     "yes": "jah",
     "libraryCreatedBy": "Kogumiku koostas(id)",
-    "close": "Sulge"
+    "close": "Sulge",
+    "statistics": "Statistika"
   },
   "reference": {
     "id": "ID",

@@ -38,27 +38,51 @@
         </span>
       </v-row>
       <v-row class="d-flex flex-column align-center justify-center main">
-        <v-col cols="12" md="6">
-          <v-card>
+        <v-col cols="12" sm="11" lg="10">
+          <v-card class="cardTitle">
+            <!--            <v-card-title class="cardTitle">-->
+            <!--              <h6>{{ $t("common.statistics") }}</h6>-->
+            <!--            </v-card-title>-->
+            <div class="px-3 py-3">
+              <statistics
+                style="border-radius: 12px; background-color: white"
+              />
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row class="d-flex justify-center main">
+        <v-col cols="12" sm="11" md="5" lg="4">
+          <v-card class="cardTitle">
             <v-card-title v-if="intro" class="cardTitle">
               <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
-            <v-card-text class="py-3" v-if="intro" v-html="getIntroText">
-            </v-card-text>
+            <div class="px-3 pb-3">
+              <v-card-text
+                style="border-radius: 12px; background-color: white"
+                class="py-3"
+                v-if="intro"
+                v-html="getIntroText"
+              />
+            </div>
           </v-card>
         </v-col>
-        <v-col cols="12" md="6">
-          <v-card>
+
+        <v-col cols="12" sm="11" md="6">
+          <v-card class="cardTitle">
             <v-card-title class="cardTitle">
               <h6>{{ $t("common.newest") }}</h6>
             </v-card-title>
 
             <v-expand-transition>
-              <reference-list-view
-                class="pb-3"
-                v-if="references"
-                :data="references"
-              ></reference-list-view>
+              <div class="px-3 pb-3">
+                <reference-list-view
+                  class="pb-3"
+                  style="border-radius: 12px; background-color: white"
+                  v-if="references"
+                  :data="references"
+                ></reference-list-view>
+              </div>
             </v-expand-transition>
           </v-card>
         </v-col>
@@ -76,15 +100,22 @@ import ReferenceListView from "@/components/reference/ReferenceListView";
 import AppFooter from "@/components/AppFooter";
 import axios from "axios";
 import { mapActions } from "vuex";
-
+import Statistics from "@/components/Statistics";
 export default {
   name: "Landing",
-  components: { AppFooter, Links, LangButtons, ReferenceListView },
+  components: {
+    Statistics,
+    AppFooter,
+    Links,
+    LangButtons,
+    ReferenceListView
+  },
   data() {
     return {
       searchStr: "",
       references: null,
-      intro: null
+      intro: null,
+      statisticsData: null
     };
   },
   created() {
@@ -106,7 +137,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions("search", ["updateSearch"]),
+    ...mapActions("search", [
+      "resetSearch",
+      "updateSearch",
+      "updateAdvancedSearch"
+    ]),
     getIntroduction() {
       axios.get("https://api.geocollections.info/page/75").then(res => {
         this.intro = res.data.results[0];

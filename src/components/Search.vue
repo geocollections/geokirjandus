@@ -41,20 +41,19 @@
         class="advancedSearch"
       >
         <template v-slot:activator>
-          <v-list-item-title>
-            <v-row>
-              <v-col cols="auto" class="pr-0">
-                {{ $t("common.advancedSearch") }}
-              </v-col>
-              <v-spacer />
-              <v-col
-                v-if="getAdvancedSearchParametersAppliedCount > 0"
-                cols="auto"
-              >
-                <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
-                <v-icon small color="#E58124">fas fa-filter</v-icon>
-              </v-col>
-            </v-row>
+          <v-list-item-title class="d-flex">
+            <v-col cols="auto" class="px-0">
+              {{ $t("common.advancedSearch") }}
+            </v-col>
+            <v-spacer />
+            <v-col
+              v-if="getAdvancedSearchParametersAppliedCount > 0"
+              cols="auto"
+              class="px-0"
+            >
+              <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
+              <v-icon small color="#E58124">fas fa-filter</v-icon>
+            </v-col>
           </v-list-item-title>
         </template>
         <div class="pb-3">

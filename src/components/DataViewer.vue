@@ -123,6 +123,7 @@
       </v-scroll-y-transition>
     </div>
     <view-helper
+      class="pt-2"
       v-if="helpers"
       v-on="$listeners"
       :page="page"

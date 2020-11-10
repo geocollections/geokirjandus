@@ -12,7 +12,11 @@
           :sort-by="getSortBy"
           :sort-desc="getSortDesc"
           :headers="headers"
-          title="viewer.title.reference_html"
+          :title="
+            count !== 1
+              ? 'viewer.title.reference_html'
+              : 'viewer.title.reference_single_html'
+          "
           v-on:open="open"
           v-on:update:paginateBy="handleUpdatePaginateBy"
           v-on:update:page="handleUpdatePage"

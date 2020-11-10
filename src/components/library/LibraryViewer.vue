@@ -12,7 +12,11 @@
           :sort-by="sortBy"
           :sort-desc="sortDesc"
           :headers="headers"
-          title="viewer.title.library_html"
+          :title="
+            count !== 1
+              ? 'viewer.title.library_html'
+              : 'viewer.title.library_single_html'
+          "
           :export-buttons="false"
           :helpers="false"
           v-on:open="open"

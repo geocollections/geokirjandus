@@ -25,7 +25,9 @@
   "viewer": {
     "title": {
       "reference_html": "Leitud <b>{num}</b> kirjet",
-      "library_html": "Leitud <b>{num}</b> kogumikku"
+      "reference_single_html": "Leitud <b>{num}</b> kirje",
+      "library_html": "Leitud <b>{num}</b> kogumikku",
+      "library_single_html": "Leitud <b>{num}</b> kogumik"
     }
   },
   "charts": {

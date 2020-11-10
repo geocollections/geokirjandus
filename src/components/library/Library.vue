@@ -11,12 +11,27 @@
           {{ getTitle }}
         </div>
       </v-card-title>
-      <v-card-text class="pt-4">
-        <h3>
-          {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
-          {{ library.year }}
-        </h3>
-      </v-card-text>
+      <v-card-actions class="pa-0">
+        <v-card-text class="pt-4">
+          <h3 class="">
+            {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+            {{ library.year }}
+          </h3>
+        </v-card-text>
+        <v-spacer />
+        <v-chip
+          link
+          outlined
+          color="blue-grey darken-3"
+          class="d-print-none mr-2 my-1 link"
+          :href="`https://edit.geocollections.info/library/${library.id}`"
+          target="_blank"
+          rel="noopener"
+        >
+          <v-icon small class="pr-1">fas fa-edit</v-icon>
+          <b>EDIT</b>
+        </v-chip>
+      </v-card-actions>
 
       <v-card-text>
         <div class="d-flex pb-3">

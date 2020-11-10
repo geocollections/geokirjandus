@@ -13,6 +13,19 @@
       </v-card-title>
       <v-card-actions class=" pt-3">
         <reference-links :item="reference" />
+        <v-spacer />
+        <v-chip
+          link
+          outlined
+          color="blue-grey darken-3"
+          class="d-print-none ml-1 my-1 link"
+          :href="`https://edit.geocollections.info/reference/${reference.id}`"
+          target="_blank"
+          rel="noopener"
+        >
+          <v-icon small class="pr-1">fas fa-edit</v-icon>
+          <b>EDIT</b>
+        </v-chip>
       </v-card-actions>
       <v-card-text>
         <div class="d-flex pb-3">

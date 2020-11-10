@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-card v-if="library">
+    <v-card class="roundedBorder" v-if="library">
       <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
@@ -67,7 +67,11 @@
           <b>{{ $t("common.libraryReferences") }}</b>
         </h3>
       </v-card-text>
-      <v-card elevation="4" class="mx-2 my-3 mx-sm-3" color="#EEDBBF">
+      <v-card
+        elevation="4"
+        class="mx-2 my-3 mx-sm-3 roundedBorder"
+        color="#EEDBBF"
+      >
         <reference-viewer />
       </v-card>
       <v-card-text class="py-0">
@@ -210,5 +214,9 @@ export default {
 
 .titleText {
   word-break: normal;
+}
+
+.roundedBorder {
+  border-radius: 12px;
 }
 </style>

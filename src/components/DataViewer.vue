@@ -5,7 +5,7 @@
     <slot name="prepend"></slot>
     <!--  TODO: Use slot to add inputs to header  -->
     <v-card-actions
-      class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between pb-0 pt-2"
+      class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between pb-2 pt-2"
     >
       <div
         class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"

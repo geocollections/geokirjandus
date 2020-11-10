@@ -39,20 +39,20 @@
       </v-row>
       <v-row class="d-flex flex-column align-center justify-center main">
         <v-col cols="12" sm="11" lg="10">
-          <statistics style="border-radius: 12px; background-color: white" />
+          <statistics class="roundedBorder" />
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center main">
         <v-col cols="12" sm="11" md="5" lg="4">
           <v-fade-transition>
-            <v-card v-if="intro" class="cardTitle">
+            <v-card v-if="intro" class="cardTitle roundedBorder">
               <v-card-title class="cardTitle">
                 <h6>{{ getIntroTitle }}</h6>
               </v-card-title>
               <div class="px-1 pb-1 px-sm-2 pb-sm-2">
                 <v-card-text
-                  style="border-radius: 12px; background-color: white"
-                  class="py-3"
+                  style="background-color: white"
+                  class="py-3 roundedBorder"
                   v-html="getIntroText"
                 />
               </div>
@@ -62,7 +62,7 @@
 
         <v-col cols="12" sm="11" md="6">
           <v-fade-transition>
-            <v-card v-if="references" class="cardTitle">
+            <v-card v-if="references" class="cardTitle roundedBorder">
               <v-card-title class="cardTitle">
                 <h6>{{ $t("common.newest") }}</h6>
               </v-card-title>
@@ -70,8 +70,8 @@
               <v-expand-transition>
                 <div class="px-1 pb-1 px-sm-2 pb-sm-2">
                   <reference-list-view
-                    class="pb-3"
-                    style="border-radius: 12px; background-color: white"
+                    class="pb-3 roundedBorder"
+                    style=" background-color: white"
                     :data="references"
                   ></reference-list-view>
                 </div>
@@ -187,6 +187,11 @@ export default {
 .cardTitle {
   background-color: #eedbbf;
 }
+
+.roundedBorder {
+  border-radius: 12px;
+}
+
 .header {
   background-size: cover;
   /*background-image: url("https://geoloogia.info/img/books1.jpg");*/

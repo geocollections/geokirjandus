@@ -50,5 +50,10 @@ export default {
 <style scoped>
 .active {
   background-color: #eedbbf;
+  border-radius: 12px 12px 0px 0px;
+}
+
+.v-tab:hover {
+  border-radius: 12px 12px 0px 0px;
 }
 </style>

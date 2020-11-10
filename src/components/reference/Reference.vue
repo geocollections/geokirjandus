@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card v-if="reference">
+    <v-card class="roundedBorder" v-if="reference">
       <v-card-title class="pt-1 pb-1 d-flex text-center referenceTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
@@ -584,5 +584,9 @@ export default {
 
 .titleText {
   word-break: normal;
+}
+
+.roundedBorder {
+  border-radius: 12px;
 }
 </style>

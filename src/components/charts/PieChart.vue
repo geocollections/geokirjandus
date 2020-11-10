@@ -21,4 +21,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+canvas {
+  max-height: 275px;
+  max-width: 275px;
+}
+</style>

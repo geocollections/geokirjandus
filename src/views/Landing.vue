@@ -43,7 +43,7 @@
             <!--            <v-card-title class="cardTitle">-->
             <!--              <h6>{{ $t("common.statistics") }}</h6>-->
             <!--            </v-card-title>-->
-            <div class="px-3 py-3">
+            <div class="pa-1 pa-sm-2">
               <statistics
                 style="border-radius: 12px; background-color: white"
               />
@@ -57,7 +57,7 @@
             <v-card-title v-if="intro" class="cardTitle">
               <h6>{{ getIntroTitle }}</h6>
             </v-card-title>
-            <div class="px-3 pb-3">
+            <div class="px-1 pb-1 px-sm-2 pb-sm-2">
               <v-card-text
                 style="border-radius: 12px; background-color: white"
                 class="py-3"
@@ -75,7 +75,7 @@
             </v-card-title>
 
             <v-expand-transition>
-              <div class="px-3 pb-3">
+              <div class="px-1 pb-1 px-sm-2 pb-sm-2">
                 <reference-list-view
                   class="pb-3"
                   style="border-radius: 12px; background-color: white"

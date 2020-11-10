@@ -7,6 +7,7 @@ export default {
   props: ["chartdata", "options", "locale"],
   mounted() {
     this.addPlugin(ChartJSPluginColorSchemes);
+
     this.renderChart(this.chartdata, this.options);
   },
   watch: {
@@ -20,4 +21,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+canvas {
+  max-height: 275px;
+  max-width: 275px;
+}
+</style>

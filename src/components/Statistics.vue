@@ -9,6 +9,7 @@
       <v-col cols="12" sm="6" md="3">
         <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
         <bar-chart
+          class="d-flex justify-center"
           :chartdata="getKeywordsChartData"
           :options="getChartOptions('bar', handleKeywordClick)"
           :locale="$i18n.locale"
@@ -17,6 +18,7 @@
       <v-col cols="12" sm="6" md="3">
         <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
         <bar-chart
+          class="d-flex justify-center"
           :chartdata="getDecadesChartData"
           :options="getChartOptions('bar', handleDecadeClick)"
           :locale="$i18n.locale"
@@ -25,6 +27,7 @@
       <v-col cols="12" sm="6" md="3">
         <h3 class="text-center pb-3">{{ $t("charts.types") }}</h3>
         <pie-chart
+          class="d-flex justify-center"
           :chartdata="getTypesChartData"
           :options="getChartOptions('pie', handleTypeClick)"
           :locale="$i18n.locale"
@@ -33,6 +36,7 @@
       <v-col cols="12" sm="6" md="3">
         <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
         <pie-chart
+          class="d-flex justify-center"
           :chartdata="getLanguageChartData"
           :options="getChartOptions('pie', handleLanguageClick)"
           :locale="$i18n.locale"
@@ -102,7 +106,7 @@ export default {
                 return context.chart.data.labels[context.dataIndex].name;
               else return "";
             },
-            display: "auto",
+            display: "auto"
           },
           colorschemes: {
             scheme: "tableau.Orange20"

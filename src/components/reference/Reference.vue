@@ -24,7 +24,7 @@
           rel="noopener"
         >
           <v-icon small class="pr-1">fas fa-edit</v-icon>
-          <b>EDIT</b>
+          <b>{{ $t("common.edit") }}</b>
         </v-chip>
       </v-card-actions>
       <v-card-text>

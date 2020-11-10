@@ -7,37 +7,34 @@
     </v-card-text>
     <v-row>
       <v-col cols="12" sm="6" md="3">
-        <!--   Valdkonnad     -->
+        <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
         <bar-chart
           :chartdata="getKeywordsChartData"
-          :options="
-            getChartOptions('bar', $t('charts.keywords'), handleKeywordClick)
-          "
+          :options="getChartOptions('bar', handleKeywordClick)"
           :locale="$i18n.locale"
         />
       </v-col>
       <v-col cols="12" sm="6" md="3">
+        <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
         <bar-chart
           :chartdata="getDecadesChartData"
-          :options="
-            getChartOptions('bar', $t('charts.byDecade'), handleDecadeClick)
-          "
+          :options="getChartOptions('bar', handleDecadeClick)"
           :locale="$i18n.locale"
         />
       </v-col>
       <v-col cols="12" sm="6" md="3">
+        <h3 class="text-center pb-3">{{ $t("charts.types") }}</h3>
         <pie-chart
           :chartdata="getTypesChartData"
-          :options="getChartOptions('pie', $t('charts.types'), handleTypeClick)"
+          :options="getChartOptions('pie', handleTypeClick)"
           :locale="$i18n.locale"
         ></pie-chart>
       </v-col>
       <v-col cols="12" sm="6" md="3">
+        <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
         <pie-chart
           :chartdata="getLanguageChartData"
-          :options="
-            getChartOptions('pie', $t('charts.language'), handleLanguageClick)
-          "
+          :options="getChartOptions('pie', handleLanguageClick)"
           :locale="$i18n.locale"
         ></pie-chart>
       </v-col>
@@ -58,10 +55,6 @@ export default {
     return {
       statisticsData: null,
       barChartOptions: {
-        title: {
-          display: true,
-          text: null
-        },
         scales: {
           yAxes: [
             {
@@ -81,17 +74,13 @@ export default {
             scheme: "tableau.Orange20"
           },
           datalabels: {
-            rotation: 90,
-            anchor: "end",
-            align: "top"
+            formatter: function(value, context) {
+              return "";
+            }
           }
         }
       },
       pieChartOptions: {
-        title: {
-          display: true,
-          text: null
-        },
         legend: {
           display: false
         },
@@ -113,7 +102,7 @@ export default {
                 return context.chart.data.labels[context.dataIndex].name;
               else return "";
             },
-            display: "auto"
+            display: "auto",
           },
           colorschemes: {
             scheme: "tableau.Orange20"
@@ -253,23 +242,20 @@ export default {
   },
   methods: {
     ...mapActions("search", ["resetSearch", "updateAdvancedSearch"]),
-    getChartOptions(type, title, onClick = null) {
+    getChartOptions(type, onClick = null) {
       if (type === "bar") {
         return {
           ...this.barChartOptions,
-          title: { ...this.barChartOptions.title, text: title },
           onClick: onClick
         };
       } else if (type === "pie") {
         return {
           ...this.pieChartOptions,
-          title: { ...this.pieChartOptions.title, text: title },
           onClick: onClick
         };
       } else if (type === "line") {
         return {
           ...this.lineChartOptions,
-          title: { ...this.lineChartOptions.title, text: title },
           onClick: onClick
         };
       }

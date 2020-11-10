@@ -25,8 +25,17 @@
   "viewer": {
     "title": {
       "reference_html": "Leitud <b>{num}</b> kirjet",
-      "library_html": "Leitud <b>{num}</b> kogumikku"
+      "reference_single_html": "Leitud <b>{num}</b> kirje",
+      "library_html": "Leitud <b>{num}</b> kogumikku",
+      "library_single_html": "Leitud <b>{num}</b> kogumik"
     }
+  },
+  "charts": {
+    "keywords": "Valdkonnad",
+    "language": "Keeled",
+    "types": "Kirje tüübid",
+    "byDecade": "Kirjed kümnendite kaupa",
+    "title_html": "<h2>Kirjeid kokku:</h2> <h1 class='px-3'>{num}</h1>"
   },
   "common": {
     "search": "Otsi",
@@ -64,7 +73,10 @@
     "searchCommand": "Otsi",
     "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
     "yes": "jah",
-    "libraryCreatedBy": "Kogumiku koostas(id)"
+    "libraryCreatedBy": "Kogumiku koostas(id)",
+    "close": "Sulge",
+    "statistics": "Statistika",
+    "edit": "MUUDA"
   },
   "reference": {
     "id": "ID",

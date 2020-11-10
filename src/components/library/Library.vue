@@ -1,25 +1,37 @@
 <template>
-  <v-container>
-    <v-card v-if="library">
-      <v-card-title
-        style="background-color: #F1CDA7"
-        class="pt-1 pb-1 d-flex text-center"
-      >
+  <v-container class="pa-0">
+    <v-card class="roundedBorder" v-if="library">
+      <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col" style="word-break: normal">
+        <div class="col titleText">
           {{ getTitle }}
         </div>
       </v-card-title>
-      <v-card-text class="pt-4">
-        <h3>
-          {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
-          {{ library.year }}
-        </h3>
-      </v-card-text>
+      <v-card-actions class="pa-0">
+        <v-card-text class="pt-4">
+          <h3 class="">
+            {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+            {{ library.year }}
+          </h3>
+        </v-card-text>
+        <v-spacer />
+        <v-chip
+          link
+          outlined
+          color="blue-grey darken-3"
+          class="d-print-none mr-2 my-1 link"
+          :href="`https://edit.geocollections.info/library/${library.id}`"
+          target="_blank"
+          rel="noopener"
+        >
+          <v-icon small class="pr-1">fas fa-edit</v-icon>
+          <b>{{ $t("common.edit") }}</b>
+        </v-chip>
+      </v-card-actions>
 
       <v-card-text>
         <div class="d-flex pb-3">
@@ -55,7 +67,13 @@
           <b>{{ $t("common.libraryReferences") }}</b>
         </h3>
       </v-card-text>
-      <reference-viewer />
+      <v-card
+        elevation="4"
+        class="mx-2 my-3 mx-sm-3 roundedBorder"
+        color="#EEDBBF"
+      >
+        <reference-viewer />
+      </v-card>
       <v-card-text class="py-0">
         <v-row>
           <v-col cols="auto" class="pt-2">
@@ -70,16 +88,16 @@
       </v-card-text>
     </v-card>
     <v-card v-if="error">
-      <v-card-actions style="background-color: #F6EDDF">
-        <v-col cols="auto" class="py-0 px-2">
-          <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+      <v-card-actions class="libraryTitle">
+        <v-col cols="auto" class="py-0 px-0">
+          <v-btn large icon @click="handleBack()" aria-label="back">
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
+        <div class="col titleText">
+          {{ $t("error.libraryId", { text: id }) }}
+        </div>
       </v-card-actions>
-      <v-card-title style="background-color: #F6EDDF" class="pt-0">
-        {{ $t("error.libraryId", { text: id }) }}
-      </v-card-title>
     </v-card>
   </v-container>
 </template>
@@ -148,7 +166,6 @@ export default {
       vm.resetPage();
       vm.updateSortBy(["author", "year"]);
       vm.updateSortDesc([false, false]);
-      vm.getReferencesInLibrary();
     });
   },
 
@@ -189,3 +206,17 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.libraryTitle {
+  background-color: #ddb77e;
+}
+
+.titleText {
+  word-break: normal;
+}
+
+.roundedBorder {
+  border-radius: 12px;
+}
+</style>

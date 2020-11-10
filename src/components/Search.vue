@@ -1,28 +1,29 @@
 <template>
-  <div class="search fill-height " style="background-color: #F6EDDF">
+  <div class="search fill-height ">
     <v-list class="mt-0 pb-10 pa-0">
-      <v-list-item v-if="infoAlert" class="py-2">
-        <v-alert
-          dense
-          v-if="infoAlert"
-          prominent
-          colored-border
-          border="right"
-          type="info"
-          color="#F1CDA7"
-        >
-          <v-row align="center">
-            <v-col class="grow">
-              {{ $t(infoAlert) }}
-            </v-col>
-            <v-col class="shrink">
-              <v-btn x-small icon @click="handleExitLibrary()"
-                ><v-icon>fa fa-times</v-icon></v-btn
-              >
-            </v-col>
-          </v-row>
-        </v-alert>
-      </v-list-item>
+      <v-fade-transition>
+        <v-list-item v-if="showAlert" class="pt-2 ">
+          <v-alert
+            dense
+            colored-border
+            border="right"
+            type="info"
+            color="#DDB77E"
+            class="mb-0"
+          >
+            <v-row align="center">
+              <v-col class="grow py-0">
+                {{ $t("alert.infoLibrarySearch") }}
+              </v-col>
+              <v-col class="shrink">
+                <v-btn x-small icon @click="handleExitLibrary()"
+                  ><v-icon>fa fa-times</v-icon></v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-alert>
+        </v-list-item>
+      </v-fade-transition>
 
       <v-list-item class="py-4">
         <v-text-field
@@ -35,24 +36,24 @@
       </v-list-item>
 
       <v-list-group
-        color="#B76315"
+        color="#924f11"
         v-model="showAdvancedSearch"
-        style="background-color: #F2E4CF"
+        class="advancedSearch"
       >
         <template v-slot:activator>
-          <v-list-item-title>
-            <v-row>
-              <v-col cols>
-                {{ $t("common.advancedSearch") }}
-              </v-col>
-              <v-col
-                v-if="getAdvancedSearchParametersAppliedCount > 0"
-                cols="auto"
-              >
-                <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
-                <v-icon small color="#E58124">fas fa-filter</v-icon>
-              </v-col>
-            </v-row>
+          <v-list-item-title class="d-flex">
+            <v-col cols="auto" class="px-0">
+              {{ $t("common.advancedSearch") }}
+            </v-col>
+            <v-spacer />
+            <v-col
+              v-if="getAdvancedSearchParametersAppliedCount > 0"
+              cols="auto"
+              class="px-0"
+            >
+              <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
+              <v-icon small color="#E58124">fas fa-filter</v-icon>
+            </v-col>
           </v-list-item-title>
         </template>
         <div class="pb-3">
@@ -65,6 +66,7 @@
               <v-row class="pa-1">
                 <v-col cols="12" class="py-0 px-1">
                   <v-text-field
+                    color="#B76315"
                     :value="getAdvancedSearch.byIds[id].value"
                     :label="$t(getAdvancedSearch.byIds[id].label)"
                     hide-details
@@ -88,9 +90,11 @@
                 <div class="col py-1">
                   <v-select
                     multiple
-                    :label="$t('reference.type')"
+                    color="#B76315"
+                    :label="$t(getAdvancedSearch.byIds[id].label)"
                     :value="getAdvancedSearch.byIds[id].value"
-                    :items="getReferenceTypes"
+                    :items="getSelectItems(id)"
+                    item-color="#E58124"
                     :menu-props="{ bottom: true, offsetY: true }"
                     hide-details
                     @change="
@@ -115,6 +119,7 @@
                   <v-row>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[0])
                             ? ''
@@ -141,6 +146,7 @@
                     </v-col>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[1])
                             ? ''
@@ -171,21 +177,22 @@
           </div>
         </div>
       </v-list-group>
-      <v-list-item>
+      <v-list-item class="mt-2">
         <v-btn
           icon
           small
+          outlined
           tile
-          style="border-radius: 4px"
+          color="red"
           class="deleteSearch"
+          aria-label="delete"
           @click="$emit('reset:parameters')"
-          dark
         >
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
         <share-button />
 
-        <v-btn color="primary" class="ml-auto">
+        <v-btn color="primary" dark class="ml-auto">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>
@@ -199,6 +206,7 @@
             dense
             :label="$t(getAdvancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
+            color="#E58124"
             :false-value="null"
             true-value="1"
             hide-details
@@ -233,24 +241,6 @@ export default {
     }
   },
   watch: {
-    referenceParameters: {
-      handler: debounce(function() {
-        this.getReferences();
-      }, 300),
-      deep: true
-    },
-    libraryReferenceParameters: {
-      handler: debounce(function() {
-        this.getReferencesInLibrary();
-      }, 300),
-      deep: true
-    },
-    libraryParameters: {
-      handler: debounce(function() {
-        this.getLibraries(this.libraryPage);
-      }, 300),
-      deep: true
-    },
     $route: {
       handler(to, from) {
         if (
@@ -259,32 +249,28 @@ export default {
           from &&
           from.name === "searchLibrary"
         ) {
-          this.infoAlert = "alert.infoLibrarySearch";
+          this.showAlert = true;
         } else if (to.name === "library" && to.params.id) {
-          this.infoAlert = "alert.infoLibrarySearch";
+          this.showAlert = true;
         } else if (
           from !== undefined &&
           from.name === "library" &&
           to.name === "reference"
         ) {
-          this.infoAlert = "alert.infoLibrarySearch";
+          this.showAlert = true;
         } else if (
           (to.name === "searchReference" || to.name === "searchLibrary") &&
           from === undefined
         ) {
-          this.infoAlert = null;
-          this.getReferences();
-          this.getLibraries();
+          this.showAlert = false;
         } else if (
           from &&
           from.name === "library" &&
           to.name === "searchLibrary"
         ) {
-          this.getReferences();
-          this.getLibraries();
-          this.infoAlert = null;
+          this.showAlert = false;
         } else {
-          this.infoAlert = null;
+          this.showAlert = false;
         }
       },
       immediate: true
@@ -292,35 +278,20 @@ export default {
   },
   computed: {
     ...mapState("references", ["facet", "result", "count"]),
-    referenceParameters() {
-      return { ...this.advancedSearch.byIds, search: this.search };
-    },
-    libraryParameters() {
-      return {
-        search: this.search,
-        title: this.advancedSearch.byIds.title,
-        year: this.advancedSearch.byIds.year,
-        author: this.advancedSearch.byIds.author
-      };
-    },
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
 
       this.getAdvancedSearch.allIds.forEach(id => {
         const obj = this.getAdvancedSearch.byIds[id];
         if (obj.type === "text") {
-          if (this.getAdvancedSearch.byIds[id].value !== null) {
+          if (this.getAdvancedSearch.byIds[id].value?.length > 0) {
             count++;
           }
-        }
-
-        if (obj.type === "select") {
+        } else if (obj.type === "select") {
           if (this.getAdvancedSearch.byIds[id].value.length > 0) {
             count++;
           }
-        }
-
-        if (obj.type === "range") {
+        } else if (obj.type === "range") {
           const start = this.getAdvancedSearch.byIds[id].value[0];
           const end = this.getAdvancedSearch.byIds[id].value[1];
 
@@ -335,6 +306,7 @@ export default {
 
       return count;
     },
+
     getReferenceTypes() {
       let types = [];
 
@@ -359,6 +331,34 @@ export default {
       }
 
       return types;
+    },
+
+    getReferenceLanguages() {
+      let languages = [];
+
+      if (!this.facet.facet_fields && !this.facet.facet_pivot) return languages;
+
+      for (let i = 0; i < this.facet.facet_fields.language.length; i += 2) {
+        languages.push({
+          value: this.facet.facet_fields.language[i],
+          text: `${
+            this.$i18n.locale === "ee"
+              ? this.facet.facet_pivot[
+                  "language,reference_language,reference_language_en"
+                ].find(
+                  o =>
+                    o.value.toString() === this.facet.facet_fields.language[i]
+                ).pivot[0].value
+              : this.facet.facet_pivot[
+                  "language,reference_language,reference_language_en"
+                ].find(
+                  o =>
+                    o.value.toString() === this.facet.facet_fields.language[i]
+                ).pivot[0].pivot[0].value
+          } [${this.facet.facet_fields.language[i + 1]}]`
+        });
+      }
+      return languages;
     }
   },
   data: () => ({
@@ -369,14 +369,13 @@ export default {
     referenceTypeValue: [],
     showAdvancedSearch: false,
     infoAlert: null,
-    filterCount: 2
+    filterCount: 2,
+    showAlert: false
   }),
   mixins: [urlMixin, queryMixin],
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {
-      this.getReferences();
-      this.getLibraries();
       this.$router.replace({ name: "searchReference" });
     },
     updateCheckbox(event, id) {
@@ -384,6 +383,11 @@ export default {
         value: event,
         id: id
       });
+    },
+    getSelectItems(id) {
+      if (id === "referenceType") return this.getReferenceTypes;
+      else if (id === "language") return this.getReferenceLanguages;
+      return [];
     }
   }
 };
@@ -392,6 +396,12 @@ export default {
 <style scoped lang="sass">
 @import 'src/sass/variables.sass'
 
+.search
+  background-color: #F6EDDF
+
+.advancedSearch
+  background-color: #EEDBBF
+
 .deleteSearch
-  background-color: $danger !important
+  border-radius: 4px
 </style>

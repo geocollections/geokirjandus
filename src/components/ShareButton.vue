@@ -3,10 +3,12 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         icon
-        dark
         small
-        style="border-radius: 4px; background-color: #E58124"
-        class="mx-2"
+        outlined
+        tile
+        aria-label="share"
+        color="#E58124"
+        class="mx-2 shareBtn"
         v-bind="attrs"
         v-on="on"
       >
@@ -22,7 +24,7 @@
       </v-card-title>
       <v-card-text>
         <v-card outlined>
-          <v-card-text style="word-break: break-all">
+          <v-card-text class="url">
             {{ getShareURL }}
           </v-card-text>
         </v-card>
@@ -30,7 +32,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text @click="open = false">
-          Close
+          {{ $t("common.close") }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -68,4 +70,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.shareBtn {
+  border-radius: 4px;
+}
+
+.url {
+  word-break: break-all;
+}
+</style>

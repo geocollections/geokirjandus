@@ -2,8 +2,8 @@
   <v-tabs
     :vertical="$vuetify.breakpoint.xsOnly"
     grow
-    background-color="#E5C99F"
-    color="#B76315"
+    background-color="#F6EDDF"
+    color="#924F11"
     ref="tabs"
   >
     <v-tab active-class="active" link :to="{ name: 'searchReference' }">{{
@@ -49,6 +49,11 @@ export default {
 
 <style scoped>
 .active {
-  background-color: #f6eddf;
+  background-color: #eedbbf;
+  border-radius: 12px 12px 0px 0px;
+}
+
+.v-tab:hover {
+  border-radius: 12px 12px 0px 0px;
 }
 </style>

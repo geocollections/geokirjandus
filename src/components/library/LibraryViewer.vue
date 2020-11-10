@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="py-0">
     <v-row>
-      <v-col class="py-0">
+      <v-col class="px-1 pb-1 px-sm-2 pb-sm-2">
         <data-viewer
           :module="$route.meta.object"
           :data="result"
@@ -12,7 +12,11 @@
           :sort-by="sortBy"
           :sort-desc="sortDesc"
           :headers="headers"
-          title="viewer.title.library_html"
+          :title="
+            count !== 1
+              ? 'viewer.title.library_html'
+              : 'viewer.title.library_single_html'
+          "
           :export-buttons="false"
           :helpers="false"
           v-on:open="open"
@@ -22,10 +26,6 @@
           v-on:update:sortDesc="updateSortDesc"
           v-on:update:headers="headers = $event"
         >
-          <template v-slot:prepend>
-            <tabs />
-          </template>
-
           <!--  TABLE VIEW CUSTOM TEMPLATES  -->
           <template v-slot:item.bookJournal="{ item }">
             <div v-if="item.book">{{ item.book }}</div>
@@ -54,12 +54,10 @@ import DataViewer from "@/components/DataViewer";
 import dateMixin from "@/mixins/dateMixin";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
-import Tabs from "@/components/Tabs";
 
 export default {
   name: "LibraryViewer",
   components: {
-    Tabs,
     LibraryListView,
     DataViewer
   },
@@ -109,25 +107,42 @@ export default {
           fixed: false,
           class: "text-no-wrap"
         }
-      ]
+      ],
+      result: []
     };
+  },
+  created() {
+    this.handleLibrariesResult();
+    this.getReferences();
   },
   watch: {
     page: {
       handler: debounce(function() {
-        this.getLibraries();
+        this.handleLibrariesResult();
       }, 300)
     },
     paginateBy: {
       handler() {
         this.resetPage();
-        this.getLibraries();
+        this.handleLibrariesResult();
       }
     },
     sortDesc: {
       handler() {
-        this.getLibraries();
+        this.handleLibrariesResult();
       }
+    },
+    libraryParameters: {
+      handler: debounce(function() {
+        this.handleLibrariesResult();
+      }, 300),
+      deep: true
+    },
+    referenceParameters: {
+      handler: debounce(function() {
+        this.getReferences();
+      }, 300),
+      deep: true
     }
   },
   props: {
@@ -138,7 +153,7 @@ export default {
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("library", ["result", "count"])
+    ...mapState("library", ["count"])
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
@@ -149,7 +164,13 @@ export default {
       "updateSortDesc",
       "resetPage"
     ]),
-
+    handleLibrariesResult() {
+      this.isLoading = true;
+      this.getLibraries(this.libraryPage).then(res => {
+        this.result = res.results;
+        this.isLoading = false;
+      });
+    },
     open(event) {
       this.$router.push(`/library/${event.id}`);
     }

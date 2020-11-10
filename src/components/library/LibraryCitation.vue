@@ -60,5 +60,6 @@ export default {
 
 .libraryLink:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 </style>

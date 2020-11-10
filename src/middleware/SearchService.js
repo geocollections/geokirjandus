@@ -2,7 +2,8 @@ import axios from "axios";
 
 const API_URL = "https://api.geocollections.info/solr";
 const FACET_QUERY_REFERENCE =
-  "facet.field={!ex=dt}type&facet=on&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0";
+  "facet=on&facet.field={!ex=dt}type&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0&" +
+  "facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=0";
 
 class SearchService {
   static async search(parameters, table) {
@@ -150,6 +151,10 @@ function buildQueryStr(queryObject, filterQueryObject) {
 
       let tag = "{!tag=type}";
       if (v.id === "referenceType") {
+        tag = "{!tag=type,dt}";
+      }
+
+      if (v.id === "language") {
         tag = "{!tag=type,dt}";
       }
 

@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="py-0">
     <v-row>
-      <v-col class="py-0">
+      <v-col class="py-0 px-1 px-sm-2">
         <data-viewer
           :module="$route.meta.object"
           :data="result"
@@ -12,7 +12,11 @@
           :sort-by="getSortBy"
           :sort-desc="getSortDesc"
           :headers="headers"
-          title="viewer.title.reference_html"
+          :title="
+            count !== 1
+              ? 'viewer.title.reference_html'
+              : 'viewer.title.reference_single_html'
+          "
           v-on:open="open"
           v-on:update:paginateBy="handleUpdatePaginateBy"
           v-on:update:page="handleUpdatePage"
@@ -139,7 +143,8 @@ export default {
           show: true,
           fixed: true
         }
-      ]
+      ],
+      result: []
     };
   },
   props: {
@@ -150,26 +155,54 @@ export default {
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("references", ["result", "count"])
+    ...mapState("references", ["count"])
+  },
+  created() {
+    if (this.$route.name === "library") this.handleReferencesInLibraryResult();
+    else {
+      this.handleReferencesResult();
+      this.getLibraries();
+    }
   },
   watch: {
+    referenceParameters: {
+      handler: debounce(function() {
+        this.handleReferencesResult();
+      }, 300),
+      deep: true
+    },
+    libraryReferenceParameters: {
+      handler: debounce(function() {
+        this.handleReferencesInLibraryResult();
+      }, 300),
+      deep: true
+    },
+    libraryParameters: {
+      handler: debounce(function() {
+        this.getLibraries();
+      }, 300),
+      deep: true
+    },
     getPage: {
       handler: debounce(function() {
-        if (this.$route.name === "library") this.getReferencesInLibrary();
-        else this.getReferences();
+        if (this.$route.name === "library")
+          this.handleReferencesInLibraryResult();
+        else this.handleReferencesResult();
       }, 300)
     },
     getPaginateBy: {
       handler() {
         this.resetPage();
-        if (this.$route.name === "library") this.getReferencesInLibrary();
-        else this.getReferences();
+        if (this.$route.name === "library")
+          this.handleReferencesInLibraryResult();
+        else this.handleReferencesResult();
       }
     },
     getSortDesc: {
       handler() {
-        if (this.$route.name === "library") this.getReferencesInLibrary();
-        else this.getReferences();
+        if (this.$route.name === "library")
+          this.handleReferencesInLibraryResult();
+        else this.handleReferencesResult();
       }
     }
   },
@@ -204,6 +237,20 @@ export default {
       if (this.$route.name === "library")
         this.$store.dispatch("librarySearch/updateSortDesc", event);
       else this.updateSortDesc(event);
+    },
+    handleReferencesResult() {
+      this.isLoading = true;
+      this.getReferences().then(res => {
+        this.result = res.results;
+        this.isLoading = false;
+      });
+    },
+    handleReferencesInLibraryResult() {
+      this.isLoading = true;
+      this.getReferencesInLibrary().then(res => {
+        this.result = res.results;
+        this.isLoading = false;
+      });
     }
   }
 };

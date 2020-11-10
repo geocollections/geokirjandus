@@ -55,8 +55,6 @@ const urlMixin = {
 
       q["lang"] = this.language;
 
-      console.log(q);
-
       return q;
     }
   }

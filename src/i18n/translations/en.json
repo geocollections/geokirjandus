@@ -26,8 +26,17 @@
   "viewer": {
     "title": {
       "reference_html": "Found <b>{num}</b> references",
-      "library_html": "Found <b>{num}</b> libraries"
+      "reference_single_html": "Found <b>{num}</b> reference",
+      "library_html": "Found <b>{num}</b> libraries",
+      "library_single_html": "Found <b>{num}</b> library"
     }
+  },
+  "charts": {
+    "keywords": "Subjects",
+    "language": "Languages",
+    "types": "Types",
+    "byDecade": "Records by decade",
+    "title_html": "<h2>Total records:</h2> <h1 class='px-3'>{num}</h1>"
   },
   "common": {
     "search": "Search",
@@ -65,7 +74,10 @@
     "searchCommand": "Search",
     "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia",
     "yes": "yes",
-    "libraryCreatedBy": "Created by"
+    "libraryCreatedBy": "Created by",
+    "close": "Close",
+    "statistics": "Statistics",
+    "edit": "EDIT"
   },
   "reference": {
     "id": "ID",

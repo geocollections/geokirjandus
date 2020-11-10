@@ -63,6 +63,13 @@ const state = () => {
           label: "reference.type",
           fields: ["type"]
         },
+        language: {
+          type: "select",
+          id: "language",
+          value: [],
+          label: "reference.language",
+          fields: ["language"]
+        },
         journal: {
           type: "text",
           id: "journal",
@@ -103,13 +110,13 @@ const state = () => {
           label: "reference.keywords",
           fields: ["keywords"]
         },
-        userAdded: {
+        publisher: {
           type: "text",
-          id: "userAdded",
+          id: "publisher",
           lookUpType: "contains",
           value: null,
-          label: "reference.userAdded",
-          fields: ["user_added"]
+          label: "reference.publisher",
+          fields: ["publisher"]
         }
       },
       allIds: [
@@ -119,10 +126,11 @@ const state = () => {
         "book",
         "journal",
         "abstract",
-        "localities",
-        "referenceType",
         "keywords",
-        "userAdded",
+        "publisher",
+        "referenceType",
+        "language",
+        "localities",
         "isEstonianReference",
         "isEstonianAuthor"
       ]

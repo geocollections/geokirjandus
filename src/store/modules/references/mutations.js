@@ -1,8 +1,7 @@
 const mutations = {
   SET_REFERENCES(state, payload) {
-    state.result = payload.results;
     state.count = payload.count;
-    state.facet = payload.facet_counts
+    state.facet = payload.facet_counts;
   }
 };
 

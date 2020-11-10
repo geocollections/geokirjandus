@@ -1,21 +1,31 @@
 <template>
   <v-container>
-    <v-card v-if="reference">
-      <v-card-title
-        style="background-color: #F2E4CF"
-        class="pt-1 pb-1 d-flex text-center"
-      >
+    <v-card class="roundedBorder" v-if="reference">
+      <v-card-title class="pt-1 pb-1 d-flex text-center referenceTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col" style="word-break: normal">
+        <div class="col titleText">
           {{ `${reference.reference}: ${reference.title}` }}
         </div>
       </v-card-title>
       <v-card-actions class=" pt-3">
         <reference-links :item="reference" />
+        <v-spacer />
+        <v-chip
+          link
+          outlined
+          color="blue-grey darken-3"
+          class="d-print-none ml-1 my-1 link"
+          :href="`https://edit.geocollections.info/reference/${reference.id}`"
+          target="_blank"
+          rel="noopener"
+        >
+          <v-icon small class="pr-1">fas fa-edit</v-icon>
+          <b>{{ $t("common.edit") }}</b>
+        </v-chip>
       </v-card-actions>
       <v-card-text>
         <div class="d-flex pb-3">
@@ -313,16 +323,16 @@
       </v-card-text>
     </v-card>
     <v-card v-if="error">
-      <v-card-actions style="background-color: #F6EDDF">
-        <v-col cols="auto" class="py-0 px-2">
-          <v-btn large icon @click="$router.go(-1)">
-            <v-icon>fas fa-backspace</v-icon>
+      <v-card-actions class="referenceTitle">
+        <v-col cols="auto" class="py-0 px-0">
+          <v-btn large icon @click="handleBack()" aria-label="back">
+            <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
+        <div class="col titleText">
+          {{ $t("error.referenceId", { text: id }) }}
+        </div>
       </v-card-actions>
-      <v-card-title style="background-color: #F6EDDF" class="pt-0">
-        {{ $t("error.referenceId", { text: id }) }}
-      </v-card-title>
     </v-card>
   </v-container>
 </template>
@@ -380,7 +390,9 @@ export default {
   watch: {
     referenceParameters: {
       handler: debounce(function() {
-        this.$router.push(this.prevRoute).catch(() => {});
+        if (this.prevRoute.name === "landing")
+          this.$router.replace({ name: "searchReference" });
+        else this.$router.push(this.prevRoute).catch(() => {});
       }, 300),
       deep: true
     }
@@ -408,9 +420,6 @@ export default {
         page: this.reference.pages,
         URL: this.reference.url
       };
-    },
-    referenceParameters() {
-      return { ...this.advancedSearch.byIds, search: this.search };
     },
     getReferenceType() {
       return this.$i18n.locale === "ee"
@@ -465,7 +474,6 @@ export default {
         this.$router.back();
       } else {
         this.getReferences();
-        this.getLibraries();
 
         this.$router.replace(this.prevRoute);
       }
@@ -520,12 +528,12 @@ export default {
     },
     getReference(id) {
       fetchReference(id).then(res => {
-        this.reference = res.results[0];
-
-        if (this.reference === undefined) {
+        if (res.results[0] === undefined) {
           this.error = true;
           return;
         }
+
+        this.reference = res.results[0];
 
         if (this.reference.localities) {
           this.getReferenceLocalities().then(res => {
@@ -568,3 +576,17 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.referenceTitle {
+  background-color: #eedbbf;
+}
+
+.titleText {
+  word-break: normal;
+}
+
+.roundedBorder {
+  border-radius: 12px;
+}
+</style>

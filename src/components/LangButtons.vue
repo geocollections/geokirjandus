@@ -10,7 +10,7 @@
           v-bind="attrs"
           v-on="on"
         >
-          <span :class="classObject" style="height: 28px ; width: 28px" />
+          <span :class="classObject" />
         </v-btn>
       </template>
       <v-list color="#F6EDDF">
@@ -19,13 +19,11 @@
             <v-list-item-title class="d-flex ">
               <span
                 v-if="language.value === 'ee'"
-                style="height: 28px ; width: 28px"
-                class="flag flag-ee flag-squared flag-circle mr-2"
+                class="flag flag-ee flag-squared flag-circle mr-2 lang-button"
               />
               <span
                 v-if="language.value === 'en'"
-                style="height: 28px ; width: 28px"
-                class="flag flag-en flag-squared flag-circle mr-2"
+                class="flag flag-en flag-squared flag-circle mr-2 lang-button"
               />
               <span class="align-self-center">{{ language.text }}</span>
             </v-list-item-title>
@@ -65,7 +63,8 @@ export default {
         "flag-en": this.language === "en",
         "flag-ee": this.language === "ee",
         "flag-squared": true,
-        "flag-circle": true
+        "flag-circle": true,
+        "lang-button": true
       };
     }
   },
@@ -86,6 +85,11 @@ export default {
   /*text-align: right;*/
   /*position: absolute;*/
   right: 0;
+}
+
+.lang-button {
+  height: 28px;
+  width: 28px !important;
 }
 
 .flag {

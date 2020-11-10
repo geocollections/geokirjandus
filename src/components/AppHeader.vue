@@ -2,7 +2,6 @@
   <v-app-bar
     clipped-left
     app
-    flat
     class="appBar"
     :src="require('@/assets/books1.jpg')"
   >

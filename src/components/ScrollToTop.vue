@@ -4,10 +4,9 @@
       v-scroll="onScroll"
       v-show="showFab"
       fab
-      color="#ECA15B"
+      color="#E58124"
       dark
       @click="toTop"
-      style="z-index: 1500"
     >
       <v-icon large small>fas fa-chevron-up</v-icon>
     </v-btn>

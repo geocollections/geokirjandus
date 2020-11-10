@@ -1,13 +1,18 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Main from "../views/Main.vue";
-import Landing from "@/views/Landing";
-import Reference from "@/components/reference/Reference";
-import ReferenceViewer from "@/components/reference/ReferenceViewer";
-import LibraryViewer from "@/components/library/LibraryViewer";
 
-import App from "@/App";
 import store from "@/store";
+
+const Tabs = () => import("@/components/Tabs");
+const LibraryViewer = () => import("@/components/library/LibraryViewer");
+const ReferenceViewer = () => import("@/components/reference/ReferenceViewer");
+const Reference = () => import("@/components/reference/Reference");
+const Library = () => import("@/components/library/Library");
+
+const App = () => import("@/App");
+const Main = () => import("@/views/Main");
+const Landing = () => import("@/views/Landing");
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -26,7 +31,10 @@ const routes = [
           {
             path: "",
             name: "searchReference",
-            component: ReferenceViewer,
+            components: {
+              default: ReferenceViewer,
+              tabs: Tabs
+            },
             meta: {
               table: "reference",
               heading: "editReference.heading",
@@ -53,7 +61,7 @@ const routes = [
           {
             path: "",
             name: "searchLibrary",
-            component: LibraryViewer,
+            components: { default: LibraryViewer, tabs: Tabs },
             meta: {
               table: "library",
               heading: "editReference.heading",
@@ -63,7 +71,7 @@ const routes = [
           {
             path: ":id(\\d+)",
             name: "library",
-            component: () => import("../components/library/Library.vue"),
+            component: Library,
             meta: {
               table: "library",
               heading: "editReference.heading",

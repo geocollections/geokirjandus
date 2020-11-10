@@ -32,7 +32,8 @@
     "keywords": "Valdkonnad",
     "language": "Keeled",
     "types": "Tüübid",
-    "byDecade": "Kirjeid kümnendi kaupa"
+    "byDecade": "Kirjeid kümnendi kaupa",
+    "title_html": "<h2>Kirjeid kokku:</h2> <h1 class='px-3'>{num}</h1>"
   },
   "common": {
     "search": "Otsi",

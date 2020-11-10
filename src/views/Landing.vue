@@ -5,7 +5,7 @@
         :style="
           `background-image: url(&quot;${require('@/assets/books1.jpg')}&quot;)`
         "
-        class="d-flex flex-column"
+        class="d-flex flex-column header"
       >
         <div class="elevation-4 header d-flex flex-column pb-5">
           <span class="d-flex justify-end mt-4 mb-2 mr-4">

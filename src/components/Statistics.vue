@@ -72,6 +72,14 @@ export default {
                 min: 0
               }
             }
+          ],
+          xAxes: [
+            {
+              ticks: {
+                padding: 10
+              },
+              gridLines: false
+            }
           ]
         },
         legend: {

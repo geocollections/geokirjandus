@@ -5,7 +5,7 @@
     <slot name="prepend"></slot>
     <!--  TODO: Use slot to add inputs to header  -->
     <v-card-actions
-      class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between pb-2 pt-2"
+      class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-2 px-0"
     >
       <div
         class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"
@@ -43,7 +43,7 @@
       </div>
     </v-card-actions>
     <v-scroll-y-transition>
-      <v-card-actions v-if="view === 'table'">
+      <v-card-actions v-if="view === 'table'" class="px-0">
         <v-select
           class="px-2"
           :value="getHeadersShowing"
@@ -70,6 +70,7 @@
       :page="page"
       :paginate-by="paginateBy"
       :count="count"
+      class="px-0"
     />
     <div class="content">
       <v-scroll-y-transition leave-absolute group>
@@ -124,7 +125,7 @@
       </v-scroll-y-transition>
     </div>
     <view-helper
-      class="pt-2"
+      class="pt-2 px-0"
       v-if="helpers"
       v-on="$listeners"
       :page="page"

@@ -31,8 +31,8 @@
   "charts": {
     "keywords": "Valdkonnad",
     "language": "Keeled",
-    "types": "Tüübid",
-    "byDecade": "Kirjeid kümnendi kaupa",
+    "types": "Kirje tüübid",
+    "byDecade": "Kirjed kümnendite kaupa",
     "title_html": "<h2>Kirjeid kokku:</h2> <h1 class='px-3'>{num}</h1>"
   },
   "common": {

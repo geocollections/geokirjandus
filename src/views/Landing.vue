@@ -31,8 +31,9 @@
             </v-text-field>
             <v-btn
               class="mt-3 align-center"
-              color="primary"
+              color="#E58124"
               dark
+              large
               @click="search"
               >{{ $t("common.viewReferences") }}</v-btn
             >

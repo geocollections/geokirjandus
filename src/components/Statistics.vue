@@ -1,49 +1,53 @@
 <template>
-  <div v-if="statisticsData" class="pa-3">
-    <v-card-text
-      class="d-flex justify-center"
-      v-html="$t('charts.title_html', { num: statisticsData.count })"
-    >
-    </v-card-text>
-    <v-row>
-      <v-col cols="12" sm="6" md="3">
-        <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
-        <bar-chart
+  <v-fade-transition>
+    <v-card v-if="statisticsData">
+      <div class="pa-3">
+        <v-card-text
           class="d-flex justify-center"
-          :chartdata="getKeywordsChartData"
-          :options="getChartOptions('bar', handleKeywordClick)"
-          :locale="$i18n.locale"
-        />
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
-        <bar-chart
-          class="d-flex justify-center"
-          :chartdata="getDecadesChartData"
-          :options="getChartOptions('bar', handleDecadeClick)"
-          :locale="$i18n.locale"
-        />
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <h3 class="text-center pb-3">{{ $t("charts.types") }}</h3>
-        <pie-chart
-          class="d-flex justify-center"
-          :chartdata="getTypesChartData"
-          :options="getChartOptions('pie', handleTypeClick)"
-          :locale="$i18n.locale"
-        ></pie-chart>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
-        <pie-chart
-          class="d-flex justify-center"
-          :chartdata="getLanguageChartData"
-          :options="getChartOptions('pie', handleLanguageClick)"
-          :locale="$i18n.locale"
-        ></pie-chart>
-      </v-col>
-    </v-row>
-  </div>
+          v-html="$t('charts.title_html', { num: statisticsData.count })"
+        >
+        </v-card-text>
+        <v-row>
+          <v-col cols="12" sm="6" md="3">
+            <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
+            <bar-chart
+              class="d-flex justify-center"
+              :chartdata="getKeywordsChartData"
+              :options="getChartOptions('bar', handleKeywordClick)"
+              :locale="$i18n.locale"
+            />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
+            <bar-chart
+              class="d-flex justify-center"
+              :chartdata="getDecadesChartData"
+              :options="getChartOptions('bar', handleDecadeClick)"
+              :locale="$i18n.locale"
+            />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <h3 class="text-center pb-3">{{ $t("charts.types") }}</h3>
+            <pie-chart
+              class="d-flex justify-center"
+              :chartdata="getTypesChartData"
+              :options="getChartOptions('pie', handleTypeClick)"
+              :locale="$i18n.locale"
+            ></pie-chart>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
+            <pie-chart
+              class="d-flex justify-center"
+              :chartdata="getLanguageChartData"
+              :options="getChartOptions('pie', handleLanguageClick)"
+              :locale="$i18n.locale"
+            ></pie-chart>
+          </v-col>
+        </v-row>
+      </div>
+    </v-card>
+  </v-fade-transition>
 </template>
 
 <script>

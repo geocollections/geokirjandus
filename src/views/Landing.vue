@@ -39,52 +39,45 @@
       </v-row>
       <v-row class="d-flex flex-column align-center justify-center main">
         <v-col cols="12" sm="11" lg="10">
-          <v-card class="cardTitle">
-            <!--            <v-card-title class="cardTitle">-->
-            <!--              <h6>{{ $t("common.statistics") }}</h6>-->
-            <!--            </v-card-title>-->
-            <div class="pa-1 pa-sm-2">
-              <statistics
-                style="border-radius: 12px; background-color: white"
-              />
-            </div>
-          </v-card>
+          <statistics style="border-radius: 12px; background-color: white" />
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center main">
         <v-col cols="12" sm="11" md="5" lg="4">
-          <v-card class="cardTitle">
-            <v-card-title v-if="intro" class="cardTitle">
-              <h6>{{ getIntroTitle }}</h6>
-            </v-card-title>
-            <div class="px-1 pb-1 px-sm-2 pb-sm-2">
-              <v-card-text
-                style="border-radius: 12px; background-color: white"
-                class="py-3"
-                v-if="intro"
-                v-html="getIntroText"
-              />
-            </div>
-          </v-card>
+          <v-fade-transition>
+            <v-card v-if="intro" class="cardTitle">
+              <v-card-title class="cardTitle">
+                <h6>{{ getIntroTitle }}</h6>
+              </v-card-title>
+              <div class="px-1 pb-1 px-sm-2 pb-sm-2">
+                <v-card-text
+                  style="border-radius: 12px; background-color: white"
+                  class="py-3"
+                  v-html="getIntroText"
+                />
+              </div>
+            </v-card>
+          </v-fade-transition>
         </v-col>
 
         <v-col cols="12" sm="11" md="6">
-          <v-card class="cardTitle">
-            <v-card-title class="cardTitle">
-              <h6>{{ $t("common.newest") }}</h6>
-            </v-card-title>
+          <v-fade-transition>
+            <v-card v-if="references" class="cardTitle">
+              <v-card-title class="cardTitle">
+                <h6>{{ $t("common.newest") }}</h6>
+              </v-card-title>
 
-            <v-expand-transition>
-              <div class="px-1 pb-1 px-sm-2 pb-sm-2">
-                <reference-list-view
-                  class="pb-3"
-                  style="border-radius: 12px; background-color: white"
-                  v-if="references"
-                  :data="references"
-                ></reference-list-view>
-              </div>
-            </v-expand-transition>
-          </v-card>
+              <v-expand-transition>
+                <div class="px-1 pb-1 px-sm-2 pb-sm-2">
+                  <reference-list-view
+                    class="pb-3"
+                    style="border-radius: 12px; background-color: white"
+                    :data="references"
+                  ></reference-list-view>
+                </div>
+              </v-expand-transition>
+            </v-card>
+          </v-fade-transition>
         </v-col>
       </v-row>
     </v-container>

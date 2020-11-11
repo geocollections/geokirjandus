@@ -34,11 +34,51 @@
           @change="$emit('update:search', $event)"
         />
       </v-list-item>
+      <v-list-item>
+        <v-btn
+          icon
+          small
+          outlined
+          tile
+          color="red"
+          class="deleteSearch"
+          aria-label="delete"
+          @click="$emit('reset:parameters')"
+        >
+          <v-icon small>far fa-trash-alt</v-icon>
+        </v-btn>
+        <share-button />
 
+        <v-btn color="primary" dark class="ml-auto">
+          <v-icon class="pr-2" small>fas fa-search</v-icon>
+          {{ $t("common.searchCommand") }}
+        </v-btn>
+      </v-list-item>
+      <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
+        <v-list-item
+          v-if="getAdvancedSearch.byIds[id].type === 'checkbox'"
+          dense
+        >
+          <v-checkbox
+            dense
+            :label="$t(getAdvancedSearch.byIds[id].label)"
+            class="checkbox mt-0 py-0"
+            color="#E58124"
+            :false-value="null"
+            true-value="1"
+            hide-details
+            :input-value="getAdvancedSearch.byIds[id].value"
+            @change="updateCheckbox($event, id)"
+          />
+        </v-list-item>
+      </div>
+      <v-list-item>
+        <citation-select />
+      </v-list-item>
       <v-list-group
         color="#924f11"
         v-model="showAdvancedSearch"
-        class="advancedSearch"
+        class="advancedSearch mt-3"
       >
         <template v-slot:activator>
           <v-list-item-title class="d-flex">
@@ -177,47 +217,6 @@
           </div>
         </div>
       </v-list-group>
-      <v-list-item class="mt-2">
-        <v-btn
-          icon
-          small
-          outlined
-          tile
-          color="red"
-          class="deleteSearch"
-          aria-label="delete"
-          @click="$emit('reset:parameters')"
-        >
-          <v-icon small>far fa-trash-alt</v-icon>
-        </v-btn>
-        <share-button />
-
-        <v-btn color="primary" dark class="ml-auto">
-          <v-icon class="pr-2" small>fas fa-search</v-icon>
-          {{ $t("common.searchCommand") }}
-        </v-btn>
-      </v-list-item>
-      <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
-        <v-list-item
-          v-if="getAdvancedSearch.byIds[id].type === 'checkbox'"
-          dense
-        >
-          <v-checkbox
-            dense
-            :label="$t(getAdvancedSearch.byIds[id].label)"
-            class="checkbox mt-0 py-0"
-            color="#E58124"
-            :false-value="null"
-            true-value="1"
-            hide-details
-            :input-value="getAdvancedSearch.byIds[id].value"
-            @change="updateCheckbox($event, id)"
-          />
-        </v-list-item>
-      </div>
-      <v-list-item>
-        <citation-select />
-      </v-list-item>
     </v-list>
   </div>
 </template>

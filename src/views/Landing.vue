@@ -31,7 +31,7 @@
             </v-text-field>
             <v-btn
               class="mt-3 align-center"
-              color="#E58124"
+              color="#1C9BDE"
               dark
               large
               @click="search"

@@ -49,7 +49,7 @@
         </v-btn>
         <share-button />
 
-        <v-btn color="primary" dark class="ml-auto">
+        <v-btn color="#1C9BDE" dark class="ml-auto">
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>

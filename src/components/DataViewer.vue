@@ -107,7 +107,7 @@
             mobile-breakpoint="0"
             @click:row="$emit('open', $event)"
             :header-props="headerProps"
-            class=" data-viewer-table"
+            class="data-viewer-table pb-3"
           >
             <template
               v-for="(_, slotName) in $scopedSlots"

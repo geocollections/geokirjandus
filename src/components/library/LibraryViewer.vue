@@ -17,7 +17,7 @@
               ? 'viewer.title.library_html'
               : 'viewer.title.library_single_html'
           "
-          :export-buttons="false"
+          :copy-button="false"
           :helpers="false"
           v-on:open="open"
           v-on:update:paginateBy="updatePaginateBy"

@@ -7,9 +7,15 @@
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-2 px-0"
     >
-      <div
-        class="d-flex col-12 pt-0 pb-2 px-2 order-md-2 col-md-auto ml-md-auto"
-      >
+      <div class="col-12 col-md px-2 py-0">
+        <span v-html="$t(title, { num: count })" class="title" />
+        <copy-button
+          v-if="copyButton"
+          :table-data="data"
+          :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
+        />
+      </div>
+      <div class="d-flex col-12 py-0 px-2 col-md-auto ml-md-auto">
         <v-radio-group
           class="mt-0 mr-auto"
           :value="view"
@@ -29,17 +35,6 @@
             :label="$t('common.tableView')"
           />
         </v-radio-group>
-
-        <export-buttons
-          v-if="exportButtons"
-          :filename="module"
-          :table-data="data"
-          :small="$vuetify.breakpoint.mdAndUp"
-          clipboard-class="data-viewer-table"
-        />
-      </div>
-      <div class="col-12 col-md order-md-1 px-2 py-0">
-        <span v-html="$t(title, { num: count })" class="title"> </span>
       </div>
     </v-card-actions>
     <v-scroll-y-transition>
@@ -136,14 +131,14 @@
 </template>
 
 <script>
-import ExportButtons from "../components/ExportButtons";
+import CopyButton from "./CopyButton";
 import ListView from "@/components/ListView";
 import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "DataViewer",
-  components: { ViewHelper, ListView, ExportButtons },
+  components: { ViewHelper, ListView, CopyButton },
   props: {
     data: {
       type: Array[Object]
@@ -156,7 +151,7 @@ export default {
       type: String,
       default: null
     },
-    exportButtons: {
+    copyButton: {
       type: Boolean,
       default: true
     },

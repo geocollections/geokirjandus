@@ -36,15 +36,12 @@
             TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
             TODO: Citation text style is not copied right now (bold, italic)
           -->
-          <copy-button
-            :text="citation(getCslJson, null, null, 'string')"
-            :message="$t('messages.copyCitation')"
-          />
+          <copy-button clipboard-class="referenceCitation" />
         </div>
         <v-card flat outlined>
           <div class="pa-4">
             <reference-citation
-              ref="textToCopy"
+              class="referenceCitation"
               :reference="reference"
               :only-text="true"
             />
@@ -352,12 +349,17 @@ import { mapState, mapActions } from "vuex";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
-import CopyButton from "@/components/CopyButton";
 import citationMixin from "@/mixins/citationMixin";
 
+import CopyButton from "@/components/CopyButton";
 export default {
   name: "Reference",
-  components: { CopyButton, ReferenceLinks, LeafletMap, ReferenceCitation },
+  components: {
+    CopyButton,
+    ReferenceLinks,
+    LeafletMap,
+    ReferenceCitation
+  },
   props: {
     id: {
       type: String

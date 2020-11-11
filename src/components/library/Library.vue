@@ -42,14 +42,12 @@
               TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
               TODO: Citation text style is not copied right now (bold, italic)
             -->
-          <copy-button
-            :text="citation(getCslJson, append, null, 'string')"
-            :message="$t('messages.copyCitation')"
-          />
+
+          <copy-button clipboard-class="libraryCitation" />
         </div>
         <v-card flat outlined>
           <div class="pa-4">
-            <library-citation :library="library" />
+            <library-citation class="libraryCitation" :library="library" />
           </div>
         </v-card>
       </v-card-text>
@@ -113,7 +111,7 @@ import queryMixin from "@/mixins/queryMixin";
 import CopyButton from "@/components/CopyButton";
 export default {
   name: "Library",
-  components: { LibraryCitation, ReferenceViewer, CopyButton },
+  components: { CopyButton, LibraryCitation, ReferenceViewer },
   data() {
     return {
       id: this.$route.params.id,

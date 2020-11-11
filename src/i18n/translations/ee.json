@@ -4,8 +4,11 @@
   "pagination": "{num} kaupa",
   "messages": {
     "langChange": "Keel vahetatud",
-    "copyURL": "Lehekülg kopeeritud",
-    "copyCitation": "Viide kopeeritud"
+    "copy": "Kopeeritud <b>lõikelauale</b>",
+    "RISExportFail": "Faili eksportimine ei õnnestunud",
+    "RISExportSuccess": "Fail eksporditud RIS formaadis",
+    "CSVExportFail": "Faili eksportimine ei õnnestunud",
+    "CSVExportSuccess": "Fail eksporditud CSV formaadis"
   },
   "tooltip": {
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
@@ -76,7 +79,10 @@
     "libraryCreatedBy": "Kogumiku koostas(id)",
     "close": "Sulge",
     "statistics": "Statistika",
-    "edit": "MUUDA"
+    "edit": "MUUDA",
+    "filename": "Faili nimi",
+    "exportFile": "Ekspordi fail",
+    "amount": "Kogus"
   },
   "reference": {
     "id": "ID",

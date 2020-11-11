@@ -1,4 +1,8 @@
-import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
+import {
+  fetchLibraries,
+  fetchLibraryReferences,
+  fetchReferences
+} from "@/utils/apiCalls";
 import { mapActions, mapState } from "vuex";
 
 const queryMixin = {
@@ -81,15 +85,6 @@ const queryMixin = {
     },
     getReferencesInLibrary() {
       const state = this.$store.state.librarySearch;
-      const librariesObj = {
-        type: "text",
-        id: "libraries",
-        lookUpType: null,
-        value: `${this.$route.params.id}`,
-        label: "reference.libraries",
-        fields: ["libraries"],
-        hidden: true
-      };
 
       const searchObj = {
         search: state.search,
@@ -97,15 +92,15 @@ const queryMixin = {
         paginateBy: state.paginateBy,
         sortBy: state.sortBy,
         sortDesc: state.sortDesc,
-        advancedSearch: {
-          ...state.advancedSearch.byIds,
-          libraries: librariesObj
-        }
+        advancedSearch: state.advancedSearch.byIds
       };
-      return fetchReferences(searchObj).then(response => {
-        this.setReferences(response);
-        return response;
-      });
+
+      return fetchLibraryReferences(this.$route.params.id, searchObj).then(
+        response => {
+          this.setReferences(response);
+          return response;
+        }
+      );
     },
     getLibraries(page = 1) {
       const state = this.$store.state.search;

@@ -104,14 +104,26 @@ export default {
     ...mapState("settings", ["view"]),
     getShareURL() {
       // FIXME:  Add library id if inside a library
-
-      let resolve = this.$router.resolve({
-        name: "query",
-        query: this.setURLParameters({
-          ...this.getAdvancedSearch.byIds,
-          search: this.getSearch
-        })
-      });
+      let resolve;
+      if (this.$route.name === "library") {
+        console.log("here");
+        resolve = this.$router.resolve({
+          name: "query",
+          query: this.setURLParameters({
+            ...this.getAdvancedSearch.byIds,
+            search: this.getSearch,
+            library: this.$route.params.id
+          })
+        });
+      } else {
+        resolve = this.$router.resolve({
+          name: "query",
+          query: this.setURLParameters({
+            ...this.getAdvancedSearch.byIds,
+            search: this.getSearch
+          })
+        });
+      }
 
       return `https://geoloogia.info${resolve.href}`;
     }

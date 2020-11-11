@@ -11,7 +11,7 @@
           {{ getTitle }}
         </div>
       </v-card-title>
-      <v-card-actions class="pa-0">
+      <v-card-actions class="pr-2 pl-0 py-0">
         <v-card-text class="pt-4">
           <h3 class="">
             {{ $t("common.libraryCreatedBy") }}: {{ library.author }}

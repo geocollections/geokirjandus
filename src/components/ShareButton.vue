@@ -50,6 +50,7 @@
           <v-text-field
             v-model="filename"
             hide-details
+            :suffix="getFileSuffix"
             :label="$t('common.filename')"
           />
           <v-btn class="mt-3" color="#E58124" dark @click="handleExport">{{
@@ -102,11 +103,20 @@ export default {
   },
   computed: {
     ...mapState("settings", ["view"]),
+
+    getFileSuffix() {
+      if (this.exportType === "ris") {
+        return ".ris";
+      }
+      if (this.exportType === "csv") {
+        return ".csv";
+      }
+      return "";
+    },
     getShareURL() {
       // FIXME:  Add library id if inside a library
       let resolve;
       if (this.$route.name === "library") {
-        console.log("here");
         resolve = this.$router.resolve({
           name: "query",
           query: this.setURLParameters({

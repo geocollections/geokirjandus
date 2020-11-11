@@ -11,18 +11,20 @@
           <v-col cols="12" sm="6" md="3">
             <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
             <bar-chart
+              id="keywords"
               class="d-flex justify-center"
               :chartdata="getKeywordsChartData"
-              :options="getChartOptions('bar', handleKeywordClick)"
+              :options="getKeywordsChartOptions(handleKeywordClick)"
               :locale="$i18n.locale"
             />
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
             <bar-chart
+              id="byDecade"
               class="d-flex justify-center"
               :chartdata="getDecadesChartData"
-              :options="getChartOptions('bar', handleDecadeClick)"
+              :options="getDecadesChartOptions(handleDecadeClick)"
               :locale="$i18n.locale"
             />
           </v-col>
@@ -55,7 +57,7 @@ import { mapActions } from "vuex";
 import axios from "axios";
 import BarChart from "@/components/charts/BarChart";
 import PieChart from "@/components/charts/PieChart";
-
+import { cloneDeep } from "lodash";
 export default {
   name: "Statistics",
   components: { PieChart, BarChart },
@@ -76,7 +78,8 @@ export default {
           xAxes: [
             {
               ticks: {
-                padding: 10
+                padding: 10,
+                display: false
               },
               gridLines: false
             }
@@ -91,8 +94,11 @@ export default {
           },
           datalabels: {
             formatter: function(value, context) {
-              return "";
-            }
+              return context.chart.data.labels[context.dataIndex];
+            },
+            rotation: 270,
+            align: "end",
+            anchor: "end"
           }
         }
       },
@@ -258,6 +264,21 @@ export default {
   },
   methods: {
     ...mapActions("search", ["resetSearch", "updateAdvancedSearch"]),
+
+    getKeywordsChartOptions(onClick) {
+      let options = cloneDeep(this.getChartOptions("bar", onClick));
+
+      options.scales.yAxes[0].ticks.max = 7000;
+
+      return options;
+    },
+    getDecadesChartOptions(onClick) {
+      let options = cloneDeep(this.getChartOptions("bar", onClick));
+
+      options.scales.yAxes[0].ticks.suggestedMax = 3000;
+
+      return options;
+    },
     getChartOptions(type, onClick = null) {
       if (type === "bar") {
         return {

@@ -54,15 +54,30 @@
         />
       </a>
     </div>
-    <small class="text-center pt-4 footerText">
+    <small v-if="$i18n.locale === 'ee'" class="text-center pt-4 footerText">
       Siin leiduvad materjalid on enamasti kasutamiseks
       <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a>
-      litsentsi alusel, kui pole näidatud teisiti. Portaal on osaks
+      litsentsi alusel, kui pole näidatud teisiti.
+      <br />
+      Portaal on osaks
       <a href="https://natarc.ut.ee">NATARC</a>
       teadustaristust ning infosüsteemist
       <a href="https://geocollections.info">SARV</a>. Majutab
       <a href="https://taltech.ee/geoloogia-instituut"
         >TalTech Geoloogia Instituut</a
+      >
+    </small>
+    <small v-if="$i18n.locale === 'en'" class="text-center pt-4 footerText">
+      Materials on this site can be used under the
+      <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a>
+      licence, unless otherwise stated.
+      <br />
+      Portal is apart of
+      <a href="https://natarc.ut.ee">NATARC</a>
+      research infrastructure and information system
+      <a href="https://geocollections.info">SARV</a>. Accommodated by
+      <a href="https://taltech.ee/geoloogia-instituut"
+        >TalTech Institute of Geology</a
       >
     </small>
   </v-footer>

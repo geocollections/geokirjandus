@@ -30,7 +30,6 @@ export const fetchLibraryReferences = (id, query) => {
     fields: ["libraries"],
     hidden: true
   };
-  console.log(query.advancedSearch);
   const data = {
     ...query,
     search: query.search,

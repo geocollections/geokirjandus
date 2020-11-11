@@ -2,6 +2,16 @@
   "name": "geokirjandus",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/geocollections/geokirjandus",
+  "bugs": {
+    "url": "https://github.com/geocollections/geokirjandus/issues"
+  },
+  "repository": {
+    "url": "https://github.com/geocollections/geokirjandus"
+  },
+  "author": {
+    "name": "Erik Dzotsenidze"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

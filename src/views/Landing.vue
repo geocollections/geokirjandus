@@ -17,7 +17,7 @@
             {{ $t("title") }}
           </h1>
           <span
-            class="text-center align-self-center col-12 col-sm-6 col-md-4 mt-6"
+            class="text-center align-self-center col-12 col-sm-6 col-md-3 mt-6"
           >
             <v-text-field
               v-model="searchStr"

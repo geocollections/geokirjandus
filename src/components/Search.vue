@@ -48,8 +48,9 @@
           <v-icon small>far fa-trash-alt</v-icon>
         </v-btn>
         <share-button />
-
-        <v-btn color="#1C9BDE" dark class="ml-auto">
+        <v-spacer />
+        <search-help-dialog />
+        <v-btn color="#1C9BDE" dark>
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>
@@ -229,10 +230,11 @@ import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import ShareButton from "@/components/ShareButton";
+import SearchHelpDialog from "@/components/SearchHelpDialog";
 
 export default {
   name: "Search",
-  components: { ShareButton, CitationSelect },
+  components: { SearchHelpDialog, ShareButton, CitationSelect },
   props: {
     colSize: {
       type: Number,

@@ -83,7 +83,8 @@
     "edit": "EDIT",
     "filename": "Filename",
     "exportFile": "Export file",
-    "amount": "Amount"
+    "amount": "Amount",
+    "all": "All"
   },
   "reference": {
     "id": "ID",

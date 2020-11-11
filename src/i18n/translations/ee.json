@@ -82,7 +82,8 @@
     "edit": "MUUDA",
     "filename": "Faili nimi",
     "exportFile": "Ekspordi fail",
-    "amount": "Kogus"
+    "amount": "Kogus",
+    "all": "Kõik"
   },
   "reference": {
     "id": "ID",

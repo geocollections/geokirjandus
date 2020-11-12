@@ -238,19 +238,17 @@ export default {
         this.$store.dispatch("librarySearch/updateSortDesc", event);
       else this.updateSortDesc(event);
     },
+    setResults(res) {
+      this.result = res.results;
+      this.isLoading = false;
+    },
     handleReferencesResult() {
       this.isLoading = true;
-      this.getReferences().then(res => {
-        this.result = res.results;
-        this.isLoading = false;
-      });
+      this.getReferences().then(this.setResults);
     },
     handleReferencesInLibraryResult() {
       this.isLoading = true;
-      this.getReferencesInLibrary().then(res => {
-        this.result = res.results;
-        this.isLoading = false;
-      });
+      this.getReferencesInLibrary().then(this.setResults);
     }
   }
 };

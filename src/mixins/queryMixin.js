@@ -67,6 +67,10 @@ const queryMixin = {
   methods: {
     ...mapActions("references", ["setReferences"]),
     ...mapActions("library", ["setLibraries"]),
+    handleFetchReferences(res) {
+      this.setReferences(res);
+      return res;
+    },
     getReferences() {
       const state = this.$store.state.search;
 
@@ -78,10 +82,7 @@ const queryMixin = {
         sortDesc: state.sortDesc,
         advancedSearch: state.advancedSearch.byIds
       };
-      return fetchReferences(searchObj).then(response => {
-        this.setReferences(response);
-        return response;
-      });
+      return fetchReferences(searchObj).then(this.handleFetchReferences);
     },
     getReferencesInLibrary() {
       const state = this.$store.state.librarySearch;
@@ -96,10 +97,7 @@ const queryMixin = {
       };
 
       return fetchLibraryReferences(this.$route.params.id, searchObj).then(
-        response => {
-          this.setReferences(response);
-          return response;
-        }
+        this.handleFetchReferences
       );
     },
     getLibraries(page = 1) {

@@ -171,6 +171,14 @@ export default {
             break;
         }
       };
+
+      const handleFileCreation = res => {
+        const filename =
+          this.filename.length > 0 ? this.filename : "exportFile";
+
+        createFile(filename, this.exportType, res.results);
+      };
+
       if (this.$route.name === "library") {
         fetchLibraryReferences(this.$route.params.id, {
           search: this.getSearch,
@@ -178,19 +186,9 @@ export default {
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
           paginateBy: this.exportCount
-        }).then(res => {
-          const filename =
-            this.filename.length > 0 ? this.filename : "exportFile";
-
-          createFile(filename, this.exportType, res.results);
-        });
+        }).then(handleFileCreation);
       } else if (this.$route.name === "reference") {
-        fetchReference(this.$route.params.id).then(res => {
-          const filename =
-            this.filename.length > 0 ? this.filename : "exportFile";
-
-          createFile(filename, this.exportType, res.results);
-        });
+        fetchReference(this.$route.params.id).then(handleFileCreation);
       } else {
         fetchReferences({
           search: this.getSearch,
@@ -198,12 +196,7 @@ export default {
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
           paginateBy: parseInt(this.exportCount)
-        }).then(res => {
-          const filename =
-            this.filename.length > 0 ? this.filename : "exportFile";
-
-          createFile(filename, this.exportType, res.results);
-        });
+        }).then(handleFileCreation);
       }
     },
     exportToCSV(data, filename) {

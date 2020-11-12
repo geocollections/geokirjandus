@@ -78,9 +78,18 @@ export default {
   created() {
     window.onbeforeprint = () => {
       this.isPrint = true;
-      this.getReferences().then(res => {
+
+      const setPrintResults = res => {
         this.printResult = res.results;
-      });
+      };
+
+      if (this.$route.name === "library") {
+        this.getReferencesInLibrary(this.$route.params.id).then(
+          setPrintResults
+        );
+      } else {
+        this.getReferences().then(setPrintResults);
+      }
     };
     window.onafterprint = () => {
       this.isPrint = false;

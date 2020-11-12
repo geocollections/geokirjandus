@@ -40,7 +40,6 @@
               <b>{{ $t("common.citation") }}</b>
             </h3>
             <!--
-                TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
                 TODO: Citation text style is not copied right now (bold, italic)
               -->
 

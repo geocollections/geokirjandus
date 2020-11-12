@@ -1,9 +1,5 @@
 <template>
   <div class="data-viewer">
-    <!-- DATA TABLE -->
-
-    <slot name="prepend"></slot>
-    <!--  TODO: Use slot to add inputs to header  -->
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-2 px-0"
     >

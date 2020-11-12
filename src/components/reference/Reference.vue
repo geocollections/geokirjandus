@@ -34,7 +34,6 @@
               <b>{{ $t("common.citation") }}</b>
             </h3>
             <!--
-              TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
               TODO: Citation text style is not copied right now (bold, italic)
             -->
             <copy-button clipboard-class="referenceCitation" />
@@ -206,7 +205,6 @@
           </h3>
 
           <span v-for="(keyword, index) in parseKeywords" :key="index">
-            <!--  FIXME: Does not work with keywords that contain spaces  -->
             <v-chip
               outlined
               color="#F0B67F"

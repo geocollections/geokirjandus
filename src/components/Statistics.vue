@@ -191,19 +191,16 @@ export default {
       const pivot = this.statisticsData.facet_counts.facet_pivot[
         "language,reference_language,reference_language_en"
       ];
-
       for (let i = 0; i < fields.length; i += 2) {
         if (this.$i18n.locale === "ee") {
           labels.push({
             id: fields[i],
-            name: pivot.find(o => o.value.toString() === fields[i]).pivot[0]
-              .value
+            name: pivot.find(o => o.value === fields[i]).pivot[0].value
           });
         } else {
           labels.push({
             id: fields[i],
-            name: pivot.find(o => o.value.toString() === fields[i]).pivot[0]
-              .pivot[0].value
+            name: pivot.find(o => o.value === fields[i]).pivot[0].pivot[0].value
           });
         }
 
@@ -355,8 +352,8 @@ export default {
             "&facet=on&facet.query=keywords%3A*alusp%C3%B5hjageoloogia*&facet.query=keywords%3A*paleontoloogia*&facet.query=keywords%3A*kvaternaarigeoloogia*&facet.query=keywords%3A*maavarad*&facet.query=keywords%3A*h%C3%BCdrogeoloogia*&facet.query=keywords:*ehitusgeoloogia*&facet.query=keywords:*m%C3%A4endus*&facet.query=keywords:*personaalia*&facet.query=keywords:*kroonika*" +
             "&facet.field=language&facet.mincount=1&facet.field=type" +
             "&facet.range=year_numeric&f.year_numeric.facet.range.start=1820&f.year_numeric.facet.range.end=2021&f.year_numeric.facet.range.gap=10&f.year_numeric.facet.range.other=before&f.year_numeric.facet.range.other=after" +
-            "&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0" +
-            "&facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=0"
+            "&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=1" +
+            "&facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=1"
         )
         .then(res => {
           this.statisticsData = res.data;

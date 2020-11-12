@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="#E0C190" class="d-flex flex-column py-4 flex-grow-1">
+  <v-footer color="#E0C190" class="d-flex py-4 flex-grow-1 flex-column">
     <div class="text-center">
       <a href="https://kik.ee" target="_blank" rel="noopener">
         <img

@@ -29,7 +29,7 @@
         v-on:update:showSearch="showSearch = !showSearch"
       />
       <v-main class="fill-height main">
-        <div class="fill-height d-flex flex-wrap align-content-space-between">
+        <div class="fill-height d-flex flex-column align-content-space-between">
           <div class="container">
             <v-card
               v-if="

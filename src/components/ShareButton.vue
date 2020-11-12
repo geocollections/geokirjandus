@@ -37,6 +37,7 @@
           <v-radio-group class="pb-2" hide-details v-model="exportType" row>
             <v-radio color="#E58124" value="csv" label="CSV" />
             <v-radio color="#E58124" value="ris" label="RIS" />
+            <v-radio color="#E58124" value="bibtex" label="BibTeX" />
           </v-radio-group>
           <v-select
             v-if="$route.name !== 'reference'"
@@ -80,11 +81,13 @@ import {
   fetchReferences
 } from "@/utils/apiCalls";
 import CopyButton from "@/components/CopyButton";
+import Cite from "citation-js";
+import citationMixin from "@/mixins/citationMixin";
 
 export default {
   name: "ShareButton",
   components: { CopyButton },
-  mixins: [urlMixin, toastMixin, queryMixin],
+  mixins: [urlMixin, toastMixin, queryMixin, citationMixin],
   data() {
     return {
       open: false,
@@ -111,10 +114,12 @@ export default {
       if (this.exportType === "csv") {
         return ".csv";
       }
+      if (this.exportType === "bibtex") {
+        return ".bib";
+      }
       return "";
     },
     getShareURL() {
-      // FIXME:  Add library id if inside a library
       let resolve;
       if (this.$route.name === "library") {
         resolve = this.$router.resolve({
@@ -147,6 +152,9 @@ export default {
             break;
           case "ris":
             this.exportToRIS(data, filename);
+            break;
+          case "bibtex":
+            this.exportToBibTeX(data, filename);
             break;
           default:
             break;
@@ -192,45 +200,28 @@ export default {
       const failMsg = this.$t("messages.CSVExportFail");
       const successMsg = this.$t("messages.CSVExportSuccess");
 
-      let csvString = this.convertJsonToCsv(data);
+      let csvString = this.convertToCSV(data);
 
       if (csvString.length === 0) {
         this.toastError({ text: failMsg });
         return;
       }
 
-      let file = new Blob([csvString], { type: "text/plain" });
-
-      if (window.navigator.msSaveOrOpenBlob)
-        // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename + ".csv");
-      else {
-        // Others
-        let a = document.createElement("a");
-        let url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename + ".csv";
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() {
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, 0);
-      }
+      this.exportFile(csvString, filename);
 
       this.toastSuccess({ text: successMsg });
     },
 
-    convertJsonToCsv(jsonArray) {
+    convertToCSV(data) {
       const { Parser } = require("json2csv");
 
       // Possibility to export exact fields for each object
-      const fields = Object.keys(jsonArray[0]);
+      const fields = Object.keys(data[0]);
       const opts = { fields };
 
       try {
         const parser = new Parser(opts);
-        return parser.parse(jsonArray);
+        return parser.parse(data);
       } catch (err) {
         this.toastError({ text: err });
         return "";
@@ -241,24 +232,96 @@ export default {
       const failMsg = this.$t("messages.RISExportFail");
       const successMsg = this.$t("messages.RISExportSuccess");
 
-      let risString = this.convertJsonToRis(data);
+      let risString = this.convertToRIS(data);
 
       if (risString.length === 0) {
         this.toastError({ text: failMsg });
         return;
       }
 
-      let file = new Blob([risString], { type: "text/plain" });
+      this.exportFile(risString, filename);
+
+      this.toastSuccess({ text: successMsg });
+    },
+    convertToRIS(data) {
+      const cslArray = data.map(reference => {
+        return {
+          type: reference.reference_csl_type,
+          title: reference.title,
+          DOI: reference.doi,
+          author: reference.author,
+          issued: [
+            {
+              "date-parts": [reference.year]
+            }
+          ],
+          "container-title": reference.book ?? reference.journal_name,
+          volume: reference.volume,
+          number: reference.number,
+          publisher: reference.publisher,
+          "publisher-place": reference.publisher_place,
+          page: reference.pages,
+          URL: reference.url
+        };
+      });
+
+      return Cite(cslArray).format("ris");
+    },
+    exportToBibTeX(data, filename) {
+      const failMsg = this.$t("messages.RISExportFail");
+      const successMsg = this.$t("messages.RISExportSuccess");
+
+      let bibtexString = this.convertToBibTeX(data);
+
+      if (bibtexString.length === 0) {
+        this.toastError({ text: failMsg });
+        return;
+      }
+
+      this.exportFile(bibtexString, filename);
+
+      this.toastSuccess({ text: successMsg });
+    },
+    convertToBibTeX(data) {
+      const cslArray = data.map(reference => {
+        return {
+          type: reference.reference_csl_type,
+          title: reference.title,
+          DOI: reference.doi,
+          author: reference.author,
+          issued: [
+            {
+              "date-parts": [reference.year]
+            }
+          ],
+          "container-title": reference.book ?? reference.journal_name,
+          volume: reference.volume,
+          number: reference.number,
+          publisher: reference.publisher,
+          "publisher-place": reference.publisher_place,
+          page: reference.pages,
+          URL: reference.url
+        };
+      });
+
+      return Cite(cslArray).format("bibtex");
+    },
+
+    exportFile(data, filename) {
+      let file = new Blob([data], { type: "text/plain" });
 
       if (window.navigator.msSaveOrOpenBlob)
         // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename + ".ris");
+        window.navigator.msSaveOrOpenBlob(
+          file,
+          `${filename}${this.getFileSuffix}`
+        );
       else {
         // Others
         let a = document.createElement("a");
         let url = URL.createObjectURL(file);
         a.href = url;
-        a.download = filename + ".ris";
+        a.download = `${filename}${this.getFileSuffix}`;
         document.body.appendChild(a);
         a.click();
         setTimeout(function() {
@@ -266,120 +329,6 @@ export default {
           window.URL.revokeObjectURL(url);
         }, 0);
       }
-
-      this.toastSuccess({ text: successMsg });
-    },
-
-    convertJsonToRis(jsonArray) {
-      let risString = "";
-
-      if (jsonArray && jsonArray.length > 0) {
-        jsonArray.forEach(item => {
-          // Only write to string if type exists
-          if (item.type && item.reference_ris_type) {
-            risString += "TY  - " + item.reference_ris_type + "\n";
-
-            // Todo: Add certain fields to certain types --> if (item.type__ris_type === 'JOUR') {} etc.
-
-            if (item.title) risString += "TI  - " + item.title.trim() + "\n";
-            if (item.title_translated)
-              risString += "TT  - " + item.title_translated.trim() + "\n";
-
-            if (item.author) {
-              if (item.author.includes(".,")) {
-                // Multiple authors
-                item.author.split(".,").forEach(author => {
-                  if (author.charAt(author.length - 1) === ".")
-                    risString += "AU  - " + author.trim() + "\n";
-                  else risString += "AU  - " + author.trim() + ".\n";
-                });
-              } else if (item.author.includes("&")) {
-                item.author
-                  .split("&")
-                  .forEach(
-                    author => (risString += "AU  - " + author.trim() + "\n")
-                  );
-              } else risString += "AU  - " + item.author.trim() + "\n";
-            }
-
-            if (item.year) risString += "PY  - " + item.year.trim() + "\n";
-
-            if (
-              item.journal &&
-              item.journal__journal_name &&
-              item.type__ris_type === "JOUR"
-            ) {
-              risString += "T2  - " + item.journal__journal_name.trim() + "\n";
-              risString += "JO  - " + item.journal__journal_name.trim() + "\n";
-            }
-
-            if (item.book && item.type__ris_type === "BOOK") {
-              risString += "BT  - " + item.book.trim() + "\n";
-            }
-
-            if (item.book_editor && item.type__ris_type === "BOOK") {
-              risString += "ED  - " + item.book_editor.trim() + "\n";
-            }
-
-            if (item.publisher) {
-              risString += "PB  - " + item.publisher.trim() + "\n";
-            }
-
-            if (item.publisher_place) {
-              risString += "PP  - " + item.publisher_place.trim() + "\n";
-            }
-
-            if (item.isbn || item.issn) {
-              risString += "SN  - ";
-              if (item.isbn) risString += item.isbn.trim();
-              if (item.issn) {
-                risString += (item.isbn ? " / " : "") + item.issn.trim();
-              }
-
-              risString += "\n";
-            }
-
-            if (item.volume) risString += "VL  - " + item.volume.trim() + "\n";
-
-            if (item.number) risString += "IS  - " + item.number.trim() + "\n";
-
-            if (item.pages) {
-              if (item.pages.includes("-")) {
-                let startAndEndPage = item.pages.split("-");
-                if (startAndEndPage[0])
-                  risString += "SP  - " + startAndEndPage[0].trim() + "\n";
-                if (startAndEndPage[1])
-                  risString += "EP  - " + startAndEndPage[1].trim() + "\n";
-              }
-            }
-
-            if (item.language && item.language__iso1)
-              risString += "LA  - " + item.language__iso1.trim() + "\n";
-
-            if (item.doi) risString += "DO  - " + item.doi.trim() + "\n";
-
-            if (item.url) risString += "UR  - " + item.url.trim() + "\n";
-
-            if (item.author_keywords) {
-              if (item.author_keywords.includes(","))
-                item.author_keywords
-                  .split(",")
-                  .forEach(
-                    keyword => (risString += "KW  - " + keyword.trim() + "\n")
-                  );
-              else risString += "KW  - " + item.author_keywords.trim() + "\n";
-            }
-
-            if (item.abstract) {
-              let abstractRegex = /(<\w+>|<\/\w+>)/g;
-              let newAbstract = item.abstract.trim().replace(abstractRegex, "");
-              risString += "AB  - " + newAbstract + "\n";
-            }
-            risString += "ER  - \n";
-          }
-        });
-      }
-      return risString;
     }
   }
 };

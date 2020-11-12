@@ -39,10 +39,6 @@
             <h3 class="align-self-center">
               <b>{{ $t("common.citation") }}</b>
             </h3>
-            <!--
-                TODO: Citation text style is not copied right now (bold, italic)
-              -->
-
             <copy-button clipboard-class="libraryCitation" />
           </div>
           <v-card flat outlined>

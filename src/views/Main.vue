@@ -29,22 +29,26 @@
         v-on:update:showSearch="showSearch = !showSearch"
       />
       <v-main class="fill-height main">
-        <div class="fill-height d-flex flex-column align-content-space-between">
-          <div class="container">
-            <v-card
-              v-if="
-                $route.name === 'searchReference' ||
-                  $route.name === 'searchLibrary'
-              "
-              elevation="4"
-              class=" my-1 roundedBorder"
-              color="#EEDBBF"
-            >
-              <router-view name="tabs" />
-              <router-view />
-            </v-card>
-            <router-view v-else />
-          </div>
+        <div class="fill-height d-flex flex-wrap align-content-space-between">
+          <v-container fluid>
+            <v-row class="d-flex justify-center">
+              <v-col class="card">
+                <v-card
+                  v-if="
+                    $route.name === 'searchReference' ||
+                      $route.name === 'searchLibrary'
+                  "
+                  elevation="4"
+                  class=" my-1 roundedBorder "
+                  color="#EEDBBF"
+                >
+                  <router-view name="tabs" />
+                  <router-view />
+                </v-card>
+                <router-view v-else />
+              </v-col>
+            </v-row>
+          </v-container>
           <app-footer />
         </div>
       </v-main>
@@ -142,7 +146,7 @@ export default {
 
 <style scoped>
 @media (min-width: 1904px) {
-  .container {
+  .card {
     max-width: 1264px !important;
   }
 }

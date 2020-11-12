@@ -252,13 +252,14 @@ export default {
           type: reference.reference_csl_type,
           title: reference.title,
           DOI: reference.doi,
-          author: reference.author,
+          author: this.parseNames(reference.author),
           issued: [
             {
               "date-parts": [reference.year]
             }
           ],
           "container-title": reference.book ?? reference.journal_name,
+          editor: reference.editor ? this.parseNames(reference.editor) : null,
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
@@ -291,13 +292,14 @@ export default {
           type: reference.reference_csl_type,
           title: reference.title,
           DOI: reference.doi,
-          author: reference.author,
+          author: this.parseNames(reference.author),
           issued: [
             {
               "date-parts": [reference.year]
             }
           ],
           "container-title": reference.book ?? reference.journal_name,
+          editor: reference.editor ? this.parseNames(reference.editor) : null,
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,

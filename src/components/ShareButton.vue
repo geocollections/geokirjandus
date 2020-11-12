@@ -43,8 +43,10 @@
             v-if="$route.name !== 'reference'"
             :label="$t('common.amount')"
             hide-details
+            type="number"
             :items="selectItems"
-            v-model="exportCount"
+            :value="exportCount"
+            @input="exportCount = isNaN($event) ? $event.value : $event"
           >
           </v-combobox>
 
@@ -92,21 +94,23 @@ export default {
     return {
       open: false,
       exportType: "csv",
-      exportCount: "10",
-      selectItems: [
-        { value: "10", text: "10" },
-        { value: "25", text: "25" },
-        { value: "50", text: "50" },
-        { value: "100", text: "100" },
-        { value: "1000", text: "1000" },
-        { value: "1000000", text: this.$t("common.all") }
-      ],
+      exportCount: 10,
       filename: ""
     };
   },
   computed: {
     ...mapState("settings", ["view"]),
-
+    ...mapState("references", ["count"]),
+    selectItems() {
+      return [
+        { value: 10, text: "10" },
+        { value: 25, text: "25" },
+        { value: 50, text: "50" },
+        { value: 100, text: "100" },
+        { value: 1000, text: "1000" },
+        { value: this.count, text: this.$t("common.all") }
+      ];
+    },
     getFileSuffix() {
       if (this.exportType === "ris") {
         return ".ris";
@@ -160,14 +164,13 @@ export default {
             break;
         }
       };
-
       if (this.$route.name === "library") {
         fetchLibraryReferences(this.$route.params.id, {
           search: this.getSearch,
           advancedSearch: this.getAdvancedSearch.byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          paginateBy: parseInt(this.exportCount)
+          paginateBy: this.exportCount
         }).then(res => {
           const filename =
             this.filename.length > 0 ? this.filename : "exportFile";

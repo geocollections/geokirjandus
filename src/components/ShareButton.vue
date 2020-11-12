@@ -39,14 +39,14 @@
             <v-radio color="#E58124" value="ris" label="RIS" />
             <v-radio color="#E58124" value="bibtex" label="BibTeX" />
           </v-radio-group>
-          <v-select
+          <v-combobox
             v-if="$route.name !== 'reference'"
             :label="$t('common.amount')"
             hide-details
             :items="selectItems"
             v-model="exportCount"
           >
-          </v-select>
+          </v-combobox>
 
           <v-text-field
             v-model="filename"

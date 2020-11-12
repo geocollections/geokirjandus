@@ -98,6 +98,13 @@ export default {
       filename: ""
     };
   },
+  watch: {
+    count: {
+      handler() {
+        this.exportCount = this.count;
+      }
+    }
+  },
   computed: {
     ...mapState("settings", ["view"]),
     ...mapState("references", ["count"]),

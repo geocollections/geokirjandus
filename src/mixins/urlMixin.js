@@ -54,6 +54,7 @@ const urlMixin = {
       );
 
       q["lang"] = this.language;
+      q["library"] = parameters.library;
 
       return q;
     }

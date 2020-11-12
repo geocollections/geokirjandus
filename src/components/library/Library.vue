@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-card class="roundedBorder" v-if="library">
+    <v-card class="roundedBorder libraryTitle" v-if="library">
       <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">
@@ -11,81 +11,81 @@
           {{ getTitle }}
         </div>
       </v-card-title>
-      <v-card-actions class="pa-0">
-        <v-card-text class="pt-4">
-          <h3 class="">
-            {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
-            {{ library.year }}
+      <div class="body elevation-4">
+        <v-card-actions class="pr-2 pl-0 py-0">
+          <v-card-text class="pt-4">
+            <h3 class="">
+              {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+              {{ library.year }}
+            </h3>
+          </v-card-text>
+          <v-spacer />
+          <v-chip
+            link
+            outlined
+            color="blue-grey darken-3"
+            class="d-print-none mr-2 my-1 link"
+            :href="`https://edit.geocollections.info/library/${library.id}`"
+            target="_blank"
+            rel="noopener"
+          >
+            <v-icon small class="pr-1">fas fa-edit</v-icon>
+            <b>{{ $t("common.edit") }}</b>
+          </v-chip>
+        </v-card-actions>
+
+        <v-card-text>
+          <div class="d-flex pb-3">
+            <h3 class="align-self-center">
+              <b>{{ $t("common.citation") }}</b>
+            </h3>
+            <!--
+                TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
+                TODO: Citation text style is not copied right now (bold, italic)
+              -->
+
+            <copy-button clipboard-class="libraryCitation" />
+          </div>
+          <v-card flat outlined>
+            <div class="pa-4">
+              <library-citation class="libraryCitation" :library="library" />
+            </div>
+          </v-card>
+        </v-card-text>
+        <v-card-text v-if="library.abstract" class="pt-0">
+          <h3>
+            <b>{{ $t("common.summary") }}</b>
           </h3>
         </v-card-text>
-        <v-spacer />
-        <v-chip
-          link
-          outlined
-          color="blue-grey darken-3"
-          class="d-print-none mr-2 my-1 link"
-          :href="`https://edit.geocollections.info/library/${library.id}`"
-          target="_blank"
-          rel="noopener"
-        >
-          <v-icon small class="pr-1">fas fa-edit</v-icon>
-          <b>{{ $t("common.edit") }}</b>
-        </v-chip>
-      </v-card-actions>
-
-      <v-card-text>
-        <div class="d-flex pb-3">
-          <h3 class="align-self-center">
-            <b>{{ $t("common.citation") }}</b>
+        <v-card-text v-if="library.abstract" class="py-0">
+          <div v-if="$i18n.locale === 'ee'" v-html="library.abstract"></div>
+          <div v-else v-html="library.abstract_en"></div>
+        </v-card-text>
+        <v-card-text class="pb-0">
+          <h3>
+            <b>{{ $t("common.libraryReferences") }}</b>
           </h3>
-          <!--
-              TODO: Find a better way to copy citation. Right now there is a copy of the csl json in this component and the citation is built again. Should build citation only once
-              TODO: Citation text style is not copied right now (bold, italic)
-            -->
-          <copy-button
-            :text="citation(getCslJson, append, null, 'string')"
-            :message="$t('messages.copyCitation')"
-          />
-        </div>
-        <v-card flat outlined>
-          <div class="pa-4">
-            <library-citation :library="library" />
-          </div>
+        </v-card-text>
+        <v-card
+          elevation="4"
+          class="mx-2 my-3 mx-sm-3 roundedBorder"
+          color="#EEDBBF"
+        >
+          <reference-viewer />
         </v-card>
-      </v-card-text>
-      <v-card-text v-if="library.abstract" class="pt-0">
-        <h3>
-          <b>{{ $t("common.summary") }}</b>
-        </h3>
-      </v-card-text>
-      <v-card-text v-if="library.abstract" class="py-0">
-        <div v-if="$i18n.locale === 'ee'" v-html="library.abstract"></div>
-        <div v-else v-html="library.abstract_en"></div>
-      </v-card-text>
-      <v-card-text class="pb-0">
-        <h3>
-          <b>{{ $t("common.libraryReferences") }}</b>
-        </h3>
-      </v-card-text>
-      <v-card
-        elevation="4"
-        class="mx-2 my-3 mx-sm-3 roundedBorder"
-        color="#EEDBBF"
-      >
-        <reference-viewer />
-      </v-card>
-      <v-card-text class="py-0">
-        <v-row>
-          <v-col cols="auto" class="pt-2">
-            <b>{{ $t("common.libraryCreated") }}:</b>
-            {{ formatDate(library.date_added) }}
-          </v-col>
-          <v-col cols="auto" class="pt-2">
-            <b>{{ $t("common.libraryChanged") }}:</b>
-            {{ formatDate(library.date_changed) }}
-          </v-col>
-        </v-row>
-      </v-card-text>
+        <v-card-text class="py-0">
+          <v-row>
+            <v-col cols="auto" class="pt-2">
+              <b>{{ $t("common.libraryCreated") }}:</b>
+              {{ formatDate(library.date_added) }}
+            </v-col>
+            <v-col cols="auto" class="pt-2">
+              <b>{{ $t("common.libraryChanged") }}:</b>
+              {{ formatDate(library.date_changed) }}
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </div>
     </v-card>
     <v-card v-if="error">
       <v-card-actions class="libraryTitle">
@@ -113,7 +113,7 @@ import queryMixin from "@/mixins/queryMixin";
 import CopyButton from "@/components/CopyButton";
 export default {
   name: "Library",
-  components: { LibraryCitation, ReferenceViewer, CopyButton },
+  components: { CopyButton, LibraryCitation, ReferenceViewer },
   data() {
     return {
       id: this.$route.params.id,
@@ -209,7 +209,7 @@ export default {
 
 <style scoped>
 .libraryTitle {
-  background-color: #ddb77e;
+  background-color: #f9c980;
 }
 
 .titleText {
@@ -218,5 +218,10 @@ export default {
 
 .roundedBorder {
   border-radius: 12px;
+}
+
+.body {
+  border-radius: 12px;
+  background-color: white;
 }
 </style>

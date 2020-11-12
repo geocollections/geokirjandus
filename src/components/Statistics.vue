@@ -11,18 +11,20 @@
           <v-col cols="12" sm="6" md="3">
             <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
             <bar-chart
+              id="keywords"
               class="d-flex justify-center"
               :chartdata="getKeywordsChartData"
-              :options="getChartOptions('bar', handleKeywordClick)"
+              :options="getKeywordsChartOptions(handleKeywordClick)"
               :locale="$i18n.locale"
             />
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
             <bar-chart
+              id="byDecade"
               class="d-flex justify-center"
               :chartdata="getDecadesChartData"
-              :options="getChartOptions('bar', handleDecadeClick)"
+              :options="getDecadesChartOptions(handleDecadeClick)"
               :locale="$i18n.locale"
             />
           </v-col>
@@ -55,7 +57,7 @@ import { mapActions } from "vuex";
 import axios from "axios";
 import BarChart from "@/components/charts/BarChart";
 import PieChart from "@/components/charts/PieChart";
-
+import { cloneDeep } from "lodash";
 export default {
   name: "Statistics",
   components: { PieChart, BarChart },
@@ -76,7 +78,8 @@ export default {
           xAxes: [
             {
               ticks: {
-                padding: 10
+                padding: 10,
+                display: false
               },
               gridLines: false
             }
@@ -91,8 +94,11 @@ export default {
           },
           datalabels: {
             formatter: function(value, context) {
-              return "";
-            }
+              return context.chart.data.labels[context.dataIndex];
+            },
+            rotation: 270,
+            align: "end",
+            anchor: "end"
           }
         }
       },
@@ -185,19 +191,16 @@ export default {
       const pivot = this.statisticsData.facet_counts.facet_pivot[
         "language,reference_language,reference_language_en"
       ];
-
       for (let i = 0; i < fields.length; i += 2) {
         if (this.$i18n.locale === "ee") {
           labels.push({
             id: fields[i],
-            name: pivot.find(o => o.value.toString() === fields[i]).pivot[0]
-              .value
+            name: pivot.find(o => o.value === fields[i]).pivot[0].value
           });
         } else {
           labels.push({
             id: fields[i],
-            name: pivot.find(o => o.value.toString() === fields[i]).pivot[0]
-              .pivot[0].value
+            name: pivot.find(o => o.value === fields[i]).pivot[0].pivot[0].value
           });
         }
 
@@ -258,6 +261,21 @@ export default {
   },
   methods: {
     ...mapActions("search", ["resetSearch", "updateAdvancedSearch"]),
+
+    getKeywordsChartOptions(onClick) {
+      let options = cloneDeep(this.getChartOptions("bar", onClick));
+
+      options.scales.yAxes[0].ticks.max = 7000;
+
+      return options;
+    },
+    getDecadesChartOptions(onClick) {
+      let options = cloneDeep(this.getChartOptions("bar", onClick));
+
+      options.scales.yAxes[0].ticks.suggestedMax = 3000;
+
+      return options;
+    },
     getChartOptions(type, onClick = null) {
       if (type === "bar") {
         return {
@@ -334,8 +352,8 @@ export default {
             "&facet=on&facet.query=keywords%3A*alusp%C3%B5hjageoloogia*&facet.query=keywords%3A*paleontoloogia*&facet.query=keywords%3A*kvaternaarigeoloogia*&facet.query=keywords%3A*maavarad*&facet.query=keywords%3A*h%C3%BCdrogeoloogia*&facet.query=keywords:*ehitusgeoloogia*&facet.query=keywords:*m%C3%A4endus*&facet.query=keywords:*personaalia*&facet.query=keywords:*kroonika*" +
             "&facet.field=language&facet.mincount=1&facet.field=type" +
             "&facet.range=year_numeric&f.year_numeric.facet.range.start=1820&f.year_numeric.facet.range.end=2021&f.year_numeric.facet.range.gap=10&f.year_numeric.facet.range.other=before&f.year_numeric.facet.range.other=after" +
-            "&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0" +
-            "&facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=0"
+            "&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=1" +
+            "&facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=1"
         )
         .then(res => {
           this.statisticsData = res.data;

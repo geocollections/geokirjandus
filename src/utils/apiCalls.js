@@ -20,12 +20,22 @@ export const fetchLibraries = data => {
   return SearchService.search(data, "library");
 };
 
-export const fetchLibraryReferences = id => {
+export const fetchLibraryReferences = (id, query) => {
+  const librariesObj = {
+    type: "text",
+    id: "libraries",
+    lookUpType: null,
+    value: `${id}`,
+    label: "reference.libraries",
+    fields: ["libraries"],
+    hidden: true
+  };
   const data = {
-    sortBy: ["author"],
-    sortDesc: [false],
-    search: {
-      value: `libraries:*|${id}|*`
+    ...query,
+    search: query.search,
+    advancedSearch: {
+      ...query.advancedSearch,
+      libraries: librariesObj
     }
   };
   return SearchService.search(data, "reference");

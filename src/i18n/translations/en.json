@@ -4,8 +4,11 @@
   "pagination": "{num} results",
   "messages": {
     "langChange": "Language changed",
-    "copyURL": "Copied URL",
-    "copyCitation": "Copied citation"
+    "copy": "Copied to <b>clipboard</b>",
+    "RISExportFail": "Exporting failed",
+    "RISExportSuccess": "Exported file in <b>RIS</b> format",
+    "CSVExportFail": "Exporting failed",
+    "CSVExportSuccess": "Exported file in <b>CSV</b> format"
   },
   "tooltip": {
     "map": "Shows localities with coordinates. Full list of localities is available below."
@@ -77,7 +80,11 @@
     "libraryCreatedBy": "Created by",
     "close": "Close",
     "statistics": "Statistics",
-    "edit": "EDIT"
+    "edit": "EDIT",
+    "filename": "Filename",
+    "exportFile": "Export file",
+    "amount": "Amount",
+    "all": "All"
   },
   "reference": {
     "id": "ID",

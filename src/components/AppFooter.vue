@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="#E0C190" class="d-flex flex-column py-4 flex-grow-1">
+  <v-footer color="#E0C190" class="d-flex py-4 flex-grow-1 flex-column">
     <div class="text-center">
       <a href="https://kik.ee" target="_blank" rel="noopener">
         <img
@@ -54,16 +54,48 @@
         />
       </a>
     </div>
-    <small class="text-center pt-4 footerText">
+    <small v-if="$i18n.locale === 'ee'" class="text-center pt-4 footerText">
       Siin leiduvad materjalid on enamasti kasutamiseks
-      <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a>
-      litsentsi alusel, kui pole näidatud teisiti. Portaal on osaks
-      <a href="https://natarc.ut.ee">NATARC</a>
+      <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">
+        CC BY-SA
+      </a>
+      litsentsi alusel, kui pole näidatud teisiti.
+      <br />
+      Portaal on osaks
+      <a href="https://natarc.ut.ee" target="_blank">NATARC</a>
       teadustaristust ning infosüsteemist
-      <a href="https://geocollections.info">SARV</a>. Majutab
-      <a href="https://taltech.ee/geoloogia-instituut"
-        >TalTech Geoloogia Instituut</a
+      <a href="https://geocollections.info" target="_blank">SARV</a>, majutab
+      <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
+        TalTech </a
+      >.
+      <br />
+      Tarkvara on loodud kasutades
+      <a href="https://vuejs.org/" target="_blank">Vue.js</a>, raamistikku ning
+      kättesaadav
+      <a href="https://github.com/geocollections/geokirjandus" target="_blank">
+        GitHubis </a
+      >.
+    </small>
+    <small v-if="$i18n.locale === 'en'" class="text-center pt-4 footerText">
+      All materials in the portal are for free usage according to
+      <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank"
+        >CC BY-SA</a
       >
+      licence, unless indicated otherwise.
+      <br />
+      Portal is part of
+      <a href="https://natarc.ut.ee" target="_blank">NATARC</a>
+      national research infrastructure and geoscience data platform
+      <a href="https://geocollections.info" target="_blank">SARV</a>, hosted by
+      <a href="https://taltech.ee/geoloogia-instituut" target="_blank"
+        >TalTech</a
+      >.
+      <br />
+      Built using <a href="https://vuejs.org/" target="_blank">Vue.js</a>,
+      available on
+      <a href="https://github.com/geocollections/geokirjandus" target="_blank">
+        GitHub </a
+      >.
     </small>
   </v-footer>
 </template>

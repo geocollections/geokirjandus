@@ -13,9 +13,11 @@
             <lang-buttons />
           </span>
 
-          <h1 class="white--text text-center">{{ $t("title") }}</h1>
+          <h1 class="white--text text-center title">
+            {{ $t("title") }}
+          </h1>
           <span
-            class="text-center align-self-center col-12 col-sm-6 col-md-4 mt-6"
+            class="text-center align-self-center col-12 col-sm-6 col-md-3 mt-6"
           >
             <v-text-field
               v-model="searchStr"
@@ -31,7 +33,7 @@
             </v-text-field>
             <v-btn
               class="mt-3 align-center"
-              color="#E58124"
+              color="#1C9BDE"
               dark
               large
               @click="search"
@@ -198,5 +200,10 @@ export default {
 .header {
   background-size: cover;
   /*background-image: url("https://geoloogia.info/img/books1.jpg");*/
+}
+
+.title {
+  font-size: 2.25rem !important;
+  text-shadow: 2px 2px 10px black;
 }
 </style>

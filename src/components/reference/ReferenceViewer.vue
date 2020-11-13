@@ -72,7 +72,20 @@ export default {
   },
   data() {
     return {
-      headers: [
+      result: []
+    };
+  },
+  props: {
+    tabs: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
+    ...mapState("references", ["count"]),
+    headers() {
+      return [
         {
           text: `${this.$t("reference.id")}`,
           value: "id",
@@ -143,19 +156,8 @@ export default {
           show: true,
           fixed: true
         }
-      ],
-      result: []
-    };
-  },
-  props: {
-    tabs: {
-      type: Boolean,
-      default: false
+      ];
     }
-  },
-  computed: {
-    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("references", ["count"])
   },
   created() {
     if (this.$route.name === "library") this.handleReferencesInLibraryResult();

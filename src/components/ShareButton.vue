@@ -259,7 +259,10 @@ export default {
             }
           ],
           "container-title": reference.book ?? reference.journal_name,
-          editor: reference.editor ? this.parseNames(reference.editor) : null,
+          editor: reference.book_editor
+            ? this.parseNames(reference.book_editor)
+            : null,
+          "original-title": reference.title_original,
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
@@ -299,7 +302,10 @@ export default {
             }
           ],
           "container-title": reference.book ?? reference.journal_name,
-          editor: reference.editor ? this.parseNames(reference.editor) : null,
+          "original-title": reference.title_original,
+          editor: reference.book_editor
+            ? this.parseNames(reference.book_editor)
+            : null,
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,

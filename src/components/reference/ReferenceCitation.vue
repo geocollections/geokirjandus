@@ -42,8 +42,11 @@ export default {
             "date-parts": [this.reference.year]
           }
         ],
-        editor: this.parseNames(this.reference.editor),
+        editor: this.reference.book_editor
+          ? this.parseNames(this.reference.book_editor)
+          : null,
         "container-title": this.reference.book ?? this.reference.journal_name,
+        "original-title": this.reference.title_original,
         volume: this.reference.volume,
         number: this.reference.number,
         publisher: this.reference.publisher,

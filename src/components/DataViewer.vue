@@ -63,7 +63,7 @@
       :count="count"
       class="px-0"
     />
-    <div class="content">
+    <div class="content mb-2">
       <v-scroll-y-transition leave-absolute group>
         <v-card-text
           key="noResults"
@@ -116,7 +116,7 @@
       </v-scroll-y-transition>
     </div>
     <view-helper
-      class="pt-2 px-0"
+      class="px-0"
       v-if="helpers"
       v-on="$listeners"
       :page="page"

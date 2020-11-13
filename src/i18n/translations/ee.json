@@ -76,6 +76,7 @@
     "searchCommand": "Otsi",
     "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
     "yes": "jah",
+    "no": "ei",
     "libraryCreatedBy": "Kogumiku koostas(id)",
     "close": "Sulge",
     "statistics": "Statistika",
@@ -123,7 +124,14 @@
     "bookTranslated": "Raamatu pealkiri tõlgitud",
     "bookOriginal": "Raamatu pealkiri originaal",
     "figures": "Joonised",
-    "contains": "Sisaldab"
+    "contains": "Sisaldab",
+    "url": "URL",
+    "publisherPlace": "Kirjastuse koht",
+    "isOa": "Avatud juurdepääs",
+    "licence": "Litsents",
+    "journalNameShort": "Lühendatud ajakirja nimi",
+    "number": "Number"
+
   },
   "library": {
     "id": "ID",

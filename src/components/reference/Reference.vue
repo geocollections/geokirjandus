@@ -97,9 +97,17 @@
                     <th>{{ $t("reference.publisher") }}</th>
                     <td>{{ reference.publisher }}</td>
                   </tr>
+                  <tr v-if="reference.publisher_place">
+                    <th>{{ $t("reference.publisherPlace") }}</th>
+                    <td>{{ reference.publisher_place }}</td>
+                  </tr>
                   <tr v-if="reference.journal__journal_name">
                     <th>{{ $t("reference.journalName") }}</th>
                     <td>{{ reference.journal__journal_name }}</td>
+                  </tr>
+                  <tr v-if="reference.journal__journal_name_short">
+                    <th>{{ $t("reference.journalNameShort") }}</th>
+                    <td>{{ reference.journal__journal_name_short }}</td>
                   </tr>
                   <tr v-if="reference.parent_reference">
                     <th>{{ $t("reference.parentReference") }}</th>
@@ -114,6 +122,10 @@
                   <tr v-if="reference.volume">
                     <th>{{ $t("reference.volume") }}</th>
                     <td>{{ reference.volume }}</td>
+                  </tr>
+                  <tr v-if="reference.number">
+                    <th>{{ $t("reference.number") }}</th>
+                    <td>{{ reference.number }}</td>
                   </tr>
                   <tr v-if="reference.pages">
                     <th>{{ $t("reference.pages") }}</th>
@@ -133,11 +145,33 @@
                       {{ getReferenceLanguage }}
                     </td>
                   </tr>
+                  <tr>
+                    <th>{{ $t("reference.isOa") }}</th>
+                    <td>
+                      {{ reference.is_oa ? $t("common.yes") : $t("common.no") }}
+                    </td>
+                  </tr>
                   <tr v-if="reference.doi">
                     <th>{{ $t("reference.doi") }}</th>
                     <td>
                       <a :href="reference.doi_url" target="_blank">{{
                         reference.doi
+                      }}</a>
+                    </td>
+                  </tr>
+                  <tr v-if="reference.url">
+                    <th>{{ $t("reference.url") }}</th>
+                    <td>
+                      <a :href="reference.url" target="_blank">{{
+                        reference.url
+                      }}</a>
+                    </td>
+                  </tr>
+                  <tr v-if="reference.licence">
+                    <th>{{ $t("reference.licence") }}</th>
+                    <td>
+                      <a :href="reference.licence_url" target="_blank">{{
+                        reference.licence
                       }}</a>
                     </td>
                   </tr>

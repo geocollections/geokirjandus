@@ -3,7 +3,7 @@
     clipped-left
     app
     class="appBar"
-    :src="require('@/assets/books1.jpg')"
+    :src="require('@/assets/books2_edit.jpg')"
   >
     <v-btn
       aria-label="show search"

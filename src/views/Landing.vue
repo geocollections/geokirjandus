@@ -3,7 +3,7 @@
     <v-container fluid class="landing py-0">
       <v-row
         :style="
-          `background-image: url(&quot;${require('@/assets/books1.jpg')}&quot;)`
+          `background-image: url(&quot;${require('@/assets/books2_edit.jpg')}&quot;)`
         "
         class="d-flex flex-column header"
       >

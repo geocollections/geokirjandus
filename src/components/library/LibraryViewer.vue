@@ -36,6 +36,9 @@
           <template v-slot:item.date_changed="{ item }">
             {{ formatDate(item.date_changed) }}
           </template>
+          <template v-slot:item.date_added="{ item }">
+            {{ formatDate(item.date_added) }}
+          </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">
             <library-list-view :data="data"></library-list-view>
@@ -64,54 +67,14 @@ export default {
   data() {
     return {
       isLoading: false,
-      headers: [
-        {
-          text: `${this.$t("common.actions")}`,
-          sortable: false,
-          value: "actions",
-          show: true,
-          fixed: true
-        },
-        {
-          text: `${this.$t("library.id")}`,
-          value: "id",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.author")}`,
-          value: "author",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.year")}`,
-          value: "year",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.title")}`,
-          value: "title",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.dateChanged")}`,
-          value: "date_changed",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        }
-      ],
       result: []
     };
   },
   created() {
+    this.$store.dispatch("librarySearch/updateSortBy", ["date_added"]);
+
+    this.$store.dispatch("librarySearch/updateSortDesc", [true]);
+
     this.handleLibrariesResult();
     this.getReferences();
   },
@@ -152,8 +115,61 @@ export default {
     }
   },
   computed: {
-    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("library", ["count"])
+    ...mapState("librarySearch", ["sortBy", "sortDesc"]),
+    ...mapState("library", ["count"]),
+    headers() {
+      return [
+        {
+          text: `${this.$t("common.actions")}`,
+          sortable: false,
+          value: "actions",
+          show: true,
+          fixed: true
+        },
+        {
+          text: `${this.$t("library.id")}`,
+          value: "id",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("library.author")}`,
+          value: "author",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("library.year")}`,
+          value: "year",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("library.title")}`,
+          value: "title",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("library.dateChanged")}`,
+          value: "date_changed",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("library.dateAdded")}`,
+          value: "date_added",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        }
+      ];
+    }
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
@@ -166,7 +182,7 @@ export default {
     ]),
     handleLibrariesResult() {
       this.isLoading = true;
-      this.getLibraries(this.libraryPage).then(res => {
+      this.getLibraries().then(res => {
         this.result = res.results;
         this.isLoading = false;
       });

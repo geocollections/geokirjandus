@@ -90,7 +90,7 @@ const routes = [
 
       store.dispatch("settings/updateLanguage", lang);
       if (library) {
-        store.dispatch("librarySearch/setSearchFromURL", query);
+        store.dispatch("libraryReferenceSearch/setSearchFromURL", query);
         next({ name: "library", params: { id: library } });
       } else {
         store.dispatch("search/setSearchFromURL", query);

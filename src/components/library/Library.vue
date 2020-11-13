@@ -165,7 +165,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("librarySearch", [
+    ...mapActions("libraryReferenceSearch", [
       "resetSearch",
       "resetPage",
       "updateSortBy",

@@ -138,7 +138,9 @@
     "author": "Author",
     "year": "Year",
     "title": "Title",
-    "dateChanged": "Date changed"
+    "dateChanged": "Date changed",
+
+    "dateAdded": "Date added"
   },
   "link": {
     "geocollections": "Geocollections portal",

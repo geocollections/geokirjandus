@@ -138,7 +138,8 @@
     "author": "Autor",
     "year": "Aasta",
     "title": "Pealkiri",
-    "dateChanged": "Viimati muudetud"
+    "dateChanged": "Viimati muudetud",
+    "dateAdded": "Lisatud"
   },
   "link": {
     "geocollections": "Geokogude portaal",

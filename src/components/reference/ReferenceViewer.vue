@@ -220,22 +220,22 @@ export default {
     },
     handleUpdatePage(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updatePage", event);
+        this.$store.dispatch("libraryReferenceSearch/updatePage", event);
       else this.updatePage(event);
     },
     handleUpdatePaginateBy(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updatePaginateBy", event);
+        this.$store.dispatch("libraryReferenceSearch/updatePaginateBy", event);
       else this.updatePaginateBy(event);
     },
     handleUpdateSortBy(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateSortBy", event);
+        this.$store.dispatch("libraryReferenceSearch/updateSortBy", event);
       else this.updateSortBy(event);
     },
     handleUpdateSortDesc(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateSortDesc", event);
+        this.$store.dispatch("libraryReferenceSearch/updateSortDesc", event);
       else this.updateSortDesc(event);
     },
     setResults(res) {

@@ -127,17 +127,17 @@ export default {
     ...mapActions("references", ["setReferences"]),
     handleUpdateSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateSearch", event);
+        this.$store.dispatch("libraryReferenceSearch/updateSearch", event);
       else this.updateSearch(event);
     },
     handleUpdateAdvancedSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateAdvancedSearch", event);
+        this.$store.dispatch("libraryReferenceSearch/updateAdvancedSearch", event);
       else this.updateAdvancedSearch(event);
     },
     handleResetSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/resetSearch", event);
+        this.$store.dispatch("libraryReferenceSearch/resetSearch", event);
       else this.resetSearch(event);
     }
   }

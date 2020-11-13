@@ -5,9 +5,9 @@
         text
         icon
         small
-        aria-label="share"
+        aria-label="info"
         color="primary"
-        class="mx-2 shareBtn"
+        class=" mr-1"
         v-bind="attrs"
         v-on="on"
       >

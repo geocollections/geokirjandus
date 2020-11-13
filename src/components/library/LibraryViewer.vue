@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="py-0">
     <v-row>
-      <v-col class="px-1 pb-1 px-sm-2 pb-sm-2">
+      <v-col class="py-0 px-1 px-sm-2">
         <data-viewer
           :module="$route.meta.object"
           :data="result"

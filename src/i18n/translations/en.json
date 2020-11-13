@@ -88,7 +88,7 @@
   },
   "reference": {
     "id": "ID",
-    "author": "Author",
+    "author": "Author(s)",
     "year": "Year",
     "title": "Title",
     "bookJournal": "Book/Journal",
@@ -102,7 +102,7 @@
     "pages": "Pages",
     "reference": "Reference",
     "book": "Book",
-    "bookEditor": "Editor",
+    "bookEditor": "Editor(s)",
     "journalName": "Journal",
     "volume": "Volume",
     "type": "Type",

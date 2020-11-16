@@ -105,7 +105,7 @@ export default {
         {
           text: "reference.titleOriginal",
           value: "title_original",
-          show: true,
+          show: false,
           fixed: false,
           class: "text-no-wrap"
         },

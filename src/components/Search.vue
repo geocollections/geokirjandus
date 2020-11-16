@@ -394,15 +394,28 @@ export default {
 };
 </script>
 
-<style scoped lang="sass">
-@import 'src/sass/variables.sass'
+<style scoped>
+.search {
+  background-color: #f6eddf;
+}
 
-.search
-  background-color: #F6EDDF
+.advancedSearch {
+  background-color: #eedbbf;
+}
 
-.advancedSearch
-  background-color: #EEDBBF
+.deleteSearch {
+  border-radius: 4px;
+}
 
-.deleteSearch
-  border-radius: 4px
+.v-text-field >>> input {
+  font-weight: bold;
+}
+
+.v-select >>> .v-select__selection {
+  font-weight: bold;
+}
+
+.v-text-field >>> input::placeholder {
+  font-weight: normal;
+}
 </style>

@@ -35,7 +35,7 @@ const state = () => {
         title: {
           type: "text",
           id: "title",
-          lookUpType: null,
+          lookUpType: "equals",
           value: null,
           label: "reference.title",
           fields: ["title"]
@@ -43,7 +43,7 @@ const state = () => {
         localities: {
           type: "text",
           id: "localities",
-          lookUpType: "contains",
+          lookUpType: "equals",
           value: null,
           label: "reference.localities",
           fields: ["localities"]
@@ -51,7 +51,7 @@ const state = () => {
         book: {
           type: "text",
           id: "book",
-          lookUpType: "contains",
+          lookUpType: "equals",
           value: null,
           label: "reference.book",
           fields: ["book"]
@@ -73,15 +73,15 @@ const state = () => {
         journal: {
           type: "text",
           id: "journal",
-          lookUpType: "contains",
+          lookUpType: "equals",
           value: null,
           label: "reference.journal",
-          fields: ["journal__journal_name", "journal_name_short"]
+          fields: ["journal_name"]
         },
         abstract: {
           type: "text",
           id: "abstract",
-          lookUpType: "contains",
+          lookUpType: "equals",
           value: null,
           label: "reference.abstract",
           fields: ["abstract"]
@@ -113,7 +113,7 @@ const state = () => {
         publisher: {
           type: "text",
           id: "publisher",
-          lookUpType: "contains",
+          lookUpType: "equals",
           value: null,
           label: "reference.publisher",
           fields: ["publisher"]

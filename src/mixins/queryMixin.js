@@ -21,8 +21,8 @@ const queryMixin = {
     },
     libraryReferenceParameters() {
       return {
-        ...this.$store.state.librarySearch.advancedSearch.byIds,
-        search: this.$store.state.librarySearch.search
+        ...this.$store.state.libraryReferenceSearch.advancedSearch.byIds,
+        search: this.$store.state.libraryReferenceSearch.search
       };
     },
     libraryParameters() {
@@ -35,38 +35,42 @@ const queryMixin = {
     },
     getSearch() {
       if (this.$route.name === "library")
-        return this.$store.state.librarySearch.search;
+        return this.$store.state.libraryReferenceSearch.search;
       else return this.$store.state.search.search;
     },
     getAdvancedSearch() {
       if (this.$route.name === "library")
-        return this.$store.state.librarySearch.advancedSearch;
+        return this.$store.state.libraryReferenceSearch.advancedSearch;
       else return this.$store.state.search.advancedSearch;
     },
     getPage() {
       if (this.$route.name === "library")
-        return this.$store.state.librarySearch.page;
+        return this.$store.state.libraryReferenceSearch.page;
       else return this.$store.state.search.page;
     },
     getPaginateBy() {
       if (this.$route.name === "library")
-        return this.$store.state.librarySearch.paginateBy;
+        return this.$store.state.libraryReferenceSearch.paginateBy;
       else return this.$store.state.search.paginateBy;
     },
     getSortBy() {
       if (this.$route.name === "library")
-        return this.$store.state.librarySearch.sortBy;
+        return this.$store.state.libraryReferenceSearch.sortBy;
       else return this.$store.state.search.sortBy;
     },
     getSortDesc() {
       if (this.$route.name === "library")
-        return this.$store.state.librarySearch.sortDesc;
+        return this.$store.state.libraryReferenceSearch.sortDesc;
       else return this.$store.state.search.sortDesc;
     }
   },
   methods: {
     ...mapActions("references", ["setReferences"]),
     ...mapActions("library", ["setLibraries"]),
+    handleFetchReferences(res) {
+      this.setReferences(res);
+      return res;
+    },
     getReferences() {
       const state = this.$store.state.search;
 
@@ -78,13 +82,10 @@ const queryMixin = {
         sortDesc: state.sortDesc,
         advancedSearch: state.advancedSearch.byIds
       };
-      return fetchReferences(searchObj).then(response => {
-        this.setReferences(response);
-        return response;
-      });
+      return fetchReferences(searchObj).then(this.handleFetchReferences);
     },
     getReferencesInLibrary() {
-      const state = this.$store.state.librarySearch;
+      const state = this.$store.state.libraryReferenceSearch;
 
       const searchObj = {
         search: state.search,
@@ -96,20 +97,17 @@ const queryMixin = {
       };
 
       return fetchLibraryReferences(this.$route.params.id, searchObj).then(
-        response => {
-          this.setReferences(response);
-          return response;
-        }
+        this.handleFetchReferences
       );
     },
     getLibraries(page = 1) {
-      const state = this.$store.state.search;
+      const state = this.$store.state.librarySearch;
 
       const { search, ...advancedSearch } = this.libraryParameters;
 
       const libraryParams = {
         search: search,
-        page: 1,
+        page: page,
         paginateBy: 100,
         sortBy: state.sortBy,
         sortDesc: state.sortDesc,

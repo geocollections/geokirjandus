@@ -76,6 +76,7 @@
     "searchCommand": "Otsi",
     "libraryPublisher": "Virtuaalne kirjanduse kogumik Eesti geokogude infosüsteemis",
     "yes": "jah",
+    "no": "ei",
     "libraryCreatedBy": "Kogumiku koostas(id)",
     "close": "Sulge",
     "statistics": "Statistika",
@@ -87,7 +88,7 @@
   },
   "reference": {
     "id": "ID",
-    "author": "Autor",
+    "author": "Autor(id)",
     "year": "Aasta",
     "title": "Pealkiri",
     "bookJournal": "Raamat/Ajakiri",
@@ -101,7 +102,7 @@
     "pages": "Leheküljed",
     "reference": "Kirje",
     "book": "Raamat",
-    "bookEditor": "Toimetaja",
+    "bookEditor": "Toimetaja(d)",
     "journalName": "Ajakiri",
     "volume": "Köide",
     "type": "Tüüp",
@@ -111,7 +112,7 @@
     "abstract": "Abstrakt",
     "dateChanged": "Viimati muudetud",
     "titleTranslated": "Pealkiri tõlgitud",
-    "publisher": "Kirjastaja",
+    "publisher": "Kirjastus",
     "userChanged": "Muutnud kasutaja",
     "remarks": "Märkused",
     "journal": "Ajakiri",
@@ -123,14 +124,25 @@
     "bookTranslated": "Raamatu pealkiri tõlgitud",
     "bookOriginal": "Raamatu pealkiri originaal",
     "figures": "Joonised",
-    "contains": "Sisaldab"
+    "contains": "Sisaldab",
+    "url": "URL",
+    "publisherPlace": "Kirjastuse koht",
+    "isOa": "Avatud juurdepääs",
+    "licence": "Litsents",
+    "journalNameShort": "Lühendatud ajakirja nimi",
+    "number": "Number",
+    "dateAdded": "Lisatud",
+    "pagesStart": "Algus lehekülg",
+    "pagesEnd": "Lõpp lehekülg"
+
   },
   "library": {
     "id": "ID",
     "author": "Autor",
     "year": "Aasta",
     "title": "Pealkiri",
-    "dateChanged": "Viimati muudetud"
+    "dateChanged": "Viimati muudetud",
+    "dateAdded": "Lisatud"
   },
   "link": {
     "geocollections": "Geokogude portaal",

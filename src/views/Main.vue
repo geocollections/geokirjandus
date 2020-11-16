@@ -29,22 +29,26 @@
         v-on:update:showSearch="showSearch = !showSearch"
       />
       <v-main class="fill-height main">
-        <div class="fill-height d-flex flex-column align-content-space-between">
-          <div class="container">
-            <v-card
-              v-if="
-                $route.name === 'searchReference' ||
-                  $route.name === 'searchLibrary'
-              "
-              elevation="4"
-              class=" my-1 roundedBorder"
-              color="#EEDBBF"
-            >
-              <router-view name="tabs" />
-              <router-view />
-            </v-card>
-            <router-view v-else />
-          </div>
+        <div class="fill-height d-flex flex-wrap align-content-space-between">
+          <v-container fluid>
+            <v-row class="d-flex justify-center">
+              <v-col class="card">
+                <v-card
+                  v-if="
+                    $route.name === 'searchReference' ||
+                      $route.name === 'searchLibrary'
+                  "
+                  elevation="4"
+                  class=" my-1 roundedBorder "
+                  color="#EEDBBF"
+                >
+                  <router-view name="tabs" />
+                  <router-view />
+                </v-card>
+                <router-view v-else />
+              </v-col>
+            </v-row>
+          </v-container>
           <app-footer />
         </div>
       </v-main>
@@ -78,9 +82,18 @@ export default {
   created() {
     window.onbeforeprint = () => {
       this.isPrint = true;
-      this.getReferences().then(res => {
+
+      const setPrintResults = res => {
         this.printResult = res.results;
-      });
+      };
+
+      if (this.$route.name === "library") {
+        this.getReferencesInLibrary(this.$route.params.id).then(
+          setPrintResults
+        );
+      } else {
+        this.getReferences().then(setPrintResults);
+      }
     };
     window.onafterprint = () => {
       this.isPrint = false;
@@ -114,17 +127,17 @@ export default {
     ...mapActions("references", ["setReferences"]),
     handleUpdateSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateSearch", event);
+        this.$store.dispatch("libraryReferenceSearch/updateSearch", event);
       else this.updateSearch(event);
     },
     handleUpdateAdvancedSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateAdvancedSearch", event);
+        this.$store.dispatch("libraryReferenceSearch/updateAdvancedSearch", event);
       else this.updateAdvancedSearch(event);
     },
     handleResetSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/resetSearch", event);
+        this.$store.dispatch("libraryReferenceSearch/resetSearch", event);
       else this.resetSearch(event);
     }
   }
@@ -133,7 +146,7 @@ export default {
 
 <style scoped>
 @media (min-width: 1904px) {
-  .container {
+  .card {
     max-width: 1264px !important;
   }
 }

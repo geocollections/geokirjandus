@@ -39,14 +39,16 @@
             <v-radio color="#E58124" value="ris" label="RIS" />
             <v-radio color="#E58124" value="bibtex" label="BibTeX" />
           </v-radio-group>
-          <v-select
+          <v-combobox
             v-if="$route.name !== 'reference'"
             :label="$t('common.amount')"
             hide-details
+            type="number"
             :items="selectItems"
-            v-model="exportCount"
+            :value="exportCount"
+            @input="exportCount = isNaN($event) ? $event.value : $event"
           >
-          </v-select>
+          </v-combobox>
 
           <v-text-field
             v-model="filename"
@@ -92,21 +94,30 @@ export default {
     return {
       open: false,
       exportType: "csv",
-      exportCount: "10",
-      selectItems: [
-        { value: "10", text: "10" },
-        { value: "25", text: "25" },
-        { value: "50", text: "50" },
-        { value: "100", text: "100" },
-        { value: "1000", text: "1000" },
-        { value: "1000000", text: this.$t("common.all") }
-      ],
+      exportCount: 10,
       filename: ""
     };
   },
+  watch: {
+    count: {
+      handler() {
+        this.exportCount = this.count;
+      }
+    }
+  },
   computed: {
     ...mapState("settings", ["view"]),
-
+    ...mapState("references", ["count"]),
+    selectItems() {
+      return [
+        { value: 10, text: "10" },
+        { value: 25, text: "25" },
+        { value: 50, text: "50" },
+        { value: 100, text: "100" },
+        { value: 1000, text: "1000" },
+        { value: this.count, text: this.$t("common.all") }
+      ];
+    },
     getFileSuffix() {
       if (this.exportType === "ris") {
         return ".ris";
@@ -161,26 +172,23 @@ export default {
         }
       };
 
+      const handleFileCreation = res => {
+        const filename =
+          this.filename.length > 0 ? this.filename : "exportFile";
+
+        createFile(filename, this.exportType, res.results);
+      };
+
       if (this.$route.name === "library") {
         fetchLibraryReferences(this.$route.params.id, {
           search: this.getSearch,
           advancedSearch: this.getAdvancedSearch.byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          paginateBy: parseInt(this.exportCount)
-        }).then(res => {
-          const filename =
-            this.filename.length > 0 ? this.filename : "exportFile";
-
-          createFile(filename, this.exportType, res.results);
-        });
+          paginateBy: this.exportCount
+        }).then(handleFileCreation);
       } else if (this.$route.name === "reference") {
-        fetchReference(this.$route.params.id).then(res => {
-          const filename =
-            this.filename.length > 0 ? this.filename : "exportFile";
-
-          createFile(filename, this.exportType, res.results);
-        });
+        fetchReference(this.$route.params.id).then(handleFileCreation);
       } else {
         fetchReferences({
           search: this.getSearch,
@@ -188,12 +196,7 @@ export default {
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
           paginateBy: parseInt(this.exportCount)
-        }).then(res => {
-          const filename =
-            this.filename.length > 0 ? this.filename : "exportFile";
-
-          createFile(filename, this.exportType, res.results);
-        });
+        }).then(handleFileCreation);
       }
     },
     exportToCSV(data, filename) {
@@ -249,13 +252,17 @@ export default {
           type: reference.reference_csl_type,
           title: reference.title,
           DOI: reference.doi,
-          author: reference.author,
+          author: this.parseNames(reference.author),
           issued: [
             {
               "date-parts": [reference.year]
             }
           ],
           "container-title": reference.book ?? reference.journal_name,
+          editor: reference.book_editor
+            ? this.parseNames(reference.book_editor)
+            : null,
+          "original-title": reference.title_original,
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
@@ -288,13 +295,17 @@ export default {
           type: reference.reference_csl_type,
           title: reference.title,
           DOI: reference.doi,
-          author: reference.author,
+          author: this.parseNames(reference.author),
           issued: [
             {
               "date-parts": [reference.year]
             }
           ],
           "container-title": reference.book ?? reference.journal_name,
+          "original-title": reference.title_original,
+          editor: reference.book_editor
+            ? this.parseNames(reference.book_editor)
+            : null,
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,

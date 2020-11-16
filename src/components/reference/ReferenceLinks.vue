@@ -128,7 +128,6 @@ export default {
       window.open(url, "_blank");
     },
     openDOI(doi) {
-      // TODO: Check for correct doi address
       window.open("https://doi.org/" + doi, "_blank");
     }
   }

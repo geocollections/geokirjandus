@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-0">
+  <v-container fluid class="py-0">
     <v-row>
       <v-col class="py-0 px-1 px-sm-2">
         <data-viewer
@@ -72,79 +72,128 @@ export default {
   },
   data() {
     return {
+      result: [],
       headers: [
         {
-          text: `${this.$t("reference.id")}`,
-          value: "id",
+          text: "reference.id",
+          value: "reference_id",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.author")}`,
+          text: "reference.author",
           value: "author",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.year")}`,
+          text: "reference.year",
           value: "year",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.title")}`,
+          text: "reference.title",
           value: "title",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.journalName")}`,
+          text: "reference.titleOriginal",
+          value: "title_original",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.journalName",
           value: "journal__journal_name",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.book")}`,
+          text: "reference.volume",
+          value: "volume",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.number",
+          value: "number",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.book",
           value: "book",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.pages")}`,
+          text: "reference.bookEditor",
+          value: "book_editor",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.pagesStart",
+          value: "pages_start",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.pagesEnd",
+          value: "pages_end",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.pages",
           value: "pages",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.keywords")}`,
-          value: "keywords",
+          text: "reference.doi",
+          value: "doi",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.dateChanged")}`,
+          text: "reference.dateAdded",
+          value: "date_added",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "reference.dateChanged",
           value: "date_changed",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("common.links")}`,
+          text: "common.links",
           sortable: false,
           value: "links",
           show: true,
           fixed: true
         }
-      ],
-      result: []
+      ]
     };
   },
   props: {
@@ -155,7 +204,10 @@ export default {
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("references", ["count"])
+    ...mapState("references", ["count"]),
+    getTranslatedHeaders() {
+      return [];
+    }
   },
   created() {
     if (this.$route.name === "library") this.handleReferencesInLibraryResult();
@@ -220,37 +272,35 @@ export default {
     },
     handleUpdatePage(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updatePage", event);
+        this.$store.dispatch("libraryReferenceSearch/updatePage", event);
       else this.updatePage(event);
     },
     handleUpdatePaginateBy(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updatePaginateBy", event);
+        this.$store.dispatch("libraryReferenceSearch/updatePaginateBy", event);
       else this.updatePaginateBy(event);
     },
     handleUpdateSortBy(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateSortBy", event);
+        this.$store.dispatch("libraryReferenceSearch/updateSortBy", event);
       else this.updateSortBy(event);
     },
     handleUpdateSortDesc(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("librarySearch/updateSortDesc", event);
+        this.$store.dispatch("libraryReferenceSearch/updateSortDesc", event);
       else this.updateSortDesc(event);
+    },
+    setResults(res) {
+      this.result = res.results;
+      this.isLoading = false;
     },
     handleReferencesResult() {
       this.isLoading = true;
-      this.getReferences().then(res => {
-        this.result = res.results;
-        this.isLoading = false;
-      });
+      this.getReferences().then(this.setResults);
     },
     handleReferencesInLibraryResult() {
       this.isLoading = true;
-      this.getReferencesInLibrary().then(res => {
-        this.result = res.results;
-        this.isLoading = false;
-      });
+      this.getReferencesInLibrary().then(this.setResults);
     }
   }
 };

@@ -77,6 +77,7 @@
     "searchCommand": "Search",
     "libraryPublisher": "Virtual reference collection in Geoscience Collections of Estonia",
     "yes": "yes",
+    "no": "no",
     "libraryCreatedBy": "Created by",
     "close": "Close",
     "statistics": "Statistics",
@@ -88,7 +89,7 @@
   },
   "reference": {
     "id": "ID",
-    "author": "Author",
+    "author": "Author(s)",
     "year": "Year",
     "title": "Title",
     "bookJournal": "Book/Journal",
@@ -102,7 +103,7 @@
     "pages": "Pages",
     "reference": "Reference",
     "book": "Book",
-    "bookEditor": "Editor",
+    "bookEditor": "Editor(s)",
     "journalName": "Journal",
     "volume": "Volume",
     "type": "Type",
@@ -124,14 +125,24 @@
     "bookTranslated": "Book title translated",
     "bookOriginal": "Book title original",
     "figures": "Figures",
-    "contains": "Contains"
+    "contains": "Contains",
+    "url": "URL",
+    "publisherPlace": "Publisher location",
+    "isOa": "OpenAccess",
+    "licence": "Licence",
+    "journalNameShort": "Abbreviated journal name",
+    "number": "Number",
+    "dateAdded": "Date added",
+    "pagesStart": "Start page",
+    "pagesEnd": "End page"
   },
   "library": {
     "id": "ID",
     "author": "Author",
     "year": "Year",
     "title": "Title",
-    "dateChanged": "Date changed"
+    "dateChanged": "Date changed",
+    "dateAdded": "Date added"
   },
   "link": {
     "geocollections": "Geocollections portal",

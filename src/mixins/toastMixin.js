@@ -1,22 +1,8 @@
 // import { mapActions, mapState } from "vuex";
 
 const toastMixin = {
-  // computed: {
-  //   ...mapState("settings", ["error", "errorMessage"])
-  // },
-
-  // watch: {
-  //   error(newVal) {
-  //     if (newVal) {
-  //       this.toastError({ text: this.errorMessage });
-  //       this.updateErrorState(false);
-  //     }
-  //   }
-  // },
 
   methods: {
-    // ...mapActions("settings", ["updateErrorState"]),
-
     toastSuccess(data) {
       if (!data.timeout) data.timeout = 5000;
       if (!data.text) data.text = "OK";

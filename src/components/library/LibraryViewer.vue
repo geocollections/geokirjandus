@@ -1,7 +1,7 @@
 <template>
-  <v-container class="py-0">
+  <v-container fluid class="py-0">
     <v-row>
-      <v-col class="px-1 pb-1 px-sm-2 pb-sm-2">
+      <v-col class="py-0 px-1 px-sm-2">
         <data-viewer
           :module="$route.meta.object"
           :data="result"
@@ -36,6 +36,9 @@
           <template v-slot:item.date_changed="{ item }">
             {{ formatDate(item.date_changed) }}
           </template>
+          <template v-slot:item.date_added="{ item }">
+            {{ formatDate(item.date_added) }}
+          </template>
           <!--  LIST VIEW TEMPLATE  -->
           <template v-slot:list-view="{ data }">
             <library-list-view :data="data"></library-list-view>
@@ -64,54 +67,65 @@ export default {
   data() {
     return {
       isLoading: false,
+      result: [],
       headers: [
         {
-          text: `${this.$t("common.actions")}`,
+          text: "common.actions",
           sortable: false,
           value: "actions",
           show: true,
           fixed: true
         },
         {
-          text: `${this.$t("library.id")}`,
+          text: "library.id",
           value: "id",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("library.author")}`,
+          text: "library.author",
           value: "author",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("library.year")}`,
+          text: "library.year",
           value: "year",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("library.title")}`,
+          text: "library.title",
           value: "title",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("library.dateChanged")}`,
+          text: "library.dateChanged",
           value: "date_changed",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.dateAdded",
+          value: "date_added",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         }
-      ],
-      result: []
+      ]
     };
   },
   created() {
+    this.$store.dispatch("librarySearch/updateSortBy", ["date_added"]);
+
+    this.$store.dispatch("librarySearch/updateSortDesc", [true]);
+
     this.handleLibrariesResult();
     this.getReferences();
   },
@@ -152,7 +166,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
+    ...mapState("librarySearch", ["sortBy", "sortDesc"]),
     ...mapState("library", ["count"])
   },
   mixins: [dateMixin, urlMixin, queryMixin],
@@ -166,7 +180,7 @@ export default {
     ]),
     handleLibrariesResult() {
       this.isLoading = true;
-      this.getLibraries(this.libraryPage).then(res => {
+      this.getLibraries().then(res => {
         this.result = res.results;
         this.isLoading = false;
       });

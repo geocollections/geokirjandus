@@ -57,8 +57,8 @@
     <small v-if="$i18n.locale === 'ee'" class="text-center pt-4 footerText">
       Siin leiduvad materjalid on enamasti kasutamiseks
       <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">
-        CC BY-SA
-      </a>
+        CC BY-SA</a
+      >
       litsentsi alusel, kui pole näidatud teisiti.
       <br />
       Portaal on osaks
@@ -66,14 +66,14 @@
       teadustaristust ning infosüsteemist
       <a href="https://geocollections.info" target="_blank">SARV</a>, majutab
       <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
-        TalTech </a
+        TalTech</a
       >.
       <br />
       Tarkvara on loodud kasutades
       <a href="https://vuejs.org/" target="_blank">Vue.js</a>, raamistikku ning
       kättesaadav
       <a href="https://github.com/geocollections/geokirjandus" target="_blank">
-        GitHubis </a
+        GitHubis</a
       >.
     </small>
     <small v-if="$i18n.locale === 'en'" class="text-center pt-4 footerText">
@@ -94,7 +94,7 @@
       Built using <a href="https://vuejs.org/" target="_blank">Vue.js</a>,
       available on
       <a href="https://github.com/geocollections/geokirjandus" target="_blank">
-        GitHub </a
+        GitHub</a
       >.
     </small>
   </v-footer>

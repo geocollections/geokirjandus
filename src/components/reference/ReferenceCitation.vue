@@ -30,9 +30,6 @@ export default {
   },
   mixins: [citationMixin],
   computed: {
-    ref() {
-      return { path: this.reference.id, params: this.$route.params };
-    },
     getCslJson() {
       return {
         id: this.reference.id,
@@ -45,7 +42,11 @@ export default {
             "date-parts": [this.reference.year]
           }
         ],
+        editor: this.reference.book_editor
+          ? this.parseNames(this.reference.book_editor)
+          : null,
         "container-title": this.reference.book ?? this.reference.journal_name,
+        "original-title": this.reference.title_original,
         volume: this.reference.volume,
         number: this.reference.number,
         publisher: this.reference.publisher,

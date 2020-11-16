@@ -1,9 +1,5 @@
 <template>
   <div class="data-viewer">
-    <!-- DATA TABLE -->
-
-    <slot name="prepend"></slot>
-    <!--  TODO: Use slot to add inputs to header  -->
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-2 px-0"
     >
@@ -67,7 +63,7 @@
       :count="count"
       class="px-0"
     />
-    <div class="content">
+    <div class="content mb-2">
       <v-scroll-y-transition leave-absolute group>
         <v-card-text
           key="noResults"
@@ -120,7 +116,7 @@
       </v-scroll-y-transition>
     </div>
     <view-helper
-      class="pt-2 px-0"
+      class="px-0"
       v-if="helpers"
       v-on="$listeners"
       :page="page"
@@ -193,8 +189,16 @@ export default {
   },
   computed: {
     ...mapState("settings", ["view"]),
+    getHeadersTranslated() {
+      return this.headers.map(item => {
+        return {
+          ...item,
+          text: this.$t(item.text)
+        };
+      });
+    },
     getHeaderOptions() {
-      return this.headers
+      return this.getHeadersTranslated
         .filter(header => {
           return !header.fixed;
         })
@@ -203,7 +207,7 @@ export default {
         });
     },
     getHeadersShowing() {
-      return this.headers.filter(header => {
+      return this.getHeadersTranslated.filter(header => {
         return header.show;
       });
     },

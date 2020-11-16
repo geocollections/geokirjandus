@@ -8,7 +8,7 @@
     <template v-slot:img="{ props }">
       <v-img
         v-bind="props"
-        gradient="to top, rgba(236, 179, 122,.3), rgba(183, 99, 21,.7)"
+        gradient="to top, rgba(229, 129, 36,.2), rgba(183, 99, 21,.55)"
       ></v-img>
     </template>
     <v-btn

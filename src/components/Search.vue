@@ -107,6 +107,7 @@
               <v-row class="pa-1">
                 <v-col cols="12" class="py-0 px-1">
                   <v-text-field
+                    class="searchField"
                     color="#B76315"
                     :value="getAdvancedSearch.byIds[id].value"
                     :label="$t(getAdvancedSearch.byIds[id].label)"
@@ -130,6 +131,7 @@
               <v-row class="">
                 <div class="col py-1">
                   <v-select
+                    class="searchField"
                     multiple
                     color="#B76315"
                     :label="$t(getAdvancedSearch.byIds[id].label)"
@@ -160,6 +162,7 @@
                   <v-row>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        class="searchField"
                         color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[0])
@@ -187,6 +190,7 @@
                     </v-col>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        class="searchField"
                         color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[1])
@@ -407,15 +411,15 @@ export default {
   border-radius: 4px;
 }
 
-.v-text-field >>> input {
+.searchField >>> input {
   font-weight: bold;
 }
 
-.v-select >>> .v-select__selection {
+.searchField >>> .v-select__selection {
   font-weight: bold;
 }
 
-.v-text-field >>> input::placeholder {
+.searchField >>> input::placeholder {
   font-weight: normal;
 }
 </style>

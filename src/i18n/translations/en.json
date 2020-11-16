@@ -131,7 +131,10 @@
     "isOa": "OpenAccess",
     "licence": "Licence",
     "journalNameShort": "Abbreviated journal name",
-    "number": "Number"
+    "number": "Number",
+    "dateAdded": "Date added",
+    "pagesStart": "Start page",
+    "pagesEnd": "End page"
   },
   "library": {
     "id": "ID",
@@ -139,7 +142,6 @@
     "year": "Year",
     "title": "Title",
     "dateChanged": "Date changed",
-
     "dateAdded": "Date added"
   },
   "link": {

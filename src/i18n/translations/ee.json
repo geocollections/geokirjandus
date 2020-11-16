@@ -130,7 +130,10 @@
     "isOa": "Avatud juurdepääs",
     "licence": "Litsents",
     "journalNameShort": "Lühendatud ajakirja nimi",
-    "number": "Number"
+    "number": "Number",
+    "dateAdded": "Lisatud",
+    "pagesStart": "Algus lehekülg",
+    "pagesEnd": "Lõpp lehekülg"
 
   },
   "library": {

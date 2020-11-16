@@ -72,23 +72,11 @@ export default {
   },
   data() {
     return {
-      result: []
-    };
-  },
-  props: {
-    tabs: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("references", ["count"]),
-    headers() {
-      return [
+      result: [],
+      headers: [
         {
           text: `${this.$t("reference.id")}`,
-          value: "id",
+          value: "reference_id",
           show: true,
           fixed: false,
           class: "text-no-wrap"
@@ -115,8 +103,29 @@ export default {
           class: "text-no-wrap"
         },
         {
+          text: `${this.$t("reference.titleOriginal")}`,
+          value: "title_original",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
           text: `${this.$t("reference.journalName")}`,
           value: "journal__journal_name",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.volume")}`,
+          value: "volume",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.number")}`,
+          value: "number",
           show: false,
           fixed: false,
           class: "text-no-wrap"
@@ -129,6 +138,27 @@ export default {
           class: "text-no-wrap"
         },
         {
+          text: `${this.$t("reference.bookEditor")}`,
+          value: "book_editor",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.pagesStart")}`,
+          value: "pages_start",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.pagesEnd")}`,
+          value: "pages_end",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
           text: `${this.$t("reference.pages")}`,
           value: "pages",
           show: false,
@@ -136,8 +166,15 @@ export default {
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.keywords")}`,
-          value: "keywords",
+          text: `${this.$t("reference.doi")}`,
+          value: "doi",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: `${this.$t("reference.dateAdded")}`,
+          value: "date_added",
           show: false,
           fixed: false,
           class: "text-no-wrap"
@@ -156,8 +193,18 @@ export default {
           show: true,
           fixed: true
         }
-      ];
+      ]
+    };
+  },
+  props: {
+    tabs: {
+      type: Boolean,
+      default: false
     }
+  },
+  computed: {
+    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
+    ...mapState("references", ["count"]),
   },
   created() {
     if (this.$route.name === "library") this.handleReferencesInLibraryResult();

@@ -189,8 +189,16 @@ export default {
   },
   computed: {
     ...mapState("settings", ["view"]),
+    getHeadersTranslated() {
+      return this.headers.map(item => {
+        return {
+          ...item,
+          text: this.$t(item.text)
+        };
+      });
+    },
     getHeaderOptions() {
-      return this.headers
+      return this.getHeadersTranslated
         .filter(header => {
           return !header.fixed;
         })
@@ -199,7 +207,7 @@ export default {
         });
     },
     getHeadersShowing() {
-      return this.headers.filter(header => {
+      return this.getHeadersTranslated.filter(header => {
         return header.show;
       });
     },

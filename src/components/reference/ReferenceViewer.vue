@@ -75,119 +75,119 @@ export default {
       result: [],
       headers: [
         {
-          text: `${this.$t("reference.id")}`,
+          text: "reference.id",
           value: "reference_id",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.author")}`,
+          text: "reference.author",
           value: "author",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.year")}`,
+          text: "reference.year",
           value: "year",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.title")}`,
+          text: "reference.title",
           value: "title",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.titleOriginal")}`,
+          text: "reference.titleOriginal",
           value: "title_original",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.journalName")}`,
+          text: "reference.journalName",
           value: "journal__journal_name",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.volume")}`,
+          text: "reference.volume",
           value: "volume",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.number")}`,
+          text: "reference.number",
           value: "number",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.book")}`,
+          text: "reference.book",
           value: "book",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.bookEditor")}`,
+          text: "reference.bookEditor",
           value: "book_editor",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.pagesStart")}`,
+          text: "reference.pagesStart",
           value: "pages_start",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.pagesEnd")}`,
+          text: "reference.pagesEnd",
           value: "pages_end",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.pages")}`,
+          text: "reference.pages",
           value: "pages",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.doi")}`,
+          text: "reference.doi",
           value: "doi",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.dateAdded")}`,
+          text: "reference.dateAdded",
           value: "date_added",
           show: false,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("reference.dateChanged")}`,
+          text: "reference.dateChanged",
           value: "date_changed",
           show: true,
           fixed: false,
           class: "text-no-wrap"
         },
         {
-          text: `${this.$t("common.links")}`,
+          text: "common.links",
           sortable: false,
           value: "links",
           show: true,
@@ -205,6 +205,9 @@ export default {
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
     ...mapState("references", ["count"]),
+    getTranslatedHeaders() {
+      return [];
+    }
   },
   created() {
     if (this.$route.name === "library") this.handleReferencesInLibraryResult();

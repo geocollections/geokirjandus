@@ -67,7 +67,58 @@ export default {
   data() {
     return {
       isLoading: false,
-      result: []
+      result: [],
+      headers: [
+        {
+          text: "common.actions",
+          sortable: false,
+          value: "actions",
+          show: true,
+          fixed: true
+        },
+        {
+          text: "library.id",
+          value: "id",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.author",
+          value: "author",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.year",
+          value: "year",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.title",
+          value: "title",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.dateChanged",
+          value: "date_changed",
+          show: false,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.dateAdded",
+          value: "date_added",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        }
+      ]
     };
   },
   created() {
@@ -116,60 +167,7 @@ export default {
   },
   computed: {
     ...mapState("librarySearch", ["sortBy", "sortDesc"]),
-    ...mapState("library", ["count"]),
-    headers() {
-      return [
-        {
-          text: `${this.$t("common.actions")}`,
-          sortable: false,
-          value: "actions",
-          show: true,
-          fixed: true
-        },
-        {
-          text: `${this.$t("library.id")}`,
-          value: "id",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.author")}`,
-          value: "author",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.year")}`,
-          value: "year",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.title")}`,
-          value: "title",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.dateChanged")}`,
-          value: "date_changed",
-          show: false,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: `${this.$t("library.dateAdded")}`,
-          value: "date_added",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        }
-      ];
-    }
+    ...mapState("library", ["count"])
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {

@@ -5,6 +5,12 @@
     class="appBar"
     :src="require('@/assets/books2_edit.jpg')"
   >
+    <template v-slot:img="{ props }">
+      <v-img
+        v-bind="props"
+        gradient="to top, rgba(236, 179, 122,.3), rgba(183, 99, 21,.7)"
+      ></v-img>
+    </template>
     <v-btn
       aria-label="show search"
       v-if="$vuetify.breakpoint.mdAndUp"
@@ -16,7 +22,7 @@
     </v-btn>
     <v-toolbar-title>
       <a class="title" @click="home">
-        {{ $t("title") }}
+        {{ $t("title2") }}
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>

@@ -92,7 +92,9 @@
               cols="auto"
               class="px-0"
             >
-              <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
+              <small>
+                <b>{{ getAdvancedSearchParametersAppliedCount }}</b>
+              </small>
               <v-icon small color="#E58124">fas fa-filter</v-icon>
             </v-col>
           </v-list-item-title>

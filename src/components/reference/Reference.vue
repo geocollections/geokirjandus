@@ -162,9 +162,12 @@
                   <tr v-if="reference.url">
                     <th>{{ $t("reference.url") }}</th>
                     <td>
-                      <a :href="reference.url" target="_blank">{{
-                        reference.url
-                      }}</a>
+                      <a
+                        :href="reference.url"
+                        target="_blank"
+                        style="word-break: break-all"
+                        >{{ reference.url }}</a
+                      >
                     </td>
                   </tr>
                   <tr v-if="reference.licence">
@@ -584,7 +587,7 @@ export default {
                     : locality.locality_en;
 
                 return {
-                  popup: `<div>${localityTitle}</div>`,
+                  popup: `<a href="https://geocollections.info/locality/${locality.id}" target="_blank">${localityTitle}</a>`,
                   title: localityTitle,
                   coordinates: [locality.latitude, locality.longitude]
                 };

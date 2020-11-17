@@ -70,15 +70,15 @@ export default {
       result: [],
       headers: [
         {
-          text: "common.actions",
-          sortable: false,
-          value: "actions",
-          show: true,
-          fixed: true
-        },
-        {
           text: "library.id",
           value: "id",
+          show: true,
+          fixed: false,
+          class: "text-no-wrap"
+        },
+        {
+          text: "library.title",
+          value: "title",
           show: true,
           fixed: false,
           class: "text-no-wrap"
@@ -93,13 +93,6 @@ export default {
         {
           text: "library.year",
           value: "year",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "library.title",
-          value: "title",
           show: true,
           fixed: false,
           class: "text-no-wrap"
@@ -171,7 +164,7 @@ export default {
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
-    ...mapActions("search", [
+    ...mapActions("librarySearch", [
       "updatePage",
       "updatePaginateBy",
       "updateSortBy",

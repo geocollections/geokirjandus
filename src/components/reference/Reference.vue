@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-card class="roundedBorder referenceTitle" v-if="reference">
       <v-card-title class="pt-1 pb-1 d-flex text-center referenceTitle">
         <v-col cols="auto" class="py-0 px-0">
@@ -19,7 +19,7 @@
             link
             outlined
             color="blue-grey darken-3"
-            class="d-print-none ml-1 my-1 link"
+            class="d-print-none mr-1 my-1 link"
             :href="`https://edit.geocollections.info/reference/${reference.id}`"
             target="_blank"
             rel="noopener"
@@ -162,9 +162,12 @@
                   <tr v-if="reference.url">
                     <th>{{ $t("reference.url") }}</th>
                     <td>
-                      <a :href="reference.url" target="_blank">{{
-                        reference.url
-                      }}</a>
+                      <a
+                        :href="reference.url"
+                        target="_blank"
+                        style="word-break: break-all"
+                        >{{ reference.url }}</a
+                      >
                     </td>
                   </tr>
                   <tr v-if="reference.licence">
@@ -352,6 +355,7 @@
         </v-card-text>
       </div>
     </v-card>
+
     <v-card v-if="error">
       <v-card-actions class="referenceTitle">
         <v-col cols="auto" class="py-0 px-0">
@@ -364,7 +368,7 @@
         </div>
       </v-card-actions>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -583,7 +587,7 @@ export default {
                     : locality.locality_en;
 
                 return {
-                  popup: `<div>${localityTitle}</div>`,
+                  popup: `<a href="https://geocollections.info/locality/${locality.id}" target="_blank">${localityTitle}</a>`,
                   title: localityTitle,
                   coordinates: [locality.latitude, locality.longitude]
                 };
@@ -614,7 +618,7 @@ export default {
 
 <style scoped>
 .referenceTitle {
-  background-color: #eedbbf;
+  background-color: #b9c5cb;
 }
 
 .titleText {

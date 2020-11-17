@@ -32,20 +32,22 @@
         <div class="fill-height d-flex flex-wrap align-content-space-between">
           <v-container fluid>
             <v-row class="d-flex justify-center">
-              <v-col class="card">
-                <v-card
-                  v-if="
-                    $route.name === 'searchReference' ||
-                      $route.name === 'searchLibrary'
-                  "
-                  elevation="4"
-                  class=" my-1 roundedBorder "
-                  color="#EEDBBF"
-                >
-                  <router-view name="tabs" />
-                  <router-view />
-                </v-card>
-                <router-view v-else />
+              <v-col class="card py-0 px-2 px-sm-3">
+                <v-fade-transition>
+                  <v-card
+                    v-if="
+                      $route.name === 'searchReference' ||
+                        $route.name === 'searchLibrary'
+                    "
+                    elevation="4"
+                    class="roundedBorder"
+                    color="#F3D3A5"
+                  >
+                    <router-view name="tabs" />
+                    <router-view />
+                  </v-card>
+                  <router-view v-else />
+                </v-fade-transition>
               </v-col>
             </v-row>
           </v-container>
@@ -132,7 +134,10 @@ export default {
     },
     handleUpdateAdvancedSearch(event) {
       if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updateAdvancedSearch", event);
+        this.$store.dispatch(
+          "libraryReferenceSearch/updateAdvancedSearch",
+          event
+        );
       else this.updateAdvancedSearch(event);
     },
     handleResetSearch(event) {
@@ -157,5 +162,8 @@ export default {
 
 .roundedBorder {
   border-radius: 12px;
+}
+.roundedBorderMobile {
+  border-radius: 0 12px 12px 12px;
 }
 </style>

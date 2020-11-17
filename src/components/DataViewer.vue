@@ -1,9 +1,9 @@
 <template>
   <div class="data-viewer">
     <v-card-actions
-      class="d-print-none d-flex flex-column justify-space-around flex-md-row justify-md-space-between py-2 px-0"
+      class="d-print-none d-flex flex-column justify-space-around flex-sm-row justify-sm-space-between py-2 px-0"
     >
-      <div class="col-12 col-md px-2 py-0">
+      <div class="col-12 col-sm px-2 py-0">
         <span v-html="$t(title, { num: count })" class="title" />
         <copy-button
           v-if="copyButton"
@@ -11,9 +11,9 @@
           :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
         />
       </div>
-      <div class="d-flex col-12 py-0 px-2 col-md-auto ml-md-auto">
+      <div class="d-flex justify-end col-12 py-0 px-2 col-sm-auto ml-sm-auto">
         <v-radio-group
-          class="mt-0 mr-auto"
+          class="mt-0"
           :value="view"
           @change="updateView"
           row

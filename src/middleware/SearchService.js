@@ -93,20 +93,32 @@ function buildQueryStr(queryObject, filterQueryObject) {
       const filterQueryParam = v.fields.reduce((prev, curr, idx) => {
         function buildEncodedParameterStr(searchParameter, fieldId) {
           function buildTextParameter(encodedValue, fieldId) {
-            switch (searchParameter.lookUpType) {
-              case "contains":
-                return `${fieldId}:*${encodedValue}*`;
-              case "equals":
-                return `${fieldId}:"${encodedValue}"`;
-              case "startsWith":
-                return `${fieldId}:${encodedValue}*`;
-              case "endsWith":
-                return `${fieldId}:*${encodedValue}`;
-              case "notContains":
-                return `-${fieldId}:*${encodedValue}*`;
-              default:
-                return `${fieldId}:${encodedValue}`;
-            }
+            let textArray = encodedValue.split(" ");
+
+            const paramArray = textArray.map(str => {
+              // TODO: Use a more general field to check if parameter is of certain type
+              // Author is of type lowercase in Solr reference schema and has to be processed differently
+              if (searchParameter.id === "author") {
+                return `*${str.trim()}*`;
+              }
+              return `"*${str.trim()}*"`;
+            });
+
+            return `${fieldId}:(${paramArray.join(" AND ")})`;
+            // switch (searchParameter.lookUpType) {
+            //   case "contains":
+            //     return `${fieldId}:*${encodedValue}*`;
+            //   case "equals":
+            //     return `${fieldId}:"${encodedValue}"`;
+            //   case "startsWith":
+            //     return `${fieldId}:${encodedValue}*`;
+            //   case "endsWith":
+            //     return `${fieldId}:*${encodedValue}`;
+            //   case "notContains":
+            //     return `-${fieldId}:*${encodedValue}*`;
+            //   default:
+            //     return `${fieldId}:${encodedValue}`;
+            // }
           }
 
           switch (searchParameter.type) {
@@ -133,11 +145,11 @@ function buildQueryStr(queryObject, filterQueryObject) {
               )})`;
             }
             case "text": {
-              const value = searchParameter.value.replaceAll(" ", "\\ ");
+              // const value = searchParameter.value.replaceAll(" ", "\\ ");
 
-              const encodedValue = encodeURIComponent(value);
+              const encodedValue = encodeURIComponent(searchParameter.value);
 
-              return buildTextParameter(encodedValue, fieldId);
+              return buildTextParameter(searchParameter.value, fieldId);
             }
             default:
               return null;

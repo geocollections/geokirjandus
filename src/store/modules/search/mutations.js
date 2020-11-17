@@ -18,7 +18,6 @@ const resetAdvancedSearch = advancedSearch => {
         break;
       default: {
         cloneAdvancedSearch[id].value = null;
-        cloneAdvancedSearch[id].lookUpType = "contains";
       }
     }
   });

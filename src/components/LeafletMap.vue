@@ -156,8 +156,11 @@ export default {
         mapDiv.addLayer(markerClusters);
       } else mapDiv.addLayer(L.layerGroup(markers));
       let bounds = new L.featureGroup(markers).getBounds();
-
       mapDiv.fitBounds(bounds);
+
+      if (markers.length < 2) {
+        mapDiv.setZoom(6);
+      }
 
       this.map = mapDiv;
     }

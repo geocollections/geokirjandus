@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <div>
     <v-card class="roundedBorder libraryTitle" v-if="library">
       <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
         <v-col cols="auto" class="py-0 px-0">
@@ -24,7 +24,7 @@
             link
             outlined
             color="blue-grey darken-3"
-            class="d-print-none mr-2 my-1 link"
+            class="d-print-none mr-1 my-1 link"
             :href="`https://edit.geocollections.info/library/${library.id}`"
             target="_blank"
             rel="noopener"
@@ -64,7 +64,7 @@
         <v-card
           elevation="4"
           class="mx-2 my-3 mx-sm-3 roundedBorder"
-          color="#EEDBBF"
+          color="#F3D3A5"
         >
           <reference-viewer />
         </v-card>
@@ -94,7 +94,7 @@
         </div>
       </v-card-actions>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -204,7 +204,7 @@ export default {
 
 <style scoped>
 .libraryTitle {
-  background-color: #f9c980;
+  background-color: #cfc7b5;
 }
 
 .titleText {

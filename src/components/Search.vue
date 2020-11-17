@@ -1,14 +1,14 @@
 <template>
   <div class="search fill-height ">
-    <v-list class="mt-0 pb-10 pa-0">
+    <v-list class="mt-0 pb-4 pb-md-10 pa-0">
       <v-fade-transition>
-        <v-list-item v-if="showAlert" class="pt-2 ">
+        <v-list-item v-if="showAlert" class="pt-3 d-flex justify-end">
           <v-alert
             dense
             colored-border
             border="right"
             type="info"
-            color="#F9C980"
+            color="#CFC7B5"
             class="mb-0"
           >
             <v-row align="center">
@@ -25,7 +25,7 @@
         </v-list-item>
       </v-fade-transition>
 
-      <v-list-item class="py-4">
+      <v-list-item class="py-3">
         <v-text-field
           solo
           hide-details
@@ -92,7 +92,9 @@
               cols="auto"
               class="px-0"
             >
-              <small>{{ getAdvancedSearchParametersAppliedCount }}</small>
+              <small>
+                <b>{{ getAdvancedSearchParametersAppliedCount }}</b>
+              </small>
               <v-icon small color="#E58124">fas fa-filter</v-icon>
             </v-col>
           </v-list-item-title>
@@ -107,6 +109,7 @@
               <v-row class="pa-1">
                 <v-col cols="12" class="py-0 px-1">
                   <v-text-field
+                    class="searchField"
                     color="#B76315"
                     :value="getAdvancedSearch.byIds[id].value"
                     :label="$t(getAdvancedSearch.byIds[id].label)"
@@ -130,6 +133,7 @@
               <v-row class="">
                 <div class="col py-1">
                   <v-select
+                    class="searchField"
                     multiple
                     color="#B76315"
                     :label="$t(getAdvancedSearch.byIds[id].label)"
@@ -160,6 +164,7 @@
                   <v-row>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        class="searchField"
                         color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[0])
@@ -187,6 +192,7 @@
                     </v-col>
                     <v-col cols="6" class="py-0 px-1">
                       <v-text-field
+                        class="searchField"
                         color="#B76315"
                         :value="
                           isNaN(getAdvancedSearch.byIds[id].value[1])
@@ -394,15 +400,28 @@ export default {
 };
 </script>
 
-<style scoped lang="sass">
-@import 'src/sass/variables.sass'
+<style scoped>
+.search {
+  background-color: #f6eddf;
+}
 
-.search
-  background-color: #F6EDDF
+.advancedSearch {
+  background-color: #f3d3a5;
+}
 
-.advancedSearch
-  background-color: #EEDBBF
+.deleteSearch {
+  border-radius: 4px;
+}
 
-.deleteSearch
-  border-radius: 4px
+.searchField >>> input {
+  font-weight: bold;
+}
+
+.searchField >>> .v-select__selection {
+  font-weight: bold;
+}
+
+.searchField >>> input::placeholder {
+  font-weight: normal;
+}
 </style>

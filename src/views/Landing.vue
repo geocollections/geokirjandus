@@ -1,9 +1,9 @@
 <template>
-  <div class="fill-height d-flex flex-wrap align-content-space-between">
+  <div class="main fill-height d-flex flex-wrap align-content-space-between">
     <v-container fluid class="landing py-0">
       <v-row
         :style="
-          `background-image: url(&quot;${require('@/assets/books2_edit.jpg')}&quot;)`
+          `background-image: linear-gradient(to top, rgba(229, 129, 36, 0.4), rgba(0, 0, 0, 0.40)),url('${require('@/assets/books4.jpg')}');`
         "
         class="d-flex flex-column header"
       >
@@ -190,7 +190,7 @@ export default {
   background-color: #f6eddf;
 }
 .cardTitle {
-  background-color: #eedbbf;
+  background-color: #f3d3a5;
 }
 
 .roundedBorder {

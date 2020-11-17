@@ -96,6 +96,8 @@ function buildQueryStr(queryObject, filterQueryObject) {
             let textArray = encodedValue.split(" ");
 
             const paramArray = textArray.map(str => {
+              // TODO: Use a more general field to check if parameter is of certain type
+              // Author is of type lowercase in Solr reference schema and has to be processed differently
               if (searchParameter.id === "author") {
                 return `*${str.trim()}*`;
               }

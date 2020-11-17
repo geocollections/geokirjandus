@@ -406,7 +406,7 @@ export default {
 }
 
 .advancedSearch {
-  background-color: #eedbbf;
+  background-color: #f3d3a5;
 }
 
 .deleteSearch {

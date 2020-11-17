@@ -190,7 +190,7 @@ export default {
   background-color: #f6eddf;
 }
 .cardTitle {
-  background-color: #eedbbf;
+  background-color: #f3d3a5;
 }
 
 .roundedBorder {

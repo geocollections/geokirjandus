@@ -49,7 +49,7 @@ export default {
 
 <style scoped>
 .active {
-  background-color: #eedbbf;
+  background-color: #f3d3a5;
   border-radius: 12px 12px 0px 0px;
 }
 

@@ -3,12 +3,12 @@
     clipped-left
     app
     class="appBar"
-    :src="require('@/assets/books2_edit.jpg')"
+    :src="require('@/assets/books4.jpg')"
   >
     <template v-slot:img="{ props }">
       <v-img
         v-bind="props"
-        gradient="to top, rgba(229, 129, 36,.2), rgba(183, 99, 21,.55)"
+        gradient="to top, rgba(229, 129, 36, 0.4), rgba(0, 0, 0, 0.40)"
       ></v-img>
     </template>
     <v-btn

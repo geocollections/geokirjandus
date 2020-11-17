@@ -3,7 +3,7 @@
     <v-container fluid class="landing py-0">
       <v-row
         :style="
-          `background-image: linear-gradient(to top, rgba(229, 129, 36,.2), rgba(183, 99, 21,.55)),url('${require('@/assets/books2_edit.jpg')}');`
+          `background-image: linear-gradient(to top, rgba(229, 129, 36, 0.4), rgba(0, 0, 0, 0.40)),url('${require('@/assets/books4.jpg')}');`
         "
         class="d-flex flex-column header"
       >

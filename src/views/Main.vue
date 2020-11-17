@@ -40,7 +40,7 @@
                         $route.name === 'searchLibrary'
                     "
                     elevation="4"
-                    class="my-1 roundedBorder"
+                    class="roundedBorder"
                     color="#F3D3A5"
                   >
                     <router-view name="tabs" />

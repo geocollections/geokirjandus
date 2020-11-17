@@ -25,7 +25,7 @@
         </v-list-item>
       </v-fade-transition>
 
-      <v-list-item class="py-4">
+      <v-list-item class="py-3">
         <v-text-field
           solo
           hide-details

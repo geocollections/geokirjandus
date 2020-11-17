@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="my-1 roundedBorder referenceTitle" v-if="reference">
+    <v-card class="roundedBorder referenceTitle" v-if="reference">
       <v-card-title class="pt-1 pb-1 d-flex text-center referenceTitle">
         <v-col cols="auto" class="py-0 px-0">
           <v-btn large icon @click="handleBack()" aria-label="back">

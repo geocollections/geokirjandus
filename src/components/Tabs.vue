@@ -6,12 +6,20 @@
     color="#924F11"
     ref="tabs"
   >
-    <v-tab active-class="active" link :to="{ name: 'searchReference' }">{{
-      referenceTabTitle
-    }}</v-tab>
-    <v-tab active-class="active" link :to="{ name: 'searchLibrary' }">{{
-      libraryTabTitle
-    }}</v-tab>
+    <v-tab
+      active-class="active"
+      :ripple="false"
+      link
+      :to="{ name: 'searchReference' }"
+      >{{ referenceTabTitle }}</v-tab
+    >
+    <v-tab
+      active-class="active"
+      :ripple="false"
+      link
+      :to="{ name: 'searchLibrary' }"
+      >{{ libraryTabTitle }}</v-tab
+    >
   </v-tabs>
 </template>
 
@@ -50,10 +58,13 @@ export default {
 <style scoped>
 .active {
   background-color: #f3d3a5;
-  border-radius: 12px 12px 0px 0px;
+  border-radius: 12px 12px 0 0;
 }
 
 .v-tab:hover::before {
-  border-radius: 12px 12px 0px 0px;
+  border-radius: 12px 12px 0 0;
+}
+.v-tab:focus::before {
+  border-radius: 12px 12px 0 0;
 }
 </style>

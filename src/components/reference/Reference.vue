@@ -618,7 +618,7 @@ export default {
 
 <style scoped>
 .referenceTitle {
-  background-color: #f3d3a5;
+  background-color: #b9c5cb;
 }
 
 .titleText {

@@ -204,7 +204,7 @@ export default {
 
 <style scoped>
 .libraryTitle {
-  background-color: #f9c980;
+  background-color: #cfc7b5;
 }
 
 .titleText {

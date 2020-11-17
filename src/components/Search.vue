@@ -8,7 +8,7 @@
             colored-border
             border="right"
             type="info"
-            color="#F9C980"
+            color="#CFC7B5"
             class="mb-0"
           >
             <v-row align="center">

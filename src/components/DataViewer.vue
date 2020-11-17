@@ -11,9 +11,9 @@
           :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
         />
       </div>
-      <div class="d-flex col-12 py-0 px-2 col-sm-auto ml-sm-auto">
+      <div class="d-flex justify-end col-12 py-0 px-2 col-sm-auto ml-sm-auto">
         <v-radio-group
-          class="mt-0 mr-auto"
+          class="mt-0"
           :value="view"
           @change="updateView"
           row

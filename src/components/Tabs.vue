@@ -53,7 +53,7 @@ export default {
   border-radius: 12px 12px 0px 0px;
 }
 
-.v-tab:hover {
+.v-tab:hover::before {
   border-radius: 12px 12px 0px 0px;
 }
 </style>

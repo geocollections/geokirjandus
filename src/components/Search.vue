@@ -1,8 +1,8 @@
 <template>
   <div class="search fill-height ">
-    <v-list class="mt-0 pb-10 pa-0">
+    <v-list class="mt-0 pb-4 pb-md-10 pa-0">
       <v-fade-transition>
-        <v-list-item v-if="showAlert" class="pt-2 ">
+        <v-list-item v-if="showAlert" class="pt-3 d-flex justify-end">
           <v-alert
             dense
             colored-border

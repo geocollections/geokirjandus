@@ -32,7 +32,7 @@
         <div class="fill-height d-flex flex-wrap align-content-space-between">
           <v-container fluid>
             <v-row class="d-flex justify-center">
-              <v-col class="card">
+              <v-col class="card py-0">
                 <v-fade-transition>
                   <v-card
                     v-if="

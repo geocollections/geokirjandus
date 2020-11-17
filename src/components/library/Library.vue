@@ -24,7 +24,7 @@
             link
             outlined
             color="blue-grey darken-3"
-            class="d-print-none mr-2 my-1 link"
+            class="d-print-none mr-1 my-1 link"
             :href="`https://edit.geocollections.info/library/${library.id}`"
             target="_blank"
             rel="noopener"

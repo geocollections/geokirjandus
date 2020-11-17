@@ -1,6 +1,6 @@
 <template>
-  <v-card-actions class="flex-column flex-md-row justify-md-space-between py-0">
-    <div class="col-md-3 px-2">
+  <v-card-actions class="flex-column flex-sm-row justify-sm-space-between py-0">
+    <div class="col-sm-3 px-2">
       <v-select
         :value="paginateBy"
         color="#B76315"
@@ -13,7 +13,7 @@
         @change="$emit('update:paginateBy', $event)"
       />
     </div>
-    <div class="ml-md-auto range">{{ getRange }}</div>
+    <div class="ml-sm-auto range">{{ getRange }}</div>
     <v-pagination
       :value="page"
       color="#E58124"

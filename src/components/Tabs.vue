@@ -61,10 +61,29 @@ export default {
   border-radius: 12px 12px 0 0;
 }
 
+.activeMobile {
+  background-color: #f3d3a5;
+  border-radius: 0 12px 12px 0;
+}
+
 .v-tab:hover::before {
   border-radius: 12px 12px 0 0;
 }
 .v-tab:focus::before {
   border-radius: 12px 12px 0 0;
+}
+
+@media (max-width: 600px) {
+  .active {
+    background-color: #f3d3a5;
+    border-radius: 0 12px 0 0;
+  }
+
+  .v-tab:hover::before {
+    border-radius: 0 12px 0 0;
+  }
+  .v-tab:focus::before {
+    border-radius: 0 12px 0 0;
+  }
 }
 </style>

@@ -40,7 +40,7 @@
                         $route.name === 'searchLibrary'
                     "
                     elevation="4"
-                    class=" my-1 roundedBorder "
+                    class="my-1 roundedBorder"
                     color="#F3D3A5"
                   >
                     <router-view name="tabs" />
@@ -162,5 +162,8 @@ export default {
 
 .roundedBorder {
   border-radius: 12px;
+}
+.roundedBorderMobile {
+  border-radius: 0 12px 12px 12px;
 }
 </style>

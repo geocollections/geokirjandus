@@ -145,11 +145,9 @@ function buildQueryStr(queryObject, filterQueryObject) {
               )})`;
             }
             case "text": {
-              // const value = searchParameter.value.replaceAll(" ", "\\ ");
-
-              const encodedValue = encodeURIComponent(searchParameter.value);
-
-              return buildTextParameter(searchParameter.value, fieldId);
+              return encodeURIComponent(
+                buildTextParameter(searchParameter.value, fieldId)
+              );
             }
             default:
               return null;

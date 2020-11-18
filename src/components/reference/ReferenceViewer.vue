@@ -35,6 +35,9 @@
               {{ item.journal__journal_name }}
             </div>
           </template>
+          <template v-slot:item.date_added="{ item }">
+            {{ formatDate(item.date_added) }}
+          </template>
           <template v-slot:item.date_changed="{ item }">
             {{ formatDate(item.date_changed) }}
           </template>

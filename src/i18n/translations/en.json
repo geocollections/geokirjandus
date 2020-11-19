@@ -1,7 +1,7 @@
 {
-  "title": "Estonian geological literature database",
-  "title2": "Estonian geological literature",
-  "subtitle": "Estonian geological literature register",
+  "title": "Estonian geoscience literature database",
+  "title2": "Estonian geoscience literature",
+  "subtitle": "Estonian geoscience literature database",
   "pagination": "{num} results",
   "messages": {
     "langChange": "Language changed",

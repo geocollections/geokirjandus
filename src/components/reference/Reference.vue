@@ -478,9 +478,9 @@ export default {
 
       return localityIds.map((id, index) => {
         return {
-          id: id,
-          name: localityNames[index],
-          nameEng: localityNamesEng[index]
+          id: id.trim(),
+          name: localityNames[index].trim(),
+          nameEng: localityNamesEng[index].trim()
         };
       });
     },
@@ -490,8 +490,8 @@ export default {
 
       return ids.map((id, index) => {
         return {
-          id: id,
-          name: taxaNames[index]
+          id: id.trim(),
+          name: taxaNames[index].trim()
         };
       });
     },

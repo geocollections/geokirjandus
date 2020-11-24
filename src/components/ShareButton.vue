@@ -266,6 +266,7 @@ export default {
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
+          abstract: reference.abstract,
           "publisher-place": reference.publisher_place,
           page: reference.pages,
           URL: reference.url
@@ -309,6 +310,7 @@ export default {
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
+          abstract: reference.abstract,
           "publisher-place": reference.publisher_place,
           page: reference.pages,
           URL: reference.url

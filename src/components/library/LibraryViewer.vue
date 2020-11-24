@@ -11,7 +11,7 @@
           :paginate-by="100"
           :sort-by="sortBy"
           :sort-desc="sortDesc"
-          :headers="headers"
+          :headers="libraryHeaders"
           :title="
             count !== 1
               ? 'viewer.title.library_html'
@@ -24,7 +24,7 @@
           v-on:update:page="updatePage"
           v-on:update:sortBy="updateSortBy"
           v-on:update:sortDesc="updateSortDesc"
-          v-on:update:headers="headers = $event"
+          v-on:update:headers="handleUpdateTableHeaders"
         >
           <!--  TABLE VIEW CUSTOM TEMPLATES  -->
           <template v-slot:item.bookJournal="{ item }">
@@ -67,51 +67,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      result: [],
-      headers: [
-        {
-          text: "library.id",
-          value: "id",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "library.title",
-          value: "title",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "library.author",
-          value: "author",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "library.year",
-          value: "year",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "library.dateChanged",
-          value: "date_changed",
-          show: false,
-          fixed: false,
-          class: "text-no-wrap"
-        },
-        {
-          text: "library.dateAdded",
-          value: "date_added",
-          show: true,
-          fixed: false,
-          class: "text-no-wrap"
-        }
-      ]
+      result: []
     };
   },
   created() {
@@ -160,7 +116,8 @@ export default {
   },
   computed: {
     ...mapState("librarySearch", ["sortBy", "sortDesc"]),
-    ...mapState("library", ["count"])
+    ...mapState("library", ["count"]),
+    ...mapState("tableSettings", ["libraryHeaders"])
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
@@ -171,12 +128,16 @@ export default {
       "updateSortDesc",
       "resetPage"
     ]),
+    ...mapActions("tableSettings", ["setLibraryHeaders"]),
     handleLibrariesResult() {
       this.isLoading = true;
       this.getLibraries().then(res => {
         this.result = res.results;
         this.isLoading = false;
       });
+    },
+    handleUpdateTableHeaders(event) {
+      this.setLibraryHeaders(event);
     },
     open(event) {
       this.$router.push(`/library/${event.id}`);

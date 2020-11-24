@@ -3,6 +3,7 @@
     <v-row>
       <v-col class="py-0 px-1 px-sm-2">
         <data-viewer
+          id="refViewer"
           :module="$route.meta.object"
           :data="result"
           :count="count"

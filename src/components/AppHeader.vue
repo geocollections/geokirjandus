@@ -26,6 +26,7 @@
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
+    <tour v-if="$vuetify.breakpoint.mdAndUp" />
     <links v-if="$vuetify.breakpoint.smAndUp" />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
@@ -56,9 +57,10 @@
 <script>
 import LangButtons from "@/components/LangButtons";
 import Links from "@/components/Links";
+import Tour from "@/components/Tour";
 export default {
   name: "AppHeader",
-  components: { Links, LangButtons },
+  components: { Tour, Links, LangButtons },
   methods: {
     home() {
       this.$emit("home");

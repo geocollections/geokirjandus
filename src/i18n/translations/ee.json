@@ -85,7 +85,10 @@
     "filename": "Faili nimi",
     "exportFile": "Ekspordi fail",
     "amount": "Kogus",
-    "all": "Kõik"
+    "all": "Kõik",
+    "tour": "Tuur",
+    "next": "Järgmine",
+    "back": "Tagasi"
   },
   "reference": {
     "id": "ID",
@@ -161,5 +164,19 @@
     "startsWith": "=* algab",
     "endsWith": "*= lõppeb",
     "notContains": "!* ei sisalda"
+  },
+  "tour": {
+    "search": {
+      "stepDeleteTitle": "Otsingu kustutamine",
+      "stepDeleteText": "Otsingu parameetrite kustutamiseks, vajuta siia",
+      "stepShareTitle": "Jagamine",
+      "stepShareText":  "Nupule vajutades avaneb aken, kus on võimalik otsingut jagada ja exportida",
+      "stepSearchHelpTitle": "Otsingu abi",
+      "stepSearchHelpText": "Nupule vajutades avaneb aken, kus kirjeldatakse kuidas otsingut koostada",
+      "stepCitationTitle": "Viitamise stiili valimine",
+      "stepCitationText": "Viitamise stiili valimiseks vajuta siin ja vali listist stiil listist",
+      "stepFiltersTitle": "Detailotsingu lisamine",
+      "stepFiltersText": "Siit saab lisada täpsemaid filtreid otsingusse"
+    }
   }
 }

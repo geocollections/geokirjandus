@@ -9,13 +9,14 @@
         aria-label="share"
         color="#E58124"
         class="mx-2 shareBtn"
+        id="shareButton"
         v-bind="attrs"
         v-on="on"
       >
         <v-icon small>fas fa-share-alt</v-icon>
       </v-btn>
     </template>
-    <v-card color="#F6EDDF">
+    <v-card color="#F6EDDF" id="shareHelp">
       <v-card-title>
         URL
         <v-card-actions>
@@ -266,6 +267,7 @@ export default {
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
+          abstract: reference.abstract,
           "publisher-place": reference.publisher_place,
           page: reference.pages,
           URL: reference.url
@@ -309,6 +311,7 @@ export default {
           volume: reference.volume,
           number: reference.number,
           publisher: reference.publisher,
+          abstract: reference.abstract,
           "publisher-place": reference.publisher_place,
           page: reference.pages,
           URL: reference.url

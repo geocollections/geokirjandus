@@ -101,6 +101,9 @@ function buildQueryStr(queryObject, filterQueryObject) {
               if (searchParameter.id === "author") {
                 return `*${str.trim()}*`;
               }
+              if (searchParameter.id === "keywords") {
+                return `*${str.trim()}*`;
+              }
               return `"*${str.trim()}*"`;
             });
 

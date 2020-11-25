@@ -1,12 +1,13 @@
 <template>
-  <v-menu
-    transition="slide-y-transition"
-    offset-y
-    bottom
-    right
-  >
+  <v-menu transition="slide-y-transition" offset-y bottom right>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn class="mx-3" text :dark="isDark" v-bind="attrs" v-on="on">
+      <v-btn
+        class="mx-3 linksButton"
+        text
+        :dark="isDark"
+        v-bind="attrs"
+        v-on="on"
+      >
         {{ $t("common.links") }}
       </v-btn>
     </template>
@@ -48,3 +49,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.linksButton {
+  backdrop-filter: blur(1px);
+}
+.linksButton::before {
+  opacity: 0.1;
+}
+.linksButton:hover::before {
+  opacity: 0.22;
+}
+</style>

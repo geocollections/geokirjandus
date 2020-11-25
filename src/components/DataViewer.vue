@@ -3,10 +3,11 @@
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-sm-row justify-sm-space-between py-2 px-0"
     >
-      <div class="col-12 col-sm px-2 py-0">
+      <div class="col-12 col-sm px-2 py-0 d-flex align-center">
         <span v-html="$t(title, { num: count })" class="title" />
         <copy-button
           v-if="copyButton"
+          class="ml-2"
           :table-data="data"
           :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
         />

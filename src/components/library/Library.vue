@@ -12,19 +12,17 @@
         </div>
       </v-card-title>
       <div class="body elevation-4">
-        <v-card-actions class="pr-2 pl-0 py-0">
-          <v-card-text class="pt-4">
+        <v-card-actions class="pr-2 px-4 d-flex flex-column flex-sm-row">
+          <div class="mr-auto my-1">
             <h3 class="">
               {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
               {{ library.year }}
             </h3>
-          </v-card-text>
-          <v-spacer />
+          </div>
           <v-chip
-            link
             outlined
             color="blue-grey darken-3"
-            class="d-print-none mr-1 my-1 link"
+            class="d-print-none mr-auto mr-sm-1 my-1"
             :href="`https://edit.geocollections.info/library/${library.id}`"
             target="_blank"
             rel="noopener"

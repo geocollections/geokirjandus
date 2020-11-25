@@ -7,7 +7,8 @@
         small
         aria-label="info"
         color="primary"
-        class=" mr-1"
+        class="mr-1"
+        id="searchHelpButton"
         v-bind="attrs"
         v-on="on"
       >

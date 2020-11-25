@@ -4,13 +4,15 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueIziToast from "vue-izitoast";
+import VueShepherd from "vue-shepherd";
 
 import i18n from "./i18n";
 import "izitoast/dist/css/iziToast.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "academicons/css/academicons.min.css";
-
+import "shepherd.js/dist/css/shepherd.css";
 Vue.use(VueIziToast);
+Vue.use(VueShepherd);
 
 Vue.config.productionTip = false;
 

@@ -7,7 +7,7 @@
         <span v-html="$t(title, { num: count })" class="title" />
         <copy-button
           v-if="copyButton"
-          class="pl-2"
+          class="ml-2"
           :table-data="data"
           :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
         />

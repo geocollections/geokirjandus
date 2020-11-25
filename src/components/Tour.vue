@@ -1,6 +1,6 @@
 <template>
   <div id="test">
-    <v-btn class="mx-3" text dark @click="startTour">{{
+    <v-btn class="mx-3 tourButton" text dark @click="startTour">{{
       $t("common.tour")
     }}</v-btn>
   </div>
@@ -213,5 +213,14 @@ export default {
 
 .tour-exit:hover {
   background-color: red !important;
+}
+.tourButton {
+  backdrop-filter: blur(1px);
+}
+.tourButton::before {
+  opacity: 0.1 !important;
+}
+.tourButton:hover::before {
+  opacity: 0.22 !important;
 }
 </style>

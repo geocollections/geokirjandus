@@ -35,6 +35,7 @@
               <v-col class="card py-0 px-2 px-sm-3">
                 <v-fade-transition :hide-on-leave="true">
                   <v-card
+                    id="view"
                     v-if="
                       $route.name === 'searchReference' ||
                         $route.name === 'searchLibrary'
@@ -43,7 +44,7 @@
                     class="roundedBorder"
                     color="#F3D3A5"
                   >
-                    <router-view name="tabs" />
+                    <router-view id="tabs" name="tabs" />
                     <router-view />
                   </v-card>
                   <router-view v-else />

@@ -4,6 +4,7 @@
       <v-fade-transition>
         <v-list-item v-if="showAlert" class="pt-3 d-flex justify-end">
           <v-alert
+            id="libraryAlert"
             dense
             colored-border
             border="right"
@@ -25,7 +26,7 @@
         </v-list-item>
       </v-fade-transition>
 
-      <v-list-item class="py-3">
+      <v-list-item id="searchField" class="py-3">
         <v-text-field
           solo
           hide-details
@@ -52,7 +53,7 @@
         <share-button />
         <v-spacer />
         <search-help-dialog />
-        <v-btn color="#1C9BDE" dark>
+        <v-btn id="searchButton" color="#1C9BDE" dark>
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>

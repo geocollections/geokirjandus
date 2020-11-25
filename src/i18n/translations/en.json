@@ -89,7 +89,9 @@
     "all": "All",
     "tour": "Tour",
     "next": "Next",
-    "back": "Back"
+    "back": "Back",
+    "tourSearch": "Search",
+    "tourView": "View"
   },
   "reference": {
     "id": "ID",
@@ -176,7 +178,26 @@
       "stepCitationTitle": "Selecting citation style",
       "stepCitationText": "Choose a citation style by clicking here and selecting one from the list.",
       "stepFiltersTitle": "Adding additional filters",
-      "stepFiltersText": "From here more filter can be applied to your search"
+      "stepFiltersText": "From here more filter can be applied to your search",
+      "stepSearchTitle": "Search",
+      "stepSearchText": "To search, enter your search query here",
+      "stepSearchButtonTitle": "Searching",
+      "stepSearchButtonText": "To start a search press here or deactivate the search field",
+      "stepLibraryAlertTitle": "Searching in a library",
+      "stepLibraryAlertText": "When this alert is displayed, searching happens inside the library (to exit from this kind of search press the cross)"
+
+    },
+    "view": {
+      "stepTabsTitle": "Tabs",
+      "stepTabsText": "From here you can switch between references and libraries",
+      "stepViewerTitle": "Search result",
+      "stepViewerText": "Based on the current tab, you can see either references of libraries",
+      "stepChangeViewTitle": "View type",
+      "stepChangeViewText": "From here you can switch between list and table views",
+      "stepFieldSelectTitle": "Table columns",
+      "stepFieldSelectText": "In table view you can select the columns which you want to be shown",
+      "stepCopyTitle": "Copying",
+      "stepCopyText": "By clicking here, the current references are copied to clipboard"
     }
   }
 }

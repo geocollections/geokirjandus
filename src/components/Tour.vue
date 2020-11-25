@@ -36,25 +36,25 @@ export default {
       }
     };
   },
-  methods: {
-    next(tour) {
+  computed: {
+    next() {
       return {
         action() {
-          return tour.next();
+          return this.next();
         },
         text: this.$t("common.next")
       };
     },
-    back(tour) {
+    back() {
       return {
         action() {
-          return tour.back();
+          return this.back();
         },
         classes: "shepherd-button-secondary",
         text: this.$t("common.back")
       };
     },
-    complete(tour) {
+    complete() {
       return {
         action() {
           return this.complete();
@@ -62,7 +62,9 @@ export default {
         classes: "shepherd-button-secondary",
         text: this.$t("common.close")
       };
-    },
+    }
+  },
+  methods: {
     startViewTour() {
       const tour = this.$shepherd(this.tourOptions);
 
@@ -77,7 +79,7 @@ export default {
         modalOverlayOpeningPadding: 12,
         title: this.$t("tour.view.stepViewerTitle"),
         text: this.$t("tour.view.stepViewerText"),
-        buttons: [this.next(tour)],
+        buttons: [this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -98,7 +100,7 @@ export default {
         modalOverlayOpeningPadding: 4,
         title: this.$t("tour.view.stepTabsTitle"),
         text: this.$t("tour.view.stepTabsText"),
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -113,7 +115,7 @@ export default {
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.view.stepChangeViewTitle"),
         text: this.$t("tour.view.stepChangeViewText"),
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -131,7 +133,7 @@ export default {
         showOn: () => {
           return vm.$store.state.settings.view === "table";
         },
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -151,7 +153,7 @@ export default {
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.view.stepCopyTitle"),
         text: this.$t("tour.view.stepCopyText"),
-        buttons: [this.back(tour), this.complete(tour)],
+        buttons: [this.back, this.complete],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -178,7 +180,7 @@ export default {
         modalOverlayOpeningPadding: 0,
         title: this.$t("tour.search.stepSearchTitle"),
         text: this.$t("tour.search.stepSearchText"),
-        buttons: [this.next(tour)],
+        buttons: [this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -193,7 +195,7 @@ export default {
         modalOverlayOpeningPadding: 4,
         title: this.$t("tour.search.stepSearchButtonTitle"),
         text: this.$t("tour.search.stepSearchButtonText"),
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
@@ -211,7 +213,7 @@ export default {
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.search.stepLibraryAlertTitle"),
         text: this.$t("tour.search.stepLibraryAlertText"),
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
@@ -226,7 +228,7 @@ export default {
         text: this.$t("tour.search.stepSearchHelpText"),
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 2,
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
@@ -241,7 +243,7 @@ export default {
         text: this.$t("tour.search.stepShareText"),
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 2,
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
@@ -256,7 +258,7 @@ export default {
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.search.stepDeleteTitle"),
         text: this.$t("tour.search.stepDeleteText"),
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
@@ -271,7 +273,7 @@ export default {
         text: this.$t("tour.search.stepCitationText"),
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 4,
-        buttons: [this.back(tour), this.next(tour)],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
@@ -286,7 +288,7 @@ export default {
         text: this.$t("tour.search.stepFiltersText"),
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 4,
-        buttons: [this.back(tour), this.complete(tour)],
+        buttons: [this.back, this.complete],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }

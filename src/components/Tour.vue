@@ -21,6 +21,21 @@
 <script>
 export default {
   name: "Tour",
+  data() {
+    return {
+      tourOptions: {
+        useModalOverlay: true,
+
+        defaultStepOptions: {
+          classes: "step-body",
+          cancelIcon: {
+            enabled: true
+          },
+          scrollTo: { behavior: "smooth", block: "center" }
+        }
+      }
+    };
+  },
   methods: {
     next(tour) {
       return {
@@ -49,21 +64,11 @@ export default {
       };
     },
     startViewTour() {
-      const tour = this.$shepherd({
-        useModalOverlay: true,
-
-        defaultStepOptions: {
-          classes: "step-body",
-          cancelIcon: {
-            enabled: true
-          },
-          scrollTo: { behavior: "smooth", block: "center" }
-        }
-      });
+      const tour = this.$shepherd(this.tourOptions);
 
       const vm = this;
 
-      tour.addStep({
+      const stepDataViewer = {
         attachTo: {
           element: document.querySelector(".data-viewer"),
           on: "top"
@@ -76,9 +81,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepTabs = {
         attachTo: {
           element: document.querySelector("#tabs"),
           on: "top"
@@ -97,9 +102,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepViewChange = {
         attachTo: {
           element: document.querySelector("#viewChanger"),
           on: "bottom-start"
@@ -112,9 +117,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepFieldSelect = {
         attachTo: {
           element: document.querySelector("#fieldSelect"),
           on: "bottom-start"
@@ -130,9 +135,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepCopyButton = {
         attachTo: {
           element: document.querySelector("#viewerCopyButton"),
           on: "bottom-start"
@@ -150,23 +155,21 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
+      tour.addSteps([
+        stepDataViewer,
+        stepTabs,
+        stepViewChange,
+        stepFieldSelect,
+        stepCopyButton
+      ]);
       tour.start();
     },
     startSearchTour() {
-      const tour = this.$shepherd({
-        useModalOverlay: true,
+      const tour = this.$shepherd(this.tourOptions);
 
-        defaultStepOptions: {
-          classes: "step-body",
-          cancelIcon: {
-            enabled: true
-          }
-        }
-      });
-
-      tour.addStep({
+      const stepSearchField = {
         attachTo: {
           element: document.querySelector("#searchField"),
           on: "right"
@@ -179,9 +182,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepSearchButton = {
         attachTo: {
           element: document.querySelector("#searchButton"),
           on: "right"
@@ -194,9 +197,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepLibraryAlert = {
         attachTo: {
           element: document.querySelector("#libraryAlert"),
           on: "right"
@@ -212,9 +215,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepHelpButton = {
         attachTo: {
           element: document.querySelector("#searchHelpButton"),
           on: "right"
@@ -227,9 +230,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepShareButton = {
         attachTo: {
           element: document.querySelector("#shareButton"),
           on: "right"
@@ -242,40 +245,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
-      });
+      };
 
-      /*tour.addStep({
-        attachTo: {
-          element: document.querySelector("#shareHelp"),
-          on: "top"
-        },
-        title: "Share button",
-        text:
-          "Pressing this button opens a modal, where you can share current search link or export a file",
-        modalOverlayOpeningRadius: 5,
-        modalOverlayOpeningPadding: 2,
-        buttons: [
-          {
-            action() {
-              return this.back();
-            },
-            classes: "shepherd-button-secondary",
-            text: "Back"
-          },
-          {
-            action() {
-              return this.next();
-            },
-            text: "Next"
-          }
-        ],
-        popperOptions: {
-          modifiers: [{ name: "offset", options: { offset: [0, 100] } }]
-        },
-        showOn: () => shareClicked
-      });*/
-
-      tour.addStep({
+      const stepDeleteSearch = {
         attachTo: {
           element: document.querySelector("#deleteSearchButton"),
           on: "right"
@@ -288,9 +260,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepCitationSelect = {
         attachTo: {
           element: document.querySelector("#citationSelect"),
           on: "right"
@@ -303,9 +275,9 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
-      });
+      };
 
-      tour.addStep({
+      const stepAdvancedSearch = {
         attachTo: {
           element: document.querySelector("#advancedSearch"),
           on: "right"
@@ -318,7 +290,18 @@ export default {
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
-      });
+      };
+
+      tour.addSteps([
+        stepSearchField,
+        stepSearchButton,
+        stepLibraryAlert,
+        stepHelpButton,
+        stepShareButton,
+        stepDeleteSearch,
+        stepCitationSelect,
+        stepAdvancedSearch
+      ]);
 
       tour.start();
     }

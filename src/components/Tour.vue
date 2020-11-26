@@ -80,14 +80,6 @@ export default {
     },
     stepDataViewer() {
       return {
-        beforeShowPromise: () => {
-          return new Promise(resolve => {
-            console.log(document.querySelector("#dataViewer"));
-            if (document.querySelector("#dataViewer")) {
-              resolve();
-            }
-          });
-        },
         attachTo: {
           element: document.querySelector("#dataViewer"),
           on: "top"

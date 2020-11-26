@@ -28,7 +28,7 @@ export default {
             enabled: true
           },
           canClickTarget: false,
-          scrollTo: { behavior: "smooth", block: "center" }
+          scrollTo: { behavior: "auto", block: "center" }
         }
       },
       btnIsDisabled: false

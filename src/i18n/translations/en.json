@@ -191,7 +191,7 @@
       "stepTabsTitle": "Tabs",
       "stepTabsText": "From here you can switch between references and libraries",
       "stepViewerTitle": "Search result",
-      "stepViewerText": "Based on the current tab, you can see either references of libraries",
+      "stepViewerText": "Here, based on the current tab, you can see either references or libraries",
       "stepChangeViewTitle": "View type",
       "stepChangeViewText": "From here you can switch between list and table views",
       "stepFieldSelectTitle": "Table columns",

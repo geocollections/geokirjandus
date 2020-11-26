@@ -170,38 +170,38 @@
   "tour": {
     "search": {
       "stepDeleteTitle": "Delete search",
-      "stepDeleteText": "Clicking this button deletes current search parameters",
-      "stepShareTitle": "Share search",
-      "stepShareText":  "Clicking here opens a modal, where you can share the current search link or export  a file",
+      "stepDeleteText": "Clicking this button deletes all currently set search parameters.",
+      "stepShareTitle": "Sharing",
+      "stepShareText":  "Clicking here opens a window, where you can share the current search or export it as a file.",
       "stepSearchHelpTitle": "Search help",
-      "stepSearchHelpText": "Clicking on this button opens a modal, with more info about how to write a query.",
-      "stepCitationTitle": "Selecting citation style",
-      "stepCitationText": "Choose a citation style by clicking here and selecting one from the list.",
-      "stepFiltersTitle": "Adding additional filters",
-      "stepFiltersText": "From here more filter can be applied to your search",
+      "stepSearchHelpText": "If your having trouble with composing a search, click here. After clicking a window with more info about how to write a query will pop up.",
+      "stepCitationTitle": "Citation style",
+      "stepCitationText": "The webpage support many different citation styles. Choose a citation style by clicking here and selecting one from the list.",
+      "stepFiltersTitle": "Additional filters",
+      "stepFiltersText": "If you want to quickly enter a value for a certain field, then from here filters can be applied to certain fields.",
       "stepSearchTitle": "Search",
-      "stepSearchText": "To search, enter your search query here",
+      "stepSearchText": "Enter your search query here.",
       "stepSearchButtonTitle": "Searching",
-      "stepSearchButtonText": "To start a search press here or deactivate the search field",
+      "stepSearchButtonText": "To start a search press here or deactivate the search field.",
       "stepLibraryAlertTitle": "Searching in a library",
-      "stepLibraryAlertText": "When this alert is displayed, searching happens inside the library (to exit from this kind of search press the cross)"
+      "stepLibraryAlertText": "When this alert is displayed, searching happens inside the library last opened (to exit from this kind of search press the cross)"
 
     },
     "view": {
       "stepTabsTitle": "Tabs",
-      "stepTabsText": "From here you can switch between references and libraries",
+      "stepTabsText": "The results for references and libraries are separated into two tabs. To switch between references and libraries, choose the correct tab from here.",
       "stepViewerTitle": "Search result",
-      "stepViewerText": "Here, based on the current tab, you can see either references or libraries",
+      "stepViewerText": "Here you can see the result list (in library view, this contains references that are in that library). By clicking on the row a detail view will open.",
       "stepChangeViewTitle": "View type",
-      "stepChangeViewText": "From here you can switch between list and table views",
-      "stepFieldSelectTitle": "Table columns",
-      "stepFieldSelectText": "In table view you can select the columns which you want to be shown",
+      "stepChangeViewText": "The result of the search can be viewed in list or table view.",
+      "stepFieldSelectTitle": "Selecting table columns",
+      "stepFieldSelectText": "From here you can select the table columns that are shown in the table below.",
       "stepCopyTitle": "Copying",
-      "stepCopyText": "By clicking here, the current references are copied to clipboard",
+      "stepCopyText": "By clicking here, the current references are copied to the clipboard.",
       "stepPaginationSelectTitle": "Pagination size",
-      "stepPaginationSelectText": "From here you can select how many references are on a page",
+      "stepPaginationSelectText": "From here you can select how many references are shown on a page.",
       "stepPageSelectTitle": "Pages",
-      "stepPageSelectText": "To switch between pages, click here"
+      "stepPageSelectText": "To switch between pages, click here."
     }
   }
 }

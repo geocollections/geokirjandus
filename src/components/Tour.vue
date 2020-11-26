@@ -1,20 +1,8 @@
 <template>
   <div id="test">
-    <v-menu transition="slide-y-transition" offset-y bottom right>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn class="mx-3 tourButton" text dark v-bind="attrs" v-on="on">
-          {{ $t("common.tour") }}
-        </v-btn>
-      </template>
-      <v-list color="#F6EDDF">
-        <v-list-item @click="startSearchTour">
-          {{ $t("common.tourSearch") }}
-        </v-list-item>
-        <v-list-item @click="startViewTour">
-          {{ $t("common.tourView") }}
-        </v-list-item>
-      </v-list>
-    </v-menu>
+    <v-btn class="mx-3 tourButton" text dark @click="startTour">
+      {{ $t("common.tour") }}
+    </v-btn>
   </div>
 </template>
 
@@ -65,16 +53,46 @@ export default {
     }
   },
   methods: {
-    startViewTour() {
+    buildTour() {
       const tour = this.$shepherd(this.tourOptions);
 
-      const vm = this;
+      tour.addSteps([
+        this.stepDataViewer(),
+        this.stepTabs(),
+        this.stepViewChange(),
+        this.stepFieldSelect(),
+        this.stepCopyButton(),
+        this.stepSearchField(),
+        this.stepSearchButton(),
+        this.stepLibraryAlert(),
+        this.stepHelpButton(),
+        this.stepShareButton(),
+        this.stepDeleteSearch(),
+        this.stepCitationSelect(),
+        this.stepAdvancedSearch()
+      ]);
+      return tour;
+    },
+    startTour() {
+      const tour = this.buildTour();
 
-      const stepDataViewer = {
+      tour.start();
+    },
+    stepDataViewer() {
+      return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            console.log(document.querySelector("#dataViewer"));
+            if (document.querySelector("#dataViewer")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
-          element: document.querySelector(".data-viewer"),
+          element: document.querySelector("#dataViewer"),
           on: "top"
         },
+        showOn: () => this.$route.name !== "reference",
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 12,
         title: this.$t("tour.view.stepViewerTitle"),
@@ -84,18 +102,16 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      const stepTabs = {
+    },
+    stepTabs() {
+      return {
         attachTo: {
           element: document.querySelector("#tabs"),
           on: "top"
         },
-        showOn: () => {
-          return (
-            vm.$route.name === "searchReference" ||
-            vm.$route.name === "searchLibrary"
-          );
-        },
+        showOn: () =>
+          this.$route.name === "searchReference" ||
+          this.$route.name === "searchLibrary",
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 4,
         title: this.$t("tour.view.stepTabsTitle"),
@@ -105,12 +121,15 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      const stepViewChange = {
+    },
+    stepViewChange() {
+      return {
         attachTo: {
           element: document.querySelector("#viewChanger"),
           on: "bottom-start"
         },
+
+        showOn: () => this.$route.name !== "reference",
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.view.stepChangeViewTitle"),
@@ -120,8 +139,16 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      const stepFieldSelect = {
+    },
+    stepFieldSelect() {
+      return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#fieldSelect")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#fieldSelect"),
           on: "bottom-start"
@@ -131,47 +158,41 @@ export default {
         title: this.$t("tour.view.stepFieldSelectTitle"),
         text: this.$t("tour.view.stepFieldSelectText"),
         showOn: () => {
-          return vm.$store.state.settings.view === "table";
+          return (
+            this.$route.name !== "reference" &&
+            this.$store.state.settings.view === "table"
+          );
         },
         buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      const stepCopyButton = {
+    },
+    stepCopyButton() {
+      return {
         attachTo: {
           element: document.querySelector("#viewerCopyButton"),
           on: "bottom-start"
         },
         showOn: () => {
           return (
-            vm.$route.name === "searchReference" || vm.$route.name === "library"
+            this.$route.name === "searchReference" ||
+            this.$route.name === "library"
           );
         },
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.view.stepCopyTitle"),
         text: this.$t("tour.view.stepCopyText"),
-        buttons: [this.back, this.complete],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      tour.addSteps([
-        stepDataViewer,
-        stepTabs,
-        stepViewChange,
-        stepFieldSelect,
-        stepCopyButton
-      ]);
-      tour.start();
     },
-    startSearchTour() {
-      const tour = this.$shepherd(this.tourOptions);
-
-      const stepSearchField = {
+    stepSearchField() {
+      return {
         attachTo: {
           element: document.querySelector("#searchField"),
           on: "right"
@@ -180,28 +201,14 @@ export default {
         modalOverlayOpeningPadding: 0,
         title: this.$t("tour.search.stepSearchTitle"),
         text: this.$t("tour.search.stepSearchText"),
-        buttons: [this.next],
+        buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      const stepSearchButton = {
-        attachTo: {
-          element: document.querySelector("#searchButton"),
-          on: "right"
-        },
-        modalOverlayOpeningRadius: 5,
-        modalOverlayOpeningPadding: 4,
-        title: this.$t("tour.search.stepSearchButtonTitle"),
-        text: this.$t("tour.search.stepSearchButtonText"),
-        buttons: [this.back, this.next],
-        popperOptions: {
-          modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
-        }
-      };
-
-      const stepLibraryAlert = {
+    },
+    stepLibraryAlert() {
+      return {
         attachTo: {
           element: document.querySelector("#libraryAlert"),
           on: "right"
@@ -218,8 +225,25 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
         }
       };
-
-      const stepHelpButton = {
+    },
+    stepSearchButton() {
+      return {
+        attachTo: {
+          element: document.querySelector("#searchButton"),
+          on: "right"
+        },
+        modalOverlayOpeningRadius: 5,
+        modalOverlayOpeningPadding: 4,
+        title: this.$t("tour.search.stepSearchButtonTitle"),
+        text: this.$t("tour.search.stepSearchButtonText"),
+        buttons: [this.back, this.next],
+        popperOptions: {
+          modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
+        }
+      };
+    },
+    stepHelpButton() {
+      return {
         attachTo: {
           element: document.querySelector("#searchHelpButton"),
           on: "right"
@@ -233,8 +257,9 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
       };
-
-      const stepShareButton = {
+    },
+    stepShareButton() {
+      return {
         attachTo: {
           element: document.querySelector("#shareButton"),
           on: "right"
@@ -248,8 +273,9 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
       };
-
-      const stepDeleteSearch = {
+    },
+    stepDeleteSearch() {
+      return {
         attachTo: {
           element: document.querySelector("#deleteSearchButton"),
           on: "right"
@@ -263,8 +289,9 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
       };
-
-      const stepCitationSelect = {
+    },
+    stepCitationSelect() {
+      return {
         attachTo: {
           element: document.querySelector("#citationSelect"),
           on: "right"
@@ -278,8 +305,9 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
       };
-
-      const stepAdvancedSearch = {
+    },
+    stepAdvancedSearch() {
+      return {
         attachTo: {
           element: document.querySelector("#advancedSearch"),
           on: "right"
@@ -293,19 +321,6 @@ export default {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
         }
       };
-
-      tour.addSteps([
-        stepSearchField,
-        stepSearchButton,
-        stepLibraryAlert,
-        stepHelpButton,
-        stepShareButton,
-        stepDeleteSearch,
-        stepCitationSelect,
-        stepAdvancedSearch
-      ]);
-
-      tour.start();
     }
   }
 };

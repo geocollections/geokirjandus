@@ -197,7 +197,11 @@
       "stepFieldSelectTitle": "Table columns",
       "stepFieldSelectText": "In table view you can select the columns which you want to be shown",
       "stepCopyTitle": "Copying",
-      "stepCopyText": "By clicking here, the current references are copied to clipboard"
+      "stepCopyText": "By clicking here, the current references are copied to clipboard",
+      "stepPaginationSelectTitle": "Pagination size",
+      "stepPaginationSelectText": "From here you can select how many references are on a page",
+      "stepPageSelectTitle": "Pages",
+      "stepPageSelectText": "To switch between pages, click here"
     }
   }
 }

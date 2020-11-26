@@ -196,7 +196,11 @@
       "stepFieldSelectTitle": "Veergude kuvamine",
       "stepFieldSelectText": "Tableli vaates saab valida milliseid veerge kuvatakse",
       "stepCopyTitle": "Loetelu kopeerimine",
-      "stepCopyText": "Vajutades siia, kopeeritakse kirjed, mis on hetkel nähtavad"
+      "stepCopyText": "Vajutades siia, kopeeritakse kirjed, mis on hetkel nähtavad",
+      "stepPaginationSelectTitle": "Kuvatud kirjete arv",
+      "stepPaginationSelectText": "Siit saab valida kui palju kirjeid leheküljel kuvatakse",
+      "stepPageSelectTitle": "Lehekülje valimine",
+      "stepPageSelectText": "Lehekülgede vahetamiseks klõpsa siin"
     }
   }
 }

@@ -19,6 +19,7 @@ export default {
           cancelIcon: {
             enabled: true
           },
+          canClickTarget: false,
           scrollTo: { behavior: "smooth", block: "center" }
         }
       }
@@ -59,6 +60,8 @@ export default {
       tour.addSteps([
         this.stepDataViewer(),
         this.stepTabs(),
+        this.stepPaginationSelect(),
+        this.stepPageSelect(),
         this.stepViewChange(),
         this.stepFieldSelect(),
         this.stepCopyButton(),
@@ -80,6 +83,13 @@ export default {
     },
     stepDataViewer() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#dataViewer")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#dataViewer"),
           on: "top"
@@ -95,8 +105,75 @@ export default {
         }
       };
     },
+    stepPaginationSelect() {
+      return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector(".paginationSelect")) {
+              resolve();
+            }
+          });
+        },
+        attachTo: {
+          element: document.querySelector(".paginationSelect"),
+          on: "right"
+        },
+        showOn: () => {
+          console.log(
+            document.body.contains(
+              document.querySelector(".paginationSelect")
+            ) && this.$route.name !== "reference"
+          );
+          return (
+            document.querySelector(".paginationSelect") &&
+            this.$route.name !== "reference"
+          );
+        },
+        modalOverlayOpeningRadius: 5,
+        modalOverlayOpeningPadding: 2,
+        title: this.$t("tour.view.stepPaginationSelectTitle"),
+        text: this.$t("tour.view.stepPaginationSelectText"),
+        buttons: [this.back, this.next],
+        popperOptions: {
+          modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
+        }
+      };
+    },
+    stepPageSelect() {
+      return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector(".pageSelect")) {
+              resolve();
+            }
+          });
+        },
+        attachTo: {
+          element: document.querySelector(".pageSelect"),
+          on: "right"
+        },
+        showOn: () =>
+          document.querySelector(".pageSelect") &&
+          this.$route.name !== "reference",
+        modalOverlayOpeningRadius: 5,
+        modalOverlayOpeningPadding: 2,
+        title: this.$t("tour.view.stepPageSelectTitle"),
+        text: this.$t("tour.view.stepPageSelectText"),
+        buttons: [this.back, this.next],
+        popperOptions: {
+          modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
+        }
+      };
+    },
     stepTabs() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#tabs")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#tabs"),
           on: "top"
@@ -116,12 +193,21 @@ export default {
     },
     stepViewChange() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#viewChanger")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#viewChanger"),
           on: "bottom-start"
         },
 
-        showOn: () => this.$route.name !== "reference",
+        showOn: () => {
+          return this.$route.name !== "reference";
+        },
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.view.stepChangeViewTitle"),
@@ -163,6 +249,13 @@ export default {
     },
     stepCopyButton() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#viewerCopyButton")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#viewerCopyButton"),
           on: "bottom-start"
@@ -185,6 +278,13 @@ export default {
     },
     stepSearchField() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#searchField")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#searchField"),
           on: "right"
@@ -201,6 +301,13 @@ export default {
     },
     stepLibraryAlert() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#libraryAlert")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#libraryAlert"),
           on: "right"
@@ -220,6 +327,13 @@ export default {
     },
     stepSearchButton() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#searchButton")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#searchButton"),
           on: "right"
@@ -236,6 +350,13 @@ export default {
     },
     stepHelpButton() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#searchHelpButton")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#searchHelpButton"),
           on: "right"
@@ -252,6 +373,13 @@ export default {
     },
     stepShareButton() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#shareButton")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#shareButton"),
           on: "right"
@@ -268,6 +396,13 @@ export default {
     },
     stepDeleteSearch() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#deleteSearchButton")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#deleteSearchButton"),
           on: "right"
@@ -284,6 +419,13 @@ export default {
     },
     stepCitationSelect() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#citationSelect")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#citationSelect"),
           on: "right"
@@ -300,6 +442,13 @@ export default {
     },
     stepAdvancedSearch() {
       return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#advancedSearch")) {
+              resolve();
+            }
+          });
+        },
         attachTo: {
           element: document.querySelector("#advancedSearch"),
           on: "right"

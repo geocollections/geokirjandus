@@ -69,6 +69,11 @@ export default {
       };
     }
   },
+  beforeDestroy() {
+    if (Shepherd.activeTour) {
+      Shepherd.activeTour.complete();
+    }
+  },
   methods: {
     buildTour() {
       const tour = this.$shepherd({
@@ -114,7 +119,7 @@ export default {
         },
         showOn: () => this.$route.name !== "reference",
         modalOverlayOpeningRadius: 5,
-        modalOverlayOpeningPadding: 12,
+        modalOverlayOpeningPadding: 0,
         title: this.$t("tour.view.stepViewerTitle"),
         text: this.$t("tour.view.stepViewerText"),
         buttons: [this.next],

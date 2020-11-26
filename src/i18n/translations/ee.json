@@ -178,13 +178,13 @@
       "stepCitationTitle": "Viitamise stiil",
       "stepCitationText": "Veebileht toetab mitmeid erinevaid viitamise stiile. Stiili valimiseks vajuta siin ja vali listist stiil.",
       "stepFiltersTitle": "Detailotsingu lisamine",
-      "stepFiltersText": "Kui soovite mingi kiirest mingi kindla välja järgi otsida, siis siit on võimalik kindla välja väärtust sättestada.",
+      "stepFiltersText": "Kui soovite kiirest mingi kindla välja järgi otsida, siis siit on võimalik kindla välja väärtust sättestada.",
       "stepSearchTitle": "Otsingu sisestamine",
       "stepSearchText": "Siia saab sisestada üldise otsingu.",
       "stepSearchButtonTitle": "Otsingu käivitamine",
       "stepSearchButtonText": "Otsingu käivitamiseks vajuta siia või deaktiveeri otsingu väli.",
       "stepLibraryAlertTitle": "Otsing kogumikus",
-      "stepLibraryAlertText": "Kui otsingu kohal kuvatakse selline teade, siis toimub otsing viimasena avatud kogumiku sees (Kogumiku sisesest otsingust väljumiseks vajuta ristile)"
+      "stepLibraryAlertText": "Kui otsingu kohal kuvatakse selline teade, siis toimub otsing viimasena avatud kogumiku sees (kogumiku sisesest otsingust väljumiseks vajuta ristile)"
     },
     "view": {
       "stepTabsTitle": "Vahelehed",
@@ -192,15 +192,15 @@
       "stepViewerTitle": "Otsingu tulemus",
       "stepViewerText": "Siin on näha, otsingu tulemuse loetelu (kogumiku vaates on siin kogumiku kirjandus). Rea peal klõpsates avaneb detail vaade.",
       "stepChangeViewTitle": "Vaate tüüp",
-      "stepChangeViewText": "Otsingu tulemust saab kuvada nimekirja või tabelina",
+      "stepChangeViewText": "Otsingu tulemust saab kuvada nimekirja või tabelina.",
       "stepFieldSelectTitle": "Veergude kuvamine",
-      "stepFieldSelectText": "Siit saab valida veerge, mis tabelis kuvatakse",
+      "stepFieldSelectText": "Siit saab valida veerge, mis tabelis kuvatakse.",
       "stepCopyTitle": "Loetelu kopeerimine",
-      "stepCopyText": "Vajutades siia, kopeeritakse kirjed, mis on hetkel nähtavad",
+      "stepCopyText": "Vajutades siia, kopeeritakse kirjed, mis on hetkel nähtavad.",
       "stepPaginationSelectTitle": "Kuvatud kirjete arv",
-      "stepPaginationSelectText": "Siit saab valida kui palju kirjeid ühel leheküljel kuvatakse",
+      "stepPaginationSelectText": "Siit saab valida kui palju kirjeid ühel leheküljel kuvatakse.",
       "stepPageSelectTitle": "Lehekülje valimine",
-      "stepPageSelectText": "Lehekülgede vahetamiseks klõpsa siin"
+      "stepPageSelectText": "Lehekülgede vahetamiseks klõpsa siin."
     }
   }
 }

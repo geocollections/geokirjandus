@@ -1,19 +1,27 @@
 <template>
   <div id="test">
-    <v-btn class="mx-3 tourButton" text dark @click="startTour">
+    <v-btn
+      class="mx-3 tourButton"
+      :disabled="btnIsDisabled"
+      text
+      dark
+      @click="startTour"
+    >
       {{ $t("common.tour") }}
     </v-btn>
   </div>
 </template>
 
 <script>
+import Shepherd from "shepherd.js";
+
 export default {
   name: "Tour",
   data() {
     return {
       tourOptions: {
         useModalOverlay: true,
-
+        modalContainer: document.querySelector(".v-main"),
         defaultStepOptions: {
           classes: "step-body",
           cancelIcon: {
@@ -22,8 +30,16 @@ export default {
           canClickTarget: false,
           scrollTo: { behavior: "smooth", block: "center" }
         }
-      }
+      },
+      btnIsDisabled: false
     };
+  },
+  created() {
+    ["cancel", "complete"].forEach(event =>
+      Shepherd.on(event, () => {
+        this.btnIsDisabled = false;
+      })
+    );
   },
   computed: {
     next() {
@@ -55,31 +71,33 @@ export default {
   },
   methods: {
     buildTour() {
-      const tour = this.$shepherd(this.tourOptions);
+      const tour = this.$shepherd({
+        ...this.tourOptions,
+        steps: [
+          this.stepDataViewer(),
+          this.stepTabs(),
+          this.stepPaginationSelect(),
+          this.stepPageSelect(),
+          this.stepViewChange(),
+          this.stepFieldSelect(),
+          this.stepCopyButton(),
+          this.stepSearchField(),
+          this.stepSearchButton(),
+          this.stepLibraryAlert(),
+          this.stepHelpButton(),
+          this.stepShareButton(),
+          this.stepDeleteSearch(),
+          this.stepCitationSelect(),
+          this.stepAdvancedSearch()
+        ]
+      });
 
-      tour.addSteps([
-        this.stepDataViewer(),
-        this.stepTabs(),
-        this.stepPaginationSelect(),
-        this.stepPageSelect(),
-        this.stepViewChange(),
-        this.stepFieldSelect(),
-        this.stepCopyButton(),
-        this.stepSearchField(),
-        this.stepSearchButton(),
-        this.stepLibraryAlert(),
-        this.stepHelpButton(),
-        this.stepShareButton(),
-        this.stepDeleteSearch(),
-        this.stepCitationSelect(),
-        this.stepAdvancedSearch()
-      ]);
       return tour;
     },
     startTour() {
       const tour = this.buildTour();
-
       tour.start();
+      this.btnIsDisabled = true;
     },
     stepDataViewer() {
       return {
@@ -119,11 +137,6 @@ export default {
           on: "right"
         },
         showOn: () => {
-          console.log(
-            document.body.contains(
-              document.querySelector(".paginationSelect")
-            ) && this.$route.name !== "reference"
-          );
           return (
             document.querySelector(".paginationSelect") &&
             this.$route.name !== "reference"

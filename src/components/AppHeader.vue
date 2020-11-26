@@ -3,6 +3,7 @@
     clipped-left
     app
     class="appBar"
+    style="z-index: 9998"
     :src="require('@/assets/books4.jpg')"
   >
     <template v-slot:img="{ props }">

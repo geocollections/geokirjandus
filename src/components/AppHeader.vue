@@ -44,7 +44,7 @@
           <v-icon>fas fa-bars</v-icon>
         </v-btn>
       </template>
-      <v-list color="#F6EDDF">
+      <v-list color="#F6EDDF" class="text-center">
         <div class="pb-2">
           <tour :isDark="false" />
         </div>

@@ -4,6 +4,7 @@
       <v-fade-transition>
         <v-list-item v-if="showAlert" class="pt-3 d-flex justify-end">
           <v-alert
+            id="libraryAlert"
             dense
             colored-border
             border="right"
@@ -25,7 +26,7 @@
         </v-list-item>
       </v-fade-transition>
 
-      <v-list-item class="py-3">
+      <v-list-item id="searchField" class="py-3">
         <v-text-field
           solo
           hide-details
@@ -52,7 +53,7 @@
         <share-button />
         <v-spacer />
         <search-help-dialog />
-        <v-btn color="#1C9BDE" dark>
+        <v-btn id="searchButton" color="#1C9BDE" dark>
           <v-icon class="pr-2" small>fas fa-search</v-icon>
           {{ $t("common.searchCommand") }}
         </v-btn>
@@ -80,12 +81,12 @@
       </v-list-item>
       <div id="advancedSearch">
         <v-list-group
-          color="#924f11"
+          color="#924f23"
           v-model="showAdvancedSearch"
           class="advancedSearch mt-3"
         >
           <template v-slot:activator>
-            <v-list-item-title class="d-flex">
+            <v-list-item-title id="advancedSearchActivator" class="d-flex">
               <v-col cols="auto" class="px-0">
                 {{ $t("common.advancedSearch") }}
               </v-col>
@@ -102,7 +103,7 @@
               </v-col>
             </v-list-item-title>
           </template>
-          <div class="pb-3">
+          <div class="pb-3" style="background-color: #ecd9c0">
             <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
               <!-- REGULAR SEARCH FIELD -->
               <v-list-item
@@ -410,7 +411,7 @@ export default {
 }
 
 .advancedSearch {
-  background-color: #f3d3a5;
+  background-color: #e4c69b;
 }
 
 .deleteSearch {

@@ -86,9 +86,11 @@
     "exportFile": "Ekspordi fail",
     "amount": "Kogus",
     "all": "Kõik",
-    "tour": "Tuur",
+    "tour": "Juhend",
     "next": "Järgmine",
-    "back": "Tagasi"
+    "back": "Tagasi",
+    "tourSearch": "Otsing",
+    "tourView": "Vaate"
   },
   "reference": {
     "id": "ID",
@@ -168,15 +170,41 @@
   "tour": {
     "search": {
       "stepDeleteTitle": "Otsingu kustutamine",
-      "stepDeleteText": "Otsingu parameetrite kustutamiseks, vajuta siia",
+      "stepDeleteText": "Sellele nupule vajutades kustutatakse kõik hetkel sisestatud otsingu parameetrid.",
       "stepShareTitle": "Jagamine",
-      "stepShareText":  "Nupule vajutades avaneb aken, kus on võimalik otsingut jagada ja exportida",
+      "stepShareText":  "Siin nupule vajutades avaneb aken, kus on võimalik otsingut jagada ja exportida.",
       "stepSearchHelpTitle": "Otsingu abi",
-      "stepSearchHelpText": "Nupule vajutades avaneb aken, kus kirjeldatakse kuidas otsingut koostada",
-      "stepCitationTitle": "Viitamise stiili valimine",
-      "stepCitationText": "Viitamise stiili valimiseks vajuta siin ja vali listist stiil listist",
+      "stepSearchHelpText": "Kui on probleeme otsingu koostamisega, vajuta siia. Peale vajutamist avaneb aken kus kirjeldatakse täpsemalt kuidas otsinguid koostada.",
+      "stepCitationTitle": "Viitamise stiil",
+      "stepCitationText": "Veebileht toetab mitmeid erinevaid viitamise stiile. Stiili valimiseks vajuta siin ja vali listist stiil.",
       "stepFiltersTitle": "Detailotsingu lisamine",
-      "stepFiltersText": "Siit saab lisada täpsemaid filtreid otsingusse"
+      "stepFiltersText": "Kui soovite kiirest mingi kindla välja järgi otsida, siis siit on võimalik kindla välja väärtust sättestada.",
+      "stepSearchTitle": "Otsingu sisestamine",
+      "stepSearchText": "Siia saab sisestada üldise otsingu.",
+      "stepSearchButtonTitle": "Otsingu käivitamine",
+      "stepSearchButtonText": "Otsingu käivitamiseks vajuta siia või deaktiveeri otsingu väli.",
+      "stepLibraryAlertTitle": "Otsing kogumikus",
+      "stepLibraryAlertText": "Kui otsingu kohal kuvatakse selline teade, siis toimub otsing viimasena avatud kogumiku sees (kogumiku sisesest otsingust väljumiseks vajuta ristile)"
+    },
+    "view": {
+      "stepTabsTitle": "Vahelehed",
+      "stepTabsText": "Kirjanduse ja kogumike otsingu tulemused on jaotatud kaheks vaheleheks. Kirjanduse või kogumike otsingu tulemuste kuvamiseks vali siit sobiv vaheleht.",
+      "stepViewerTitle": "Otsingu tulemus",
+      "stepViewerText": "Siin on näha, otsingu tulemuse loetelu (kogumiku vaates on siin kogumiku kirjandus). Rea peal klõpsates avaneb detail vaade.",
+      "stepChangeViewTitle": "Vaate tüüp",
+      "stepChangeViewText": "Otsingu tulemust saab kuvada nimekirja või tabelina.",
+      "stepFieldSelectTitle": "Veergude kuvamine",
+      "stepFieldSelectText": "Siit saab valida veerge, mis tabelis kuvatakse.",
+      "stepCopyTitle": "Loetelu kopeerimine",
+      "stepCopyText": "Vajutades siia, kopeeritakse kirjed, mis on hetkel nähtavad.",
+      "stepPaginationSelectTitle": "Kuvatud kirjete arv",
+      "stepPaginationSelectText": "Siit saab valida kui palju kirjeid ühel leheküljel kuvatakse.",
+      "stepPageSelectTitle": "Lehekülje valimine",
+      "stepPageSelectText": "Lehekülgede vahetamiseks klõpsa siin.",
+      "stepReferenceCopyTitle": "Kirje viite kopeerimine",
+      "stepReferenceCopyText": "Vajutades siia, kopeeritakse kirje viide.",
+      "stepLibraryCopyTitle": "Kogumiku viite kopeerimine",
+      "stepLibraryCopyText": "Vajutades siia, kopeeritakse kogumiku viide."
     }
   }
 }

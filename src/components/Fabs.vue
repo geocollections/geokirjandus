@@ -8,6 +8,7 @@
           color="blue"
           fab
           dark
+          id="searchFab"
           @click="$emit('update:showSearch')"
         >
           <v-icon large small>fas fa-search</v-icon>

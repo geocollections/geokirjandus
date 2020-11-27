@@ -1,6 +1,6 @@
 <template>
   <v-card-actions class="flex-column flex-sm-row justify-sm-space-between py-0">
-    <div class="col-sm-3 px-2">
+    <div class="col-sm-3 px-2 paginationSelect">
       <v-select
         :value="paginateBy"
         color="#B76315"
@@ -15,6 +15,7 @@
     </div>
     <div class="ml-sm-auto range">{{ getRange }}</div>
     <v-pagination
+      class="pageSelect"
       :value="page"
       color="#E58124"
       prev-icon="fas fa-angle-left"

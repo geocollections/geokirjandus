@@ -1,5 +1,5 @@
 <template>
-  <div class="data-viewer">
+  <div id="dataViewer" class="data-viewer">
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-sm-row justify-sm-space-between py-2 px-0"
     >
@@ -8,6 +8,7 @@
         <copy-button
           v-if="copyButton"
           class="ml-2"
+          id="viewerCopyButton"
           :table-data="data"
           :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
         />
@@ -15,6 +16,7 @@
       <div class="d-flex justify-end col-12 py-0 px-2 col-sm-auto ml-sm-auto">
         <v-radio-group
           class="mt-0"
+          id="viewChanger"
           :value="view"
           @change="updateView"
           row
@@ -35,7 +37,7 @@
       </div>
     </v-card-actions>
     <v-scroll-y-transition>
-      <v-card-actions v-if="view === 'table'" class="px-0">
+      <v-card-actions v-if="view === 'table'" id="fieldSelect" class="px-0">
         <v-select
           class="px-2"
           :value="getHeadersShowing"

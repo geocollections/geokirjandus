@@ -1,13 +1,7 @@
 <template>
   <v-menu transition="slide-y-transition" offset-y bottom right>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        class="mx-3 linksButton"
-        text
-        :dark="isDark"
-        v-bind="attrs"
-        v-on="on"
-      >
+      <v-btn :class="btnClasses" text :dark="isDark" v-bind="attrs" v-on="on">
         {{ $t("common.links") }}
       </v-btn>
     </template>
@@ -46,6 +40,14 @@ export default {
         { name: "link.natarc", url: "https://natarc.ut.ee" }
       ]
     };
+  },
+  computed: {
+    btnClasses() {
+      return {
+        "mx-3": true,
+        linksButton: this.isDark
+      };
+    }
   }
 };
 </script>

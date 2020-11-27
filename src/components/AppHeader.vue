@@ -3,6 +3,7 @@
     clipped-left
     app
     class="appBar"
+    style="z-index: 9998"
     :src="require('@/assets/books4.jpg')"
   >
     <template v-slot:img="{ props }">
@@ -12,6 +13,7 @@
       ></v-img>
     </template>
     <v-btn
+      id="showSearch"
       aria-label="show search"
       v-if="$vuetify.breakpoint.mdAndUp"
       @click="$emit('update:showSearch')"
@@ -20,13 +22,13 @@
     >
       <v-icon class="search">fas fa-search</v-icon>
     </v-btn>
-    <v-toolbar-title>
+    <v-toolbar-title style="text-shadow: 2px 2px 10px black;">
       <a class="title" @click="home">
         {{ $t("title2") }}
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <tour v-if="$vuetify.breakpoint.mdAndUp" />
+    <tour v-if="$vuetify.breakpoint.smAndUp" />
     <links v-if="$vuetify.breakpoint.smAndUp" />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
@@ -42,7 +44,10 @@
           <v-icon>fas fa-bars</v-icon>
         </v-btn>
       </template>
-      <v-list color="#F6EDDF">
+      <v-list color="#F6EDDF" class="text-center">
+        <div class="pb-2">
+          <tour :isDark="false" />
+        </div>
         <div class="pb-2">
           <links :isDark="false" />
         </div>

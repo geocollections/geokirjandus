@@ -33,7 +33,10 @@
             <h3 class="align-self-center">
               <b>{{ $t("common.citation") }}</b>
             </h3>
-            <copy-button clipboard-class="referenceCitation" />
+            <copy-button
+              clipboard-class="referenceCitation"
+              id="referenceCopy"
+            />
           </div>
           <v-card flat outlined>
             <div class="pa-4">

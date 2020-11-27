@@ -144,7 +144,11 @@
                       :value="getAdvancedSearch.byIds[id].value"
                       :items="getSelectItems(id)"
                       item-color="#E58124"
-                      :menu-props="{ bottom: true, offsetY: true }"
+                      :menu-props="{
+                        bottom: true,
+                        offsetY: true,
+                        offsetOverflow: true
+                      }"
                       hide-details
                       @change="
                         $emit('update:advancedSearch', {

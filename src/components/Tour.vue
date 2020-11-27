@@ -37,13 +37,18 @@ export default {
           scrollTo: { behavior: "auto", block: "center" }
         }
       },
-      btnIsDisabled: false
+      btnIsDisabled: false,
+      isAdvancedSearchOpenBeforeTour: false
     };
   },
   created() {
     ["cancel", "complete"].forEach(event =>
       Shepherd.on(event, () => {
         this.btnIsDisabled = false;
+        if (!this.isAdvancedSearchOpenBeforeTour) {
+          document.querySelector("#advancedSearchActivator").click();
+        }
+
         if (this.$vuetify.breakpoint.mdAndDown) {
           document.getElementById("searchFab").click();
         }
@@ -118,6 +123,11 @@ export default {
     },
     startTour() {
       const tour = this.buildTour();
+
+      this.isAdvancedSearchOpenBeforeTour = document
+        .querySelector(".advancedSearch")
+        .classList.contains("v-list-group--active");
+
       tour.start();
       this.btnIsDisabled = true;
     },

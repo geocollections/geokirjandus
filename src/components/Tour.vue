@@ -1,15 +1,13 @@
 <template>
-  <div id="test">
-    <v-btn
-      :class="btnClasses"
-      :disabled="btnIsDisabled"
-      text
-      :dark="isDark"
-      @click="startTour"
-    >
-      {{ $t("common.tour") }}
-    </v-btn>
-  </div>
+  <v-btn
+    :class="btnClasses"
+    :disabled="btnIsDisabled"
+    text
+    :dark="isDark"
+    @click="startTour"
+  >
+    {{ $t("common.tour") }}
+  </v-btn>
 </template>
 
 <script>

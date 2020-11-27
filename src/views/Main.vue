@@ -12,6 +12,7 @@
         app
         bottom
         clipped
+        width="276"
         disable-route-watcher
         mobile-breakpoint="960"
         class="d-print-none"

@@ -13,6 +13,7 @@
       ></v-img>
     </template>
     <v-btn
+      id="showSearch"
       aria-label="show search"
       v-if="$vuetify.breakpoint.mdAndUp"
       @click="$emit('update:showSearch')"
@@ -27,7 +28,7 @@
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <tour v-if="$vuetify.breakpoint.mdAndUp" />
+    <tour v-if="$vuetify.breakpoint.smAndUp" />
     <links v-if="$vuetify.breakpoint.smAndUp" />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
     <!--  MOBILE MENU  -->
@@ -44,6 +45,9 @@
         </v-btn>
       </template>
       <v-list color="#F6EDDF">
+        <div class="pb-2">
+          <tour :isDark="false" />
+        </div>
         <div class="pb-2">
           <links :isDark="false" />
         </div>

@@ -7,6 +7,7 @@
         v-on:home="resetSearch"
       />
       <v-navigation-drawer
+        id="searchDrawer"
         v-model="showSearch"
         app
         bottom

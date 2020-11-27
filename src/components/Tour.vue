@@ -1,10 +1,10 @@
 <template>
   <div id="test">
     <v-btn
-      class="mx-3 tourButton"
+      :class="btnClasses"
       :disabled="btnIsDisabled"
       text
-      dark
+      :dark="isDark"
       @click="startTour"
     >
       {{ $t("common.tour") }}
@@ -17,6 +17,12 @@ import Shepherd from "shepherd.js";
 
 export default {
   name: "Tour",
+  props: {
+    isDark: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       tourOptions: {
@@ -38,10 +44,19 @@ export default {
     ["cancel", "complete"].forEach(event =>
       Shepherd.on(event, () => {
         this.btnIsDisabled = false;
+        if (this.$vuetify.breakpoint.mdAndDown) {
+          document.getElementById("searchFab").click();
+        }
       })
     );
   },
   computed: {
+    btnClasses() {
+      return {
+        "mx-3": true,
+        tourButton: this.isDark
+      };
+    },
     next() {
       return {
         action() {
@@ -139,7 +154,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector(".paginationSelect"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         showOn: () => {
           return (
@@ -168,7 +183,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector(".pageSelect"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         showOn: () =>
           document.querySelector(".pageSelect") &&
@@ -298,6 +313,17 @@ export default {
       return {
         beforeShowPromise: () => {
           return new Promise(resolve => {
+            if (
+              document
+                .getElementById("searchDrawer")
+                .classList.contains("v-navigation-drawer--close")
+            ) {
+              if (this.$vuetify.breakpoint.mdAndDown) {
+                document.getElementById("searchFab").click();
+              } else {
+                document.getElementById("showSearch").click();
+              }
+            }
             if (document.querySelector("#searchField")) {
               resolve();
             }
@@ -305,7 +331,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#searchField"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 0,
@@ -328,7 +354,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#libraryAlert"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         showOn: () => {
           return document.querySelector("#libraryAlert");
@@ -354,7 +380,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#searchButton"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 4,
@@ -377,7 +403,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#searchHelpButton"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         title: this.$t("tour.search.stepSearchHelpTitle"),
         text: this.$t("tour.search.stepSearchHelpText"),
@@ -400,7 +426,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#shareButton"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         title: this.$t("tour.search.stepShareTitle"),
         text: this.$t("tour.search.stepShareText"),
@@ -423,7 +449,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#deleteSearchButton"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         modalOverlayOpeningRadius: 5,
         modalOverlayOpeningPadding: 2,
@@ -446,7 +472,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#citationSelect"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         title: this.$t("tour.search.stepCitationTitle"),
         text: this.$t("tour.search.stepCitationText"),
@@ -469,7 +495,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#advancedSearch"),
-          on: "right"
+          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
         },
         title: this.$t("tour.search.stepFiltersTitle"),
         text: this.$t("tour.search.stepFiltersText"),

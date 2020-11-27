@@ -9,9 +9,10 @@ import library from "./modules/library";
 import tableSettings from "./modules/tableSettings";
 
 Vue.use(Vuex);
+const version = "1.0";
 
 const vuexLocal = new VuexPersistence({
-  key: "geoloogia.geokirjandus",
+  key: `geoloogia.geokirjandus.${version}`,
   reducer: state => ({ search: state.search, settings: state.settings }),
   storage: window.localStorage
 });

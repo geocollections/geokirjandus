@@ -45,10 +45,9 @@ export default {
     ["cancel", "complete"].forEach(event =>
       Shepherd.on(event, () => {
         this.btnIsDisabled = false;
-        if (!this.isAdvancedSearchOpenBeforeTour) {
+        if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
           document.querySelector("#advancedSearchActivator").click();
         }
-
         if (this.$vuetify.breakpoint.mdAndDown) {
           document.getElementById("searchFab").click();
         }
@@ -576,6 +575,19 @@ export default {
         buttons: [this.back, this.complete],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
+        },
+        when: {
+          cancel: () => {
+            if (!this.isAdvancedSearchOpenBeforeTour) {
+              document.querySelector("#advancedSearchActivator").click();
+            }
+          },
+
+          complete: () => {
+            if (!this.isAdvancedSearchOpenBeforeTour) {
+              document.querySelector("#advancedSearchActivator").click();
+            }
+          }
         }
       };
     }

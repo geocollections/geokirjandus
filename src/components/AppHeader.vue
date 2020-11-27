@@ -22,7 +22,7 @@
     >
       <v-icon class="search">fas fa-search</v-icon>
     </v-btn>
-    <v-toolbar-title>
+    <v-toolbar-title style="text-shadow: 2px 2px 10px black;">
       <a class="title" @click="home">
         {{ $t("title2") }}
       </a>

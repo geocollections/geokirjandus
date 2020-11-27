@@ -488,6 +488,14 @@ export default {
       return {
         beforeShowPromise: () => {
           return new Promise(resolve => {
+            if (
+              !document
+                .querySelector(".advancedSearch")
+                .classList.contains("v-list-group--active")
+            ) {
+              document.querySelector("#advancedSearchActivator").click();
+            }
+
             if (document.querySelector("#advancedSearch")) {
               resolve();
             }

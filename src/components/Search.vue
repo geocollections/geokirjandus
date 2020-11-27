@@ -86,7 +86,7 @@
           class="advancedSearch mt-3"
         >
           <template v-slot:activator>
-            <v-list-item-title class="d-flex">
+            <v-list-item-title id="advancedSearchActivator" class="d-flex">
               <v-col cols="auto" class="px-0">
                 {{ $t("common.advancedSearch") }}
               </v-col>

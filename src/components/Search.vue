@@ -81,7 +81,7 @@
       </v-list-item>
       <div id="advancedSearch">
         <v-list-group
-          color="#924f11"
+          color="#924f23"
           v-model="showAdvancedSearch"
           class="advancedSearch mt-3"
         >
@@ -103,7 +103,7 @@
               </v-col>
             </v-list-item-title>
           </template>
-          <div class="pb-3">
+          <div class="pb-3" style="background-color: #ecd9c0">
             <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
               <!-- REGULAR SEARCH FIELD -->
               <v-list-item
@@ -411,7 +411,7 @@ export default {
 }
 
 .advancedSearch {
-  background-color: #f3d3a5;
+  background-color: #e4c69b;
 }
 
 .deleteSearch {

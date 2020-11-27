@@ -197,11 +197,15 @@
       "stepFieldSelectTitle": "Selecting table columns",
       "stepFieldSelectText": "From here you can select the table columns that are shown in the table below.",
       "stepCopyTitle": "Copying",
-      "stepCopyText": "By clicking here, the current references are copied to the clipboard.",
+      "stepCopyText": "By clicking here, the list of references are copied to clipboard.",
       "stepPaginationSelectTitle": "Pagination size",
       "stepPaginationSelectText": "From here you can select how many references are shown on a page.",
       "stepPageSelectTitle": "Pages",
-      "stepPageSelectText": "To switch between pages, click here."
+      "stepPageSelectText": "To switch between pages, click here.",
+      "stepReferenceCopyTitle": "Copy reference citation",
+      "stepReferenceCopyText": "By clicking here, the current reference citation is copied to clipboard.",
+      "stepLibraryCopyTitle": "Copy library citation",
+      "stepLibraryCopyText": "By clicking here, the current library citation is copied to clipboard."
     }
   }
 }

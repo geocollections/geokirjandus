@@ -94,6 +94,8 @@ export default {
       const tour = this.$shepherd({
         ...this.tourOptions,
         steps: [
+          this.stepReferenceCopyButton(),
+          this.stepLibraryCopyButton(),
           this.stepDataViewer(),
           this.stepTabs(),
           this.stepPaginationSelect(),
@@ -303,6 +305,58 @@ export default {
         modalOverlayOpeningPadding: 2,
         title: this.$t("tour.view.stepCopyTitle"),
         text: this.$t("tour.view.stepCopyText"),
+        buttons: [this.back, this.next],
+        popperOptions: {
+          modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
+        }
+      };
+    },
+    stepReferenceCopyButton() {
+      return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#referenceCopy")) {
+              resolve();
+            }
+          });
+        },
+        attachTo: {
+          element: document.querySelector("#referenceCopy"),
+          on: "bottom-start"
+        },
+        showOn: () => {
+          return this.$route.name === "reference";
+        },
+        modalOverlayOpeningRadius: 5,
+        modalOverlayOpeningPadding: 2,
+        title: this.$t("tour.view.stepReferenceCopyTitle"),
+        text: this.$t("tour.view.stepReferenceCopyText"),
+        buttons: [this.back, this.next],
+        popperOptions: {
+          modifiers: [{ name: "offset", options: { offset: [0, 5] } }]
+        }
+      };
+    },
+    stepLibraryCopyButton() {
+      return {
+        beforeShowPromise: () => {
+          return new Promise(resolve => {
+            if (document.querySelector("#libraryCopy")) {
+              resolve();
+            }
+          });
+        },
+        attachTo: {
+          element: document.querySelector("#libraryCopy"),
+          on: "bottom-start"
+        },
+        showOn: () => {
+          return this.$route.name === "library";
+        },
+        modalOverlayOpeningRadius: 5,
+        modalOverlayOpeningPadding: 2,
+        title: this.$t("tour.view.stepLibraryCopyTitle"),
+        text: this.$t("tour.view.stepLibraryCopyText"),
         buttons: [this.back, this.next],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 5] } }]

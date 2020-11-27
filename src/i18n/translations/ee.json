@@ -200,7 +200,11 @@
       "stepPaginationSelectTitle": "Kuvatud kirjete arv",
       "stepPaginationSelectText": "Siit saab valida kui palju kirjeid ühel leheküljel kuvatakse.",
       "stepPageSelectTitle": "Lehekülje valimine",
-      "stepPageSelectText": "Lehekülgede vahetamiseks klõpsa siin."
+      "stepPageSelectText": "Lehekülgede vahetamiseks klõpsa siin.",
+      "stepReferenceCopyTitle": "Kirje viite kopeerimine",
+      "stepReferenceCopyText": "Vajutades siia, kopeeritakse kirje viide.",
+      "stepLibraryCopyTitle": "Kogumiku viite kopeerimine",
+      "stepLibraryCopyText": "Vajutades siia, kopeeritakse kogumiku viide."
     }
   }
 }

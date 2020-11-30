@@ -147,6 +147,9 @@ function buildQueryStr(queryObject, filterQueryObject) {
                 searchParameter.value.join(" ")
               )})`;
             }
+            case "raw": {
+              return `${fieldId}:${encodeURIComponent(searchParameter.value)}`;
+            }
             case "text": {
               return encodeURIComponent(
                 buildTextParameter(searchParameter.value, fieldId)

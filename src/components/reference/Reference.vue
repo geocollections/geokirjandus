@@ -558,10 +558,10 @@ export default {
       return fetchReferences({
         advancedSearch: {
           parent_reference_id: {
-            type: "text",
+            type: "raw",
             id: "parent_reference_id",
             value: this.reference.id,
-            lookUpType: "equals",
+            lookUpType: null,
             fields: ["parent_reference_id"]
           }
         },

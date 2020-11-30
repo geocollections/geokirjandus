@@ -200,35 +200,37 @@
           </div>
           <div
             class="col-12 col-md-6 pa-0 px-md-4 pt-4 pt-md-0"
-            v-if="localities.length > 0"
+            v-if="reference.abstract || localities.length > 0"
           >
-            <span class="d-flex">
+            <div v-if="reference.abstract">
               <h3 class="pb-3">
-                <b>{{ $t("common.map") }}</b>
+                <b>{{ $t("reference.abstract") }}</b>
               </h3>
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon
-                    class="px-1 align-self-start"
-                    color="primary"
-                    dark
-                    x-small
-                    v-bind="attrs"
-                    v-on="on"
-                    >fas fa-info</v-icon
-                  >
-                </template>
-                <span>{{ $t("tooltip.map") }}</span>
-              </v-tooltip>
-            </span>
-            <leaflet-map :markers="localities" />
+              <div v-html="reference.abstract"></div>
+            </div>
+            <div v-if="localities.length > 0">
+              <span class="d-flex">
+                <h3 class="pb-3">
+                  <b>{{ $t("common.map") }}</b>
+                </h3>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      class="px-1 align-self-start"
+                      color="primary"
+                      dark
+                      x-small
+                      v-bind="attrs"
+                      v-on="on"
+                      >fas fa-info</v-icon
+                    >
+                  </template>
+                  <span>{{ $t("tooltip.map") }}</span>
+                </v-tooltip>
+              </span>
+              <leaflet-map :markers="localities" />
+            </div>
           </div>
-        </v-card-text>
-        <v-card-text v-if="reference.abstract">
-          <h3 class="pb-3">
-            <b>{{ $t("reference.abstract") }}</b>
-          </h3>
-          <div v-html="reference.abstract"></div>
         </v-card-text>
         <v-card-text v-if="reference.remarks">
           <h3 class="pb-3">

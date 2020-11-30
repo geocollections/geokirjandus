@@ -1,11 +1,11 @@
-import actions from "./actions";
-import mutations from "./mutations";
+import actions from "@/store/modules/search/actions";
+import mutations from "@/store/modules/search/mutations";
 
 const INIT_STATE = {
   page: 1,
   paginateBy: 50,
-  sortBy: [],
-  sortDesc: [],
+  sortBy: ["author", "year"],
+  sortDesc: [false, false],
   search: {
     id: "search",
     value: null,
@@ -97,7 +97,7 @@ const INIT_STATE = {
         type: "checkbox",
         id: "isEstonianReference",
         lookUpType: "contains",
-        value: "1",
+        value: null,
         label: "reference.isEstonianReference",
         fields: ["is_estonian_reference"]
       },
@@ -142,7 +142,6 @@ const INIT_STATE = {
     { text: "lookUpType.notContains", value: "notContains", symbol: "!*" }
   ]
 };
-
 const state = () => {
   return INIT_STATE;
 };

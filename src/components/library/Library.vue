@@ -148,7 +148,10 @@ export default {
     next(vm => {
       if (!from.name)
         vm.prevRoute = { name: "searchLibrary", params: vm.$route.params };
-      if (from.name === "searchLibrary") vm.resetSearch();
+      if (from.name === "searchLibrary")
+        vm.$store.dispatch(
+          `libraryReferenceSearch/resetLibraryReferenceSearch`
+        );
       vm.getLibrary().then(res => {
         vm.library = res.results[0];
 
@@ -156,19 +159,19 @@ export default {
           vm.error = true;
         }
       });
-      vm.resetPage();
-      vm.updateSortBy(["author", "year"]);
-      vm.updateSortDesc([false, false]);
+      vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
+      vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
+        "author",
+        "year"
+      ]);
+      vm.$store.dispatch(
+        `libraryReferenceSearch/updateSortDesc`,
+        [false, false]
+      );
     });
   },
 
   methods: {
-    ...mapActions("libraryReferenceSearch", [
-      "resetSearch",
-      "resetPage",
-      "updateSortBy",
-      "updateSortDesc"
-    ]),
     handleBack() {
       if (this.prevRoute) {
         this.$router.replace(this.prevRoute);

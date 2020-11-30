@@ -30,7 +30,7 @@
         <v-text-field
           solo
           hide-details
-          :value="getSearch.value"
+          :value="search.value"
           :label="$t('common.search')"
           @change="$emit('update:search', $event)"
         />
@@ -58,20 +58,17 @@
           {{ $t("common.searchCommand") }}
         </v-btn>
       </v-list-item>
-      <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
-        <v-list-item
-          v-if="getAdvancedSearch.byIds[id].type === 'checkbox'"
-          dense
-        >
+      <div :key="index" v-for="(id, index) in advancedSearch.allIds">
+        <v-list-item v-if="advancedSearch.byIds[id].type === 'checkbox'" dense>
           <v-checkbox
             dense
-            :label="$t(getAdvancedSearch.byIds[id].label)"
+            :label="$t(advancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
             color="#E58124"
             :false-value="null"
             true-value="1"
             hide-details
-            :input-value="getAdvancedSearch.byIds[id].value"
+            :input-value="advancedSearch.byIds[id].value"
             @change="updateCheckbox($event, id)"
           />
         </v-list-item>
@@ -104,10 +101,10 @@
             </v-list-item-title>
           </template>
           <div class="pb-3" style="background-color: #ecd9c0">
-            <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
+            <div :key="index" v-for="(id, index) in advancedSearch.allIds">
               <!-- REGULAR SEARCH FIELD -->
               <v-list-item
-                v-if="getAdvancedSearch.byIds[id].type === 'text'"
+                v-if="advancedSearch.byIds[id].type === 'text'"
                 dense
               >
                 <v-row class="pa-1">
@@ -115,14 +112,14 @@
                     <v-text-field
                       class="searchField"
                       color="#B76315"
-                      :value="getAdvancedSearch.byIds[id].value"
-                      :label="$t(getAdvancedSearch.byIds[id].label)"
+                      :value="advancedSearch.byIds[id].value"
+                      :label="$t(advancedSearch.byIds[id].label)"
                       hide-details
                       @change="
                         $emit('update:advancedSearch', {
                           value: $event,
                           id: id,
-                          type: getAdvancedSearch.byIds[id].type
+                          type: advancedSearch.byIds[id].type
                         })
                       "
                     ></v-text-field>
@@ -131,7 +128,7 @@
               </v-list-item>
               <v-list-item
                 class="px-3"
-                v-else-if="getAdvancedSearch.byIds[id].type === 'select'"
+                v-else-if="advancedSearch.byIds[id].type === 'select'"
               >
                 <!--  SELECT  -->
                 <v-row class="">
@@ -140,8 +137,8 @@
                       class="searchField"
                       multiple
                       color="#B76315"
-                      :label="$t(getAdvancedSearch.byIds[id].label)"
-                      :value="getAdvancedSearch.byIds[id].value"
+                      :label="$t(advancedSearch.byIds[id].label)"
+                      :value="advancedSearch.byIds[id].value"
                       :items="getSelectItems(id)"
                       item-color="#E58124"
                       :menu-props="{
@@ -154,7 +151,7 @@
                         $emit('update:advancedSearch', {
                           value: $event,
                           id: id,
-                          type: getAdvancedSearch.byIds[id].type
+                          type: advancedSearch.byIds[id].type
                         })
                       "
                     >
@@ -163,7 +160,7 @@
                 </v-row>
               </v-list-item>
               <v-list-item
-                v-else-if="getAdvancedSearch.byIds[id].type === 'range'"
+                v-else-if="advancedSearch.byIds[id].type === 'range'"
                 dense
               >
                 <!--  RANGE  -->
@@ -175,13 +172,13 @@
                           class="searchField"
                           color="#B76315"
                           :value="
-                            isNaN(getAdvancedSearch.byIds[id].value[0])
+                            isNaN(advancedSearch.byIds[id].value[0])
                               ? ''
-                              : getAdvancedSearch.byIds[id].value[0]
+                              : advancedSearch.byIds[id].value[0]
                           "
-                          :label="$t(getAdvancedSearch.byIds[id].label)"
+                          :label="$t(advancedSearch.byIds[id].label)"
                           :placeholder="
-                            $t(getAdvancedSearch.byIds[id].placeholders[0])
+                            $t(advancedSearch.byIds[id].placeholders[0])
                           "
                           hide-details
                           type="number"
@@ -189,10 +186,10 @@
                             $emit('update:advancedSearch', {
                               value: [
                                 isNaN($event) ? NaN : parseInt($event),
-                                getAdvancedSearch.byIds[id].value[1]
+                                advancedSearch.byIds[id].value[1]
                               ],
                               id: id,
-                              type: getAdvancedSearch.byIds[id].type
+                              type: advancedSearch.byIds[id].type
                             })
                           "
                         >
@@ -203,24 +200,24 @@
                           class="searchField"
                           color="#B76315"
                           :value="
-                            isNaN(getAdvancedSearch.byIds[id].value[1])
+                            isNaN(advancedSearch.byIds[id].value[1])
                               ? ''
-                              : getAdvancedSearch.byIds[id].value[1]
+                              : advancedSearch.byIds[id].value[1]
                           "
                           hide-details
                           :placeholder="
-                            $t(getAdvancedSearch.byIds[id].placeholders[1])
+                            $t(advancedSearch.byIds[id].placeholders[1])
                           "
                           single-line
                           type="number"
                           @change="
                             $emit('update:advancedSearch', {
                               value: [
-                                getAdvancedSearch.byIds[id].value[0],
+                                advancedSearch.byIds[id].value[0],
                                 isNaN($event) ? NaN : parseInt($event)
                               ],
                               id: id,
-                              type: getAdvancedSearch.byIds[id].type
+                              type: advancedSearch.byIds[id].type
                             })
                           "
                         />
@@ -294,22 +291,30 @@ export default {
   },
   computed: {
     ...mapState("references", ["facet", "result", "count"]),
+    search() {
+      return this.showAlert ? this.getLibraryReferenceSearch : this.getSearch;
+    },
+    advancedSearch() {
+      return this.showAlert
+        ? this.getLibraryReferenceAdvancedSearch
+        : this.getAdvancedSearch;
+    },
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
 
-      this.getAdvancedSearch.allIds.forEach(id => {
-        const obj = this.getAdvancedSearch.byIds[id];
+      this.advancedSearch.allIds.forEach(id => {
+        const obj = this.advancedSearch.byIds[id];
         if (obj.type === "text") {
-          if (this.getAdvancedSearch.byIds[id].value?.length > 0) {
+          if (this.advancedSearch.byIds[id].value?.length > 0) {
             count++;
           }
         } else if (obj.type === "select") {
-          if (this.getAdvancedSearch.byIds[id].value.length > 0) {
+          if (this.advancedSearch.byIds[id].value.length > 0) {
             count++;
           }
         } else if (obj.type === "range") {
-          const start = this.getAdvancedSearch.byIds[id].value[0];
-          const end = this.getAdvancedSearch.byIds[id].value[1];
+          const start = this.advancedSearch.byIds[id].value[0];
+          const end = this.advancedSearch.byIds[id].value[1];
 
           if (
             (typeof start === "number" && isFinite(start)) ||

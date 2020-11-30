@@ -121,14 +121,15 @@ export default {
           uuid.substring(2, 4) +
           "/" +
           uuid,
-        "_blank"
+        "_blank",
+        "height=800, width=800"
       );
     },
     openUrl(url) {
-      window.open(url, "_blank");
+      window.open(url, "_blank", "height=800, width=800");
     },
     openDOI(doi) {
-      window.open("https://doi.org/" + doi, "_blank");
+      window.open("https://doi.org/" + doi, "_blank", "height=800, width=800");
     }
   }
 };

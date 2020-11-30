@@ -155,7 +155,7 @@ export default {
 <style scoped>
 @media (min-width: 1904px) {
   .card {
-    max-width: 1264px !important;
+    max-width: 1400px !important;
   }
 }
 

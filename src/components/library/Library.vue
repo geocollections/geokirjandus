@@ -7,18 +7,21 @@
             <v-icon>fas fa-arrow-left</v-icon>
           </v-btn>
         </v-col>
-        <div class="col titleText">
-          {{ getTitle }}
+        <div class="d-flex flex-column col">
+          <h5>{{ $t("common.virtualLibrary") }}</h5>
+          <div class="col titleText">
+            {{ getTitle }}
+          </div>
+          <h6 class="">
+            {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+            {{ library.year }}
+          </h6>
         </div>
       </v-card-title>
       <div class="body elevation-4">
-        <v-card-actions class="pr-2 px-4 d-flex flex-column flex-sm-row">
-          <div class="mr-auto my-1">
-            <h3 class="">
-              {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
-              {{ library.year }}
-            </h3>
-          </div>
+        <v-card-actions
+          class="pr-2 px-4 d-flex justify-end flex-column flex-sm-row"
+        >
           <v-chip
             outlined
             color="blue-grey darken-3"
@@ -32,7 +35,7 @@
           </v-chip>
         </v-card-actions>
 
-        <v-card-text>
+        <v-card-text class="pt-0">
           <div class="d-flex pb-3">
             <h3 class="align-self-center">
               <b>{{ $t("common.citation") }}</b>
@@ -164,10 +167,10 @@ export default {
         "author",
         "year"
       ]);
-      vm.$store.dispatch(
-        `libraryReferenceSearch/updateSortDesc`,
-        [false, false]
-      );
+      vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
+        false,
+        false
+      ]);
     });
   },
 

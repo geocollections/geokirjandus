@@ -90,7 +90,8 @@
     "next": "Järgmine",
     "back": "Tagasi",
     "tourSearch": "Otsing",
-    "tourView": "Vaate"
+    "tourView": "Vaate",
+    "virtualLibrary": "Virtuaalne kirjanduse kogumik"
   },
   "reference": {
     "id": "ID",

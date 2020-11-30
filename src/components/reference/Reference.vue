@@ -514,13 +514,7 @@ export default {
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
     handleBack() {
-      if (this.prevRoute.name === "reference") {
-        this.$router.back();
-      } else {
-        this.getReferences();
-
-        this.$router.replace(this.prevRoute);
-      }
+      this.$router.back();
     },
     handleKeyword(keyword) {
       this.updateAdvancedSearch({

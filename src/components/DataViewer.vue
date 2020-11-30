@@ -206,7 +206,11 @@ export default {
           return !header.fixed;
         })
         .map(header => {
-          return { value: header.value, text: header.text };
+          return {
+            value: header.value,
+            text: header.text,
+            disabled: this.sortBy.includes(header.value)
+          };
         });
     },
     getHeadersShowing() {

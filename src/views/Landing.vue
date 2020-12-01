@@ -52,13 +52,13 @@
           <v-fade-transition>
             <v-card v-if="intro" class="cardTitle roundedBorder">
               <v-card-title class="cardTitle">
-                <h6>{{ getIntroTitle }}</h6>
+                <h6 v-translate="{ et: intro.title_et, en: intro.title_en }" />
               </v-card-title>
               <div class="px-1 pb-1 px-sm-2 pb-sm-2">
                 <v-card-text
                   style="background-color: white"
                   class="py-3 roundedBorder"
-                  v-html="getIntroText"
+                  v-translate="{ et: intro.content_et, en: intro.content_en }"
                 />
               </div>
             </v-card>
@@ -115,20 +115,6 @@ export default {
       intro: null,
       statisticsData: null
     };
-  },
-  computed: {
-    getIntroText() {
-      if (this.$i18n.locale === "ee") {
-        return this.intro.content_et;
-      }
-      return this.intro.content_en;
-    },
-    getIntroTitle() {
-      if (this.$i18n.locale === "ee") {
-        return this.intro.title_et;
-      }
-      return this.intro.title_en;
-    }
   },
   created() {
     this.getReferences();

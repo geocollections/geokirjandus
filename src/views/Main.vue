@@ -91,15 +91,6 @@ export default {
       printResult: []
     };
   },
-  computed: {
-    getDateLocale() {
-      if (this.$i18n.locale === "ee") {
-        return "et-EE";
-      } else {
-        return "en-GB";
-      }
-    }
-  },
   created() {
     window.onbeforeprint = () => {
       this.isPrint = true;

@@ -300,9 +300,11 @@
 
             <ul>
               <li v-for="locality in parseLocalities" :key="locality.id">
-                <a :href="localityURL(locality.id)" target="_blank">
-                  {{ $i18n.locale === "ee" ? locality.name : locality.nameEng }}
-                </a>
+                <a
+                  :href="localityURL(locality.id)"
+                  target="_blank"
+                  v-translate="{ et: locality.name, en: locality.nameEng }"
+                />
               </li>
             </ul>
           </div>

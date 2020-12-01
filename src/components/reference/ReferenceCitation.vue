@@ -1,13 +1,13 @@
 <template>
-  <div v-if="onlyText" v-html="citation(getCslJson)"></div>
+  <div v-if="onlyText" v-html="citation($getCsl(reference))"></div>
   <div v-else>
     <router-link
       class="referenceLink"
       :to="{
         name: `reference`,
-        params: { ...this.$route.params, id: this.reference.id }
+        params: { ...$route.params, id: reference.id }
       }"
-      v-html="citation(getCslJson)"
+      v-html="citation($getCsl(reference))"
     />
     <reference-links :item="reference" x-small />
   </div>
@@ -27,33 +27,6 @@ export default {
     },
     onlyText: {
       type: Boolean
-    }
-  },
-  computed: {
-    getCslJson() {
-      return {
-        id: this.reference.id,
-        type: this.reference.reference_csl_type,
-        title: this.reference.title,
-        DOI: this.reference.doi,
-        author: this.parseNames(this.reference.author),
-        issued: [
-          {
-            "date-parts": [this.reference.year]
-          }
-        ],
-        editor: this.reference.book_editor
-          ? this.parseNames(this.reference.book_editor)
-          : null,
-        "container-title": this.reference.book ?? this.reference.journal_name,
-        "original-title": this.reference.title_original,
-        volume: this.reference.volume,
-        number: this.reference.number,
-        publisher: this.reference.publisher,
-        "publisher-place": this.reference.publisher_place,
-        page: this.reference.pages,
-        URL: this.reference.url
-      };
     }
   }
 };

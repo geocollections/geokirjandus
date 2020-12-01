@@ -30,22 +30,6 @@ const citationMixin = {
     changeTemplate(event) {
       this.changeCitationTemplate(event);
     },
-    parseNames(namesStr) {
-      const namesSplitByComma = namesStr ? namesStr.split(",") : [];
-
-      const authors = [];
-
-      for (let i = 0; i < namesSplitByComma.length; i += 2) {
-        const name = {
-          given: namesSplitByComma[i + 1],
-          family: namesSplitByComma[i]
-        };
-
-        authors.push(name);
-      }
-
-      return authors;
-    },
     citation(clsJson, append = null, prepend = null, format = "html") {
       if (format === "html") {
         return Cite(clsJson).format("bibliography", {

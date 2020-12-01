@@ -11,8 +11,11 @@ import "izitoast/dist/css/iziToast.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "academicons/css/academicons.min.css";
 import "shepherd.js/dist/css/shepherd.css";
+import cslJson from "@/plugins/cslJson";
+
 Vue.use(VueIziToast);
 Vue.use(VueShepherd);
+Vue.use(cslJson);
 
 Vue.config.productionTip = false;
 

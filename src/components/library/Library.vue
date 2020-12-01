@@ -106,6 +106,7 @@ import citationMixin from "@/mixins/citationMixin";
 import LibraryCitation from "@/components/library/LibraryCitation";
 import queryMixin from "@/mixins/queryMixin";
 import CopyButton from "@/components/CopyButton";
+
 export default {
   name: "Library",
   components: { CopyButton, LibraryCitation, ReferenceViewer },
@@ -128,21 +129,6 @@ export default {
       } else {
         return this.library.title_en;
       }
-    },
-    getCslJson() {
-      return {
-        id: this.library.id,
-        type: "webpage",
-        author: this.parseNames(this.library.author),
-        issued: [
-          {
-            "date-parts": [this.library.year]
-          }
-        ],
-        publisher: this.$t("common.libraryPublisher"),
-        title: this.library.title,
-        URL: `https://geoloogia.info/library/${this.library.id}`
-      };
     }
   },
   beforeRouteEnter(to, from, next) {

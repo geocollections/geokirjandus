@@ -4,12 +4,12 @@
     class="libraryLink"
     :to="{
       name: `library`,
-      params: { ...this.$route.params, id: this.library.id }
+      params: { ...$route.params, id: library.id }
     }"
     tag="div"
-    v-html="citation(getCslJson)"
+    v-html="citation($getWebpageCsl(library))"
   />
-  <div v-else v-html="citation(getCslJson, append)"></div>
+  <div v-else v-html="citation($getWebpageCsl(library), append)"></div>
 </template>
 
 <script>
@@ -32,21 +32,6 @@ export default {
   computed: {
     append() {
       return ` ${this.$t("common.visited")}: ${this.formatDate(Date.now())}`;
-    },
-    getCslJson() {
-      return {
-        id: this.library.id,
-        type: "webpage",
-        author: this.parseNames(this.library.author),
-        issued: [
-          {
-            "date-parts": [this.library.year]
-          }
-        ],
-        publisher: this.$t("common.libraryPublisher"),
-        title: this.library.title,
-        URL: `https://geoloogia.info/library/${this.library.id}`
-      };
     }
   }
 };

@@ -116,10 +116,6 @@ export default {
       statisticsData: null
     };
   },
-  created() {
-    this.getReferences();
-    this.getIntroduction();
-  },
   computed: {
     getIntroText() {
       if (this.$i18n.locale === "ee") {
@@ -133,6 +129,10 @@ export default {
       }
       return this.intro.title_en;
     }
+  },
+  created() {
+    this.getReferences();
+    this.getIntroduction();
   },
   methods: {
     ...mapActions("search", [

@@ -514,7 +514,14 @@ export default {
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
     handleBack() {
-      this.$router.back();
+      if (
+        this.prevRoute.name === "reference" ||
+        this.prevRoute.name === "library"
+      ) {
+        this.$router.back();
+      } else {
+        this.$router.replace(this.prevRoute);
+      }
     },
     handleKeyword(keyword) {
       this.updateAdvancedSearch({

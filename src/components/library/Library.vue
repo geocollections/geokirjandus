@@ -149,8 +149,8 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (!from.name)
-        vm.prevRoute = { name: "searchLibrary", params: vm.$route.params };
+      if (!from.name) vm.prevRoute = { name: "searchLibrary" };
+      else vm.prevRoute = from;
       if (from.name === "searchLibrary")
         vm.$store.dispatch(
           `libraryReferenceSearch/resetLibraryReferenceSearch`
@@ -173,13 +173,12 @@ export default {
       ]);
     });
   },
-
   methods: {
     handleBack() {
-      if (this.prevRoute) {
-        this.$router.replace(this.prevRoute);
+      if (this.prevRoute.name === "reference") {
+        this.$router.back();
       } else {
-        this.$router.go(-1);
+        this.$router.replace(this.prevRoute);
       }
     },
     getDoiUrl(doi) {

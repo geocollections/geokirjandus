@@ -23,7 +23,7 @@
       <v-icon class="search">fas fa-search</v-icon>
     </v-btn>
     <v-toolbar-title style="text-shadow: 2px 2px 10px black;">
-      <a class="title" @click="home">
+      <a class="title" @click="goToLanding">
         {{ $t("title2") }}
       </a>
     </v-toolbar-title>
@@ -67,8 +67,8 @@ export default {
   name: "AppHeader",
   components: { Tour, Links, LangButtons },
   methods: {
-    home() {
-      this.$emit("home");
+    goToLanding() {
+      this.$store.dispatch("search/resetSearch");
       this.$router.replace({ name: "landing" }).catch(() => {});
     }
   }

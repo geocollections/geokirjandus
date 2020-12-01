@@ -19,7 +19,6 @@ export default {
   data: () => ({
     showFab: false
   }),
-
   methods: {
     onScroll(event) {
       if (typeof window === "undefined") return;

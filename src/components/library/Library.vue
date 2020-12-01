@@ -109,6 +109,7 @@ import CopyButton from "@/components/CopyButton";
 export default {
   name: "Library",
   components: { CopyButton, LibraryCitation, ReferenceViewer },
+  mixins: [dateMixin, citationMixin, queryMixin],
   data() {
     return {
       id: this.$route.params.id,
@@ -117,7 +118,6 @@ export default {
       error: false
     };
   },
-  mixins: [dateMixin, citationMixin, queryMixin],
   computed: {
     append() {
       return ` ${this.$t("common.visited")}: ${this.formatDate(Date.now())}`;
@@ -170,32 +170,15 @@ export default {
     });
   },
   methods: {
+    getLibrary() {
+      return fetchLibrary(this.$route.params.id);
+    },
     handleBack() {
       if (window.history.state === null) {
         this.$router.replace({ name: "searchLibrary" });
       } else {
         this.$router.back();
       }
-    },
-    getDoiUrl(doi) {
-      return `https://doi.org/${doi}`;
-    },
-    getUrl(url) {
-      if (url.startsWith("http")) return url;
-      else if (url.startsWith("www.")) return "http://" + url;
-      else if (url.includes("www."))
-        return "http://" + url.substring(url.indexOf("www."));
-      else return false;
-    },
-
-    getLibrary() {
-      return fetchLibrary(this.$route.params.id);
-    },
-    getFileUrl(uuid) {
-      return `https://files.geocollections.info/${uuid.substring(
-        0,
-        2
-      )}/${uuid.substring(2, 4)}/${uuid}`;
     }
   }
 };

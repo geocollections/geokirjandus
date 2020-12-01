@@ -8,6 +8,8 @@
 import toastMixin from "../mixins/toastMixin";
 
 export default {
+  name: "ExportButton",
+  mixins: [toastMixin],
   props: {
     tableData: {
       type: Array
@@ -18,9 +20,6 @@ export default {
     },
     small: Boolean
   },
-  name: "ExportButton",
-  mixins: [toastMixin],
-
   methods: {
     copyToClipboard() {
       let el;

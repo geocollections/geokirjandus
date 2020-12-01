@@ -402,6 +402,7 @@ export default {
     LeafletMap,
     ReferenceCitation
   },
+  mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
   props: {
     id: {
       type: String
@@ -416,27 +417,6 @@ export default {
       childReferences: null
     };
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getReference(vm.id);
-    });
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.getReference(to.params.id);
-    this.childReferences = [];
-    this.localities = [];
-    next();
-  },
-  watch: {
-    referenceParameters: {
-      // Handle search parameter change
-      handler: debounce(function() {
-        this.$router.push({ name: "searchReference" }).catch(() => {});
-      }, 300),
-      deep: true
-    }
-  },
-  mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
     getCslJson() {
@@ -505,6 +485,26 @@ export default {
           return keyword.trim();
         });
     }
+  },
+  watch: {
+    referenceParameters: {
+      // Handle search parameter change
+      handler: debounce(function() {
+        this.$router.push({ name: "searchReference" }).catch(() => {});
+      }, 300),
+      deep: true
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getReference(vm.id);
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.getReference(to.params.id);
+    this.childReferences = [];
+    this.localities = [];
+    next();
   },
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
@@ -603,12 +603,6 @@ export default {
           if (res.count > 0) this.childReferences = res.results;
         });
       });
-    },
-    getFileUrl(uuid) {
-      return `https://files.geocollections.info/${uuid.substring(
-        0,
-        2
-      )}/${uuid.substring(2, 4)}/${uuid}`;
     }
   }
 };

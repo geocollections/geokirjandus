@@ -39,19 +39,6 @@ export default {
       isAdvancedSearchOpenBeforeTour: false
     };
   },
-  created() {
-    ["cancel", "complete"].forEach(event =>
-      Shepherd.on(event, () => {
-        this.btnIsDisabled = false;
-        if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
-          document.querySelector("#advancedSearchActivator").click();
-        }
-        if (this.$vuetify.breakpoint.mdAndDown) {
-          document.getElementById("searchFab").click();
-        }
-      })
-    );
-  },
   computed: {
     btnClasses() {
       return {
@@ -85,6 +72,19 @@ export default {
         text: this.$t("common.close")
       };
     }
+  },
+  created() {
+    ["cancel", "complete"].forEach(event =>
+      Shepherd.on(event, () => {
+        this.btnIsDisabled = false;
+        if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
+          document.querySelector("#advancedSearchActivator").click();
+        }
+        if (this.$vuetify.breakpoint.mdAndDown) {
+          document.getElementById("searchFab").click();
+        }
+      })
+    );
   },
   beforeDestroy() {
     if (Shepherd.activeTour) {

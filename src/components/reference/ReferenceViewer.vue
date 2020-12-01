@@ -73,16 +73,17 @@ export default {
     ReferenceListView,
     DataViewer
   },
-  data() {
-    return {
-      result: []
-    };
-  },
+  mixins: [dateMixin, urlMixin, queryMixin],
   props: {
     tabs: {
       type: Boolean,
       default: false
     }
+  },
+  data() {
+    return {
+      result: []
+    };
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
@@ -148,7 +149,6 @@ export default {
       }
     }
   },
-  mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
     ...mapActions("search", [
       "updatePage",

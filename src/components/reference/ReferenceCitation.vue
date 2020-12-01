@@ -19,6 +19,7 @@ import ReferenceLinks from "@/components/reference/ReferenceLinks";
 export default {
   name: "ReferenceCitation",
   components: { ReferenceLinks },
+  mixins: [citationMixin],
   props: {
     reference: {
       type: Object,
@@ -28,7 +29,6 @@ export default {
       type: Boolean
     }
   },
-  mixins: [citationMixin],
   computed: {
     getCslJson() {
       return {

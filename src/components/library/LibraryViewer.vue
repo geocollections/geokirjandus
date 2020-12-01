@@ -64,19 +64,23 @@ export default {
     LibraryListView,
     DataViewer
   },
+  mixins: [dateMixin, urlMixin, queryMixin],
+  props: {
+    showLibraries: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       isLoading: false,
       result: []
     };
   },
-  created() {
-    this.$store.dispatch("librarySearch/updateSortBy", ["date_added"]);
-
-    this.$store.dispatch("librarySearch/updateSortDesc", [true]);
-
-    this.handleLibrariesResult();
-    this.getReferences();
+  computed: {
+    ...mapState("librarySearch", ["sortBy", "sortDesc"]),
+    ...mapState("library", ["count"]),
+    ...mapState("tableSettings", ["libraryHeaders"])
   },
   watch: {
     page: {
@@ -108,18 +112,13 @@ export default {
       deep: true
     }
   },
-  props: {
-    showLibraries: {
-      type: Boolean,
-      default: true
-    }
+  created() {
+    this.$store.dispatch("librarySearch/updateSortBy", ["date_added"]);
+    this.$store.dispatch("librarySearch/updateSortDesc", [true]);
+
+    this.handleLibrariesResult();
+    this.getReferences();
   },
-  computed: {
-    ...mapState("librarySearch", ["sortBy", "sortDesc"]),
-    ...mapState("library", ["count"]),
-    ...mapState("tableSettings", ["libraryHeaders"])
-  },
-  mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
     ...mapActions("librarySearch", [
       "updatePage",

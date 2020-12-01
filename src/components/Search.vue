@@ -247,48 +247,24 @@ import SearchHelpDialog from "@/components/SearchHelpDialog";
 export default {
   name: "Search",
   components: { SearchHelpDialog, ShareButton, CitationSelect },
+  mixins: [urlMixin, queryMixin],
   props: {
     colSize: {
       type: Number,
       default: 6
     }
   },
-  watch: {
-    $route: {
-      handler(to, from) {
-        if (
-          to.name === "library" &&
-          to.params.id &&
-          from &&
-          from.name === "searchLibrary"
-        ) {
-          this.showAlert = true;
-        } else if (to.name === "library" && to.params.id) {
-          this.showAlert = true;
-        } else if (
-          from !== undefined &&
-          from.name === "library" &&
-          to.name === "reference"
-        ) {
-          this.showAlert = true;
-        } else if (
-          (to.name === "searchReference" || to.name === "searchLibrary") &&
-          from === undefined
-        ) {
-          this.showAlert = false;
-        } else if (
-          from &&
-          from.name === "library" &&
-          to.name === "searchLibrary"
-        ) {
-          this.showAlert = false;
-        } else {
-          this.showAlert = false;
-        }
-      },
-      immediate: true
-    }
-  },
+  data: () => ({
+    range: [1900, 2000],
+    date_start: false,
+    date_end: false,
+    calendarMenus: ["date_start", "date_end"],
+    referenceTypeValue: [],
+    showAdvancedSearch: false,
+    infoAlert: null,
+    filterCount: 2,
+    showAlert: false
+  }),
   computed: {
     ...mapState("references", ["facet", "result", "count"]),
     search() {
@@ -382,18 +358,42 @@ export default {
       return languages;
     }
   },
-  data: () => ({
-    range: [1900, 2000],
-    date_start: false,
-    date_end: false,
-    calendarMenus: ["date_start", "date_end"],
-    referenceTypeValue: [],
-    showAdvancedSearch: false,
-    infoAlert: null,
-    filterCount: 2,
-    showAlert: false
-  }),
-  mixins: [urlMixin, queryMixin],
+  watch: {
+    $route: {
+      handler(to, from) {
+        if (
+          to.name === "library" &&
+          to.params.id &&
+          from &&
+          from.name === "searchLibrary"
+        ) {
+          this.showAlert = true;
+        } else if (to.name === "library" && to.params.id) {
+          this.showAlert = true;
+        } else if (
+          from !== undefined &&
+          from.name === "library" &&
+          to.name === "reference"
+        ) {
+          this.showAlert = true;
+        } else if (
+          (to.name === "searchReference" || to.name === "searchLibrary") &&
+          from === undefined
+        ) {
+          this.showAlert = false;
+        } else if (
+          from &&
+          from.name === "library" &&
+          to.name === "searchLibrary"
+        ) {
+          this.showAlert = false;
+        } else {
+          this.showAlert = false;
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {

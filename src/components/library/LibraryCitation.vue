@@ -18,6 +18,7 @@ import dateMixin from "@/mixins/dateMixin";
 
 export default {
   name: "LibraryCitation",
+  mixins: [citationMixin, dateMixin],
   props: {
     library: {
       type: Object,
@@ -28,7 +29,6 @@ export default {
       default: false
     }
   },
-  mixins: [citationMixin, dateMixin],
   computed: {
     append() {
       return ` ${this.$t("common.visited")}: ${this.formatDate(Date.now())}`;

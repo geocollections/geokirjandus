@@ -9,9 +9,11 @@
         </v-col>
         <div class="d-flex flex-column col">
           <h5>{{ $t("common.virtualLibrary") }}</h5>
-          <div class="col titleText">
-            {{ getTitle }}
-          </div>
+          <div
+            class="col titleText"
+            v-translate="{ et: library.title, en: library.title_en }"
+          />
+
           <h6 class="">
             {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
             {{ library.year }}
@@ -54,8 +56,9 @@
           </h3>
         </v-card-text>
         <v-card-text v-if="library.abstract" class="py-0">
-          <div v-if="$i18n.locale === 'ee'" v-html="library.abstract"></div>
-          <div v-else v-html="library.abstract_en"></div>
+          <div
+            v-translate="{ et: library.abstract, en: library.abstract_en }"
+          />
         </v-card-text>
         <v-card-text class="pb-0">
           <h3>
@@ -118,18 +121,6 @@ export default {
       isLoading: true,
       error: false
     };
-  },
-  computed: {
-    append() {
-      return ` ${this.$t("common.visited")}: ${this.formatDate(Date.now())}`;
-    },
-    getTitle() {
-      if (this.$i18n.locale === "ee") {
-        return this.library.title;
-      } else {
-        return this.library.title_en;
-      }
-    }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

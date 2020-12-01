@@ -136,7 +136,12 @@
                   </tr>
                   <tr v-if="reference.type">
                     <th>{{ $t("reference.type") }}</th>
-                    <td>{{ getReferenceType }}</td>
+                    <td
+                      v-translate="{
+                        et: reference.reference_type,
+                        en: reference.reference_type_en
+                      }"
+                    />
                   </tr>
                   <tr v-if="reference.figures">
                     <th>{{ $t("reference.figures") }}</th>
@@ -144,9 +149,12 @@
                   </tr>
                   <tr v-if="reference.language">
                     <th>{{ $t("reference.language") }}</th>
-                    <td>
-                      {{ getReferenceLanguage }}
-                    </td>
+                    <td
+                      v-translate="{
+                        et: reference.reference_language,
+                        en: reference.reference_language_en
+                      }"
+                    />
                   </tr>
                   <tr>
                     <th>{{ $t("reference.isOa") }}</th>
@@ -419,16 +427,6 @@ export default {
   },
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
-    getReferenceType() {
-      return this.$i18n.locale === "ee"
-        ? this.reference.reference_type
-        : this.reference.reference_type_en;
-    },
-    getReferenceLanguage() {
-      return this.$i18n.locale === "ee"
-        ? this.reference.reference_language
-        : this.reference.reference_language_en;
-    },
     parseLocalities() {
       const localityNames = this.reference.localities.split(";");
 

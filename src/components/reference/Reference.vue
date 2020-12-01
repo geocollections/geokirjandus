@@ -413,14 +413,11 @@ export default {
       libraries: [],
       localities: [],
       error: false,
-      prevRoute: null,
       childReferences: null
     };
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (!from.name) vm.prevRoute = { name: "searchReference" };
-      else vm.prevRoute = from;
       vm.getReference(vm.id);
     });
   },
@@ -428,15 +425,13 @@ export default {
     this.getReference(to.params.id);
     this.childReferences = [];
     this.localities = [];
-    this.prevRoute = { name: from.name, params: from.params };
     next();
   },
   watch: {
     referenceParameters: {
+      // Handle search parameter change
       handler: debounce(function() {
-        if (this.prevRoute.name === "landing")
-          this.$router.replace({ name: "searchReference" });
-        else this.$router.push(this.prevRoute).catch(() => {});
+        this.$router.push({ name: "searchReference" }).catch(() => {});
       }, 300),
       deep: true
     }
@@ -514,13 +509,10 @@ export default {
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
     handleBack() {
-      if (
-        this.prevRoute.name === "reference" ||
-        this.prevRoute.name === "library"
-      ) {
-        this.$router.back();
+      if (window.history.state === null) {
+        this.$router.push({ name: "searchReference" });
       } else {
-        this.$router.replace(this.prevRoute);
+        this.$router.back();
       }
     },
     handleKeyword(keyword) {

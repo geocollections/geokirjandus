@@ -101,7 +101,6 @@
 <script>
 import { fetchLibrary } from "@/utils/apiCalls";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
-import { mapActions } from "vuex";
 import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
 import LibraryCitation from "@/components/library/LibraryCitation";
@@ -115,8 +114,7 @@ export default {
       id: this.$route.params.id,
       library: null,
       isLoading: true,
-      error: false,
-      prevRoute: null
+      error: false
     };
   },
   mixins: [dateMixin, citationMixin, queryMixin],
@@ -149,8 +147,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (!from.name) vm.prevRoute = { name: "searchLibrary" };
-      else vm.prevRoute = from;
       if (from.name === "searchLibrary")
         vm.$store.dispatch(
           `libraryReferenceSearch/resetLibraryReferenceSearch`
@@ -175,10 +171,10 @@ export default {
   },
   methods: {
     handleBack() {
-      if (this.prevRoute.name === "reference") {
-        this.$router.back();
+      if (window.history.state === null) {
+        this.$router.replace({ name: "searchLibrary" });
       } else {
-        this.$router.replace(this.prevRoute);
+        this.$router.back();
       }
     },
     getDoiUrl(doi) {

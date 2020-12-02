@@ -3,7 +3,7 @@
     <div class="col-sm-3 px-2 paginationSelect">
       <v-select
         :value="paginateBy"
-        color="#B76315"
+        color="grey darken-3"
         dense
         :menu-props="{ bottom: true, offsetY: true }"
         :items="paginateByOptionsTranslated"

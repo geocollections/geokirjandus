@@ -44,6 +44,12 @@
           multiple
           dense
           chips
+          color="grey darken-3"
+          :menu-props="{
+            bottom: true,
+            offsetY: true,
+            offsetOverflow: true
+          }"
           :label="$t('common.fields')"
           hide-details
           :items="getHeaderOptions"

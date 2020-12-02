@@ -4,6 +4,7 @@ import VuexPersistence from "vuex-persist";
 
 import settings from "./modules/settings";
 import search from "./modules/search";
+import libraryReferenceSearchModule from "@/store/modules/search/libraryReferenceSearchModule";
 import references from "./modules/references";
 import library from "./modules/library";
 import tableSettings from "./modules/tableSettings";
@@ -24,7 +25,7 @@ export default new Vuex.Store({
     search,
     references,
     library,
-    libraryReferenceSearch: search,
+    libraryReferenceSearch: libraryReferenceSearchModule,
     librarySearch: search
   },
   plugins: [vuexLocal.plugin],

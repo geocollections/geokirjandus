@@ -13,7 +13,7 @@
             <bar-chart
               id="keywords"
               class="d-flex justify-center"
-              :chartdata="getKeywordsChartData"
+              :chartData="getKeywordsChartData"
               :options="getKeywordsChartOptions(handleKeywordClick)"
               :locale="$i18n.locale"
             />
@@ -23,7 +23,7 @@
             <bar-chart
               id="byDecade"
               class="d-flex justify-center"
-              :chartdata="getDecadesChartData"
+              :chartData="getDecadesChartData"
               :options="getDecadesChartOptions(handleDecadeClick)"
               :locale="$i18n.locale"
             />
@@ -32,7 +32,7 @@
             <h3 class="text-center pb-3">{{ $t("charts.types") }}</h3>
             <pie-chart
               class="d-flex justify-center"
-              :chartdata="getTypesChartData"
+              :chartData="getTypesChartData"
               :options="getChartOptions('pie', handleTypeClick)"
               :locale="$i18n.locale"
             ></pie-chart>
@@ -41,7 +41,7 @@
             <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
             <pie-chart
               class="d-flex justify-center"
-              :chartdata="getLanguageChartData"
+              :chartData="getLanguageChartData"
               :options="getChartOptions('pie', handleLanguageClick)"
               :locale="$i18n.locale"
             ></pie-chart>

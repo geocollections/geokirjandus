@@ -1,57 +1,53 @@
 <template>
-  <v-container fluid class="py-0">
-    <v-row>
-      <v-col class="py-0 px-1 px-sm-2">
-        <data-viewer
-          :module="$route.meta.object"
-          :data="result"
-          :count="count"
-          :page="getPage"
-          :is-loading="isLoading"
-          :paginate-by="getPaginateBy"
-          :sort-by="getSortBy"
-          :sort-desc="getSortDesc"
-          :headers="getHeaders"
-          :title="
-            count !== 1
-              ? 'viewer.title.reference_html'
-              : 'viewer.title.reference_single_html'
-          "
-          v-on:open="open"
-          v-on:update:paginateBy="handleUpdatePaginateBy"
-          v-on:update:page="handleUpdatePage"
-          v-on:update:sortBy="handleUpdateSortBy"
-          v-on:update:sortDesc="handleUpdateSortDesc"
-          v-on:update:headers="handleUpdateTableHeaders"
-        >
-          <template v-if="tabs" v-slot:prepend>
-            <tabs />
-          </template>
+  <div class="px-1 px-sm-2">
+    <data-viewer
+      :module="$route.meta.object"
+      :data="result"
+      :count="count"
+      :page="getPage"
+      :is-loading="isLoading"
+      :paginate-by="getPaginateBy"
+      :sort-by="getSortBy"
+      :sort-desc="getSortDesc"
+      :headers="getHeaders"
+      :title="
+        count !== 1
+          ? 'viewer.title.reference_html'
+          : 'viewer.title.reference_single_html'
+      "
+      v-on:open="open"
+      v-on:update:paginateBy="handleUpdatePaginateBy"
+      v-on:update:page="handleUpdatePage"
+      v-on:update:sortBy="handleUpdateSortBy"
+      v-on:update:sortDesc="handleUpdateSortDesc"
+      v-on:update:headers="handleUpdateTableHeaders"
+    >
+      <template v-if="tabs" v-slot:prepend>
+        <tabs />
+      </template>
 
-          <!--  TABLE VIEW CUSTOM TEMPLATES  -->
-          <template v-slot:item.bookJournal="{ item }">
-            <div v-if="item.book">{{ item.book }}</div>
-            <div v-else-if="item.journal__journal_name">
-              {{ item.journal__journal_name }}
-            </div>
-          </template>
-          <template v-slot:item.date_added="{ item }">
-            {{ formatDate(item.date_added) }}
-          </template>
-          <template v-slot:item.date_changed="{ item }">
-            {{ formatDate(item.date_changed) }}
-          </template>
-          <template v-slot:item.links="{ item }">
-            <reference-links small :item="item" />
-          </template>
-          <!--  LIST VIEW TEMPLATE  -->
-          <template v-slot:list-view="{ data }">
-            <reference-list-view :data="data"></reference-list-view>
-          </template>
-        </data-viewer>
-      </v-col>
-    </v-row>
-  </v-container>
+      <!--  TABLE VIEW CUSTOM TEMPLATES  -->
+      <template v-slot:item.bookJournal="{ item }">
+        <div v-if="item.book">{{ item.book }}</div>
+        <div v-else-if="item.journal__journal_name">
+          {{ item.journal__journal_name }}
+        </div>
+      </template>
+      <template v-slot:item.date_added="{ item }">
+        {{ formatDate(item.date_added) }}
+      </template>
+      <template v-slot:item.date_changed="{ item }">
+        {{ formatDate(item.date_changed) }}
+      </template>
+      <template v-slot:item.links="{ item }">
+        <reference-links small :item="item" />
+      </template>
+      <!--  LIST VIEW TEMPLATE  -->
+      <template v-slot:list-view="{ data }">
+        <reference-list-view :data="data"></reference-list-view>
+      </template>
+    </data-viewer>
+  </div>
 </template>
 
 <script>
@@ -73,16 +69,17 @@ export default {
     ReferenceListView,
     DataViewer
   },
-  data() {
-    return {
-      result: []
-    };
-  },
+  mixins: [dateMixin, urlMixin, queryMixin],
   props: {
     tabs: {
       type: Boolean,
       default: false
     }
+  },
+  data() {
+    return {
+      result: []
+    };
   },
   computed: {
     ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
@@ -148,7 +145,6 @@ export default {
       }
     }
   },
-  mixins: [dateMixin, urlMixin, queryMixin],
   methods: {
     ...mapActions("search", [
       "updatePage",

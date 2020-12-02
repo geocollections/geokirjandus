@@ -7,13 +7,13 @@
         "
         class="d-flex flex-column header"
       >
-        <div class="elevation-4 header d-flex flex-column pb-5">
+        <v-col class="elevation-4 header d-flex flex-column pt-0 pb-5">
           <span class="d-flex justify-end mt-4 mb-2 mr-4">
             <links />
             <lang-buttons />
           </span>
 
-          <h1 class="white--text text-center title">
+          <h1 class="mt-2 white--text text-center title">
             {{ $t("title") }}
           </h1>
           <span
@@ -40,7 +40,7 @@
               >{{ $t("common.viewReferences") }}</v-btn
             >
           </span>
-        </div>
+        </v-col>
       </v-row>
       <v-row class="d-flex flex-column align-center justify-center main">
         <v-col cols="12" sm="11" lg="10">
@@ -52,13 +52,13 @@
           <v-fade-transition>
             <v-card v-if="intro" class="cardTitle roundedBorder">
               <v-card-title class="cardTitle">
-                <h6>{{ getIntroTitle }}</h6>
+                <h6 v-translate="{ et: intro.title_et, en: intro.title_en }" />
               </v-card-title>
               <div class="px-1 pb-1 px-sm-2 pb-sm-2">
                 <v-card-text
                   style="background-color: white"
                   class="py-3 roundedBorder"
-                  v-html="getIntroText"
+                  v-translate="{ et: intro.content_et, en: intro.content_en }"
                 />
               </div>
             </v-card>
@@ -119,20 +119,6 @@ export default {
   created() {
     this.getReferences();
     this.getIntroduction();
-  },
-  computed: {
-    getIntroText() {
-      if (this.$i18n.locale === "ee") {
-        return this.intro.content_et;
-      }
-      return this.intro.content_en;
-    },
-    getIntroTitle() {
-      if (this.$i18n.locale === "ee") {
-        return this.intro.title_et;
-      }
-      return this.intro.title_en;
-    }
   },
   methods: {
     ...mapActions("search", [

@@ -16,12 +16,8 @@
       </v-btn>
     </template>
     <v-card v-if="help">
-      <v-card-title
-        v-html="$i18n.locale === 'ee' ? help.title_et : help.title_en"
-      />
-      <v-card-text
-        v-html="$i18n.locale === 'ee' ? help.content_et : help.content_en"
-      />
+      <v-card-title v-translate="{ et: help.title_et, en: help.title_en }" />
+      <v-card-text v-translate="{ et: help.content_et, en: help.content_en }" />
     </v-card>
   </v-dialog>
 </template>

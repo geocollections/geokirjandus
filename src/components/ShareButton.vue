@@ -99,13 +99,6 @@ export default {
       filename: ""
     };
   },
-  watch: {
-    count: {
-      handler() {
-        this.exportCount = this.count;
-      }
-    }
-  },
   computed: {
     ...mapState("settings", ["view"]),
     ...mapState("references", ["count"]),
@@ -153,6 +146,13 @@ export default {
       }
 
       return `https://geoloogia.info${resolve.href}`;
+    }
+  },
+  watch: {
+    count: {
+      handler() {
+        this.exportCount = this.count;
+      }
     }
   },
   methods: {
@@ -249,29 +249,7 @@ export default {
     },
     convertToRIS(data) {
       const cslArray = data.map(reference => {
-        return {
-          type: reference.reference_csl_type,
-          title: reference.title,
-          DOI: reference.doi,
-          author: this.parseNames(reference.author),
-          issued: [
-            {
-              "date-parts": [reference.year]
-            }
-          ],
-          "container-title": reference.book ?? reference.journal_name,
-          editor: reference.book_editor
-            ? this.parseNames(reference.book_editor)
-            : null,
-          "original-title": reference.title_original,
-          volume: reference.volume,
-          number: reference.number,
-          publisher: reference.publisher,
-          abstract: reference.abstract,
-          "publisher-place": reference.publisher_place,
-          page: reference.pages,
-          URL: reference.url
-        };
+        return this.$getCsl(reference);
       });
 
       return Cite(cslArray).format("ris");
@@ -293,29 +271,7 @@ export default {
     },
     convertToBibTeX(data) {
       const cslArray = data.map(reference => {
-        return {
-          type: reference.reference_csl_type,
-          title: reference.title,
-          DOI: reference.doi,
-          author: this.parseNames(reference.author),
-          issued: [
-            {
-              "date-parts": [reference.year]
-            }
-          ],
-          "container-title": reference.book ?? reference.journal_name,
-          "original-title": reference.title_original,
-          editor: reference.book_editor
-            ? this.parseNames(reference.book_editor)
-            : null,
-          volume: reference.volume,
-          number: reference.number,
-          publisher: reference.publisher,
-          abstract: reference.abstract,
-          "publisher-place": reference.publisher_place,
-          page: reference.pages,
-          URL: reference.url
-        };
+        return this.$getCsl(reference);
       });
 
       return Cite(cslArray).format("bibtex");

@@ -25,6 +25,30 @@ const resetAdvancedSearch = advancedSearch => {
   return cloneAdvancedSearch;
 };
 
+const resetAdvancedLibraryReferenceSearch = advancedSearch => {
+  let cloneAdvancedSearch = cloneDeep(advancedSearch.byIds);
+
+  advancedSearch.allIds.forEach(id => {
+    switch (cloneAdvancedSearch[id].type) {
+      case "range":
+        cloneAdvancedSearch[id].value = [NaN, NaN];
+        break;
+      case "checkbox":
+        cloneAdvancedSearch[id].value = null;
+
+        break;
+      case "select":
+        cloneAdvancedSearch[id].value = [];
+        break;
+      default: {
+        cloneAdvancedSearch[id].value = null;
+      }
+    }
+  });
+
+  return cloneAdvancedSearch;
+};
+
 const mutations = {
   RESET_SEARCH(state) {
     state.search.value = null;
@@ -32,6 +56,15 @@ const mutations = {
     state.advancedSearch = {
       ...state.advancedSearch,
       byIds: resetAdvancedSearch(state.advancedSearch)
+    };
+    state.page = 1;
+  },
+  RESET_LIBRARY_REFERENCE_SEARCH(state) {
+    state.search.value = null;
+
+    state.advancedSearch = {
+      ...state.advancedSearch,
+      byIds: resetAdvancedLibraryReferenceSearch(state.advancedSearch)
     };
     state.page = 1;
   },

@@ -90,7 +90,8 @@
     "next": "Järgmine",
     "back": "Tagasi",
     "tourSearch": "Otsing",
-    "tourView": "Vaate"
+    "tourView": "Vaate",
+    "virtualLibrary": "Virtuaalne kirjanduse kogumik"
   },
   "reference": {
     "id": "ID",
@@ -139,8 +140,8 @@
     "number": "Number",
     "dateAdded": "Lisatud",
     "pagesStart": "Algus lehekülg",
-    "pagesEnd": "Lõpp lehekülg"
-
+    "pagesEnd": "Lõpp lehekülg",
+    "taxa": "Taksonid"
   },
   "library": {
     "id": "ID",

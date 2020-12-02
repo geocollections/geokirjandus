@@ -44,6 +44,12 @@
           multiple
           dense
           chips
+          color="grey darken-3"
+          :menu-props="{
+            bottom: true,
+            offsetY: true,
+            offsetOverflow: true
+          }"
           :label="$t('common.fields')"
           hide-details
           :items="getHeaderOptions"
@@ -206,7 +212,11 @@ export default {
           return !header.fixed;
         })
         .map(header => {
-          return { value: header.value, text: header.text };
+          return {
+            value: header.value,
+            text: header.text,
+            disabled: this.sortBy.includes(header.value)
+          };
         });
     },
     getHeadersShowing() {

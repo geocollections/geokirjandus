@@ -40,6 +40,7 @@ import toastMixin from "../mixins/toastMixin";
 
 export default {
   name: "lang-buttons",
+  mixins: [toastMixin],
   props: {
     isDark: {
       type: Boolean,
@@ -54,7 +55,6 @@ export default {
       ]
     };
   },
-  mixins: [toastMixin],
   computed: {
     ...mapState("settings", ["language"]),
     classObject() {

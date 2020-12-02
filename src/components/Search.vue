@@ -1,5 +1,5 @@
 <template>
-  <div class="search fill-height ">
+  <div :class="`fill-height ${showAlert ? 'searchLibrary' : 'search'}`">
     <v-list class="mt-0 pb-4 pb-md-10 pa-0">
       <v-fade-transition>
         <v-list-item v-if="showAlert" class="pt-3 d-flex justify-end">
@@ -9,7 +9,7 @@
             colored-border
             border="right"
             type="info"
-            color="#CFC7B5"
+            color="#95A8B1"
             class="mb-0"
           >
             <v-row align="center">
@@ -17,9 +17,9 @@
                 {{ $t("alert.infoLibrarySearch") }}
               </v-col>
               <v-col class="shrink">
-                <v-btn x-small icon @click="handleExitLibrary()"
-                  ><v-icon>fa fa-times</v-icon></v-btn
-                >
+                <v-btn x-small icon @click="handleExitLibrary()">
+                  <v-icon>fa fa-times</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-alert>
@@ -30,7 +30,7 @@
         <v-text-field
           solo
           hide-details
-          :value="getSearch.value"
+          :value="search.value"
           :label="$t('common.search')"
           @change="$emit('update:search', $event)"
         />
@@ -58,20 +58,17 @@
           {{ $t("common.searchCommand") }}
         </v-btn>
       </v-list-item>
-      <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
-        <v-list-item
-          v-if="getAdvancedSearch.byIds[id].type === 'checkbox'"
-          dense
-        >
+      <div :key="index" v-for="(id, index) in advancedSearch.allIds">
+        <v-list-item v-if="advancedSearch.byIds[id].type === 'checkbox'" dense>
           <v-checkbox
             dense
-            :label="$t(getAdvancedSearch.byIds[id].label)"
+            :label="$t(advancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
             color="#E58124"
             :false-value="null"
             true-value="1"
             hide-details
-            :input-value="getAdvancedSearch.byIds[id].value"
+            :input-value="advancedSearch.byIds[id].value"
             @change="updateCheckbox($event, id)"
           />
         </v-list-item>
@@ -81,9 +78,11 @@
       </v-list-item>
       <div id="advancedSearch">
         <v-list-group
-          color="#924f23"
+          color="grey darken-3"
           v-model="showAdvancedSearch"
-          class="advancedSearch mt-3"
+          :class="
+            `${showAlert ? 'advancedSearchLibrary' : 'advancedSearch'} mt-3`
+          "
         >
           <template v-slot:activator>
             <v-list-item-title id="advancedSearchActivator" class="d-flex">
@@ -103,26 +102,34 @@
               </v-col>
             </v-list-item-title>
           </template>
-          <div class="pb-3" style="background-color: #ecd9c0">
-            <div :key="index" v-for="(id, index) in getAdvancedSearch.allIds">
+          <div
+            :class="
+              `pb-3 ${
+                showAlert
+                  ? 'advancedSearchLibraryContent'
+                  : 'advancedSearchContent'
+              }`
+            "
+          >
+            <div :key="index" v-for="(id, index) in advancedSearch.allIds">
               <!-- REGULAR SEARCH FIELD -->
               <v-list-item
-                v-if="getAdvancedSearch.byIds[id].type === 'text'"
+                v-if="advancedSearch.byIds[id].type === 'text'"
                 dense
               >
                 <v-row class="pa-1">
                   <v-col cols="12" class="py-0 px-1">
                     <v-text-field
                       class="searchField"
-                      color="#B76315"
-                      :value="getAdvancedSearch.byIds[id].value"
-                      :label="$t(getAdvancedSearch.byIds[id].label)"
+                      color="grey darken-3"
+                      :value="advancedSearch.byIds[id].value"
+                      :label="$t(advancedSearch.byIds[id].label)"
                       hide-details
                       @change="
                         $emit('update:advancedSearch', {
                           value: $event,
                           id: id,
-                          type: getAdvancedSearch.byIds[id].type
+                          type: advancedSearch.byIds[id].type
                         })
                       "
                     ></v-text-field>
@@ -131,7 +138,7 @@
               </v-list-item>
               <v-list-item
                 class="px-3"
-                v-else-if="getAdvancedSearch.byIds[id].type === 'select'"
+                v-else-if="advancedSearch.byIds[id].type === 'select'"
               >
                 <!--  SELECT  -->
                 <v-row class="">
@@ -139,9 +146,9 @@
                     <v-select
                       class="searchField"
                       multiple
-                      color="#B76315"
-                      :label="$t(getAdvancedSearch.byIds[id].label)"
-                      :value="getAdvancedSearch.byIds[id].value"
+                      color="grey darken-3"
+                      :label="$t(advancedSearch.byIds[id].label)"
+                      :value="advancedSearch.byIds[id].value"
                       :items="getSelectItems(id)"
                       item-color="#E58124"
                       :menu-props="{
@@ -154,7 +161,7 @@
                         $emit('update:advancedSearch', {
                           value: $event,
                           id: id,
-                          type: getAdvancedSearch.byIds[id].type
+                          type: advancedSearch.byIds[id].type
                         })
                       "
                     >
@@ -163,7 +170,7 @@
                 </v-row>
               </v-list-item>
               <v-list-item
-                v-else-if="getAdvancedSearch.byIds[id].type === 'range'"
+                v-else-if="advancedSearch.byIds[id].type === 'range'"
                 dense
               >
                 <!--  RANGE  -->
@@ -173,15 +180,15 @@
                       <v-col cols="6" class="py-0 px-1">
                         <v-text-field
                           class="searchField"
-                          color="#B76315"
+                          color="grey darken-3"
                           :value="
-                            isNaN(getAdvancedSearch.byIds[id].value[0])
+                            isNaN(advancedSearch.byIds[id].value[0])
                               ? ''
-                              : getAdvancedSearch.byIds[id].value[0]
+                              : advancedSearch.byIds[id].value[0]
                           "
-                          :label="$t(getAdvancedSearch.byIds[id].label)"
+                          :label="$t(advancedSearch.byIds[id].label)"
                           :placeholder="
-                            $t(getAdvancedSearch.byIds[id].placeholders[0])
+                            $t(advancedSearch.byIds[id].placeholders[0])
                           "
                           hide-details
                           type="number"
@@ -189,10 +196,10 @@
                             $emit('update:advancedSearch', {
                               value: [
                                 isNaN($event) ? NaN : parseInt($event),
-                                getAdvancedSearch.byIds[id].value[1]
+                                advancedSearch.byIds[id].value[1]
                               ],
                               id: id,
-                              type: getAdvancedSearch.byIds[id].type
+                              type: advancedSearch.byIds[id].type
                             })
                           "
                         >
@@ -201,26 +208,26 @@
                       <v-col cols="6" class="py-0 px-1">
                         <v-text-field
                           class="searchField"
-                          color="#B76315"
+                          color="grey darken-3"
                           :value="
-                            isNaN(getAdvancedSearch.byIds[id].value[1])
+                            isNaN(advancedSearch.byIds[id].value[1])
                               ? ''
-                              : getAdvancedSearch.byIds[id].value[1]
+                              : advancedSearch.byIds[id].value[1]
                           "
                           hide-details
                           :placeholder="
-                            $t(getAdvancedSearch.byIds[id].placeholders[1])
+                            $t(advancedSearch.byIds[id].placeholders[1])
                           "
                           single-line
                           type="number"
                           @change="
                             $emit('update:advancedSearch', {
                               value: [
-                                getAdvancedSearch.byIds[id].value[0],
+                                advancedSearch.byIds[id].value[0],
                                 isNaN($event) ? NaN : parseInt($event)
                               ],
                               id: id,
-                              type: getAdvancedSearch.byIds[id].type
+                              type: advancedSearch.byIds[id].type
                             })
                           "
                         />
@@ -250,66 +257,50 @@ import SearchHelpDialog from "@/components/SearchHelpDialog";
 export default {
   name: "Search",
   components: { SearchHelpDialog, ShareButton, CitationSelect },
+  mixins: [urlMixin, queryMixin],
   props: {
     colSize: {
       type: Number,
       default: 6
     }
   },
-  watch: {
-    $route: {
-      handler(to, from) {
-        if (
-          to.name === "library" &&
-          to.params.id &&
-          from &&
-          from.name === "searchLibrary"
-        ) {
-          this.showAlert = true;
-        } else if (to.name === "library" && to.params.id) {
-          this.showAlert = true;
-        } else if (
-          from !== undefined &&
-          from.name === "library" &&
-          to.name === "reference"
-        ) {
-          this.showAlert = true;
-        } else if (
-          (to.name === "searchReference" || to.name === "searchLibrary") &&
-          from === undefined
-        ) {
-          this.showAlert = false;
-        } else if (
-          from &&
-          from.name === "library" &&
-          to.name === "searchLibrary"
-        ) {
-          this.showAlert = false;
-        } else {
-          this.showAlert = false;
-        }
-      },
-      immediate: true
-    }
-  },
+  data: () => ({
+    range: [1900, 2000],
+    date_start: false,
+    date_end: false,
+    calendarMenus: ["date_start", "date_end"],
+    referenceTypeValue: [],
+    showAdvancedSearch: false,
+    infoAlert: null,
+    filterCount: 2,
+    showAlert: false
+  }),
   computed: {
     ...mapState("references", ["facet", "result", "count"]),
+    search() {
+      return this.showAlert ? this.getLibraryReferenceSearch : this.getSearch;
+    },
+    advancedSearch() {
+      return this.showAlert
+        ? this.getLibraryReferenceAdvancedSearch
+        : this.getAdvancedSearch;
+    },
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
 
-      this.getAdvancedSearch.allIds.forEach(id => {
-        const obj = this.getAdvancedSearch.byIds[id];
+      this.advancedSearch.allIds.forEach(id => {
+        const obj = this.advancedSearch.byIds[id];
         if (obj.type === "text") {
-          if (this.getAdvancedSearch.byIds[id].value?.length > 0) {
+          if (this.advancedSearch.byIds[id].value?.length > 0) {
             count++;
           }
         } else if (obj.type === "select") {
-          if (this.getAdvancedSearch.byIds[id].value.length > 0) {
+          if (this.advancedSearch.byIds[id].value.length > 0) {
             count++;
           }
         } else if (obj.type === "range") {
-          const start = this.getAdvancedSearch.byIds[id].value[0];
-          const end = this.getAdvancedSearch.byIds[id].value[1];
+          const start = this.advancedSearch.byIds[id].value[0];
+          const end = this.advancedSearch.byIds[id].value[1];
 
           if (
             (typeof start === "number" && isFinite(start)) ||
@@ -377,18 +368,42 @@ export default {
       return languages;
     }
   },
-  data: () => ({
-    range: [1900, 2000],
-    date_start: false,
-    date_end: false,
-    calendarMenus: ["date_start", "date_end"],
-    referenceTypeValue: [],
-    showAdvancedSearch: false,
-    infoAlert: null,
-    filterCount: 2,
-    showAlert: false
-  }),
-  mixins: [urlMixin, queryMixin],
+  watch: {
+    $route: {
+      handler(to, from) {
+        if (
+          to.name === "library" &&
+          to.params.id &&
+          from &&
+          from.name === "searchLibrary"
+        ) {
+          this.showAlert = true;
+        } else if (to.name === "library" && to.params.id) {
+          this.showAlert = true;
+        } else if (
+          from !== undefined &&
+          from.name === "library" &&
+          to.name === "reference"
+        ) {
+          this.showAlert = true;
+        } else if (
+          (to.name === "searchReference" || to.name === "searchLibrary") &&
+          from === undefined
+        ) {
+          this.showAlert = false;
+        } else if (
+          from &&
+          from.name === "library" &&
+          to.name === "searchLibrary"
+        ) {
+          this.showAlert = false;
+        } else {
+          this.showAlert = false;
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     handleExitLibrary() {
@@ -414,8 +429,24 @@ export default {
   background-color: #f6eddf;
 }
 
+.searchLibrary {
+  background-color: #e8ecee;
+}
+
 .advancedSearch {
-  background-color: #e4c69b;
+  background-color: #e4c292;
+}
+
+.advancedSearchLibrary {
+  background-color: #95a8b1;
+}
+
+.advancedSearchContent {
+  background-color: #f7dab1;
+}
+
+.advancedSearchLibraryContent {
+  background-color: #a8bdc7;
 }
 
 .deleteSearch {

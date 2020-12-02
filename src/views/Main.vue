@@ -4,7 +4,6 @@
       <app-header
         class="d-print-none"
         v-on:update:showSearch="showSearch = !showSearch"
-        v-on:home="resetSearch"
       />
       <v-navigation-drawer
         id="searchDrawer"
@@ -44,10 +43,16 @@
                     "
                     elevation="4"
                     class="roundedBorder"
-                    color="#F3D3A5"
                   >
                     <router-view id="tabs" name="tabs" />
-                    <router-view />
+                    <router-view
+                      name="referenceViewer"
+                      style="background-color: #F3D3A5"
+                    />
+                    <router-view
+                      name="libraryViewer"
+                      style="background-color: #a5bac4"
+                    />
                   </v-card>
                   <router-view v-else />
                 </v-fade-transition>
@@ -84,6 +89,15 @@ export default {
     Search,
     AppHeader
   },
+  mixins: [queryMixin],
+  data() {
+    return {
+      showSearch: this.$vuetify.breakpoint.mdAndUp,
+      showAdvancedSearch: true,
+      isPrint: false,
+      printResult: []
+    };
+  },
   created() {
     window.onbeforeprint = () => {
       this.isPrint = true;
@@ -103,24 +117,6 @@ export default {
     window.onafterprint = () => {
       this.isPrint = false;
     };
-  },
-  mixins: [queryMixin],
-  data() {
-    return {
-      showSearch: this.$vuetify.breakpoint.mdAndUp,
-      showAdvancedSearch: true,
-      isPrint: false,
-      printResult: []
-    };
-  },
-  computed: {
-    getDateLocale() {
-      if (this.$i18n.locale === "ee") {
-        return "et-EE";
-      } else {
-        return "en-GB";
-      }
-    }
   },
   methods: {
     ...mapActions("search", [
@@ -155,7 +151,7 @@ export default {
 <style scoped>
 @media (min-width: 1904px) {
   .card {
-    max-width: 1264px !important;
+    max-width: 1400px !important;
   }
 }
 

@@ -38,10 +38,16 @@ const queryMixin = {
         return this.$store.state.libraryReferenceSearch.search;
       else return this.$store.state.search.search;
     },
+    getLibraryReferenceSearch() {
+      return this.$store.state.libraryReferenceSearch.search;
+    },
     getAdvancedSearch() {
       if (this.$route.name === "library")
         return this.$store.state.libraryReferenceSearch.advancedSearch;
       else return this.$store.state.search.advancedSearch;
+    },
+    getLibraryReferenceAdvancedSearch() {
+      return this.$store.state.libraryReferenceSearch.advancedSearch;
     },
     getPage() {
       if (this.$route.name === "library")

@@ -26,6 +26,9 @@ const actions = {
   resetSearch({ commit }, payload) {
     commit("RESET_SEARCH", payload);
   },
+  resetLibraryReferenceSearch({ commit }, payload) {
+    commit("RESET_LIBRARY_REFERENCE_SEARCH", payload);
+  },
   setSearchFromURL({ commit }, payload) {
     commit("SET_SEARCH_FROM_URL", payload);
   },

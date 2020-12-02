@@ -13,7 +13,7 @@
             <lang-buttons />
           </span>
 
-          <h1 class="white--text text-center title">
+          <h1 class="mt-2 white--text text-center title">
             {{ $t("title") }}
           </h1>
           <span

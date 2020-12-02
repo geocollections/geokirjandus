@@ -141,7 +141,8 @@
     "number": "Number",
     "dateAdded": "Date added",
     "pagesStart": "Start page",
-    "pagesEnd": "End page"
+    "pagesEnd": "End page",
+    "taxa": "Taxa"
   },
   "library": {
     "id": "ID",

@@ -140,8 +140,8 @@
     "number": "Number",
     "dateAdded": "Lisatud",
     "pagesStart": "Algus lehekülg",
-    "pagesEnd": "Lõpp lehekülg"
-
+    "pagesEnd": "Lõpp lehekülg",
+    "taxa": "Taksonid"
   },
   "library": {
     "id": "ID",

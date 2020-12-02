@@ -47,6 +47,14 @@ const INIT_STATE = {
         label: "reference.localities",
         fields: ["localities"]
       },
+      taxa: {
+        type: "text",
+        id: "taxa",
+        lookUpType: "equals",
+        value: null,
+        label: "reference.taxa",
+        fields: ["taxa"]
+      },
       book: {
         type: "text",
         id: "book",
@@ -130,6 +138,7 @@ const INIT_STATE = {
       "referenceType",
       "language",
       "localities",
+      "taxa",
       "isEstonianReference",
       "isEstonianAuthor"
     ]

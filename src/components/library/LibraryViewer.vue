@@ -1,52 +1,48 @@
 <template>
-  <v-container fluid class="py-0">
-    <v-row>
-      <v-col class="py-0 px-1 px-sm-2">
-        <data-viewer
-          :module="$route.meta.object"
-          :data="result"
-          :count="count"
-          :page="1"
-          :is-loading="isLoading"
-          :paginate-by="100"
-          :sort-by="sortBy"
-          :sort-desc="sortDesc"
-          :headers="libraryHeaders"
-          :title="
-            count !== 1
-              ? 'viewer.title.library_html'
-              : 'viewer.title.library_single_html'
-          "
-          :copy-button="false"
-          :helpers="false"
-          v-on:open="open"
-          v-on:update:paginateBy="updatePaginateBy"
-          v-on:update:page="updatePage"
-          v-on:update:sortBy="updateSortBy"
-          v-on:update:sortDesc="updateSortDesc"
-          v-on:update:headers="handleUpdateTableHeaders"
-        >
-          <!--  TABLE VIEW CUSTOM TEMPLATES  -->
-          <template v-slot:item.bookJournal="{ item }">
-            <div v-if="item.book">{{ item.book }}</div>
-            <div v-else-if="item.journal__journal_name">
-              {{ item.journal__journal_name }}
-            </div>
-          </template>
-          <template v-slot:item.date_changed="{ item }">
-            {{ formatDate(item.date_changed) }}
-          </template>
-          <template v-slot:item.date_added="{ item }">
-            {{ formatDate(item.date_added) }}
-          </template>
-          <!--  LIST VIEW TEMPLATE  -->
-          <template v-slot:list-view="{ data }">
-            <library-list-view :data="data"></library-list-view>
-          </template>
-        </data-viewer>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="px-1 px-sm-2">
+    <data-viewer
+      :module="$route.meta.object"
+      :data="result"
+      :count="count"
+      :page="1"
+      :is-loading="isLoading"
+      :paginate-by="100"
+      :sort-by="sortBy"
+      :sort-desc="sortDesc"
+      :headers="libraryHeaders"
+      :title="
+        count !== 1
+          ? 'viewer.title.library_html'
+          : 'viewer.title.library_single_html'
+      "
+      :copy-button="false"
+      :helpers="false"
+      v-on:open="open"
+      v-on:update:paginateBy="updatePaginateBy"
+      v-on:update:page="updatePage"
+      v-on:update:sortBy="updateSortBy"
+      v-on:update:sortDesc="updateSortDesc"
+      v-on:update:headers="handleUpdateTableHeaders"
+    >
+      <!--  TABLE VIEW CUSTOM TEMPLATES  -->
+      <template v-slot:item.bookJournal="{ item }">
+        <div v-if="item.book">{{ item.book }}</div>
+        <div v-else-if="item.journal__journal_name">
+          {{ item.journal__journal_name }}
+        </div>
+      </template>
+      <template v-slot:item.date_changed="{ item }">
+        {{ formatDate(item.date_changed) }}
+      </template>
+      <template v-slot:item.date_added="{ item }">
+        {{ formatDate(item.date_added) }}
+      </template>
+      <!--  LIST VIEW TEMPLATE  -->
+      <template v-slot:list-view="{ data }">
+        <library-list-view :data="data"></library-list-view>
+      </template>
+    </data-viewer>
+  </div>
 </template>
 
 <script>

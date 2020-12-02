@@ -7,7 +7,7 @@
         "
         class="d-flex flex-column header"
       >
-        <div class="elevation-4 header d-flex flex-column pb-5">
+        <v-col class="elevation-4 header d-flex flex-column pt-0 pb-5">
           <span class="d-flex justify-end mt-4 mb-2 mr-4">
             <links />
             <lang-buttons />
@@ -40,7 +40,7 @@
               >{{ $t("common.viewReferences") }}</v-btn
             >
           </span>
-        </div>
+        </v-col>
       </v-row>
       <v-row class="d-flex flex-column align-center justify-center main">
         <v-col cols="12" sm="11" lg="10">

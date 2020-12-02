@@ -27,7 +27,7 @@
         {{ $t("title2") }}
       </a>
     </v-toolbar-title>
-    <v-spacer></v-spacer>
+    <v-spacer />
     <tour v-if="$vuetify.breakpoint.smAndUp" />
     <links v-if="$vuetify.breakpoint.smAndUp" />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />

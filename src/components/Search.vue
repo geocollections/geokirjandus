@@ -17,9 +17,9 @@
                 {{ $t("alert.infoLibrarySearch") }}
               </v-col>
               <v-col class="shrink">
-                <v-btn x-small icon @click="handleExitLibrary()"
-                  ><v-icon>fa fa-times</v-icon></v-btn
-                >
+                <v-btn x-small icon @click="handleExitLibrary()">
+                  <v-icon>fa fa-times</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-alert>

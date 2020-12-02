@@ -66,11 +66,6 @@ export default {
   border-radius: 12px 12px 0 0;
 }
 
-.activeMobile {
-  background-color: #f3d3a5;
-  border-radius: 0 12px 12px 0;
-}
-
 .v-tab:hover::before {
   border-radius: 12px 12px 0 0;
 }
@@ -80,14 +75,26 @@ export default {
 
 @media (max-width: 600px) {
   .active {
-    background-color: #f3d3a5;
+    background-color: #ecc285;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .activeLibrary {
+    background-color: #95a8b1;
     border-radius: 0 12px 0 0;
   }
 
-  .v-tab:hover::before {
+  .active:hover::before {
+    border-radius: 12px 12px 0 0;
+  }
+  .active:focus::before {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .activeLibrary:hover::before {
     border-radius: 0 12px 0 0;
   }
-  .v-tab:focus::before {
+  .activeLibrary:focus::before {
     border-radius: 0 12px 0 0;
   }
 }

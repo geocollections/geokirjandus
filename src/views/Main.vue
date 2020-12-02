@@ -45,7 +45,14 @@
                     class="roundedBorder"
                   >
                     <router-view id="tabs" name="tabs" />
-                    <router-view style="background-color: #F3D3A5" />
+                    <router-view
+                      name="referenceViewer"
+                      style="background-color: #F3D3A5"
+                    />
+                    <router-view
+                      name="libraryViewer"
+                      style="background-color: #a5bac4"
+                    />
                   </v-card>
                   <router-view v-else />
                 </v-fade-transition>

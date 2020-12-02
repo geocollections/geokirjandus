@@ -3,7 +3,8 @@
     :vertical="$vuetify.breakpoint.xsOnly"
     grow
     background-color="#F6EDDF"
-    color="#924F11"
+    color="grey darken-3"
+    slider-size="0"
     ref="tabs"
   >
     <v-tab
@@ -14,7 +15,7 @@
       >{{ referenceTabTitle }}</v-tab
     >
     <v-tab
-      active-class="active"
+      active-class="activeLibrary"
       :ripple="false"
       link
       :to="{ name: 'searchLibrary' }"
@@ -57,7 +58,11 @@ export default {
 
 <style scoped>
 .active {
-  background-color: #f3d3a5;
+  background-color: #ecc285;
+  border-radius: 12px 12px 0 0;
+}
+.activeLibrary {
+  background-color: #95a8b1;
   border-radius: 12px 12px 0 0;
 }
 

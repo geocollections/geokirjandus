@@ -32,7 +32,7 @@ const routes = [
             path: "",
             name: "searchReference",
             components: {
-              default: ReferenceViewer,
+              referenceViewer: ReferenceViewer,
               tabs: Tabs
             },
             meta: {
@@ -61,7 +61,7 @@ const routes = [
           {
             path: "",
             name: "searchLibrary",
-            components: { default: LibraryViewer, tabs: Tabs },
+            components: { libraryViewer: LibraryViewer, tabs: Tabs },
             meta: {
               table: "library",
               heading: "editReference.heading",

@@ -1,5 +1,5 @@
 <template>
-  <div class="search fill-height ">
+  <div :class="`fill-height ${showAlert ? 'searchLibrary' : 'search'}`">
     <v-list class="mt-0 pb-4 pb-md-10 pa-0">
       <v-fade-transition>
         <v-list-item v-if="showAlert" class="pt-3 d-flex justify-end">
@@ -9,7 +9,7 @@
             colored-border
             border="right"
             type="info"
-            color="#CFC7B5"
+            color="#95A8B1"
             class="mb-0"
           >
             <v-row align="center">
@@ -78,9 +78,11 @@
       </v-list-item>
       <div id="advancedSearch">
         <v-list-group
-          color="#924f23"
+          color="grey darken-3"
           v-model="showAdvancedSearch"
-          class="advancedSearch mt-3"
+          :class="
+            `${showAlert ? 'advancedSearchLibrary' : 'advancedSearch'} mt-3`
+          "
         >
           <template v-slot:activator>
             <v-list-item-title id="advancedSearchActivator" class="d-flex">
@@ -100,7 +102,15 @@
               </v-col>
             </v-list-item-title>
           </template>
-          <div class="pb-3" style="background-color: #ecd9c0">
+          <div
+            :class="
+              `pb-3 ${
+                showAlert
+                  ? 'advancedSearchLibraryContent'
+                  : 'advancedSearchContent'
+              }`
+            "
+          >
             <div :key="index" v-for="(id, index) in advancedSearch.allIds">
               <!-- REGULAR SEARCH FIELD -->
               <v-list-item
@@ -111,7 +121,7 @@
                   <v-col cols="12" class="py-0 px-1">
                     <v-text-field
                       class="searchField"
-                      color="#B76315"
+                      color="grey darken-3"
                       :value="advancedSearch.byIds[id].value"
                       :label="$t(advancedSearch.byIds[id].label)"
                       hide-details
@@ -136,7 +146,7 @@
                     <v-select
                       class="searchField"
                       multiple
-                      color="#B76315"
+                      color="grey darken-3"
                       :label="$t(advancedSearch.byIds[id].label)"
                       :value="advancedSearch.byIds[id].value"
                       :items="getSelectItems(id)"
@@ -170,7 +180,7 @@
                       <v-col cols="6" class="py-0 px-1">
                         <v-text-field
                           class="searchField"
-                          color="#B76315"
+                          color="grey darken-3"
                           :value="
                             isNaN(advancedSearch.byIds[id].value[0])
                               ? ''
@@ -198,7 +208,7 @@
                       <v-col cols="6" class="py-0 px-1">
                         <v-text-field
                           class="searchField"
-                          color="#B76315"
+                          color="grey darken-3"
                           :value="
                             isNaN(advancedSearch.byIds[id].value[1])
                               ? ''
@@ -419,8 +429,24 @@ export default {
   background-color: #f6eddf;
 }
 
+.searchLibrary {
+  background-color: #e8ecee;
+}
+
 .advancedSearch {
-  background-color: #e4c69b;
+  background-color: #e4c292;
+}
+
+.advancedSearchLibrary {
+  background-color: #95a8b1;
+}
+
+.advancedSearchContent {
+  background-color: #f7dab1;
+}
+
+.advancedSearchLibraryContent {
+  background-color: #a8bdc7;
 }
 
 .deleteSearch {

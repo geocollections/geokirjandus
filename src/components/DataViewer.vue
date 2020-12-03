@@ -24,12 +24,12 @@
           dense
         >
           <v-radio
-            color="#E58124"
+            color="#fd8719"
             value="list"
             :label="$t('common.listView')"
           />
           <v-radio
-            color="#E58124"
+            color="#fd8719"
             value="table"
             :label="$t('common.tableView')"
           />

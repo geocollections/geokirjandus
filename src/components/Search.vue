@@ -64,7 +64,7 @@
             dense
             :label="$t(advancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
-            color="#E58124"
+            color="#fd8719"
             :false-value="null"
             true-value="1"
             hide-details

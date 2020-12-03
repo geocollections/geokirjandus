@@ -17,7 +17,7 @@
     <v-pagination
       class="pageSelect"
       :value="page"
-      color="#E58124"
+      color="#fd8719"
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"

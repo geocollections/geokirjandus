@@ -135,6 +135,14 @@ export default {
             library: this.$route.params.id
           })
         });
+      } else if (this.$route.name === "reference") {
+        resolve = this.$router.resolve({
+          name: "query",
+          query: {
+            reference: this.$route.params.id,
+            lang: this.$store.state.settings.language
+          }
+        });
       } else {
         resolve = this.$router.resolve({
           name: "query",

@@ -1,5 +1,5 @@
 <template>
-  <div id="dataViewer" class="data-viewer">
+  <div id="dataViewer" class="data-viewer pb-1">
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-sm-row justify-sm-space-between py-2 px-0"
     >

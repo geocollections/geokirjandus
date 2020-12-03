@@ -255,7 +255,7 @@
         <span v-for="(keyword, index) in parseKeywords" :key="index">
           <v-chip
             outlined
-            color="#F0B67F"
+            color="#fd8719"
             text-color="black"
             class="mr-1 mb-1"
             @click="handleKeyword(keyword)"
@@ -325,7 +325,7 @@
         <span class="py-3" v-for="(library, index) in libraries" :key="index">
           <v-chip
             outlined
-            color="#F0B67F"
+            color="#fd8719"
             text-color="black"
             class="mr-1 mb-1"
             @click="

@@ -56,7 +56,7 @@
           @change="setHeaders($event)"
         >
           <template v-slot:selection="{ item }">
-            <v-chip outlined small dense color="#E58124" text-color="black">
+            <v-chip outlined small dense color="#fd8719" text-color="black">
               {{ item.text }}
             </v-chip>
           </template>

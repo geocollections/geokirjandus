@@ -98,7 +98,7 @@
                 <small>
                   <b>{{ getAdvancedSearchParametersAppliedCount }}</b>
                 </small>
-                <v-icon small color="#E58124">fas fa-filter</v-icon>
+                <v-icon small color="#fd8719">fas fa-filter</v-icon>
               </v-col>
             </v-list-item-title>
           </template>
@@ -150,7 +150,7 @@
                       :label="$t(advancedSearch.byIds[id].label)"
                       :value="advancedSearch.byIds[id].value"
                       :items="getSelectItems(id)"
-                      item-color="#E58124"
+                      item-color="#fd8719"
                       :menu-props="{
                         bottom: true,
                         offsetY: true,

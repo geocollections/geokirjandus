@@ -4,7 +4,7 @@
     :items="templates"
     hide-details
     color="#B76315"
-    item-color="#E58124"
+    item-color="#fd8719"
     :menu-props="{ bottom: true, offsetY: true }"
     :label="$t('common.citationStyle')"
     @change="changeTemplate($event)"

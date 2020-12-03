@@ -473,10 +473,8 @@ export default {
       deep: true
     }
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getReference(vm.id);
-    });
+  created() {
+    this.getReference(this.$route.params.id);
   },
   beforeRouteUpdate(to, from, next) {
     this.getReference(to.params.id);

@@ -92,7 +92,9 @@
     "back": "Back",
     "tourSearch": "Search",
     "tourView": "View",
-    "virtualLibrary": "Virtual reference collection"
+    "virtualLibrary": "Virtual reference collection",
+    "showMore": "show more",
+    "showLess": "show less"
   },
   "reference": {
     "id": "ID",

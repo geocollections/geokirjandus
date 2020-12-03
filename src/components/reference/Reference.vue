@@ -206,11 +206,16 @@
           class="col-12 col-md-6 pa-0 px-md-4 pt-4 pt-md-0"
           v-if="reference.abstract || localities.length > 0"
         >
-          <div v-if="reference.abstract">
+          <div class="pb-3" v-if="reference.abstract">
             <h3 class="pb-3">
               <b>{{ $t("reference.abstract") }}</b>
             </h3>
-            <div v-html="reference.abstract"></div>
+
+            <read-more
+              v-if="localities.length > 0"
+              :html-str="reference.abstract"
+            />
+            <div v-else v-html="reference.abstract" />
           </div>
           <div v-if="localities.length > 0">
             <span class="d-flex">
@@ -396,9 +401,11 @@ import queryMixin from "@/mixins/queryMixin";
 import citationMixin from "@/mixins/citationMixin";
 
 import CopyButton from "@/components/CopyButton";
+import ReadMore from "@/components/ReadMore";
 export default {
   name: "Reference",
   components: {
+    ReadMore,
     CopyButton,
     ReferenceLinks,
     LeafletMap,

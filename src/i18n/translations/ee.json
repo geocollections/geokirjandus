@@ -91,7 +91,9 @@
     "back": "Tagasi",
     "tourSearch": "Otsing",
     "tourView": "Vaate",
-    "virtualLibrary": "Virtuaalne kirjanduse kogumik"
+    "virtualLibrary": "Virtuaalne kirjanduse kogumik",
+    "showMore": "kuva rohkem",
+    "showLess": "kuva vähem"
   },
   "reference": {
     "id": "ID",

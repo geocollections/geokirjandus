@@ -129,8 +129,7 @@ export default {
   methods: {
     setupLeafletMap() {
       const mapDiv = L.map(this.$refs["mapElement"], {
-        layers: [this.maps[0].leafletObject],
-        maxZoom: 12
+        layers: [this.maps[0].leafletObject]
       }).setView([0, 0], 1);
 
       let baseMaps = {};

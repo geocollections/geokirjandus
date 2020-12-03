@@ -434,7 +434,7 @@ export default {
 }
 
 .advancedSearch {
-  background-color: #e4c292;
+  background-color: #ecc285;
 }
 
 .advancedSearchLibrary {
@@ -442,11 +442,11 @@ export default {
 }
 
 .advancedSearchContent {
-  background-color: #f7dab1;
+  background-color: #f6eddf;
 }
 
 .advancedSearchLibraryContent {
-  background-color: #a8bdc7;
+  background-color: #e8ecee;
 }
 
 .deleteSearch {

@@ -65,7 +65,7 @@
       <v-card
         elevation="4"
         class="mx-2 my-3 mx-sm-3 roundedBorder"
-        color="#B9C5CB"
+        color="#a5bac4"
       >
         <reference-viewer />
       </v-card>

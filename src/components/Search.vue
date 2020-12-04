@@ -247,8 +247,6 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import CitationSelect from "@/components/CitationSelect";
-import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
-import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import ShareButton from "@/components/ShareButton";

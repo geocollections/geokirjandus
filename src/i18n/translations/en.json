@@ -152,7 +152,8 @@
     "year": "Year",
     "title": "Title",
     "dateChanged": "Date changed",
-    "dateAdded": "Date added"
+    "dateAdded": "Date added",
+    "countReferences": "References"
   },
   "link": {
     "geocollections": "Geocollections portal",

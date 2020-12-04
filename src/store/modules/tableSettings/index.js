@@ -275,6 +275,13 @@ const state = () => {
         class: "text-no-wrap"
       },
       {
+        text: "library.countReferences",
+        value: "count_references",
+        show: true,
+        fixed: false,
+        class: "text-no-wrap"
+      },
+      {
         text: "library.dateChanged",
         value: "date_changed",
         show: false,

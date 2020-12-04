@@ -479,6 +479,10 @@ export default {
     }
   },
   created() {
+    if (!this.$store.state.references.facet.facet_fields) {
+      this.getReferences();
+    }
+
     this.getReference(this.$route.params.id);
   },
   beforeRouteUpdate(to, from, next) {

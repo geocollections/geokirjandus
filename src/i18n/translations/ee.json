@@ -151,7 +151,8 @@
     "year": "Aasta",
     "title": "Pealkiri",
     "dateChanged": "Viimati muudetud",
-    "dateAdded": "Lisatud"
+    "dateAdded": "Lisatud",
+    "countReferences": "Kirjeid"
   },
   "link": {
     "geocollections": "Geokogude portaal",

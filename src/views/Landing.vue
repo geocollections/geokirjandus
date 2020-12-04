@@ -138,7 +138,7 @@ export default {
         event.key !== "Enter"
       )
         return;
-
+      this.resetSearch();
       this.updateSearch(this.searchStr);
       this.$router.push({
         name: "searchReference"

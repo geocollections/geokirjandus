@@ -68,7 +68,6 @@ export default {
   components: { Tour, Links, LangButtons },
   methods: {
     goToLanding() {
-      this.$store.dispatch("search/resetSearch");
       this.$router.replace({ name: "landing" }).catch(() => {});
     }
   }

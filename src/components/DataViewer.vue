@@ -1,5 +1,5 @@
 <template>
-  <div id="dataViewer" class="data-viewer">
+  <div id="dataViewer" class="data-viewer pb-1">
     <v-card-actions
       class="d-print-none d-flex flex-column justify-space-around flex-sm-row justify-sm-space-between py-2 px-0"
     >
@@ -24,12 +24,12 @@
           dense
         >
           <v-radio
-            color="#E58124"
+            color="#fd8719"
             value="list"
             :label="$t('common.listView')"
           />
           <v-radio
-            color="#E58124"
+            color="#fd8719"
             value="table"
             :label="$t('common.tableView')"
           />
@@ -56,7 +56,7 @@
           @change="setHeaders($event)"
         >
           <template v-slot:selection="{ item }">
-            <v-chip outlined small dense color="#E58124" text-color="black">
+            <v-chip outlined small dense color="#fd8719" text-color="black">
               {{ item.text }}
             </v-chip>
           </template>

@@ -7,7 +7,7 @@
         outlined
         tile
         aria-label="share"
-        color="#E58124"
+        color="#fd8719"
         class="mx-2 shareBtn"
         id="shareButton"
         v-bind="attrs"
@@ -36,9 +36,9 @@
       <v-card-text>
         <v-form>
           <v-radio-group class="pb-2" hide-details v-model="exportType" row>
-            <v-radio color="#E58124" value="csv" label="CSV" />
-            <v-radio color="#E58124" value="ris" label="RIS" />
-            <v-radio color="#E58124" value="bibtex" label="BibTeX" />
+            <v-radio color="#fd8719" value="csv" label="CSV" />
+            <v-radio color="#fd8719" value="ris" label="RIS" />
+            <v-radio color="#fd8719" value="bibtex" label="BibTeX" />
           </v-radio-group>
           <v-combobox
             v-if="$route.name !== 'reference'"
@@ -57,7 +57,7 @@
             :suffix="getFileSuffix"
             :label="$t('common.filename')"
           />
-          <v-btn class="mt-3" color="#E58124" dark @click="handleExport">{{
+          <v-btn class="mt-3" color="#fd8719" dark @click="handleExport">{{
             $t("common.export")
           }}</v-btn>
         </v-form>
@@ -135,6 +135,14 @@ export default {
             library: this.$route.params.id
           })
         });
+      } else if (this.$route.name === "reference") {
+        resolve = this.$router.resolve({
+          name: "query",
+          query: {
+            reference: this.$route.params.id,
+            lang: this.$store.state.settings.language
+          }
+        });
       } else {
         resolve = this.$router.resolve({
           name: "query",
@@ -145,7 +153,7 @@ export default {
         });
       }
 
-      return `https://geoloogia.info${resolve.href}`;
+      return `${window.location.protocol}//${window.location.hostname}:${window.location.port}${resolve.href}`;
     }
   },
   watch: {

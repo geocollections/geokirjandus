@@ -64,7 +64,7 @@
             dense
             :label="$t(advancedSearch.byIds[id].label)"
             class="checkbox mt-0 py-0"
-            color="#E58124"
+            color="#fd8719"
             :false-value="null"
             true-value="1"
             hide-details
@@ -98,7 +98,7 @@
                 <small>
                   <b>{{ getAdvancedSearchParametersAppliedCount }}</b>
                 </small>
-                <v-icon small color="#E58124">fas fa-filter</v-icon>
+                <v-icon small color="#fd8719">fas fa-filter</v-icon>
               </v-col>
             </v-list-item-title>
           </template>
@@ -150,7 +150,7 @@
                       :label="$t(advancedSearch.byIds[id].label)"
                       :value="advancedSearch.byIds[id].value"
                       :items="getSelectItems(id)"
-                      item-color="#E58124"
+                      item-color="#fd8719"
                       :menu-props="{
                         bottom: true,
                         offsetY: true,
@@ -247,8 +247,6 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import CitationSelect from "@/components/CitationSelect";
-import { fetchLibraries, fetchReferences } from "@/utils/apiCalls";
-import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import ShareButton from "@/components/ShareButton";
@@ -434,7 +432,7 @@ export default {
 }
 
 .advancedSearch {
-  background-color: #e4c292;
+  background-color: #ecc285;
 }
 
 .advancedSearchLibrary {
@@ -442,11 +440,11 @@ export default {
 }
 
 .advancedSearchContent {
-  background-color: #f7dab1;
+  background-color: #f6eddf;
 }
 
 .advancedSearchLibraryContent {
-  background-color: #a8bdc7;
+  background-color: #e8ecee;
 }
 
 .deleteSearch {

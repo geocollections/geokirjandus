@@ -1,6 +1,6 @@
 <template>
   <v-card class="roundedBorder libraryTitle" v-if="library">
-    <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
+    <v-card-title class="pt-1 pb-1 pr-1 d-flex text-center libraryTitle">
       <v-col cols="auto" class="py-0 px-0">
         <v-btn large icon @click="handleBack()" aria-label="back">
           <v-icon>fas fa-arrow-left</v-icon>
@@ -18,6 +18,11 @@
           {{ library.year }}
         </h6>
       </div>
+      <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
+        <v-btn @click="exit" class="exitButton" icon>
+          <v-icon>fas fa-times</v-icon>
+        </v-btn>
+      </v-col>
     </v-card-title>
     <div class="body elevation-4">
       <v-card-actions
@@ -65,7 +70,7 @@
       <v-card
         elevation="4"
         class="mx-2 my-3 mx-sm-3 roundedBorder"
-        color="#B9C5CB"
+        color="#a5bac4"
       >
         <reference-viewer />
       </v-card>
@@ -118,40 +123,41 @@ export default {
       error: false
     };
   },
+  created() {
+    this.getLibrary().then(res => {
+      this.library = res.results[0];
+
+      if (this.library === undefined) {
+        this.error = true;
+      }
+    });
+    this.$store.dispatch(`libraryReferenceSearch/resetPage`);
+    this.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
+      "author",
+      "year"
+    ]);
+    this.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
+      false,
+      false
+    ]);
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (from.name === "searchLibrary")
         vm.$store.dispatch(
           `libraryReferenceSearch/resetLibraryReferenceSearch`
         );
-      vm.getLibrary().then(res => {
-        vm.library = res.results[0];
-
-        if (vm.library === undefined) {
-          vm.error = true;
-        }
-      });
-      vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
-      vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
-        "author",
-        "year"
-      ]);
-      vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
-        false,
-        false
-      ]);
     });
   },
   methods: {
+    exit() {
+      this.$router.replace({ name: "searchLibrary" }).catch(() => {});
+    },
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
     },
     handleBack() {
-      if (window.history.state === null) {
-        this.$router.replace({ name: "searchLibrary" });
-      } else {
-        this.$router.back();
-      }
+      this.$router.back();
     }
   }
 };
@@ -173,5 +179,9 @@ export default {
 .body {
   border-radius: 12px;
   background-color: white;
+}
+
+.exitButton:hover {
+  color: #f44336;
 }
 </style>

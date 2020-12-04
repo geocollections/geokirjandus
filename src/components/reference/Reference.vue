@@ -1,6 +1,6 @@
 <template>
   <v-card class="roundedBorder referenceTitle" v-if="reference">
-    <v-card-title class="pt-1 pb-1 d-flex text-center referenceTitle">
+    <v-card-title class="pt-1 pb-1 pr-1 d-flex text-center referenceTitle">
       <v-col cols="auto" class="py-0 px-0">
         <v-btn large icon @click="handleBack()" aria-label="back">
           <v-icon>fas fa-arrow-left</v-icon>
@@ -9,6 +9,11 @@
       <div class="col titleText">
         {{ `${reference.reference}: ${reference.title}` }}
       </div>
+      <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
+        <v-btn @click="exit" class="exitButton" icon>
+          <v-icon>fas fa-times</v-icon>
+        </v-btn>
+      </v-col>
     </v-card-title>
     <div class="body elevation-4">
       <v-card-actions class=" pt-3">
@@ -484,12 +489,11 @@ export default {
   },
   methods: {
     ...mapActions("search", ["updateAdvancedSearch"]),
+    exit() {
+      this.$router.replace({ name: "searchReference" }).catch(() => {});
+    },
     handleBack() {
-      if (window.history.state === null) {
-        this.$router.push({ name: "searchReference" });
-      } else {
-        this.$router.back();
-      }
+      this.$router.back();
     },
     handleKeyword(keyword) {
       this.updateAdvancedSearch({
@@ -600,5 +604,9 @@ export default {
 .body {
   border-radius: 12px;
   background-color: white;
+}
+
+.exitButton:hover {
+  color: #f44336;
 }
 </style>

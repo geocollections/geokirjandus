@@ -1,6 +1,6 @@
 <template>
   <v-card class="roundedBorder libraryTitle" v-if="library">
-    <v-card-title class="pt-1 pb-1 d-flex text-center libraryTitle">
+    <v-card-title class="pt-1 pb-1 pr-1 d-flex text-center libraryTitle">
       <v-col cols="auto" class="py-0 px-0">
         <v-btn large icon @click="handleBack()" aria-label="back">
           <v-icon>fas fa-arrow-left</v-icon>
@@ -18,6 +18,11 @@
           {{ library.year }}
         </h6>
       </div>
+      <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
+        <v-btn @click="exit" class="exitButton" icon>
+          <v-icon>fas fa-times</v-icon>
+        </v-btn>
+      </v-col>
     </v-card-title>
     <div class="body elevation-4">
       <v-card-actions
@@ -145,15 +150,14 @@ export default {
     });
   },
   methods: {
+    exit() {
+      this.$router.replace({ name: "searchLibrary" }).catch(() => {});
+    },
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
     },
     handleBack() {
-      if (window.history.state === null) {
-        this.$router.replace({ name: "searchLibrary" });
-      } else {
-        this.$router.back();
-      }
+      this.$router.back();
     }
   }
 };
@@ -175,5 +179,9 @@ export default {
 .body {
   border-radius: 12px;
   background-color: white;
+}
+
+.exitButton:hover {
+  color: #f44336;
 }
 </style>

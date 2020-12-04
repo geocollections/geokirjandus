@@ -153,7 +153,7 @@ export default {
         });
       }
 
-      return `https://geoloogia.info${resolve.href}`;
+      return `${window.location.protocol}//${window.location.hostname}:${window.location.port}${resolve.href}`;
     }
   },
   watch: {

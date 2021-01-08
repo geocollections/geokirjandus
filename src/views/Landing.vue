@@ -7,7 +7,7 @@
           background-image: linear-gradient(to top, rgba(229, 129, 36, 0.4), rgba(0, 0, 0, 0.40)),url('${require('@/assets/books4.jpg')}');
           `
         "
-        class="d-flex flex-column header"
+        class="header"
       >
         <v-col class="elevation-4 header d-flex flex-column pt-0 pb-5">
           <span class="d-flex justify-end mt-4 mb-2 mr-4">

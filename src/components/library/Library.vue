@@ -123,6 +123,18 @@ export default {
       error: false
     };
   },
+  metaInfo() {
+    return {
+      title: this.library?.title,
+      meta: [
+        {
+          property: "og:title",
+          vmid: "og:title",
+          content: this.library?.title
+        }
+      ]
+    };
+  },
   created() {
     this.getLibrary().then(res => {
       this.library = res.results[0];

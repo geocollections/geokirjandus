@@ -5,6 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueIziToast from "vue-izitoast";
 import VueShepherd from "vue-shepherd";
+import Meta from "vue-meta";
 
 import i18n from "./i18n";
 import "izitoast/dist/css/iziToast.min.css";
@@ -16,6 +17,7 @@ import cslJson from "@/plugins/cslJson";
 Vue.use(VueIziToast);
 Vue.use(VueShepherd);
 Vue.use(cslJson);
+Vue.use(Meta);
 
 Vue.config.productionTip = false;
 

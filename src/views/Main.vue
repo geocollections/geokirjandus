@@ -98,6 +98,9 @@ export default {
       printResult: []
     };
   },
+  metaInfo: {
+    title: "Otsing"
+  },
   created() {
     window.onbeforeprint = () => {
       this.isPrint = true;

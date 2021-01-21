@@ -431,6 +431,22 @@ export default {
       childReferences: null
     };
   },
+  metaInfo() {
+    return {
+      title: this.reference?.title,
+      meta: [
+        {
+          property: "og:title",
+          vmid: "og:title",
+          content: this.reference?.title
+        },
+        {
+          property: "keywords",
+          content: this.reference?.keywords
+        }
+      ]
+    };
+  },
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
     parseLocalities() {

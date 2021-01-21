@@ -118,6 +118,9 @@ export default {
       statisticsData: null
     };
   },
+  metaInfo: {
+    title: "Avaleht"
+  },
   created() {
     this.getReferences();
     this.getIntroduction();

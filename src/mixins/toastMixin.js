@@ -1,7 +1,6 @@
 // import { mapActions, mapState } from "vuex";
 
 const toastMixin = {
-
   methods: {
     toastSuccess(data) {
       if (!data.timeout) data.timeout = 5000;

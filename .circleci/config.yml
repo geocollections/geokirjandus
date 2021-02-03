@@ -17,38 +17,6 @@ executors:
       - image: circleci/buildpack-deps:stretch
 
 jobs:
-  checkout_code:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
-    steps:
-      - checkout
-      - save_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/geocollections/geokirjandus
-
-  bundle_dependencies:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
-    steps:
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Npm disabling progress bar and adding depth 0
-          command: npm set progress=false && npm config set depth 0
-      - run:
-          name: Installing packages
-          command: npm install
-      - save_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ./node_modules
-            - ./package-lock.json
-
   build_docker_image:
     executor: docker-publisher
     steps:
@@ -127,16 +95,6 @@ workflows:
   build:
     jobs:
       - build_docker_image
-      - checkout_code:
-          filters:
-            branches:
-              only: development
-      - bundle_dependencies:
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              only: development
       - publish_docker_image:
           requires:
             - build_docker_image

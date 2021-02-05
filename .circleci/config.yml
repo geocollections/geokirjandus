@@ -1,121 +1,112 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# Version number for caching (needs updating after dependency install/update/change etc.)
+orbs:
+  node: circleci/node@4.1.0
+
 parameters:
   package-version:
     type: string
-    default: "v1.1.0"
+    default: "1.2.3"
+
+executors:
+  docker-publisher:
+    environment:
+      IMAGE_NAME: geocollections/geokirjandus
+      IMAGE_NAME_DEV: geocollections/geokirjandus-dev
+    docker:
+      - image: circleci/buildpack-deps:stretch
 
 jobs:
-  checkout_code:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
+  build_docker_image:
+    executor: docker-publisher
     steps:
       - checkout
-      - save_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - setup_remote_docker
+      - when:
+          condition:
+            equal: [ "master", << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Build Docker image
+                command: |
+                  docker build -t $IMAGE_NAME:<< pipeline.parameters.package-version >> -t $IMAGE_NAME:latest .
+            - run:
+                name: Archive Docker image
+                command: docker save -o image.tar $IMAGE_NAME
+      - when:
+          condition:
+            equal: [ "development", << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Build Docker dev image
+                command: |
+                  docker build -t $IMAGE_NAME_DEV:<< pipeline.parameters.package-version >> -t $IMAGE_NAME_DEV:latest .
+            - run:
+                name: Archive Docker dev image
+                command: docker save -o image.tar $IMAGE_NAME_DEV
+      - persist_to_workspace:
+          root: .
           paths:
-            - ~/geocollections/geokirjandus
+            - ./image.tar
 
-  bundle_dependencies:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
+  publish_docker_image:
+    executor: docker-publisher
     steps:
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
       - run:
-          name: Npm disabling progress bar and adding depth 0
-          command: npm set progress=false && npm config set depth 0
-      - run:
-          name: Installing packages
-          command: npm install
-      - save_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ./node_modules
-            - ./package-lock.json
+          name: Load archive Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - when:
+          condition:
+            equal: [ "master", << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Publish Docker image to Docker Hub
+                command: |
+                  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                  docker push $IMAGE_NAME
+      - when:
+          condition:
+            equal: [ "development", << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Publish Docker dev image to Docker Hub
+                command: |
+                  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                  docker push $IMAGE_NAME_DEV
 
-  build_dependencies:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
+  run_docker_image:
+    executor: docker-publisher
     steps:
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Building application
-          command: npm run build
-      - save_cache:
-          key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/geocollections/geokirjandus
+          name: Run Docker image
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/script && . run_docker_image.sh"
 
-  deploy_to_dev:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
+  run_docker_image_dev:
+    executor: docker-publisher
     steps:
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Directory update
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geokirjandus/script && . directory_update.sh'
-      - run:
-          name: Copying built files to production
-          command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geokirjandus
-
-  deploy_to_prod:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/geocollections/geokirjandus
-    steps:
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-bundle-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          key: << pipeline.parameters.package-version >>-build-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Removing current production files
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_1} 'cd /var/www/geoloogia && rm -rf css/ fonts/ img/ js/ favicon.ico index.html'
-      - run:
-          name: Copying built files to production
-          command: scp -P ${PORT} -r dist/* ${USER}@${ADDRESS_1}:/var/www/geoloogia
+          name: Run Docker image
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus-dev/script && . run_docker_image.sh"
 
 workflows:
-  version: 2
-  build-and-deploy:
+  build:
     jobs:
-      - checkout_code
-      - bundle_dependencies:
+      - build_docker_image
+      - publish_docker_image:
           requires:
-            - checkout_code
-      - build_dependencies:
+            - build_docker_image
+      - run_docker_image:
           requires:
-            - bundle_dependencies
-          filters:
-            branches:
-              only: [development, master]
-      - deploy_to_dev:
-          requires:
-            - build_dependencies
-          filters:
-            branches:
-              only: development
-      - deploy_to_prod:
-          requires:
-            - build_dependencies
+            - publish_docker_image
           filters:
             branches:
               only: master
+      - run_docker_image_dev:
+          requires:
+            - publish_docker_image
+          filters:
+            branches:
+              only: development

@@ -104,6 +104,9 @@ function buildQueryStr(queryObject, filterQueryObject) {
               if (searchParameter.id === "keywords") {
                 return `*${str.trim()}*`;
               }
+              if (searchParameter.id === "volumeAndNumber") {
+                return `"${str.trim()}"`;
+              }
               return `"*${str.trim()}*"`;
             });
 

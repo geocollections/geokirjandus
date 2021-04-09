@@ -86,7 +86,16 @@ const mutations = {
   UPDATE_ADVANCED_SEARCH(state, payload) {
     switch (payload.type) {
       case "range":
-        state.advancedSearch.byIds[payload.id].value = payload.value;
+        if (
+          payload.value[1] === null ||
+          isNaN(payload.value[1]) ||
+          payload.value[0] > payload.value[1]
+        ) {
+          state.advancedSearch.byIds[payload.id].value = [
+            payload.value[0],
+            payload.value[0]
+          ];
+        } else state.advancedSearch.byIds[payload.id].value = payload.value;
         break;
       case "checkbox":
         state.advancedSearch.byIds[payload.id].value = payload.value;

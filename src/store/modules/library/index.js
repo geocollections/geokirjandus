@@ -3,7 +3,8 @@ import mutations from "@/store/modules/library/mutations";
 
 const state = {
   count: 0,
-  facet: {}
+  facet: {},
+  currentLibrary: null
 };
 
 export default {

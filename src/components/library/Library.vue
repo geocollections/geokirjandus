@@ -120,7 +120,7 @@ export default {
       id: this.$route.params.id,
       library: null,
       isLoading: true,
-      error: false
+      error: false,
     };
   },
   metaInfo() {
@@ -130,35 +130,41 @@ export default {
         {
           property: "og:title",
           vmid: "og:title",
-          content: this.library?.title
-        }
-      ]
+          content: this.library?.title,
+        },
+      ],
     };
   },
   created() {
-    this.getLibrary().then(res => {
+    this.getLibrary().then((res) => {
       this.library = res.results[0];
 
       if (this.library === undefined) {
         this.error = true;
       }
     });
-    this.$store.dispatch(`libraryReferenceSearch/resetPage`);
-    this.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
-      "author",
-      "year"
-    ]);
-    this.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
-      false,
-      false
-    ]);
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       if (from.name === "searchLibrary")
         vm.$store.dispatch(
           `libraryReferenceSearch/resetLibraryReferenceSearch`
         );
+      const currentLibrary = vm.$store.state.library.currentLibrary;
+
+      if (to.params.id !== currentLibrary) {
+        vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
+        vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
+          "author",
+          "year",
+        ]);
+        vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
+          false,
+          false,
+        ]);
+
+        vm.$store.dispatch("library/setCurrentLibrary", to.params.id);
+      }
     });
   },
   methods: {
@@ -170,8 +176,8 @@ export default {
     },
     handleBack() {
       this.$router.back();
-    }
-  }
+    },
+  },
 };
 </script>
 

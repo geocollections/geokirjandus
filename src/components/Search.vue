@@ -129,7 +129,7 @@
                         $emit('update:advancedSearch', {
                           value: $event,
                           id: id,
-                          type: advancedSearch.byIds[id].type
+                          type: advancedSearch.byIds[id].type,
                         })
                       "
                     ></v-text-field>
@@ -154,14 +154,14 @@
                       :menu-props="{
                         bottom: true,
                         offsetY: true,
-                        offsetOverflow: true
+                        offsetOverflow: true,
                       }"
                       hide-details
                       @change="
                         $emit('update:advancedSearch', {
                           value: $event,
                           id: id,
-                          type: advancedSearch.byIds[id].type
+                          type: advancedSearch.byIds[id].type,
                         })
                       "
                     >
@@ -196,10 +196,10 @@
                             $emit('update:advancedSearch', {
                               value: [
                                 isNaN($event) ? NaN : parseInt($event),
-                                advancedSearch.byIds[id].value[1]
+                                advancedSearch.byIds[id].value[1],
                               ],
                               id: id,
-                              type: advancedSearch.byIds[id].type
+                              type: advancedSearch.byIds[id].type,
                             })
                           "
                         >
@@ -224,10 +224,10 @@
                             $emit('update:advancedSearch', {
                               value: [
                                 advancedSearch.byIds[id].value[0],
-                                isNaN($event) ? NaN : parseInt($event)
+                                isNaN($event) ? NaN : parseInt($event),
                               ],
                               id: id,
-                              type: advancedSearch.byIds[id].type
+                              type: advancedSearch.byIds[id].type,
                             })
                           "
                         />
@@ -259,8 +259,8 @@ export default {
   props: {
     colSize: {
       type: Number,
-      default: 6
-    }
+      default: 6,
+    },
   },
   data: () => ({
     range: [1900, 2000],
@@ -268,10 +268,10 @@ export default {
     date_end: false,
     calendarMenus: ["date_start", "date_end"],
     referenceTypeValue: [],
-    showAdvancedSearch: false,
+    showAdvancedSearch: true,
     infoAlert: null,
     filterCount: 2,
-    showAlert: false
+    showAlert: false,
   }),
   computed: {
     ...mapState("references", ["facet", "result", "count"]),
@@ -286,7 +286,7 @@ export default {
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
 
-      this.advancedSearch.allIds.forEach(id => {
+      this.advancedSearch.allIds.forEach((id) => {
         const obj = this.advancedSearch.byIds[id];
         if (obj.type === "text") {
           if (this.advancedSearch.byIds[id].value?.length > 0) {
@@ -325,13 +325,13 @@ export default {
             this.$i18n.locale === "ee"
               ? this.facet.facet_pivot[
                   "type,reference_type,reference_type_en"
-                ].find(o => o.value === this.facet.facet_fields.type[i])
+                ].find((o) => o.value === this.facet.facet_fields.type[i])
                   .pivot[0].value
               : this.facet.facet_pivot[
                   "type,reference_type,reference_type_en"
-                ].find(o => o.value === this.facet.facet_fields.type[i])
+                ].find((o) => o.value === this.facet.facet_fields.type[i])
                   .pivot[0].pivot[0].value
-          } [${this.facet.facet_fields.type[i + 1]}]`
+          } [${this.facet.facet_fields.type[i + 1]}]`,
         });
       }
 
@@ -351,20 +351,20 @@ export default {
               ? this.facet.facet_pivot[
                   "language,reference_language,reference_language_en"
                 ].find(
-                  o =>
+                  (o) =>
                     o.value.toString() === this.facet.facet_fields.language[i]
                 ).pivot[0].value
               : this.facet.facet_pivot[
                   "language,reference_language,reference_language_en"
                 ].find(
-                  o =>
+                  (o) =>
                     o.value.toString() === this.facet.facet_fields.language[i]
                 ).pivot[0].pivot[0].value
-          } [${this.facet.facet_fields.language[i + 1]}]`
+          } [${this.facet.facet_fields.language[i + 1]}]`,
         });
       }
       return languages;
-    }
+    },
   },
   watch: {
     $route: {
@@ -399,8 +399,8 @@ export default {
           this.showAlert = false;
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
@@ -410,15 +410,15 @@ export default {
     updateCheckbox(event, id) {
       this.$emit("update:advancedSearch", {
         value: event,
-        id: id
+        id: id,
       });
     },
     getSelectItems(id) {
       if (id === "referenceType") return this.getReferenceTypes;
       else if (id === "language") return this.getReferenceLanguages;
       return [];
-    }
-  }
+    },
+  },
 };
 </script>
 

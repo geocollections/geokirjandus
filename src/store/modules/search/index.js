@@ -124,6 +124,14 @@ const INIT_STATE = {
         value: null,
         label: "reference.publisher",
         fields: ["publisher"]
+      },
+      volumeAndNumber: {
+        type: "text",
+        id: "volumeAndNumber",
+        lookUpType: "equals",
+        value: null,
+        label: "reference.volumeAndNumber",
+        fields: ["volume", "number"]
       }
     },
     allIds: [
@@ -135,6 +143,7 @@ const INIT_STATE = {
       "abstract",
       "keywords",
       "publisher",
+      "volumeAndNumber",
       "referenceType",
       "language",
       "localities",

@@ -27,7 +27,7 @@ const state = () => {
       },
       {
         text: "reference.title",
-        value: "title",
+        value: "title_s",
         show: true,
         fixed: false,
         class: "text-no-wrap"

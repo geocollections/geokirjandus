@@ -18,8 +18,12 @@ const parseNames = namesStr => {
 };
 
 export default {
-  install: (Vue, options) => {
+  install: (Vue, ...options) => {
     Vue.prototype.$getWebpageCsl = data => {
+      const title =
+        (i18n.locale === "en"
+          ? data.title_short_en ?? data.title_en
+          : data.title_short ?? data.title) ?? data.title;
       return {
         id: data.id,
         type: "webpage",
@@ -30,7 +34,7 @@ export default {
           }
         ],
         publisher: i18n.t("common.libraryPublisher"),
-        title: data.title,
+        title: title,
         URL: `https://geoloogia.info/library/${data.id}`
       };
     };

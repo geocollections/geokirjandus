@@ -11,7 +11,7 @@ import library from "./modules/library";
 import tableSettings from "./modules/tableSettings";
 
 Vue.use(Vuex);
-const version = "1.1";
+const version = "1.1.1";
 
 const vuexLocal = new VuexPersistence({
   key: `geoloogia.geokirjandus.${version}`,

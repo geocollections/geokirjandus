@@ -13,6 +13,7 @@ const citationMixin = {
     return {
       templates: [
         { text: "APA 7", value: "apa" },
+        { text: "Harvard", value: "harvard1" },
         { text: "Sedimentology", value: "sedimentology" },
         { text: "Geological magazine", value: "geol-mag" },
         { text: "Holocene", value: "holocene" },

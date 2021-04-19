@@ -33,7 +33,7 @@
         <div class="fill-height d-flex flex-wrap align-content-space-between">
           <v-container fluid>
             <v-row class="d-flex justify-center">
-              <v-col class="card py-0 px-2 px-sm-3">
+              <v-col class="card px-2 px-sm-3">
                 <v-fade-transition :hide-on-leave="true">
                   <v-card
                     id="view"

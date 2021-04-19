@@ -1,6 +1,6 @@
 <template>
   <div class="main fill-height d-flex flex-wrap align-content-space-between">
-    <v-container fluid class="landing py-0">
+    <v-container fluid class="landing">
       <v-row
         :style="
           `

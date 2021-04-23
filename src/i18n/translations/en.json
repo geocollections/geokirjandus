@@ -21,7 +21,9 @@
   "error": {
     "referenceId": "Could not find reference. ID: {text}",
     "libraryId": "Could not find library. ID: {text}",
-    "nothingFound": "No records found"
+    "nothingFound": "No records found",
+    "nothingFoundReference": "No references found",
+    "nothingFoundLibrary": "No libraries found"
   },
   "tabs": {
     "references": "References",

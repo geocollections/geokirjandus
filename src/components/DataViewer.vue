@@ -48,7 +48,7 @@
           :menu-props="{
             bottom: true,
             offsetY: true,
-            offsetOverflow: true
+            offsetOverflow: true,
           }"
           :label="$t('common.fields')"
           hide-details
@@ -79,7 +79,7 @@
           v-if="!isLoading && count <= 0"
           class="text-center"
         >
-          <h3>{{ $t("error.nothingFound") }}</h3>
+          <h3>{{ nothingFound }}</h3>
         </v-card-text>
         <v-card-text key="loading" v-if="isLoading" class="text-center">
           <v-progress-circular indeterminate :size="50"></v-progress-circular>
@@ -140,87 +140,93 @@ import CopyButton from "./CopyButton";
 import ListView from "@/components/ListView";
 import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
-
+import i18n from "vue-i18n";
 export default {
   name: "DataViewer",
   components: { ViewHelper, ListView, CopyButton },
   props: {
     data: {
-      type: Array[Object]
+      type: Array[Object],
     },
     count: {
       type: Number,
-      default: 0
+      default: 0,
     },
     module: {
       type: String,
-      default: null
+      default: null,
     },
     copyButton: {
       type: Boolean,
-      default: true
+      default: true,
     },
     sortBy: {
       type: Array[String],
-      default: ["id"]
+      default: ["id"],
     },
     sortDesc: {
       type: Array[String],
-      default: [false]
+      default: [false],
     },
     isLoading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     headers: {
-      type: Array[Object]
+      type: Array[Object],
     },
     page: {
-      type: Number
+      type: Number,
     },
     paginateBy: {
-      type: Number
+      type: Number,
     },
     title: {
-      type: String
+      type: String,
     },
     helpers: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
+    nothingFound: {
+      type: String,
+      default: function() {
+        return this.$t("error.nothingFound");
+      },
+    },
   },
   data() {
     return {
       headerProps: {
-        sortByText: this.$t("common.sortBy")
-      }
+        sortByText: this.$t("common.sortBy"),
+      },
     };
   },
   computed: {
     ...mapState("settings", ["view"]),
     getHeadersTranslated() {
-      return this.headers.map(item => {
+      return this.headers.map((item) => {
         return {
           ...item,
-          text: this.$t(item.text)
+          text: this.$t(item.text),
         };
       });
     },
     getHeaderOptions() {
       return this.getHeadersTranslated
-        .filter(header => {
+        .filter((header) => {
           return !header.fixed;
         })
-        .map(header => {
+        .map((header) => {
           return {
             value: header.value,
             text: header.text,
-            disabled: this.sortBy.includes(header.value)
+            disabled: this.sortBy.includes(header.value),
           };
         });
     },
     getHeadersShowing() {
-      return this.getHeadersTranslated.filter(header => {
+      return this.getHeadersTranslated.filter((header) => {
         return header.show;
       });
     },
@@ -229,19 +235,19 @@ export default {
     },
     getSortDesc() {
       return this.sortDesc;
-    }
+    },
   },
   methods: {
     ...mapActions("settings", ["updateView"]),
     setHeaders(event) {
-      const headers = this.headers.map(header => {
+      const headers = this.headers.map((header) => {
         if (event.includes(header.value)) return { ...header, show: true };
         return { ...header, show: false };
       });
 
       this.$emit("update:headers", headers);
-    }
-  }
+    },
+  },
 };
 </script>
 

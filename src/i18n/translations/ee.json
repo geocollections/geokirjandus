@@ -20,7 +20,9 @@
   "error": {
     "referenceId": "Ei leidnud kirjandust. ID: {text}",
     "libraryId": "Ei leidnud kogumikku. ID: {text}",
-    "nothingFound": "Ei leidnud otsingule vastavaid kirjeid"
+    "nothingFound": "Ei leidnud otsingule vastavaid kirjeid",
+    "nothingFoundReference": "Ei leidnud otsingule vastavat kirjandust",
+    "nothingFoundLibrary": "Ei leidnud otsingule vastavaid kogumikke"
   },
   "tabs": {
     "references": "Kirjandus",

@@ -1,7 +1,7 @@
 <template>
   <v-card class="roundedBorder libraryTitle" v-if="library">
     <v-card-title class="pt-1 pb-1 pr-1 d-flex text-center libraryTitle">
-      <v-col cols="auto" class="py-0 px-0">
+      <v-col cols="auto" class="px-0">
         <v-btn large icon @click="handleBack()" aria-label="back">
           <v-icon>fas fa-arrow-left</v-icon>
         </v-btn>

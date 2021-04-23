@@ -13,7 +13,7 @@
             class="mb-0"
           >
             <v-row align="center">
-              <v-col class="grow py-0">
+              <v-col class="grow">
                 {{ $t("alert.infoLibrarySearch") }}
               </v-col>
               <v-col class="shrink">
@@ -118,7 +118,7 @@
                 dense
               >
                 <v-row class="pa-1">
-                  <v-col cols="12" class="py-0 px-1">
+                  <v-col cols="12" class="px-1">
                     <v-text-field
                       class="searchField"
                       color="grey darken-3"
@@ -141,8 +141,8 @@
                 v-else-if="advancedSearch.byIds[id].type === 'select'"
               >
                 <!--  SELECT  -->
-                <v-row class="">
-                  <div class="col py-1">
+                <v-row class="pa-1">
+                  <div class="col px-2">
                     <v-select
                       class="searchField"
                       multiple
@@ -175,9 +175,9 @@
               >
                 <!--  RANGE  -->
                 <v-row class="pa-1">
-                  <div class="col py-0">
+                  <div class="col">
                     <v-row>
-                      <v-col cols="6" class="py-0 px-1">
+                      <v-col cols="6" class="px-1">
                         <v-text-field
                           class="searchField"
                           color="grey darken-3"
@@ -205,7 +205,7 @@
                         >
                         </v-text-field>
                       </v-col>
-                      <v-col cols="6" class="py-0 px-1">
+                      <v-col cols="6" class="px-1">
                         <v-text-field
                           class="searchField"
                           color="grey darken-3"

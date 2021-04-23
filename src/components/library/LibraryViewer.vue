@@ -10,6 +10,7 @@
       :sort-by="sortBy"
       :sort-desc="sortDesc"
       :headers="libraryHeaders"
+      :nothing-found="$t('error.nothingFoundLibrary')"
       :title="
         count !== 1
           ? 'viewer.title.library_html'

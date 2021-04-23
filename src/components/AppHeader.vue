@@ -31,6 +31,7 @@
     <tour v-if="$vuetify.breakpoint.smAndUp" />
     <links v-if="$vuetify.breakpoint.smAndUp" />
     <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
+    <emaapou-button class="mx-2" />
     <!--  MOBILE MENU  -->
     <v-menu
       v-if="!$vuetify.breakpoint.smAndUp"
@@ -63,14 +64,15 @@
 import LangButtons from "@/components/LangButtons";
 import Links from "@/components/Links";
 import Tour from "@/components/Tour";
+import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "AppHeader",
-  components: { Tour, Links, LangButtons },
+  components: { Tour, Links, LangButtons, EmaapouButton },
   methods: {
     goToLanding() {
       this.$router.replace({ name: "landing" }).catch(() => {});
-    }
-  }
+    },
+  },
 };
 </script>
 

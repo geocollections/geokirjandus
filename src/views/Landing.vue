@@ -1,6 +1,7 @@
+
 <template>
   <div class="main fill-height d-flex flex-wrap align-content-space-between">
-    <v-container fluid class="landing">
+    <v-container fluid class="landing py-0">
       <v-row
         :style="
           `
@@ -10,7 +11,8 @@
         class="header"
       >
         <v-col class="elevation-4 header d-flex flex-column pt-0 pb-5">
-          <span class="d-flex justify-end mt-4 mb-2 mr-4">
+          <span class="d-flex mt-4 mb-2 mr-4">
+            <emaapou-button class="mr-auto" />
             <links />
             <lang-buttons />
           </span>
@@ -101,6 +103,7 @@ import AppFooter from "@/components/AppFooter";
 import axios from "axios";
 import { mapActions } from "vuex";
 import Statistics from "@/components/Statistics";
+import EmaapouButton from "../components/EmaapouButton.vue";
 export default {
   name: "Landing",
   components: {
@@ -108,18 +111,19 @@ export default {
     AppFooter,
     Links,
     LangButtons,
-    ReferenceListView
+    ReferenceListView,
+    EmaapouButton,
   },
   data() {
     return {
       searchStr: "",
       references: null,
       intro: null,
-      statisticsData: null
+      statisticsData: null,
     };
   },
   metaInfo: {
-    title: "Avaleht"
+    title: "Avaleht",
   },
   created() {
     this.getReferences();
@@ -129,10 +133,10 @@ export default {
     ...mapActions("search", [
       "resetSearch",
       "updateSearch",
-      "updateAdvancedSearch"
+      "updateAdvancedSearch",
     ]),
     getIntroduction() {
-      axios.get("https://api.geocollections.info/page/75").then(res => {
+      axios.get("https://api.geocollections.info/page/75").then((res) => {
         this.intro = res.data.results[0];
       });
     },
@@ -146,7 +150,7 @@ export default {
       this.resetSearch();
       this.updateSearch(this.searchStr);
       this.$router.push({
-        name: "searchReference"
+        name: "searchReference",
       });
     },
     getReferences() {
@@ -160,19 +164,19 @@ export default {
           isEstonianAuthor: {
             type: "checkbox",
             value: "1",
-            fields: ["is_estonian_author"]
+            fields: ["is_estonian_author"],
           },
           isEstonianReference: {
             type: "checkbox",
             value: "1",
-            fields: ["is_estonian_reference"]
-          }
-        }
-      }).then(res => {
+            fields: ["is_estonian_reference"],
+          },
+        },
+      }).then((res) => {
         this.references = res.results;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

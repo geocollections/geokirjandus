@@ -1,6 +1,6 @@
 <template>
-  <v-btn dark icon large href="https://geoloogia.info" link>
-    <v-icon large>$emaapouIcon</v-icon>
+  <v-btn dark icon href="https://geoloogia.info" link>
+    <v-icon class="emaapou-icon">$emaapouIcon</v-icon>
   </v-btn>
 </template>
 

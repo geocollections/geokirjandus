@@ -525,7 +525,7 @@ export default {
       this.handleBack();
     },
     localityURL(id) {
-      return `https://geocollections.info/locality/${id}`;
+      return `https://geoloogia.info/locality/${id}`;
     },
     taxonURL(id) {
       return `https://fossiilid.info/${id}`;
@@ -585,7 +585,7 @@ export default {
                     : locality.locality_en;
 
                 return {
-                  popup: `<a href="https://geocollections.info/locality/${locality.id}" target="_blank">${localityTitle}</a>`,
+                  popup: `<a href="https://geoloogia.info/locality/${locality.id}" target="_blank">${localityTitle}</a>`,
                   title: localityTitle,
                   coordinates: [locality.latitude, locality.longitude],
                 };

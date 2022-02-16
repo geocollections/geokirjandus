@@ -15,7 +15,13 @@ const version = "1.1.1";
 
 const vuexLocal = new VuexPersistence({
   key: `geoloogia.geokirjandus.${version}`,
-  reducer: state => ({ search: state.search, settings: state.settings }),
+  reducer: state => ({
+    search: {
+      advancedSearch: state.search.advancedSearch,
+      search: state.search.search
+    },
+    settings: state.settings
+  }),
   storage: window.localStorage
 });
 

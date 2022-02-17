@@ -41,7 +41,7 @@
                       $route.name === 'searchReference' ||
                         $route.name === 'searchLibrary'
                     "
-                    elevation="4"
+                    elevation="2"
                     class="roundedBorder"
                   >
                     <router-view id="tabs" name="tabs" />

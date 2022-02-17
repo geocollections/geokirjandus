@@ -1,7 +1,6 @@
-
 <template>
   <div class="main fill-height d-flex flex-wrap align-content-space-between">
-    <v-container fluid class="landing py-0">
+    <v-container fluid class="landing pt-0">
       <v-row
         :style="
           `
@@ -112,18 +111,18 @@ export default {
     Links,
     LangButtons,
     ReferenceListView,
-    EmaapouButton,
+    EmaapouButton
   },
   data() {
     return {
       searchStr: "",
       references: null,
       intro: null,
-      statisticsData: null,
+      statisticsData: null
     };
   },
   metaInfo: {
-    title: "Avaleht",
+    title: "Avaleht"
   },
   created() {
     this.getReferences();
@@ -133,10 +132,10 @@ export default {
     ...mapActions("search", [
       "resetSearch",
       "updateSearch",
-      "updateAdvancedSearch",
+      "updateAdvancedSearch"
     ]),
     getIntroduction() {
-      axios.get("https://api.geocollections.info/page/75").then((res) => {
+      axios.get("https://api.geocollections.info/page/75").then(res => {
         this.intro = res.data.results[0];
       });
     },
@@ -150,7 +149,7 @@ export default {
       this.resetSearch();
       this.updateSearch(this.searchStr);
       this.$router.push({
-        name: "searchReference",
+        name: "searchReference"
       });
     },
     getReferences() {
@@ -164,19 +163,19 @@ export default {
           isEstonianAuthor: {
             type: "checkbox",
             value: "1",
-            fields: ["is_estonian_author"],
+            fields: ["is_estonian_author"]
           },
           isEstonianReference: {
             type: "checkbox",
             value: "1",
-            fields: ["is_estonian_reference"],
-          },
-        },
-      }).then((res) => {
+            fields: ["is_estonian_reference"]
+          }
+        }
+      }).then(res => {
         this.references = res.results;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

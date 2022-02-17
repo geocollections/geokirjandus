@@ -1,54 +1,53 @@
 <template>
-  <div class="px-1 px-sm-2">
-    <data-viewer
-      :module="$route.meta.object"
-      :data="result"
-      :count="count"
-      :page="getPage"
-      :is-loading="isLoading"
-      :paginate-by="getPaginateBy"
-      :sort-by="getSortBy"
-      :sort-desc="getSortDesc"
-      :headers="getHeaders"
-      :nothing-found="$t('error.nothingFoundReference')"
-      :title="
-        count !== 1
-          ? 'viewer.title.reference_html'
-          : 'viewer.title.reference_single_html'
-      "
-      v-on:open="open"
-      v-on:update:paginateBy="handleUpdatePaginateBy"
-      v-on:update:page="handleUpdatePage"
-      v-on:update:sortBy="handleUpdateSortBy"
-      v-on:update:sortDesc="handleUpdateSortDesc"
-      v-on:update:headers="handleUpdateTableHeaders"
-    >
-      <template v-if="tabs" v-slot:prepend>
-        <tabs />
-      </template>
+  <data-viewer
+    class="px-1 px-sm-2"
+    :module="$route.meta.object"
+    :data="result"
+    :count="count"
+    :page="getPage"
+    :is-loading="isLoading"
+    :paginate-by="getPaginateBy"
+    :sort-by="getSortBy"
+    :sort-desc="getSortDesc"
+    :headers="getHeaders"
+    :nothing-found="$t('error.nothingFoundReference')"
+    :title="
+      count !== 1
+        ? 'viewer.title.reference_html'
+        : 'viewer.title.reference_single_html'
+    "
+    v-on:open="open"
+    v-on:update:paginateBy="handleUpdatePaginateBy"
+    v-on:update:page="handleUpdatePage"
+    v-on:update:sortBy="handleUpdateSortBy"
+    v-on:update:sortDesc="handleUpdateSortDesc"
+    v-on:update:headers="handleUpdateTableHeaders"
+  >
+    <template v-if="tabs" v-slot:prepend>
+      <tabs />
+    </template>
 
-      <!--  TABLE VIEW CUSTOM TEMPLATES  -->
-      <template v-slot:item.bookJournal="{ item }">
-        <div v-if="item.book">{{ item.book }}</div>
-        <div v-else-if="item.journal__journal_name">
-          {{ item.journal__journal_name }}
-        </div>
-      </template>
-      <template v-slot:item.date_added="{ item }">
-        {{ formatDate(item.date_added) }}
-      </template>
-      <template v-slot:item.date_changed="{ item }">
-        {{ formatDate(item.date_changed) }}
-      </template>
-      <template v-slot:item.links="{ item }">
-        <reference-links small :item="item" />
-      </template>
-      <!--  LIST VIEW TEMPLATE  -->
-      <template v-slot:list-view="{ data }">
-        <reference-list-view :data="data"></reference-list-view>
-      </template>
-    </data-viewer>
-  </div>
+    <!--  TABLE VIEW CUSTOM TEMPLATES  -->
+    <template v-slot:item.bookJournal="{ item }">
+      <div v-if="item.book">{{ item.book }}</div>
+      <div v-else-if="item.journal__journal_name">
+        {{ item.journal__journal_name }}
+      </div>
+    </template>
+    <template v-slot:item.date_added="{ item }">
+      {{ formatDate(item.date_added) }}
+    </template>
+    <template v-slot:item.date_changed="{ item }">
+      {{ formatDate(item.date_changed) }}
+    </template>
+    <template v-slot:item.links="{ item }">
+      <reference-links small :item="item" />
+    </template>
+    <!--  LIST VIEW TEMPLATE  -->
+    <template v-slot:list-view="{ data }">
+      <reference-list-view :data="data"></reference-list-view>
+    </template>
+  </data-viewer>
 </template>
 
 <script>
@@ -68,18 +67,18 @@ export default {
     Tabs,
     ReferenceLinks,
     ReferenceListView,
-    DataViewer,
+    DataViewer
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   props: {
     tabs: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
-      result: [],
+      result: []
     };
   },
   computed: {
@@ -87,7 +86,7 @@ export default {
     ...mapState("references", ["count"]),
     ...mapState("tableSettings", [
       "referenceHeaders",
-      "referenceInLibraryHeaders",
+      "referenceInLibraryHeaders"
     ]),
     getTranslatedHeaders() {
       return [];
@@ -95,7 +94,7 @@ export default {
     getHeaders() {
       if (this.$route.name === "library") return this.referenceInLibraryHeaders;
       return this.referenceHeaders;
-    },
+    }
   },
   created() {
     if (this.$route.name === "library") this.handleReferencesInLibraryResult();
@@ -109,26 +108,26 @@ export default {
       handler: debounce(function() {
         this.handleReferencesResult();
       }, 300),
-      deep: true,
+      deep: true
     },
     libraryReferenceParameters: {
       handler: debounce(function() {
         this.handleReferencesInLibraryResult();
       }, 300),
-      deep: true,
+      deep: true
     },
     libraryParameters: {
       handler: debounce(function() {
         this.getLibraries();
       }, 300),
-      deep: true,
+      deep: true
     },
     getPage: {
       handler: debounce(function() {
         if (this.$route.name === "library")
           this.handleReferencesInLibraryResult();
         else this.handleReferencesResult();
-      }, 300),
+      }, 300)
     },
     getPaginateBy: {
       handler() {
@@ -136,15 +135,15 @@ export default {
         if (this.$route.name === "library")
           this.handleReferencesInLibraryResult();
         else this.handleReferencesResult();
-      },
+      }
     },
     getSortDesc: {
       handler() {
         if (this.$route.name === "library")
           this.handleReferencesInLibraryResult();
         else this.handleReferencesResult();
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapActions("search", [
@@ -152,11 +151,11 @@ export default {
       "updatePaginateBy",
       "updateSortBy",
       "updateSortDesc",
-      "resetPage",
+      "resetPage"
     ]),
     ...mapActions("tableSettings", [
       "setReferenceHeaders",
-      "setReferenceInLibraryHeaders",
+      "setReferenceInLibraryHeaders"
     ]),
     open(event) {
       this.$router.push(`/reference/${event.id}`);
@@ -197,7 +196,7 @@ export default {
     handleReferencesInLibraryResult() {
       this.isLoading = true;
       this.getReferencesInLibrary().then(this.setResults);
-    },
-  },
+    }
+  }
 };
 </script>

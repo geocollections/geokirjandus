@@ -1,6 +1,9 @@
 <template>
-  <v-card class="roundedBorder referenceTitle" v-if="reference">
-    <v-card-title class="pt-1 pb-1 pr-1 d-flex text-center referenceTitle">
+  <v-card
+    class="roundedBorder referenceTitle px-1 pb-1 px-sm-2 pb-sm-2"
+    v-if="reference"
+  >
+    <v-card-title class="pt-1 pb-1 px-0 d-flex text-center referenceTitle">
       <v-col cols="auto" class="py-0 px-0">
         <v-btn large icon @click="handleBack()" aria-label="back">
           <v-icon>fas fa-arrow-left</v-icon>
@@ -15,7 +18,7 @@
         </v-btn>
       </v-col>
     </v-card-title>
-    <div class="body elevation-4">
+    <div class="body elevation-0">
       <v-card-actions class=" pt-3">
         <reference-links :item="reference" />
         <v-spacer />
@@ -34,7 +37,7 @@
       </v-card-actions>
       <v-card-text class="pt-0">
         <div class="d-flex pb-3">
-          <h3 class="align-self-center">
+          <h3 class="align-self-center mr-1">
             <b>{{ $t("common.citation") }}</b>
           </h3>
           <copy-button clipboard-class="referenceCitation" id="referenceCopy" />
@@ -140,7 +143,7 @@
                   <td
                     v-translate="{
                       et: reference.reference_type,
-                      en: reference.reference_type_en,
+                      en: reference.reference_type_en
                     }"
                   />
                 </tr>
@@ -153,7 +156,7 @@
                   <td
                     v-translate="{
                       et: reference.reference_language,
-                      en: reference.reference_language_en,
+                      en: reference.reference_language_en
                     }"
                   />
                 </tr>
@@ -283,7 +286,7 @@
                 <router-link
                   :to="{
                     name: 'reference',
-                    params: { id: childReference.id },
+                    params: { id: childReference.id }
                   }"
                 >
                   {{ childReference.author }}
@@ -393,7 +396,7 @@ import {
   fetchReference,
   fetchReferenceLibraries,
   fetchReferenceLocalities,
-  fetchReferences,
+  fetchReferences
 } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
@@ -414,13 +417,13 @@ export default {
     CopyButton,
     ReferenceLinks,
     LeafletMap,
-    ReferenceCitation,
+    ReferenceCitation
   },
   mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
   props: {
     id: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
@@ -428,7 +431,7 @@ export default {
       libraries: [],
       localities: [],
       error: false,
-      childReferences: null,
+      childReferences: null
     };
   },
   metaInfo() {
@@ -438,13 +441,13 @@ export default {
         {
           property: "og:title",
           vmid: "og:title",
-          content: `${this.reference?.reference}: ${this.reference?.title}`,
+          content: `${this.reference?.reference}: ${this.reference?.title}`
         },
         {
           property: "keywords",
-          content: this.reference?.keywords,
-        },
-      ],
+          content: this.reference?.keywords
+        }
+      ]
     };
   },
   computed: {
@@ -459,7 +462,7 @@ export default {
         return {
           id: id.trim(),
           name: localityNames[index].trim(),
-          nameEng: localityNamesEng[index].trim(),
+          nameEng: localityNamesEng[index].trim()
         };
       });
     },
@@ -470,20 +473,20 @@ export default {
       return ids.map((id, index) => {
         return {
           id: id.trim(),
-          name: taxaNames[index].trim(),
+          name: taxaNames[index].trim()
         };
       });
     },
     parseKeywords() {
       return this.reference.keywords
         .split(";")
-        .filter((keyword) => {
+        .filter(keyword => {
           return keyword !== " ";
         })
-        .map((keyword) => {
+        .map(keyword => {
           return keyword.trim();
         });
-    },
+    }
   },
   watch: {
     referenceParameters: {
@@ -491,8 +494,8 @@ export default {
       handler: debounce(function() {
         this.$router.push({ name: "searchReference" }).catch(() => {});
       }, 300),
-      deep: true,
-    },
+      deep: true
+    }
   },
   created() {
     if (!this.$store.state.references.facet.facet_fields) {
@@ -518,7 +521,7 @@ export default {
     handleKeyword(keyword) {
       this.updateAdvancedSearch({
         value: keyword,
-        id: "keywords",
+        id: "keywords"
       });
       this.getReferences();
       this.getLibraries();
@@ -534,8 +537,8 @@ export default {
       return fetchReferenceLibraries({
         search: {
           value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
-          type: "text",
-        },
+          type: "text"
+        }
       });
     },
     getReferenceLocalities() {
@@ -543,8 +546,8 @@ export default {
       return fetchReferenceLocalities({
         search: {
           value: `id:(${localityIdsStr})`,
-          type: "text",
-        },
+          type: "text"
+        }
       });
     },
     getChildReferences() {
@@ -555,16 +558,16 @@ export default {
             id: "parent_reference_id",
             value: this.reference.id,
             lookUpType: null,
-            fields: ["parent_reference_id"],
-          },
+            fields: ["parent_reference_id"]
+          }
         },
         sortBy: ["pages_start"],
         sortDesc: [false],
-        fields: ["id", "author", "pages", "title"],
+        fields: ["id", "author", "pages", "title"]
       });
     },
     getReference(id) {
-      fetchReference(id).then((res) => {
+      fetchReference(id).then(res => {
         if (res.results[0] === undefined) {
           this.error = true;
           return;
@@ -573,12 +576,12 @@ export default {
         this.reference = res.results[0];
 
         if (this.reference.localities) {
-          this.getReferenceLocalities().then((res) => {
+          this.getReferenceLocalities().then(res => {
             this.localities = res.results
-              .filter((locality) => {
+              .filter(locality => {
                 return !!(locality.latitude && locality.longitude);
               })
-              .map((locality) => {
+              .map(locality => {
                 const localityTitle =
                   this.$i18n.locale === "ee"
                     ? locality.locality
@@ -587,24 +590,24 @@ export default {
                 return {
                   popup: `<a href="https://geoloogia.info/locality/${locality.id}" target="_blank">${localityTitle}</a>`,
                   title: localityTitle,
-                  coordinates: [locality.latitude, locality.longitude],
+                  coordinates: [locality.latitude, locality.longitude]
                 };
               });
           });
         }
 
         if (this.reference.libraries) {
-          this.getReferenceLibraries().then((res) => {
+          this.getReferenceLibraries().then(res => {
             this.libraries = res.results;
           });
         }
 
-        this.getChildReferences().then((res) => {
+        this.getChildReferences().then(res => {
           if (res.count > 0) this.childReferences = res.results;
         });
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

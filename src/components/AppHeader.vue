@@ -71,8 +71,8 @@ export default {
   methods: {
     goToLanding() {
       this.$router.replace({ name: "landing" }).catch(() => {});
-    },
-  },
+    }
+  }
 };
 </script>
 

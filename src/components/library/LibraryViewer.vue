@@ -59,55 +59,55 @@ export default {
   name: "LibraryViewer",
   components: {
     LibraryListView,
-    DataViewer,
+    DataViewer
   },
   mixins: [dateMixin, urlMixin, queryMixin],
   props: {
     showLibraries: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
       isLoading: false,
-      result: [],
+      result: []
     };
   },
   computed: {
     ...mapState("librarySearch", ["sortBy", "sortDesc"]),
     ...mapState("library", ["count"]),
-    ...mapState("tableSettings", ["libraryHeaders"]),
+    ...mapState("tableSettings", ["libraryHeaders"])
   },
   watch: {
     page: {
       handler: debounce(function() {
         this.handleLibrariesResult();
-      }, 300),
+      }, 300)
     },
     paginateBy: {
       handler() {
         this.resetPage();
         this.handleLibrariesResult();
-      },
+      }
     },
     sortDesc: {
       handler() {
         this.handleLibrariesResult();
-      },
+      }
     },
     libraryParameters: {
       handler: debounce(function() {
         this.handleLibrariesResult();
       }, 300),
-      deep: true,
+      deep: true
     },
     referenceParameters: {
       handler: debounce(function() {
         this.getReferences();
       }, 300),
-      deep: true,
-    },
+      deep: true
+    }
   },
   created() {
     this.handleLibrariesResult();
@@ -119,13 +119,13 @@ export default {
       "updatePaginateBy",
       "updateSortBy",
       "updateSortDesc",
-      "resetPage",
+      "resetPage"
     ]),
     ...mapActions("tableSettings", ["setLibraryHeaders"]),
     handleLibrariesResult() {
       this.isLoading = true;
 
-      this.getLibraries().then((res) => {
+      this.getLibraries().then(res => {
         this.result = res.results;
         this.isLoading = false;
       });
@@ -135,7 +135,7 @@ export default {
     },
     open(event) {
       this.$router.push(`/library/${event.id}`);
-    },
-  },
+    }
+  }
 };
 </script>

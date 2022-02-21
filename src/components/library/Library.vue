@@ -120,7 +120,7 @@ export default {
       id: this.$route.params.id,
       library: null,
       isLoading: true,
-      error: false,
+      error: false
     };
   },
   metaInfo() {
@@ -130,13 +130,13 @@ export default {
         {
           property: "og:title",
           vmid: "og:title",
-          content: this.library?.title,
-        },
-      ],
+          content: this.library?.title
+        }
+      ]
     };
   },
   created() {
-    this.getLibrary().then((res) => {
+    this.getLibrary().then(res => {
       this.library = res.results[0];
 
       if (this.library === undefined) {
@@ -145,7 +145,7 @@ export default {
     });
   },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    next(vm => {
       if (from.name === "searchLibrary")
         vm.$store.dispatch(
           `libraryReferenceSearch/resetLibraryReferenceSearch`
@@ -156,11 +156,11 @@ export default {
         vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
         vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
           "author",
-          "year",
+          "year"
         ]);
         vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
           false,
-          false,
+          false
         ]);
 
         vm.$store.dispatch("library/setCurrentLibrary", to.params.id);
@@ -176,8 +176,8 @@ export default {
     },
     handleBack() {
       this.$router.back();
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -105,21 +105,21 @@
                   <th>{{ $t("reference.publisherPlace") }}</th>
                   <td>{{ reference.publisher_place }}</td>
                 </tr>
-                <tr v-if="reference.journal__journal_name">
+                <tr v-if="reference.journal.journal_name">
                   <th>{{ $t("reference.journalName") }}</th>
-                  <td>{{ reference.journal__journal_name }}</td>
+                  <td>{{ reference.journal.journal_name }}</td>
                 </tr>
-                <tr v-if="reference.journal__journal_name_short">
+                <tr v-if="reference.journal.journal_short">
                   <th>{{ $t("reference.journalNameShort") }}</th>
-                  <td>{{ reference.journal__journal_name_short }}</td>
+                  <td>{{ reference.journal.journal_short }}</td>
                 </tr>
                 <tr v-if="reference.parent_reference">
                   <th>{{ $t("reference.parentReference") }}</th>
                   <td>
                     <router-link
-                      :to="{ path: `${reference.parent_reference}` }"
+                      :to="{ path: `${reference.parent_reference.id}` }"
                     >
-                      {{ reference.parent_reference__reference }}
+                      {{ reference.parent_reference.title }}
                     </router-link>
                   </td>
                 </tr>
@@ -139,8 +139,8 @@
                   <th>{{ $t("reference.type") }}</th>
                   <td
                     v-translate="{
-                      et: reference.reference_type,
-                      en: reference.reference_type_en
+                      et: reference.type.value,
+                      en: reference.type.value_en
                     }"
                   />
                 </tr>
@@ -152,8 +152,8 @@
                   <th>{{ $t("reference.language") }}</th>
                   <td
                     v-translate="{
-                      et: reference.reference_language,
-                      en: reference.reference_language_en
+                      et: reference.language.value,
+                      en: reference.language.value_en
                     }"
                   />
                 </tr>
@@ -185,9 +185,14 @@
                 <tr v-if="reference.licence">
                   <th>{{ $t("reference.licence") }}</th>
                   <td>
-                    <a :href="reference.licence_url" target="_blank">{{
-                      reference.licence
-                    }}</a>
+                    <a
+                      :href="reference.licence_url"
+                      v-translate="{
+                        et: reference.licence.licence,
+                        en: reference.licence.licence_en
+                      }"
+                      target="_blank"
+                    />
                   </td>
                 </tr>
                 <tr v-if="reference.is_estonian_reference">
@@ -353,19 +358,15 @@
                 <td>{{ reference.id }}</td>
               </tr>
               <tr v-if="reference.user_added">
-                <th>{{ $t("reference.userAdded") }}</th>
+                <th>{{ $t("reference.dateAdded") }}</th>
                 <td>
-                  {{ reference.user_added }} ({{
-                    formatDate(reference.date_added)
-                  }})
+                  {{ formatDate(reference.date_added) }}
                 </td>
               </tr>
               <tr v-if="reference.user_changed">
-                <th>{{ $t("reference.userChanged") }}</th>
+                <th>{{ $t("reference.dateChanged") }}</th>
                 <td>
-                  {{ reference.user_changed }} ({{
-                    formatDate(reference.date_changed)
-                  }})
+                  {{ formatDate(reference.date_changed) }}
                 </td>
               </tr>
             </tbody>
@@ -565,12 +566,12 @@ export default {
     },
     getReference(id) {
       fetchReference(id).then(res => {
-        if (res.results[0] === undefined) {
+        if (res === undefined) {
           this.error = true;
           return;
         }
 
-        this.reference = res.results[0];
+        this.reference = res;
 
         if (this.reference.localities) {
           this.getReferenceLocalities().then(res => {

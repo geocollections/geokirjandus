@@ -27,7 +27,7 @@ export default {
       return {
         id: data.id,
         type: "webpage",
-        author: parseNames(data.author),
+        author: parseNames(data.author_txt),
         issued: [
           {
             "date-parts": [data.year]

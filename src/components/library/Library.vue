@@ -14,7 +14,8 @@
         />
 
         <h6 class="">
-          {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+          {{ $t("common.libraryCreatedBy") }}:
+          {{ library.author_txt }}
           {{ library.year }}
         </h6>
       </div>
@@ -54,12 +55,24 @@
           </div>
         </v-card>
       </v-card-text>
-      <v-card-text v-if="library.abstract" class="pt-0">
+      <v-card-text
+        v-if="
+          ($i18n.locale === 'ee' && library.abstract) ||
+            ($i18n.locale === 'en' && library.abstract_en)
+        "
+        class="pt-0"
+      >
         <h3>
           <b>{{ $t("common.summary") }}</b>
         </h3>
       </v-card-text>
-      <v-card-text v-if="library.abstract" class="py-0">
+      <v-card-text
+        v-if="
+          ($i18n.locale === 'ee' && library.abstract) ||
+            ($i18n.locale === 'en' && library.abstract_en)
+        "
+        class="py-0"
+      >
         <div v-translate="{ et: library.abstract, en: library.abstract_en }" />
       </v-card-text>
       <v-card-text class="pb-0">
@@ -137,7 +150,7 @@ export default {
   },
   created() {
     this.getLibrary().then(res => {
-      this.library = res.results[0];
+      this.library = res;
 
       if (this.library === undefined) {
         this.error = true;

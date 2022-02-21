@@ -105,13 +105,13 @@
                   <th>{{ $t("reference.publisherPlace") }}</th>
                   <td>{{ reference.publisher_place }}</td>
                 </tr>
-                <tr v-if="reference.journal.journal_name">
+                <tr v-if="journal && journal.journal_name">
                   <th>{{ $t("reference.journalName") }}</th>
-                  <td>{{ reference.journal.journal_name }}</td>
+                  <td>{{ journal.journal_name }}</td>
                 </tr>
-                <tr v-if="reference.journal.journal_short">
+                <tr v-if="journal && journal.journal_short">
                   <th>{{ $t("reference.journalNameShort") }}</th>
-                  <td>{{ reference.journal.journal_short }}</td>
+                  <td>{{ journal.journal_short }}</td>
                 </tr>
                 <tr v-if="reference.parent_reference">
                   <th>{{ $t("reference.parentReference") }}</th>
@@ -135,7 +135,7 @@
                   <th>{{ $t("reference.pages") }}</th>
                   <td>{{ reference.pages }}</td>
                 </tr>
-                <tr v-if="reference.type">
+                <tr v-if="type">
                   <th>{{ $t("reference.type") }}</th>
                   <td
                     v-translate="{
@@ -484,6 +484,12 @@ export default {
         .map(keyword => {
           return keyword.trim();
         });
+    },
+    journal() {
+      return this.reference?.journal;
+    },
+    type() {
+      return this.reference?.type;
     }
   },
   watch: {

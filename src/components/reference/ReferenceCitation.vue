@@ -1,5 +1,5 @@
 <template>
-  <div v-if="onlyText" v-html="citation($getCsl(reference))"></div>
+  <div v-if="onlyText" v-html="citation(csl)"></div>
   <div v-else>
     <router-link
       class="referenceLink"
@@ -27,6 +27,12 @@ export default {
     },
     onlyText: {
       type: Boolean
+    }
+  },
+  computed: {
+    csl() {
+      console.log(this.$getCsl(this.reference));
+      return this.$getCsl(this.reference);
     }
   }
 };

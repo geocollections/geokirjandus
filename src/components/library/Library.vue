@@ -1,5 +1,8 @@
 <template>
-  <v-card class="roundedBorder libraryTitle" v-if="library">
+  <v-card
+    class="roundedBorder libraryTitle px-1 pb-1 px-sm-2 pb-sm-2"
+    v-if="library"
+  >
     <v-card-title class="pt-1 pb-1 pr-1 d-flex text-center libraryTitle">
       <v-col cols="auto" class="px-0">
         <v-btn large icon @click="handleBack()" aria-label="back">
@@ -25,7 +28,7 @@
         </v-btn>
       </v-col>
     </v-card-title>
-    <div class="body elevation-4">
+    <div class="body elevation-0">
       <v-card-actions
         class="pr-2 px-4 d-flex justify-end flex-column flex-sm-row"
       >
@@ -43,10 +46,12 @@
       </v-card-actions>
 
       <v-card-text class="pt-0">
-        <div class="d-flex pb-3">
-          <h3 class="align-self-center">
+        <div class="d-flex align-center pb-3">
+          <h3 class="">
             <b>{{ $t("common.citation") }}</b>
           </h3>
+
+          <citation-select class="col-sm-3 py-0" />
           <copy-button clipboard-class="libraryCitation" id="libraryCopy" />
         </div>
         <v-card flat outlined>
@@ -54,42 +59,33 @@
             <library-citation class="libraryCitation" :library="library" />
           </div>
         </v-card>
-      </v-card-text>
-      <v-card-text
-        v-if="
-          ($i18n.locale === 'ee' && library.abstract) ||
-            ($i18n.locale === 'en' && library.abstract_en)
-        "
-        class="pt-0"
-      >
-        <h3>
+        <h3
+          class="mt-3"
+          v-if="
+            ($i18n.locale === 'ee' && library.abstract) ||
+              ($i18n.locale === 'en' && library.abstract_en)
+          "
+        >
           <b>{{ $t("common.summary") }}</b>
         </h3>
-      </v-card-text>
-      <v-card-text
-        v-if="
-          ($i18n.locale === 'ee' && library.abstract) ||
-            ($i18n.locale === 'en' && library.abstract_en)
-        "
-        class="py-0"
-      >
-        <div v-translate="{ et: library.abstract, en: library.abstract_en }" />
-      </v-card-text>
-      <v-card-text class="pb-0">
+        <div
+          v-if="
+            ($i18n.locale === 'ee' && library.abstract) ||
+              ($i18n.locale === 'en' && library.abstract_en)
+          "
+          v-translate="{ et: library.abstract, en: library.abstract_en }"
+        />
         <h3>
           <b>{{ $t("common.libraryReferences") }}</b>
         </h3>
       </v-card-text>
-      <v-card
-        elevation="4"
-        class="mx-2 my-3 mx-sm-3 roundedBorder"
-        color="#a5bac4"
-      >
+
+      <v-card class="mx-2 mx-sm-3 roundedBorder" color="#a5bac4">
         <reference-viewer />
       </v-card>
-      <v-card-text class="py-0">
-        <v-row>
-          <v-col cols="auto" class="pt-2">
+      <v-card-text class="">
+        <v-row no-gutters>
+          <v-col cols="auto" class="pt-2 pr-3">
             <b>{{ $t("common.libraryCreated") }}:</b>
             {{ formatDate(library.date_added) }}
           </v-col>
@@ -123,10 +119,10 @@ import citationMixin from "@/mixins/citationMixin";
 import LibraryCitation from "@/components/library/LibraryCitation";
 import queryMixin from "@/mixins/queryMixin";
 import CopyButton from "@/components/CopyButton";
-
+import CitationSelect from "@/components/CitationSelect";
 export default {
   name: "Library",
-  components: { CopyButton, LibraryCitation, ReferenceViewer },
+  components: { CopyButton, LibraryCitation, ReferenceViewer, CitationSelect },
   mixins: [dateMixin, citationMixin, queryMixin],
   data() {
     return {

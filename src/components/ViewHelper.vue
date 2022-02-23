@@ -1,21 +1,31 @@
 <template>
-  <v-card-actions class="flex-column flex-sm-row justify-sm-space-between py-0">
-    <div class="col-sm-3 px-2 paginationSelect">
+  <div class="align-center justify-space-around  fill-height d-flex py-0">
+    <div
+      class="d-flex align-center ml-sm-auto px-2 paginationSelect fill-height"
+      style="flex: 0 0 0"
+    >
+      <div
+        v-show="$vuetify.breakpoint.smAndUp"
+        class="mr-3 text-no-wrap text-caption"
+      >
+        {{ $t("common.paginateBy") }}
+      </div>
       <v-select
         :value="paginateBy"
+        class="mt-0 text-caption"
+        style="max-width: 100px"
         color="grey darken-3"
         dense
         :menu-props="{ bottom: true, offsetY: true }"
         :items="paginateByOptionsTranslated"
         item-color="black"
-        :label="$t('common.paginateBy')"
         hide-details
         @change="$emit('update:paginateBy', $event)"
       />
     </div>
-    <div class="ml-sm-auto range">{{ getRange }}</div>
+    <!-- <div class="range">{{ getRange }}</div> -->
     <v-pagination
-      class="pageSelect"
+      class="pageSelect "
       :value="page"
       color="#fd8719"
       prev-icon="fas fa-angle-left"
@@ -24,7 +34,7 @@
       :total-visible="5"
       @input="$emit('update:page', $event)"
     />
-  </v-card-actions>
+  </div>
 </template>
 
 <script>
@@ -59,7 +69,7 @@ export default {
       return this.paginateByOptions.map(item => {
         return {
           ...item,
-          text: this.$t(item.text, { num: item.value })
+          text: item.value
         };
       });
     },

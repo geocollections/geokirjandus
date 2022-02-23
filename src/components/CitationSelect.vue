@@ -1,5 +1,6 @@
 <template>
   <v-select
+    class="fit"
     :value="citationTemplate"
     :items="templates"
     hide-details
@@ -20,3 +21,12 @@ export default {
   mixins: [citationMixin]
 };
 </script>
+
+<style>
+.v-select.fit {
+  width: min-content;
+}
+.v-select.fit .v-select__selection--comma {
+  text-overflow: unset;
+}
+</style>

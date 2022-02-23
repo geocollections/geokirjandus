@@ -36,10 +36,11 @@
         </v-chip>
       </v-card-actions>
       <v-card-text class="pt-0">
-        <div class="d-flex pb-3">
-          <h3 class="align-self-center mr-1">
+        <div class="d-flex align-center pb-3">
+          <h3 class=" mr-1">
             <b>{{ $t("common.citation") }}</b>
           </h3>
+          <citation-select class="col-sm-3 py-0" />
           <copy-button clipboard-class="referenceCitation" id="referenceCopy" />
         </div>
         <v-card flat outlined>
@@ -403,6 +404,7 @@ import dateMixin from "@/mixins/dateMixin";
 import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
+import CitationSelect from "@/components/CitationSelect";
 import { mapState, mapActions } from "vuex";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
@@ -418,7 +420,8 @@ export default {
     CopyButton,
     ReferenceLinks,
     LeafletMap,
-    ReferenceCitation
+    ReferenceCitation,
+    CitationSelect
   },
   mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
   props: {

@@ -73,9 +73,6 @@
           />
         </v-list-item>
       </div>
-      <v-list-item>
-        <citation-select id="citationSelect" />
-      </v-list-item>
       <div id="advancedSearch">
         <v-list-group
           color="grey darken-3"
@@ -246,7 +243,6 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import CitationSelect from "@/components/CitationSelect";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import ShareButton from "@/components/ShareButton";
@@ -254,7 +250,7 @@ import SearchHelpDialog from "@/components/SearchHelpDialog";
 
 export default {
   name: "Search",
-  components: { SearchHelpDialog, ShareButton, CitationSelect },
+  components: { SearchHelpDialog, ShareButton },
   mixins: [urlMixin, queryMixin],
   props: {
     colSize: {

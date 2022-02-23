@@ -63,15 +63,24 @@
         </v-select>
       </v-card-actions>
     </v-scroll-y-transition>
-
-    <view-helper
-      v-if="helpers"
-      v-on="$listeners"
-      :page="page"
-      :paginate-by="paginateBy"
-      :count="count"
-      class="px-0"
-    />
+    <div class="d-flex justify-space-between mb-1">
+      <v-container>
+        <v-row>
+          <citation-select
+            v-if="view === 'list'"
+            class="col-sm-3 col-12 py-0 px-2"
+          />
+          <view-helper
+            v-if="helpers"
+            v-on="$listeners"
+            :page="page"
+            :paginate-by="paginateBy"
+            :count="count"
+            class="px-0 ml-sm-auto col-12 col-sm-9"
+          />
+        </v-row>
+      </v-container>
+    </div>
     <div class="content mb-2">
       <v-scroll-y-transition leave-absolute group>
         <v-card-text
@@ -141,9 +150,10 @@ import ListView from "@/components/ListView";
 import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
 import i18n from "vue-i18n";
+import CitationSelect from "./CitationSelect.vue";
 export default {
   name: "DataViewer",
-  components: { ViewHelper, ListView, CopyButton },
+  components: { ViewHelper, ListView, CopyButton, CitationSelect },
   props: {
     data: {
       type: Array[Object]

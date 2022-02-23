@@ -31,7 +31,6 @@ export default {
   },
   computed: {
     csl() {
-      console.log(this.$getCsl(this.reference));
       return this.$getCsl(this.reference);
     }
   }

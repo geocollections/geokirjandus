@@ -41,7 +41,7 @@ export default {
 
     Vue.prototype.$getCsl = data => {
       return {
-        type: data.reference_csl_type,
+        type: data.reference_csl_type ?? data.type.csl_type,
         title: data.title,
         DOI: data.doi,
         author: parseNames(data.author),
@@ -50,7 +50,8 @@ export default {
             "date-parts": [data.year]
           }
         ],
-        "container-title": data.book ?? data.journal_name,
+        "container-title":
+          data.book ?? data.journal_name ?? data.journal.journal_name,
         "original-title": data.title_original,
         editor: data.book_editor ? parseNames(data.book_editor) : null,
         volume: data.volume,

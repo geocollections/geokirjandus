@@ -14,7 +14,8 @@
         />
 
         <h6 class="">
-          {{ $t("common.libraryCreatedBy") }}: {{ library.author }}
+          {{ $t("common.libraryCreatedBy") }}:
+          {{ library.author_txt }}
           {{ library.year }}
         </h6>
       </div>
@@ -54,12 +55,24 @@
           </div>
         </v-card>
       </v-card-text>
-      <v-card-text v-if="library.abstract" class="pt-0">
+      <v-card-text
+        v-if="
+          ($i18n.locale === 'ee' && library.abstract) ||
+            ($i18n.locale === 'en' && library.abstract_en)
+        "
+        class="pt-0"
+      >
         <h3>
           <b>{{ $t("common.summary") }}</b>
         </h3>
       </v-card-text>
-      <v-card-text v-if="library.abstract" class="py-0">
+      <v-card-text
+        v-if="
+          ($i18n.locale === 'ee' && library.abstract) ||
+            ($i18n.locale === 'en' && library.abstract_en)
+        "
+        class="py-0"
+      >
         <div v-translate="{ et: library.abstract, en: library.abstract_en }" />
       </v-card-text>
       <v-card-text class="pb-0">
@@ -120,7 +133,7 @@ export default {
       id: this.$route.params.id,
       library: null,
       isLoading: true,
-      error: false,
+      error: false
     };
   },
   metaInfo() {
@@ -130,14 +143,14 @@ export default {
         {
           property: "og:title",
           vmid: "og:title",
-          content: this.library?.title,
-        },
-      ],
+          content: this.library?.title
+        }
+      ]
     };
   },
   created() {
-    this.getLibrary().then((res) => {
-      this.library = res.results[0];
+    this.getLibrary().then(res => {
+      this.library = res;
 
       if (this.library === undefined) {
         this.error = true;
@@ -145,7 +158,7 @@ export default {
     });
   },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    next(vm => {
       if (from.name === "searchLibrary")
         vm.$store.dispatch(
           `libraryReferenceSearch/resetLibraryReferenceSearch`
@@ -156,11 +169,11 @@ export default {
         vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
         vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
           "author",
-          "year",
+          "year"
         ]);
         vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
           false,
-          false,
+          false
         ]);
 
         vm.$store.dispatch("library/setCurrentLibrary", to.params.id);
@@ -176,8 +189,8 @@ export default {
     },
     handleBack() {
       this.$router.back();
-    },
-  },
+    }
+  }
 };
 </script>
 

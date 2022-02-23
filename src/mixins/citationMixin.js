@@ -19,7 +19,9 @@ const citationMixin = {
         { text: "Holocene", value: "holocene" },
         { text: "Nature", value: "nature" },
         { text: "Geology", value: "geology" },
-        { text: "Palaeo3", value: "palaeo3" }
+        { text: "Palaeo3", value: "palaeo3" },
+        { text: "EJES", value: "ejes" },
+        { text: "The Geological Society of London", value: "GSL" }
       ]
     };
   },

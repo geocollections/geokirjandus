@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "EmmapouButton",
+  name: "EmmapouButton"
 };
 </script>
 <style lang="sass" scoped>

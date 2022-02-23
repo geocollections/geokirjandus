@@ -64,8 +64,8 @@
       </v-card-actions>
     </v-scroll-y-transition>
     <div class="d-flex justify-space-between mb-1">
-      <v-container>
-        <v-row>
+      <v-container class="ma-0 pa-0">
+        <v-row no-gutters>
           <citation-select
             v-if="view === 'list'"
             class="col-sm-3 col-12 py-0 px-2"

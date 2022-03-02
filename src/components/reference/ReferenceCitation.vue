@@ -1,5 +1,5 @@
 <template>
-  <div v-if="onlyText" v-html="citation($getCsl(reference))" />
+  <div v-if="onlyText" v-html="citation($getCslDetail(reference))" />
   <div v-else>
     <router-link
       class="referenceLink"

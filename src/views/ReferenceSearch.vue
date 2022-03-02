@@ -1,50 +1,29 @@
 <template>
-  <div class="home fill-height">
-    <v-container>
-      <v-row justify="center">
-        <v-col lg="10" class="px-2 px-sm-3">
-          <v-fade-transition :hide-on-leave="true">
-            <v-card
-              id="view"
-              v-if="
-                $route.name === 'searchReference' ||
-                  $route.name === 'searchLibrary'
-              "
-              elevation="2"
-              class="roundedBorder"
-            >
-              <router-view id="tabs" name="tabs" />
-              <router-view
-                name="referenceViewer"
-                style="background-color: #F3D3A5"
-              />
-              <router-view
-                name="libraryViewer"
-                style="background-color: #a5bac4"
-              />
-            </v-card>
-            <router-view v-else />
-          </v-fade-transition>
-        </v-col>
-      </v-row>
-    </v-container>
-    <div v-if="isPrint" class="d-none d-print-block">
-      <reference-list-print-view
-        :data="printResult"
-      ></reference-list-print-view>
-    </div>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col>
+        <v-fade-transition :hide-on-leave="true">
+          <v-card id="view" elevation="2" class="roundedBorder">
+            <tabs id="tabs" />
+            <reference-viewer style="background-color: #F3D3A5" />
+          </v-card>
+        </v-fade-transition>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import ReferenceListPrintView from "@/components/reference/ReferenceListPrintView";
 import queryMixin from "@/mixins/queryMixin";
+import Tabs from "@/components/Tabs.vue";
+import ReferenceViewer from "@/components/reference/ReferenceViewer";
 
 export default {
   name: "Home",
   components: {
-    ReferenceListPrintView
+    Tabs,
+    ReferenceViewer
   },
   mixins: [queryMixin],
   data() {

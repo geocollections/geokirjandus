@@ -522,6 +522,7 @@ export default {
         }
       };
     },
+    //
     stepCitationSelect() {
       return {
         beforeShowPromise: () => {
@@ -533,7 +534,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#citationSelect"),
-          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
+          on: "bottom"
         },
         title: this.$t("tour.search.stepCitationTitle"),
         text: this.$t("tour.search.stepCitationText"),

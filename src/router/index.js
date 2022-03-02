@@ -2,15 +2,14 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import store from "@/store";
+import AppLayout from "../layouts/AppLayout.vue";
 
-const Tabs = () => import("@/components/Tabs");
-const LibraryViewer = () => import("@/components/library/LibraryViewer");
-const ReferenceViewer = () => import("@/components/reference/ReferenceViewer");
-const Reference = () => import("@/components/reference/Reference");
-const Library = () => import("@/components/library/Library");
+const Reference = () => import("@/views/Reference");
+const ReferenceSearch = () => import("@/views/ReferenceSearch");
+const Library = () => import("@/views/Library");
+const LibrarySearch = () => import("@/views/LibrarySearch");
 
 const App = () => import("@/App");
-const Main = () => import("@/views/Main");
 const Landing = () => import("@/views/Landing");
 
 Vue.use(VueRouter);
@@ -22,19 +21,13 @@ const routes = [
     children: [
       { path: "", name: "landing", component: Landing },
       {
-        path: "reference",
-        component: Main,
-        meta: {
-          object: "reference"
-        },
+        path: "",
+        component: AppLayout,
         children: [
           {
-            path: "",
+            path: "reference",
             name: "searchReference",
-            components: {
-              referenceViewer: ReferenceViewer,
-              tabs: Tabs
-            },
+            component: ReferenceSearch,
             meta: {
               table: "reference",
               heading: "editReference.heading",
@@ -42,7 +35,7 @@ const routes = [
             }
           },
           {
-            path: ":id",
+            path: "reference/:id(\\d+)",
             name: "reference",
             component: Reference,
             props: true,
@@ -51,17 +44,11 @@ const routes = [
               heading: "editReference.heading",
               object: "reference"
             }
-          }
-        ]
-      },
-      {
-        path: "library",
-        component: Main,
-        children: [
+          },
           {
-            path: "",
-            name: "searchLibrary",
-            components: { libraryViewer: LibraryViewer, tabs: Tabs },
+            path: "library/:id(\\d+)",
+            name: "library",
+            component: Library,
             meta: {
               table: "library",
               heading: "editReference.heading",
@@ -69,9 +56,9 @@ const routes = [
             }
           },
           {
-            path: ":id(\\d+)",
-            name: "library",
-            component: Library,
+            path: "library",
+            name: "searchLibrary",
+            component: LibrarySearch,
             meta: {
               table: "library",
               heading: "editReference.heading",

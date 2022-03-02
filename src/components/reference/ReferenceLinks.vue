@@ -15,59 +15,27 @@
       <b>DOI</b>
     </v-chip>
     <v-chip
+      v-if="pdf"
       color="red darken-4"
       outlined
       :x-small="xSmall"
       :small="small"
-      v-if="item.attachment__filename"
       target="_blank"
       rel="noopener"
       class="d-print-none ml-1 my-1 link"
-      @click.stop="openPdf(item.attachment__filename)"
+      @click.stop="openPdf(pdf)"
     >
       <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
       <b>PDF</b>
     </v-chip>
     <v-chip
-      v-if="item.url && getUrl(item.url)"
+      v-if="url"
       outlined
       :x-small="xSmall"
       :small="small"
       color="green darken-4"
       class="d-print-none ml-1 my-1 link"
-      @click.stop="openUrl(item.url)"
-      target="_blank"
-      rel="noopener"
-    >
-      <v-icon :x-small="xSmall" small class="pr-1"
-        >fas fa-external-link-square-alt</v-icon
-      >
-      <b>URL</b>
-    </v-chip>
-    <v-chip
-      v-if="
-        !item.attachment_filename && item.parent_reference__attachment__filename
-      "
-      outlined
-      :x-small="xSmall"
-      :small="small"
-      color="gray"
-      class="d-print-none ml-1 my-1 link"
-      @click.stop="openPdf(item.parent_reference__attachment__filename)"
-      target="_blank"
-      rel="noopener"
-    >
-      <v-icon :x-small="xSmall" small class="pr-1">fas fa-file</v-icon>
-      <b>PDF</b>
-    </v-chip>
-    <v-chip
-      v-if="!item.url && item.parent_reference__url"
-      outlined
-      :x-small="xSmall"
-      :small="small"
-      color="gray"
-      class="d-print-none ml-1 my-1 link"
-      @click.stop="openUrl(item.parent_reference__url)"
+      @click.stop="openUrl(url)"
       target="_blank"
       rel="noopener"
     >
@@ -94,6 +62,19 @@ export default {
     small: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    pdf() {
+      return (
+        this.item.attachment__filename ??
+        this.item.parent_reference__attachment__filename ??
+        this.item.filename ??
+        null
+      );
+    },
+    url() {
+      return this.item.url ?? this.item.parent_reference__url ?? null;
     }
   },
   methods: {

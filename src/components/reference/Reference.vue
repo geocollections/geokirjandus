@@ -35,23 +35,14 @@
           <b>{{ $t("common.edit") }}</b>
         </v-chip>
       </v-card-actions>
-      <v-card-text class="pt-0">
+      <v-card-text>
         <div class="d-flex align-center pb-3">
           <h3 class=" mr-1">
             <b>{{ $t("common.citation") }}</b>
           </h3>
           <citation-select class="col-sm-3 py-0" />
-          <copy-button clipboard-class="referenceCitation" id="referenceCopy" />
         </div>
-        <v-card flat outlined>
-          <div class="pa-4">
-            <reference-citation
-              class="referenceCitation"
-              :reference="reference"
-              :only-text="true"
-            />
-          </div>
-        </v-card>
+        <base-citation-detail :citation="citation($getCslDetail(reference))" />
       </v-card-text>
       <v-card-text class=" row ma-0">
         <div class="col-12 col-md pa-0">
@@ -401,7 +392,6 @@ import {
   fetchReferences
 } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
-import ReferenceCitation from "@/components/reference/ReferenceCitation";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
 import CitationSelect from "@/components/CitationSelect";
@@ -411,17 +401,16 @@ import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import citationMixin from "@/mixins/citationMixin";
 
-import CopyButton from "@/components/CopyButton";
 import ReadMore from "@/components/ReadMore";
+import BaseCitationDetail from "../base/BaseCitationDetail.vue";
 export default {
   name: "Reference",
   components: {
     ReadMore,
-    CopyButton,
     ReferenceLinks,
     LeafletMap,
-    ReferenceCitation,
-    CitationSelect
+    CitationSelect,
+    BaseCitationDetail
   },
   mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
   props: {

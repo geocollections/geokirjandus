@@ -52,13 +52,8 @@
           </h3>
 
           <citation-select class="col-sm-3 py-0" />
-          <copy-button clipboard-class="libraryCitation" id="libraryCopy" />
         </div>
-        <v-card flat outlined>
-          <div class="pa-4">
-            <library-citation class="libraryCitation" :library="library" />
-          </div>
-        </v-card>
+        <base-citation-detail :citation="citation($getWebpageCsl(library))" />
         <h3
           class="mt-3"
           v-if="
@@ -120,9 +115,14 @@ import LibraryCitation from "@/components/library/LibraryCitation";
 import queryMixin from "@/mixins/queryMixin";
 import CopyButton from "@/components/CopyButton";
 import CitationSelect from "@/components/CitationSelect";
+import BaseCitationDetail from "../base/BaseCitationDetail.vue";
 export default {
   name: "Library",
-  components: { CopyButton, LibraryCitation, ReferenceViewer, CitationSelect },
+  components: {
+    ReferenceViewer,
+    CitationSelect,
+    BaseCitationDetail
+  },
   mixins: [dateMixin, citationMixin, queryMixin],
   data() {
     return {

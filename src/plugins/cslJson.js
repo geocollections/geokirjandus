@@ -74,7 +74,7 @@ export default {
             "date-parts": [data.year]
           }
         ],
-        "container-title": data.journal.journal_name,
+        "container-title": data.journal?.journal_name ?? null,
         "original-title": data.title_original,
         editor: data.book_editor ? parseNames(data.book_editor) : null,
         volume: data.volume,

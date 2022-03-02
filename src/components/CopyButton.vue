@@ -1,6 +1,6 @@
 <template>
   <v-btn icon @click="copyToClipboard">
-    <v-icon>fas fa-copy</v-icon>
+    <v-icon>fas fa-clipboard</v-icon>
   </v-btn>
 </template>
 

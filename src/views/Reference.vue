@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col lg="10" class="px-2 px-sm-3">
+      <v-col class="px-2 px-sm-3">
         <v-fade-transition :hide-on-leave="true">
           <v-card
-            class="roundedBorder referenceTitle px-1 pb-1 px-sm-2 pb-sm-2"
+            class="ml-auto mr-auto card roundedBorder referenceTitle px-1 pb-1 px-sm-2 pb-sm-2"
             v-if="reference"
           >
             <v-card-title
@@ -236,7 +236,7 @@
                     />
                     <div v-else v-html="reference.abstract" />
                   </div>
-                  <div v-if="localities.length > 0">
+                  <div v-if="localityMarkers.length > 0">
                     <span class="d-flex">
                       <h3 class="pb-3">
                         <b>{{ $t("common.map") }}</b>
@@ -256,7 +256,7 @@
                         <span>{{ $t("tooltip.map") }}</span>
                       </v-tooltip>
                     </span>
-                    <leaflet-map :markers="localities" />
+                    <leaflet-map :markers="localityMarkers" />
                   </div>
                 </div>
               </v-card-text>
@@ -266,24 +266,24 @@
                 </h3>
                 <div v-html="reference.remarks"></div>
               </v-card-text>
-              <v-card-text v-if="reference.keywords">
+              <v-card-text v-if="keywords">
                 <h3 class="pb-3">
                   <b>{{ $t("reference.keywords") }}</b>
                 </h3>
 
-                <span v-for="(keyword, index) in parseKeywords" :key="index">
+                <span v-for="(keyword, index) in keywords" :key="index">
                   <v-chip
                     outlined
                     color="#fd8719"
                     text-color="black"
                     class="mr-1 mb-1"
-                    @click="handleKeyword(keyword)"
+                    @click="handleKeyword(keyword.keyword.keyword)"
                   >
-                    {{ keyword }}
+                    {{ keyword.keyword.keyword }}
                   </v-chip>
                 </span>
               </v-card-text>
-              <v-card-text v-if="childReferences">
+              <v-card-text v-if="childReferences.length > 0">
                 <h3 class="pb-3">
                   <b>{{ $t("reference.contains") }}</b>
                 </h3>
@@ -309,23 +309,23 @@
                   </tbody>
                 </v-simple-table>
               </v-card-text>
-              <v-card-text
-                v-if="reference.localities || reference.taxa"
-                class="row ma-0"
-              >
-                <div v-if="reference.localities" class="col-12 col-md-6 pa-0">
+              <v-card-text class="row ma-0">
+                <div v-if="localities.length > 0" class="col-12 col-md-6 pa-0">
                   <h3 class="pb-3">
                     <b>{{ $t("reference.localities") }}</b>
                   </h3>
 
                   <ul>
-                    <li v-for="locality in parseLocalities" :key="locality.id">
+                    <li
+                      v-for="locality in localities"
+                      :key="locality.locality.id"
+                    >
                       <a
-                        :href="localityURL(locality.id)"
+                        :href="localityURL(locality.locality.id)"
                         target="_blank"
                         v-translate="{
-                          et: locality.name,
-                          en: locality.nameEng
+                          et: locality.locality.locality,
+                          en: locality.locality.locality_en
                         }"
                       />
                     </li>
@@ -359,15 +359,17 @@
                     color="#fd8719"
                     text-color="black"
                     class="mr-1 mb-1"
+                    v-translate="{
+                      et: library.library.title,
+                      en: library.library.title_en
+                    }"
                     @click="
                       $router.push({
                         name: `library`,
                         params: { id: library.id }
                       })
                     "
-                  >
-                    {{ library.title }}
-                  </v-chip>
+                  />
                 </span>
               </v-card-text>
               <v-card-text>
@@ -434,6 +436,8 @@ import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import citationMixin from "@/mixins/citationMixin";
 
+import axios from "axios";
+
 import ReadMore from "@/components/ReadMore";
 import BaseCitationDetail from "@/components/base/BaseCitationDetail.vue";
 export default {
@@ -457,7 +461,9 @@ export default {
       libraries: [],
       localities: [],
       error: false,
-      childReferences: null
+      childReferences: [],
+      localityMarkers: [],
+      keywords: []
     };
   },
   metaInfo() {
@@ -530,10 +536,6 @@ export default {
     }
   },
   created() {
-    if (!this.$store.state.references.facet.facet_fields) {
-      this.getReferences();
-    }
-
     this.getReference(this.$route.params.id);
   },
   beforeRouteUpdate(to, from, next) {
@@ -565,38 +567,31 @@ export default {
     taxonURL(id) {
       return `https://fossiilid.info/${id}`;
     },
-    getReferenceLibraries() {
-      return fetchReferenceLibraries({
-        search: {
-          value: `id:(${this.reference.libraries.replaceAll("|", " ").trim()})`,
-          type: "text"
-        }
-      });
+    async getReferenceLibraries() {
+      const localityReferenceResponse = await axios.get(
+        `https://api.geoloogia.info/library_reference/?reference=${this.reference.id}&nest=1`
+      );
+      return localityReferenceResponse.data;
     },
-    getReferenceLocalities() {
-      const localityIdsStr = this.reference.locality_ids.replaceAll(";", "");
-      return fetchReferenceLocalities({
-        search: {
-          value: `id:(${localityIdsStr})`,
-          type: "text"
-        }
-      });
+    async getReferenceLocalities() {
+      const localityReferenceResponse = await axios.get(
+        `https://api.geoloogia.info/locality_reference/?reference=${this.reference.id}&nest=1`
+      );
+      return localityReferenceResponse.data;
     },
-    getChildReferences() {
-      return fetchReferences({
-        advancedSearch: {
-          parent_reference_id: {
-            type: "raw",
-            id: "parent_reference_id",
-            value: this.reference.id,
-            lookUpType: null,
-            fields: ["parent_reference_id"]
-          }
-        },
-        sortBy: ["pages_start"],
-        sortDesc: [false],
-        fields: ["id", "author", "pages", "title"]
-      });
+    async getChildReferences() {
+      const childReferenceResponse = await axios.get(
+        `https://api.geoloogia.info/reference/?parent_reference=${this.reference.id}&limit=1000`
+      );
+
+      return childReferenceResponse.data;
+    },
+    async getKeywords() {
+      const keywordResponse = await axios.get(
+        `https://api.geoloogia.info/reference_keyword/?reference=${this.reference.id}&nest=1&limit=1000`
+      );
+
+      return keywordResponse.data;
     },
     getReference(id) {
       fetchReference(id).then(res => {
@@ -607,35 +602,53 @@ export default {
 
         this.reference = res;
 
-        if (this.reference.localities) {
-          this.getReferenceLocalities().then(res => {
-            this.localities = res.results
-              .filter(locality => {
-                return !!(locality.latitude && locality.longitude);
-              })
-              .map(locality => {
-                const localityTitle =
-                  this.$i18n.locale === "ee"
-                    ? locality.locality
-                    : locality.locality_en;
-
-                return {
-                  popup: `<a href="https://geoloogia.info/locality/${locality.id}" target="_blank">${localityTitle}</a>`,
-                  title: localityTitle,
-                  coordinates: [locality.latitude, locality.longitude]
-                };
-              });
+        this.getReferenceLocalities().then(res => {
+          this.localities = res.results.filter(localityReference => {
+            return !!(
+              localityReference.locality?.latitude &&
+              localityReference.locality?.longitude
+            );
           });
-        }
 
-        if (this.reference.libraries) {
-          this.getReferenceLibraries().then(res => {
-            this.libraries = res.results;
+          this.localityMarkers = this.localities.map(localityReference => {
+            const localityTitle =
+              this.$i18n.locale === "ee"
+                ? localityReference.locality?.locality
+                : localityReference.locality?.locality_en;
+
+            return {
+              popup: `<a href="https://geoloogia.info/locality/${localityReference.locality?.id}" target="_blank">${localityTitle}</a>`,
+              title: localityTitle,
+              coordinates: [
+                localityReference.locality?.latitude,
+                localityReference.locality?.longitude
+              ]
+            };
           });
-        }
+        });
+
+        this.getReferenceLibraries().then(res => {
+          this.libraries = res.results;
+        });
 
         this.getChildReferences().then(res => {
-          if (res.count > 0) this.childReferences = res.results;
+          // NOTE: Has to be sorted client-side because the pages field is a string.
+          this.childReferences = res.results.sort((a, b) => {
+            if (a.pages === null && b.pages === null) return 0;
+            if (a.pages === null) return -1;
+            if (b.pages === null) return 1;
+            const aStart = a.pages.includes("-")
+              ? parseInt(a.pages.split("-")[0].trim())
+              : parseInt(a.pages);
+            const bStart = b.pages.includes("-")
+              ? parseInt(b.pages.split("-")[0].trim())
+              : parseInt(b.pages);
+            return aStart - bStart;
+          });
+        });
+
+        this.getKeywords().then(res => {
+          this.keywords = res.results;
         });
       });
     }
@@ -644,6 +657,12 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 1904px) {
+  .card {
+    max-width: 1400px !important;
+  }
+}
+
 .referenceTitle {
   background-color: #f3d3a5;
 }

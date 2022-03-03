@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col lg="10" class="px-2 px-sm-3">
+      <v-col class="px-2 px-sm-3">
         <v-fade-transition :hide-on-leave="true">
           <v-card
-            class="roundedBorder libraryTitle px-1 pb-1 px-sm-2 pb-sm-2"
+            class="ml-auto mr-auto  card roundedBorder libraryTitle px-1 pb-1 px-sm-2 pb-sm-2"
             v-if="library"
           >
             <v-card-title
@@ -208,6 +208,12 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 1904px) {
+  .card {
+    max-width: 1400px !important;
+  }
+}
+
 .libraryTitle {
   background-color: #a5bac4;
 }

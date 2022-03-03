@@ -1,9 +1,13 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row justify="center">
       <v-col>
         <v-fade-transition :hide-on-leave="true">
-          <v-card id="view" elevation="2" class="roundedBorder">
+          <v-card
+            id="view"
+            elevation="2"
+            class="ml-auto mr-auto card roundedBorder"
+          >
             <tabs id="tabs" />
             <library-viewer style="background-color: #a5bac4" />
           </v-card>
@@ -84,11 +88,11 @@ export default {
 </script>
 
 <style scoped>
-/* @media (min-width: 1904px) {
+@media (min-width: 1904px) {
   .card {
     max-width: 1400px !important;
   }
-} */
+}
 
 .main {
   background-color: #f6eddf;

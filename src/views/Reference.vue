@@ -24,7 +24,7 @@
                 </v-btn>
               </v-col>
             </v-card-title>
-            <div class="body elevation-0">
+            <div class="body">
               <v-card-actions class=" pt-3">
                 <reference-links :item="reference" />
                 <v-spacer />
@@ -331,7 +331,10 @@
                     </li>
                   </ul>
                 </div>
-                <div v-if="taxa" class="col-12 col-md-6 pa-0 pt-4 pt-md-0">
+                <div
+                  v-if="taxa.length > 0"
+                  class="col-12 col-md-6 pa-0 pt-4 pt-md-0"
+                >
                   <h3 class="pb-3">{{ $t("reference.describedTaxa") }}</h3>
                   <ul>
                     <li v-for="taxon in taxa" :key="taxon.id">

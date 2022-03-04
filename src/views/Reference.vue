@@ -223,7 +223,12 @@
                 </div>
                 <div
                   class="col-12 col-md-6 pa-0 px-md-4 pt-4 pt-md-0"
-                  v-if="reference.abstract || localities.length > 0"
+                  v-if="
+                    reference.abstract ||
+                      localities.length > 0 ||
+                      siteMarkers.length > 0 ||
+                      areas.length > 0
+                  "
                 >
                   <div class="pb-3" v-if="reference.abstract">
                     <h3 class="pb-3">
@@ -236,7 +241,13 @@
                     />
                     <div v-else v-html="reference.abstract" />
                   </div>
-                  <div v-if="localityMarkers.length > 0">
+                  <div
+                    v-if="
+                      localityMarkers.length > 0 ||
+                        siteMarkers.length > 0 ||
+                        areas.length > 0
+                    "
+                  >
                     <span class="d-flex">
                       <h3 class="pb-3">
                         <b>{{ $t("common.map") }}</b>
@@ -256,7 +267,11 @@
                         <span>{{ $t("tooltip.map") }}</span>
                       </v-tooltip>
                     </span>
-                    <leaflet-map :markers="localityMarkers" />
+                    <leaflet-map
+                      :markers="localityMarkers"
+                      :siteMarkers="siteMarkers"
+                      :areas="areas"
+                    />
                   </div>
                 </div>
               </v-card-text>
@@ -460,11 +475,14 @@ export default {
       reference: null,
       libraries: [],
       localities: [],
+      localityMarkers: [],
       error: false,
       childReferences: [],
-      localityMarkers: [],
       keywords: [],
-      taxa: []
+      taxa: [],
+      sites: [],
+      siteMarkers: [],
+      areas: []
     };
   },
   metaInfo() {
@@ -533,6 +551,28 @@ export default {
     taxonURL(id) {
       return `https://fossiilid.info/${id}`;
     },
+    parseAreaPolygon(polygonValue) {
+      try {
+        // NOTE: Remove trailing commas from JSON object string
+        // eslint-disable-next-line no-useless-escape
+        const regex = /\,(?!\s*?[\{\[\"\'\w])/g;
+        return JSON.parse(polygonValue.replace(regex, ""));
+      } catch (e) {
+        return null;
+      }
+    },
+    geojson(polygon) {
+      if (polygon === null) return null;
+      if (!(polygon instanceof Array)) return polygon;
+      else
+        return {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: polygon
+          }
+        };
+    },
     async getReferenceLibraries() {
       const localityReferenceResponse = await axios.get(
         `https://api.geoloogia.info/library_reference/?reference=${this.reference.id}&nest=1`
@@ -583,6 +623,26 @@ export default {
             );
           });
 
+          this.sites = res.results.filter(localityReference => {
+            return !!(
+              localityReference.site?.latitude &&
+              localityReference.site?.longitude
+            );
+          });
+
+          this.areas = res.results
+            .filter(localityReference => {
+              return !!localityReference.area?.polygon;
+            })
+            .map(localityReference => {
+              return {
+                ...localityReference,
+                area: {
+                  ...localityReference.area,
+                  polygon: this.geojson(localityReference.area.polygon)
+                }
+              };
+            });
           this.localityMarkers = this.localities.map(localityReference => {
             const localityTitle =
               this.$i18n.locale === "ee"
@@ -595,6 +655,22 @@ export default {
               coordinates: [
                 localityReference.locality?.latitude,
                 localityReference.locality?.longitude
+              ]
+            };
+          });
+
+          this.siteMarkers = this.sites.map(localityReference => {
+            const siteTitle =
+              this.$i18n.locale === "ee"
+                ? localityReference.site?.name
+                : localityReference.site?.name_en;
+
+            return {
+              popup: `<a href="https://geoloogia.info/site/${localityReference.site?.id}" target="_blank">${siteTitle}</a>`,
+              title: siteTitle,
+              coordinates: [
+                localityReference.site?.latitude,
+                localityReference.site?.longitude
               ]
             };
           });

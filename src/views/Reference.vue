@@ -331,15 +331,12 @@
                     </li>
                   </ul>
                 </div>
-                <div
-                  v-if="reference.taxa"
-                  class="col-12 col-md-6 pa-0 pt-4 pt-md-0"
-                >
+                <div v-if="taxa" class="col-12 col-md-6 pa-0 pt-4 pt-md-0">
                   <h3 class="pb-3">{{ $t("reference.describedTaxa") }}</h3>
                   <ul>
-                    <li v-for="taxon in parseTaxa" :key="taxon.id">
+                    <li v-for="taxon in taxa" :key="taxon.id">
                       <a :href="taxonURL(taxon.id)" target="_blank">{{
-                        taxon.name
+                        taxon.taxon
                       }}</a>
                     </li>
                   </ul>
@@ -463,7 +460,8 @@ export default {
       error: false,
       childReferences: [],
       localityMarkers: [],
-      keywords: []
+      keywords: [],
+      taxa: []
     };
   },
   metaInfo() {
@@ -484,41 +482,6 @@ export default {
   },
   computed: {
     ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
-    parseLocalities() {
-      const localityNames = this.reference.localities.split(";");
-
-      const localityNamesEng = this.reference.localities_en.split(";");
-      const localityIds = this.reference.locality_ids.split(";");
-
-      return localityIds.map((id, index) => {
-        return {
-          id: id.trim(),
-          name: localityNames[index].trim(),
-          nameEng: localityNamesEng[index].trim()
-        };
-      });
-    },
-    parseTaxa() {
-      const taxaNames = this.reference.taxa.split(";");
-      const ids = this.reference.taxon_ids.split(";");
-
-      return ids.map((id, index) => {
-        return {
-          id: id.trim(),
-          name: taxaNames[index].trim()
-        };
-      });
-    },
-    parseKeywords() {
-      return this.reference.keywords
-        .split(";")
-        .filter(keyword => {
-          return keyword !== " ";
-        })
-        .map(keyword => {
-          return keyword.trim();
-        });
-    },
     journal() {
       return this.reference?.journal;
     },
@@ -593,6 +556,13 @@ export default {
 
       return keywordResponse.data;
     },
+    async getTaxa() {
+      const taxonResponse = await axios.get(
+        `https://api.geoloogia.info/taxon/?reference=${this.reference.id}&limit=1000`
+      );
+
+      return taxonResponse.data;
+    },
     getReference(id) {
       fetchReference(id).then(res => {
         if (res === undefined) {
@@ -649,6 +619,9 @@ export default {
 
         this.getKeywords().then(res => {
           this.keywords = res.results;
+        });
+        this.getTaxa().then(res => {
+          this.taxa = res.results;
         });
       });
     }

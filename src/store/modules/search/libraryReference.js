@@ -1,10 +1,14 @@
-import actions from "./actions";
-import mutations from "./mutations";
+import actions from "@/store/modules/search/actions";
+import mutations from "@/store/modules/search/mutations";
 import { getField } from "vuex-map-fields";
-import reference from "./reference";
-import library from "./library";
-import libraryReference from "@/store/modules/search/libraryReference";
+
 const INIT_STATE = {
+  options: {
+    page: 1,
+    paginateBy: 50,
+    sortBy: ["author", "year"],
+    sortDesc: [false, false]
+  },
   page: 1,
   paginateBy: 50,
   sortBy: [],
@@ -21,7 +25,7 @@ const INIT_STATE = {
         type: "text",
         id: "author",
         lookUpType: "contains",
-        value: null,
+        value: "",
         label: "reference.author",
         fields: ["author"]
       },
@@ -29,8 +33,8 @@ const INIT_STATE = {
         type: "range",
         id: "year",
         lookUpType: "range",
-        value: [NaN, NaN],
-        label: "reference.years",
+        value: [null, null],
+        label: "reference.year",
         placeholders: ["common.start", "common.end"],
         fields: ["year"]
       },
@@ -49,14 +53,6 @@ const INIT_STATE = {
         value: null,
         label: "reference.localities",
         fields: ["localities"]
-      },
-      taxa: {
-        type: "text",
-        id: "taxa",
-        lookUpType: "equals",
-        value: null,
-        label: "reference.taxa",
-        fields: ["taxa"]
       },
       book: {
         type: "text",
@@ -108,7 +104,7 @@ const INIT_STATE = {
         type: "checkbox",
         id: "isEstonianReference",
         lookUpType: "contains",
-        value: "1",
+        value: null,
         label: "reference.isEstonianReference",
         fields: ["is_estonian_reference"]
       },
@@ -120,14 +116,6 @@ const INIT_STATE = {
         label: "reference.keywords",
         fields: ["keywords"]
       },
-      publisher: {
-        type: "text",
-        id: "publisher",
-        lookUpType: "equals",
-        value: null,
-        label: "reference.publisher",
-        fields: ["publisher"]
-      },
       volumeAndNumber: {
         type: "text",
         id: "volumeAndNumber",
@@ -135,6 +123,22 @@ const INIT_STATE = {
         value: null,
         label: "reference.volumeAndNumber",
         fields: ["volume", "number"]
+      },
+      taxa: {
+        type: "text",
+        id: "taxa",
+        lookUpType: "equals",
+        value: null,
+        label: "reference.taxa",
+        fields: ["taxa"]
+      },
+      publisher: {
+        type: "text",
+        id: "publisher",
+        lookUpType: "equals",
+        value: null,
+        label: "reference.publisher",
+        fields: ["publisher"]
       }
     },
     allIds: [
@@ -145,12 +149,10 @@ const INIT_STATE = {
       "journal",
       "abstract",
       "keywords",
-      "publisher",
       "volumeAndNumber",
       "referenceType",
       "language",
       "localities",
-      "taxa",
       "isEstonianReference",
       "isEstonianAuthor"
     ]
@@ -163,20 +165,18 @@ const INIT_STATE = {
     { text: "lookUpType.notContains", value: "notContains", symbol: "!*" }
   ]
 };
-
 const state = () => {
   return INIT_STATE;
 };
 
 export default {
   namespaced: true,
-  // state,
+  state,
   getters: {
     // Add the `getField` getter to the
     // `getters` of your Vuex store instance.
     getField
   },
   actions,
-  mutations,
-  modules: { reference, library, libraryReference }
+  mutations
 };

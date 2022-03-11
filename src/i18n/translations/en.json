@@ -46,7 +46,7 @@
   },
   "common": {
     "search": "Search",
-    "advancedSearch": "Additional filters",
+    "advancedSearch": "Filter",
     "found": "Found",
     "records": "records",
     "listView": "List",
@@ -147,7 +147,9 @@
     "pagesStart": "Start page",
     "pagesEnd": "End page",
     "taxa": "Taxa",
-    "volumeAndNumber": "Volume/Number"
+    "volumeAndNumber": "Volume/Number",
+    "sites": "Sites",
+    "areas": "Areas"
   },
   "library": {
     "id": "ID",
@@ -215,5 +217,14 @@
       "stepLibraryCopyTitle": "Copy library citation",
       "stepLibraryCopyText": "By clicking here, the current library citation is copied to clipboard."
     }
+  },
+  "headerMenu": {
+    "tooltipConfig": "Tabel configuration",
+    "headers": "Headers",
+    "tooltipResetHeaders": "Reset headers",
+    "tooltipShowActiveHeaders": "Show active headers",
+    "tooltipShowAllHeaders": "Show all headers",
+    "filter": "Filter",
+    "headerSelectDisabled": "Sorting enabled"
   }
 }

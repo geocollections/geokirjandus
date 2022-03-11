@@ -1,45 +1,107 @@
 <template>
   <v-container>
-    <v-row justify="center">
-      <v-col>
+    <v-row no-gutters class="flex-nowrap">
+      <v-col class="pl-0" v-if="!$vuetify.breakpoint.smAndDown">
+        <div class="text-h4 font-weight-medium mb-4">
+          {{ $t("tabs.references") }}
+        </div>
+        <search-reference
+          :col-size="12"
+          v-on:update:search="handleUpdateSearch"
+          v-on:update:advancedSearch="handleUpdateAdvancedSearch"
+          v-on:reset:search="handleResetSearch"
+        />
+      </v-col>
+      <v-col md="9" lg="10" class="ml-md-8">
+        <div
+          v-if="$vuetify.breakpoint.smAndDown"
+          class="text-h4 font-weight-medium mb-3 mb-md-0 mx-3"
+        >
+          {{ $t("tabs.references") }} [{{ count }}]
+        </div>
         <v-fade-transition :hide-on-leave="true">
           <v-card
             id="view"
-            elevation="2"
+            flat
+            color="transparent"
+            elevation="0"
             class="ml-auto mr-auto card roundedBorder"
           >
-            <tabs id="tabs" />
-            <reference-viewer style="background-color: #F3D3A5" />
+            <reference-viewer
+              :options.sync="options"
+              :data="results"
+              :count="count"
+              @update:data="getReferencesFromApi"
+            />
           </v-card>
         </v-fade-transition>
       </v-col>
     </v-row>
+    <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
+      <v-btn
+        class="mt-2 d-print-none d-md-none"
+        color="#1C9BDE"
+        fixed
+        rounded
+        dark
+        bottom
+        style="left: 50%;transform: translateX(-50%);z-index: 4"
+        id="searchFab"
+        @click="showSearch = !showSearch"
+      >
+        <v-icon small left>fas fa-search</v-icon>
+        {{ $t("common.search") }}
+      </v-btn>
+    </v-fab-transition>
+    <v-navigation-drawer
+      v-if="$vuetify.breakpoint.smAndDown"
+      v-model="showSearch"
+      disable-route-watcher
+      mobile-breakpoint="960"
+      bottom
+      fixed
+      temporary
+      style="background-color: #fff5e6;"
+    >
+      <search-reference
+        class="my-3 mx-2"
+        :col-size="12"
+        v-on:update:search="handleUpdateSearch"
+        v-on:update:advancedSearch="handleUpdateAdvancedSearch"
+        v-on:reset:search="handleResetSearch"
+      />
+    </v-navigation-drawer>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import queryMixin from "@/mixins/queryMixin";
-import Tabs from "@/components/Tabs.vue";
+import { mapActions, mapState } from "vuex";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
-
+import SearchReference from "@/components/search/SearchReference";
+import queryMixin from "@/mixins/queryMixin";
+import { fetchReferences } from "@/utils/apiCalls";
+import { mapFields } from "vuex-map-fields";
 export default {
   name: "Home",
   components: {
-    Tabs,
-    ReferenceViewer
+    ReferenceViewer,
+    SearchReference
   },
   mixins: [queryMixin],
   data() {
     return {
-      showSearch: this.$vuetify.breakpoint.mdAndUp,
-      showAdvancedSearch: true,
+      showSearch: false,
       isPrint: false,
       printResult: []
     };
   },
   metaInfo: {
     title: "Otsing"
+  },
+  computed: {
+    ...mapFields("search/reference", ["options"]),
+    ...mapState("search/reference", ["search", "advancedSearch"]),
+    ...mapState("references", ["count", "results"])
   },
   created() {
     window.onbeforeprint = () => {
@@ -65,7 +127,7 @@ export default {
     ...mapActions("search", [
       "updateSearch",
       "updateAdvancedSearch",
-      "resetSearch",
+      "resetReferenceSearch",
       "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
@@ -83,21 +145,29 @@ export default {
       else this.updateAdvancedSearch(event);
     },
     handleResetSearch(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/resetSearch", event);
-      else this.resetSearch(event);
+      this.resetReferenceSearch(event);
+      this.getReferences().then(res => {
+        this.setReferences(res);
+      });
+    },
+    getReferencesFromApi() {
+      const searchObj = {
+        search: this.search,
+        page: this.options.page,
+        paginateBy: this.options.paginateBy,
+        sortBy: this.options.sortBy,
+        sortDesc: this.options.sortDesc,
+        advancedSearch: this.advancedSearch.byIds
+      };
+      fetchReferences(searchObj).then(res => {
+        this.setReferences(res);
+      });
     }
   }
 };
 </script>
 
 <style scoped>
-@media (min-width: 1904px) {
-  .card {
-    max-width: 1400px !important;
-  }
-}
-
 .main {
   background-color: #f6eddf;
 }

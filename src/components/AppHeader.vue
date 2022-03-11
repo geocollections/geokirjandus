@@ -1,37 +1,58 @@
 <template>
   <v-app-bar
-    clipped-left
+    elevation="2"
     app
-    class="appBar"
+    absolute
+    class=" mx-1 mx-auto"
+    color="#ecc285"
     style="z-index: 9998"
-    :src="require('@/assets/books4.jpg')"
   >
     <template v-slot:img="{ props }">
       <v-img
         v-bind="props"
-        gradient="to top, rgba(229, 129, 36, 0.4), rgba(0, 0, 0, 0.40)"
+        gradient="to top, rgba(225, 159, 61, 0.9), rgba(225, 159, 61, 0.9)"
       ></v-img>
     </template>
-    <v-btn
-      id="showSearch"
-      aria-label="show search"
-      v-if="$vuetify.breakpoint.mdAndUp"
-      @click="$emit('update:showSearch')"
-      icon
-      dark
+    <v-toolbar-title
+      tag="a"
+      @click="goToLanding"
+      class="title white--text text-capitalize d-flex align-center font-weight-medium text-h6 pr-4"
     >
-      <v-icon class="search">fas fa-search</v-icon>
-    </v-btn>
-    <v-toolbar-title style="text-shadow: 2px 2px 10px black;">
-      <a class="title" @click="goToLanding">
-        {{ $t("title2") }}
-      </a>
+      {{ $t("title2") }}
     </v-toolbar-title>
+    <v-toolbar-items class="ml-4">
+      <v-btn
+        class="text-capitalize text-body-1 font-weight-medium"
+        style="font-family: 'Exo 2' !important"
+        :ripple="false"
+        dark
+        text
+        link
+        :to="{ name: 'searchReference' }"
+      >
+        <v-icon left>fas fa-book</v-icon>
+        {{ $t("tabs.references") }}
+      </v-btn>
+
+      <v-btn
+        class="text-capitalize text-body-1 font-weight-medium"
+        style="font-family: 'Exo 2' !important"
+        :ripple="false"
+        dark
+        text
+        link
+        :to="{ name: 'searchLibrary' }"
+      >
+        {{ $t("tabs.libraries") }}
+      </v-btn>
+    </v-toolbar-items>
     <v-spacer />
-    <tour v-if="$vuetify.breakpoint.smAndUp" />
-    <links v-if="$vuetify.breakpoint.smAndUp" />
-    <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
-    <emaapou-button class="mx-2" />
+    <v-toolbar-items>
+      <tour v-if="$vuetify.breakpoint.smAndUp" />
+      <links v-if="$vuetify.breakpoint.smAndUp" />
+      <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
+      <emaapou-button />
+    </v-toolbar-items>
     <!--  MOBILE MENU  -->
     <v-menu
       v-if="!$vuetify.breakpoint.smAndUp"
@@ -47,7 +68,7 @@
       </template>
       <v-list color="#F6EDDF" class="text-center">
         <div class="pb-2">
-          <tour :isDark="false" />
+          <tour :isDark="false" class="pb-2" />
         </div>
         <div class="pb-2">
           <links :isDark="false" />
@@ -68,6 +89,14 @@ import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "AppHeader",
   components: { Tour, Links, LangButtons, EmaapouButton },
+  computed: {
+    maxWidth() {
+      if (this.$vuetify.breakpoint.xlOnly) return "1785px";
+      if (this.$vuetify.breakpoint.lgOnly) return "1185px";
+      if (this.$vuetify.breakpoint.mdOnly) return "900px";
+      return "2000px";
+    }
+  },
   methods: {
     goToLanding() {
       this.$router.replace({ name: "landing" }).catch(() => {});
@@ -76,17 +105,42 @@ export default {
 };
 </script>
 
-<style scoped lang="sass">
-@import 'src/sass/variables.sass'
+<style scoped lang="scss">
+@import "src/sass/variables.sass";
 
-.appBar
-  background-color: $primary-color !important
-  border-color: $primary-color
+@media (min-width: 960px) {
+  .v-toolbar ::v-deep .v-toolbar__content {
+    max-width: 900px;
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
 
-.title
-  color: whitesmoke !important
-  cursor: pointer
-
-.search
-  color: whitesmoke !important
+@media (min-width: 1264px) {
+  .v-toolbar ::v-deep .v-toolbar__content {
+    max-width: 1185px;
+  }
+}
+@media (min-width: 1905px) {
+  .v-toolbar ::v-deep .v-toolbar__content {
+    max-width: 1785px;
+  }
+}
+.appBar {
+  background-color: $primary-color !important;
+  border-color: $primary-color;
+}
+.title {
+  // color: white !important
+  // text-shadow: 1px 1px 1px #F6EDDF
+  cursor: pointer;
+  font-family: "Exo 2", "Roboto", sans-serif !important;
+}
+.search {
+  color: whitesmoke !important;
+}
+.v-toolbar ::v-deep .v-toolbar__content {
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>

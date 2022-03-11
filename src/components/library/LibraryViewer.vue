@@ -1,14 +1,11 @@
 <template>
   <div class="px-1 px-sm-2">
     <data-viewer
+      border-color="#a5bac4"
       :module="$route.meta.object"
-      :data="result"
+      :data="results"
       :count="count"
-      :page="1"
       :is-loading="isLoading"
-      :paginate-by="100"
-      :sort-by="sortBy"
-      :sort-desc="sortDesc"
       :headers="libraryHeaders"
       :nothing-found="$t('error.nothingFoundLibrary')"
       :title="
@@ -16,14 +13,17 @@
           ? 'viewer.title.library_html'
           : 'viewer.title.library_single_html'
       "
-      :copy-button="false"
-      :helpers="false"
-      v-on:open="open"
-      v-on:update:paginateBy="updatePaginateBy"
-      v-on:update:page="updatePage"
-      v-on:update:sortBy="updateSortBy"
-      v-on:update:sortDesc="updateSortDesc"
-      v-on:update:headers="handleUpdateTableHeaders"
+      :options.sync="options"
+      @open="open"
+      @update:paginateBy="handleUpdatePaginateBy"
+      @update:page="handleUpdatePage"
+      @update:headers="handleUpdateTableHeaders"
+      @reset:headers="
+        resetHeaders({
+          module: 'libraryHeaders',
+          options: { sortBy: options.sortBy }
+        })
+      "
     >
       <!--  TABLE VIEW CUSTOM TEMPLATES  -->
       <template v-slot:item.bookJournal="{ item }">
@@ -48,12 +48,13 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import debounce from "lodash/debounce";
+import { mapFields } from "vuex-map-fields";
 import LibraryListView from "@/components/library/LibraryListView";
 import DataViewer from "@/components/DataViewer";
 import dateMixin from "@/mixins/dateMixin";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
+import { fetchLibraries } from "@/utils/apiCalls";
 
 export default {
   name: "LibraryViewer",
@@ -70,68 +71,56 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
-      result: []
+      isLoading: true
     };
   },
   computed: {
-    ...mapState("librarySearch", ["sortBy", "sortDesc"]),
-    ...mapState("library", ["count"]),
+    ...mapFields("search/library", ["options"]),
+    ...mapState("search/library", ["search", "advancedSearch"]),
+    ...mapState("library", ["count", "results"]),
     ...mapState("tableSettings", ["libraryHeaders"])
   },
   watch: {
-    page: {
-      handler: debounce(function() {
-        this.handleLibrariesResult();
-      }, 300)
-    },
-    paginateBy: {
+    options: {
       handler() {
-        this.resetPage();
-        this.handleLibrariesResult();
-      }
-    },
-    sortDesc: {
-      handler() {
-        this.handleLibrariesResult();
-      }
-    },
-    libraryParameters: {
-      handler: debounce(function() {
-        this.handleLibrariesResult();
-      }, 300),
-      deep: true
-    },
-    referenceParameters: {
-      handler: debounce(function() {
-        this.getReferences();
-      }, 300),
+        this.getLibrariesFromApi();
+      },
       deep: true
     }
   },
   created() {
-    this.handleLibrariesResult();
-    this.getReferences();
+    this.getLibrariesFromApi();
   },
   methods: {
-    ...mapActions("librarySearch", [
+    ...mapActions("search/library", [
       "updatePage",
       "updatePaginateBy",
-      "updateSortBy",
-      "updateSortDesc",
+      "updateOptions",
       "resetPage"
     ]),
     ...mapActions("tableSettings", ["setLibraryHeaders"]),
-    handleLibrariesResult() {
-      this.isLoading = true;
-
-      this.getLibraries().then(res => {
-        this.result = res.results;
-        this.isLoading = false;
-      });
-    },
     handleUpdateTableHeaders(event) {
       this.setLibraryHeaders(event);
+    },
+    handleUpdatePage(event) {
+      this.updatePage(event);
+    },
+    handleUpdatePaginateBy(event) {
+      this.updatePaginateBy(event);
+    },
+    getLibrariesFromApi() {
+      const searchObj = {
+        search: this.search,
+        page: this.options.page,
+        paginateBy: this.options.paginateBy,
+        sortBy: this.options.sortBy,
+        sortDesc: this.options.sortDesc,
+        advancedSearch: this.advancedSearch.byIds
+      };
+      fetchLibraries(searchObj).then(res => {
+        this.setLibraries(res);
+        this.isLoading = false;
+      });
     },
     open(event) {
       this.$router.push(`/library/${event.id}`);

@@ -2,29 +2,58 @@
   <v-container>
     <v-row justify="center">
       <v-col class="px-2 px-sm-3">
-        <v-fade-transition :hide-on-leave="true">
-          <v-card
-            class="ml-auto mr-auto card roundedBorder referenceTitle px-1 pb-1 px-sm-2 pb-sm-2"
-            v-if="reference"
-          >
-            <v-card-title
-              class="pt-1 pb-1 px-0 d-flex text-center referenceTitle"
+        <v-breadcrumbs
+          class="pa-0"
+          :items="[
+            {
+              text: $t('tabs.references'),
+              to: { name: 'searchReference' },
+              exact: true
+            },
+            {
+              text: `${reference.reference}`
+            }
+          ]"
+        >
+          <template v-slot:item="{ item }">
+            <v-breadcrumbs-item
+              v-if="item.to"
+              :exact="item.exact"
+              :to="item.to"
             >
-              <v-col cols="auto" class="py-0 px-0">
-                <v-btn large icon @click="handleBack()" aria-label="back">
-                  <v-icon>fas fa-arrow-left</v-icon>
-                </v-btn>
-              </v-col>
-              <div class="col titleText">
+              <span class="grey--text text--darken-3 link">
+                {{ item.text }}
+              </span>
+            </v-breadcrumbs-item>
+            <v-breadcrumbs-item v-else class="text-uppercase">{{
+              item.text
+            }}</v-breadcrumbs-item>
+          </template>
+        </v-breadcrumbs>
+        <v-fade-transition :hide-on-leave="true">
+          <div>
+            <v-card flat color="transparent" class="mb-4" v-if="reference">
+              <v-card-title
+                class="title pt-1 pb-1 px-0 justify-center text-center font-family-exo-2 font-weight-medium text-h4"
+              >
+                <!-- <v-col cols="auto" class="py-0 px-0">
+                  <v-btn large icon @click="handleBack()" aria-label="back">
+                    <v-icon>fas fa-arrow-left</v-icon>
+                  </v-btn>
+                </v-col> -->
                 {{ `${reference.reference}: ${reference.title}` }}
-              </div>
-              <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
-                <v-btn @click="exit" class="exitButton" icon>
-                  <v-icon>fas fa-times</v-icon>
-                </v-btn>
-              </v-col>
-            </v-card-title>
-            <div class="body">
+
+                <!-- <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
+                  <v-btn @click="exit" class="exitButton" icon>
+                    <v-icon>fas fa-times</v-icon>
+                  </v-btn>
+                </v-col> -->
+              </v-card-title>
+            </v-card>
+            <v-card
+              class="ml-auto mr-auto body roundedBorder referenceTitle px-1 py-1"
+              v-if="reference"
+            >
               <v-card-actions class=" pt-3">
                 <reference-links :item="reference" />
                 <v-spacer />
@@ -48,7 +77,11 @@
                   <h3 class=" mr-1">
                     <b>{{ $t("common.citation") }}</b>
                   </h3>
-                  <citation-select id="citationSelect" class="col-sm-3 py-0" />
+                  <citation-select
+                    style="max-width: 350px"
+                    id="citationSelect"
+                    class="ml-auto  py-0"
+                  />
                 </div>
                 <base-citation-detail
                   :citation="citation($getCslDetail(reference))"
@@ -122,7 +155,9 @@
                           <th>{{ $t("reference.parentReference") }}</th>
                           <td>
                             <router-link
-                              :to="{ path: `${reference.parent_reference.id}` }"
+                              :to="{
+                                path: `${reference.parent_reference.id}`
+                              }"
                             >
                               {{ reference.parent_reference.title }}
                             </router-link>
@@ -324,8 +359,8 @@
                   </tbody>
                 </v-simple-table>
               </v-card-text>
-              <v-card-text class="row ma-0">
-                <div v-if="localities.length > 0" class="col-12 col-md-6 pa-0">
+              <v-card-text v-if="localities.length > 0" class="row ma-0">
+                <div class="col-12 col-md-6 pa-0">
                   <h3 class="pb-3">
                     <b>{{ $t("reference.localities") }}</b>
                   </h3>
@@ -346,10 +381,49 @@
                     </li>
                   </ul>
                 </div>
-                <div
-                  v-if="taxa.length > 0"
-                  class="col-12 col-md-6 pa-0 pt-4 pt-md-0"
-                >
+              </v-card-text>
+              <v-card-text v-if="sites.length > 0" class="row ma-0">
+                <div class="col-12 col-md-6 pa-0">
+                  <h3 class="pb-3">
+                    <b>{{ $t("reference.sites") }}</b>
+                  </h3>
+
+                  <ul>
+                    <li v-for="site in sites" :key="site.site.id">
+                      <a
+                        :href="siteURL(site.site.id)"
+                        target="_blank"
+                        v-translate="{
+                          et: site.site.name,
+                          en: site.site.name_en
+                        }"
+                      />
+                    </li>
+                  </ul>
+                </div>
+              </v-card-text>
+              <v-card-text v-if="areas.length > 0" class="row ma-0">
+                <div class="col-12 col-md-6 pa-0">
+                  <h3 class="pb-3">
+                    <b>{{ $t("reference.areas") }}</b>
+                  </h3>
+
+                  <ul>
+                    <li v-for="area in areas" :key="area.area.id">
+                      <a
+                        :href="areaURL(area.area.id)"
+                        target="_blank"
+                        v-translate="{
+                          et: area.area.name,
+                          en: area.area.name_en
+                        }"
+                      />
+                    </li>
+                  </ul>
+                </div>
+              </v-card-text>
+              <v-card-text v-if="taxa.length > 0">
+                <div class="col-12 col-md-6 pa-0 pt-4 pt-md-0">
                   <h3 class="pb-3">{{ $t("reference.describedTaxa") }}</h3>
                   <ul>
                     <li v-for="taxon in taxa" :key="taxon.id">
@@ -414,20 +488,20 @@
                   </template>
                 </v-simple-table>
               </v-card-text>
-            </div>
-          </v-card>
-          <v-card v-else-if="error">
-            <v-card-actions class="referenceTitle">
-              <v-col cols="auto" class="py-0 px-0">
-                <v-btn large icon @click="handleBack()" aria-label="back">
-                  <v-icon>fas fa-arrow-left</v-icon>
-                </v-btn>
-              </v-col>
-              <div class="col titleText">
-                {{ $t("error.referenceId", { text: id }) }}
-              </div>
-            </v-card-actions>
-          </v-card>
+            </v-card>
+            <v-card v-else-if="error">
+              <v-card-actions class="referenceTitle">
+                <v-col cols="auto" class="py-0 px-0">
+                  <v-btn large icon @click="handleBack()" aria-label="back">
+                    <v-icon>fas fa-arrow-left</v-icon>
+                  </v-btn>
+                </v-col>
+                <div class="col title">
+                  {{ $t("error.referenceId", { text: id }) }}
+                </div>
+              </v-card-actions>
+            </v-card>
+          </div>
         </v-fade-transition>
       </v-col>
     </v-row>
@@ -547,6 +621,12 @@ export default {
     },
     localityURL(id) {
       return `https://geoloogia.info/locality/${id}`;
+    },
+    siteURL(id) {
+      return `https://geoloogia.info/site/${id}`;
+    },
+    areaURL(id) {
+      return `https://geoloogia.info/area/${id}`;
     },
     taxonURL(id) {
       return `https://fossiilid.info/${id}`;
@@ -709,17 +789,11 @@ export default {
 </script>
 
 <style scoped>
-@media (min-width: 1904px) {
-  .card {
-    max-width: 1400px !important;
-  }
-}
-
 .referenceTitle {
   background-color: #f3d3a5;
 }
 
-.titleText {
+.title {
   word-break: normal;
 }
 
@@ -729,10 +803,17 @@ export default {
 
 .body {
   border-radius: 12px;
+  border-width: 4px;
+  border-color: #f3d3a5;
+  border-style: solid;
   background-color: white;
 }
 
 .exitButton:hover {
   color: #f44336;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 </style>

@@ -1,7 +1,15 @@
 <template>
   <v-menu transition="slide-y-transition" offset-y bottom right>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn :class="btnClasses" text :dark="isDark" v-bind="attrs" v-on="on">
+      <v-btn
+        class="text-capitalize text-body-1 font-weight-medium"
+        style="font-family: 'Exo 2' !important"
+        :class="btnClasses"
+        text
+        :dark="isDark"
+        v-bind="attrs"
+        v-on="on"
+      >
         {{ $t("common.links") }}
       </v-btn>
     </template>
@@ -44,7 +52,6 @@ export default {
   computed: {
     btnClasses() {
       return {
-        "mx-3": true,
         linksButton: this.isDark
       };
     }
@@ -53,7 +60,7 @@ export default {
 </script>
 
 <style scoped>
-.linksButton {
+/* .linksButton {
   backdrop-filter: blur(1px);
 }
 .linksButton::before {
@@ -61,5 +68,5 @@ export default {
 }
 .linksButton:hover::before {
   opacity: 0.22;
-}
+} */
 </style>

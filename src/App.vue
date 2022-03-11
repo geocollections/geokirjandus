@@ -33,11 +33,13 @@ export default {
       },
       { name: "og:image:alt", content: "TalTech" },
       { name: "theme-color", content: "#924F11" },
-      { name: "apple-mobile-web-app-status-bar-sytle", content: "#924F11" },
+      { name: "apple-mobile-web-app-status-bar-sytle", content: "#924F11" }
+    ],
+    link: [
       {
         rel: "stylesheet",
         href:
-          "https://fonts.googleapis.com/css2?&family=Open+Sans:wght@400;500;700;900&display=swap"
+          "https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700;900&family=Roboto:wght@400;500;700;900&display=swap"
       }
     ]
   }

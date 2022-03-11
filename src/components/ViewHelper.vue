@@ -1,13 +1,10 @@
 <template>
-  <div class="align-center justify-space-around  fill-height d-flex py-0">
+  <div class="align-center fill-height d-flex py-0">
     <div
       class="d-flex align-center ml-sm-auto px-2 paginationSelect fill-height"
       style="flex: 0 0 0"
     >
-      <div
-        v-show="$vuetify.breakpoint.smAndUp"
-        class="mr-3 text-no-wrap text-caption"
-      >
+      <div class="mr-3 text-no-wrap text-caption">
         {{ $t("common.paginateBy") }}
       </div>
       <v-select
@@ -31,7 +28,7 @@
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"
-      :total-visible="5"
+      :total-visible="$vuetify.breakpoint.mdAndUp ? 5 : 3"
       @input="$emit('update:page', $event)"
     />
   </div>

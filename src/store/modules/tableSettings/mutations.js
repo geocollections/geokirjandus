@@ -7,6 +7,9 @@ const mutations = {
   },
   SET_LIBRARY_HEADERS(state, payload) {
     state.libraryHeaders = payload;
+  },
+  RESET_HEADERS(state, { module, initHeaders }) {
+    state[module] = initHeaders;
   }
 };
 

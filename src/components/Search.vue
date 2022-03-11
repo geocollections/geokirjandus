@@ -419,30 +419,6 @@ export default {
 </script>
 
 <style scoped>
-.search {
-  background-color: #f6eddf;
-}
-
-.searchLibrary {
-  background-color: #e8ecee;
-}
-
-.advancedSearch {
-  background-color: #ecc285;
-}
-
-.advancedSearchLibrary {
-  background-color: #95a8b1;
-}
-
-.advancedSearchContent {
-  background-color: #f6eddf;
-}
-
-.advancedSearchLibraryContent {
-  background-color: #e8ecee;
-}
-
 .deleteSearch {
   border-radius: 4px;
 }

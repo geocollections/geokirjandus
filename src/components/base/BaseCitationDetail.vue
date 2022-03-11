@@ -1,9 +1,8 @@
 <template>
-  <v-card flat outlined>
-    <v-card-text class="referenceCitation pb-1" v-html="citation" />
+  <v-card flat outlined class="d-md-flex">
+    <v-card-text class="referenceCitation" v-html="citation" />
 
-    <v-card-actions class="pt-0">
-      <v-spacer />
+    <v-card-actions>
       <copy-button clipboard-class="referenceCitation" id="referenceCopy" />
     </v-card-actions>
   </v-card>

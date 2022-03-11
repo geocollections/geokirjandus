@@ -1,5 +1,7 @@
 <template>
   <v-btn
+    class="text-capitalize text-body-1 font-weight-medium"
+    style="font-family: 'Exo 2' !important"
     :class="btnClasses"
     :disabled="btnIsDisabled"
     text
@@ -42,7 +44,6 @@ export default {
   computed: {
     btnClasses() {
       return {
-        "mx-3": true,
         tourButton: this.isDark
       };
     },
@@ -610,13 +611,13 @@ export default {
 .tour-exit:hover {
   background-color: red !important;
 }
-.tourButton {
-  backdrop-filter: blur(1px);
-}
-.tourButton::before {
-  opacity: 0.1 !important;
-}
-.tourButton:hover::before {
-  opacity: 0.22 !important;
-}
+/* .tourButton {
+    backdrop-filter: blur(1px);
+  }
+  .tourButton::before {
+    opacity: 0.1 !important;
+  }
+  .tourButton:hover::before {
+    opacity: 0.22 !important;
+  } */
 </style>

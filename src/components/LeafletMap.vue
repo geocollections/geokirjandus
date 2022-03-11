@@ -174,6 +174,11 @@ export default {
         const geoJSONObj = new L.geoJSON(JSON.parse(a.area.polygon)).addTo(
           mapDiv
         );
+        geoJSONObj.bindPopup(
+          `<a href="https://geoloogia.info/area/${a.area.id}" target="_blank">${
+            this.$i18n.locale === "ee" ? a.area.name : a.area.name_en
+          }</a>`
+        );
       }
 
       if (markers.length > 100) {

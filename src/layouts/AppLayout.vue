@@ -4,34 +4,11 @@
       class="d-print-none"
       v-on:update:showSearch="showSearch = !showSearch"
     />
-    <v-navigation-drawer
-      id="searchDrawer"
-      v-model="showSearch"
-      app
-      bottom
-      clipped
-      width="276"
-      disable-route-watcher
-      mobile-breakpoint="960"
-      class="d-print-none"
-    >
-      <template v-slot:default>
-        <search
-          :col-size="12"
-          v-on:update:search="handleUpdateSearch"
-          v-on:update:advancedSearch="handleUpdateAdvancedSearch"
-          v-on:reset:parameters="handleResetSearch"
-        />
-      </template>
-    </v-navigation-drawer>
-    <fabs
-      :show-search="showSearch"
-      v-on:update:showSearch="showSearch = !showSearch"
-    />
-    <v-main class="main fill-height">
+    <v-main class="main fill-height mt-2 mt-md-5">
+      <scroll-to-top />
       <router-view style="min-height: 100vh" />
-      <app-footer />
     </v-main>
+    <app-footer />
   </div>
 </template>
 
@@ -40,19 +17,19 @@ import { mapActions } from "vuex";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "../components/AppFooter.vue";
 import Fabs from "@/components/Fabs";
-import Search from "@/components/Search";
 import queryMixin from "@/mixins/queryMixin";
+import ScrollToTop from "@/components/ScrollToTop.vue";
 
 export default {
   name: "AppLayout",
-  components: { AppHeader, Search, AppFooter, Fabs },
+  components: { AppHeader, AppFooter, ScrollToTop },
   mixins: [queryMixin],
-  data() {
-    return {
-      showSearch: this.$vuetify.breakpoint.mdAndUp,
-      showAdvancedSearch: true
-    };
-  },
+  // data() {
+  //   return {
+  //     showSearch: false,
+  //     showAdvancedSearch: true
+  //   };
+  // },
   metaInfo: {
     title: "Otsing"
   },
@@ -88,6 +65,6 @@ export default {
 
 <style scoped>
 .main {
-  background-color: #f6eddf;
+  background-color: #fff5e6;
 }
 </style>

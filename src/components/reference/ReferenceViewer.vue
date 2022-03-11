@@ -1,32 +1,30 @@
 <template>
   <data-viewer
-    class="px-1 px-sm-2"
     :module="$route.meta.object"
-    :data="result"
+    :data="data"
     :count="count"
-    :page="getPage"
     :is-loading="isLoading"
-    :paginate-by="getPaginateBy"
-    :sort-by="getSortBy"
-    :sort-desc="getSortDesc"
     :headers="getHeaders"
+    v-bind="$attrs"
     :nothing-found="$t('error.nothingFoundReference')"
     :title="
       count !== 1
         ? 'viewer.title.reference_html'
         : 'viewer.title.reference_single_html'
     "
-    v-on:open="open"
-    v-on:update:paginateBy="handleUpdatePaginateBy"
-    v-on:update:page="handleUpdatePage"
-    v-on:update:sortBy="handleUpdateSortBy"
-    v-on:update:sortDesc="handleUpdateSortDesc"
-    v-on:update:headers="handleUpdateTableHeaders"
+    :options="options"
+    @open="open"
+    @update:paginateBy="handleUpdatePaginateBy"
+    @update:page="handleUpdatePage"
+    @update:headers="handleUpdateTableHeaders"
+    @update:options="$emit('update:options', $event)"
+    @reset:headers="
+      resetHeaders({
+        module: 'referenceHeaders',
+        options: { sortBy: options.sortBy }
+      })
+    "
   >
-    <template v-if="tabs" v-slot:prepend>
-      <tabs />
-    </template>
-
     <!--  TABLE VIEW CUSTOM TEMPLATES  -->
     <template v-slot:item.bookJournal="{ item }">
       <div v-if="item.book">{{ item.book }}</div>
@@ -52,38 +50,41 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import debounce from "lodash/debounce";
 import ReferenceListView from "@/components/reference/ReferenceListView";
 import DataViewer from "@/components/DataViewer";
 import dateMixin from "@/mixins/dateMixin";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
-import Tabs from "@/components/Tabs";
-
 export default {
   name: "ReferenceViewer",
   components: {
-    Tabs,
     ReferenceLinks,
     ReferenceListView,
     DataViewer
   },
-  mixins: [dateMixin, urlMixin, queryMixin],
+  mixins: [dateMixin, urlMixin],
   props: {
-    tabs: {
-      type: Boolean,
-      default: false
+    options: {
+      type: Object,
+      default: () => {}
+    },
+    data: {
+      type: Array,
+      default: () => []
+    },
+    count: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
-      result: []
+      isLoading: true
     };
   },
   computed: {
-    ...mapState("search", ["page", "paginateBy", "sortBy", "sortDesc"]),
-    ...mapState("references", ["count"]),
+    // ...mapFields("search/reference", ["options"]),
+    ...mapState("search/reference", ["search", "advancedSearch"]),
     ...mapState("tableSettings", [
       "referenceHeaders",
       "referenceInLibraryHeaders"
@@ -96,102 +97,47 @@ export default {
       return this.referenceHeaders;
     }
   },
-  created() {
-    if (this.$route.name === "library") this.handleReferencesInLibraryResult();
-    else {
-      this.handleReferencesResult();
-      this.getLibraries();
+  watch: {
+    options: {
+      handler() {
+        this.$emit("update:data");
+        // this.getReferencesFromApi();
+      },
+      deep: true
+    },
+    data: {
+      handler() {
+        this.isLoading = false;
+      }
     }
   },
-  watch: {
-    referenceParameters: {
-      handler: debounce(function() {
-        this.handleReferencesResult();
-      }, 300),
-      deep: true
-    },
-    libraryReferenceParameters: {
-      handler: debounce(function() {
-        this.handleReferencesInLibraryResult();
-      }, 300),
-      deep: true
-    },
-    libraryParameters: {
-      handler: debounce(function() {
-        this.getLibraries();
-      }, 300),
-      deep: true
-    },
-    getPage: {
-      handler: debounce(function() {
-        if (this.$route.name === "library")
-          this.handleReferencesInLibraryResult();
-        else this.handleReferencesResult();
-      }, 300)
-    },
-    getPaginateBy: {
-      handler() {
-        this.resetPage();
-        if (this.$route.name === "library")
-          this.handleReferencesInLibraryResult();
-        else this.handleReferencesResult();
-      }
-    },
-    getSortDesc: {
-      handler() {
-        if (this.$route.name === "library")
-          this.handleReferencesInLibraryResult();
-        else this.handleReferencesResult();
-      }
-    }
+  created() {
+    this.isLoading = true;
+    this.$emit("update:data");
+    // this.getReferencesFromApi();
   },
   methods: {
-    ...mapActions("search", [
-      "updatePage",
-      "updatePaginateBy",
-      "updateSortBy",
-      "updateSortDesc",
-      "resetPage"
-    ]),
     ...mapActions("tableSettings", [
       "setReferenceHeaders",
-      "setReferenceInLibraryHeaders"
+      "setReferenceInLibraryHeaders",
+      "resetHeaders"
     ]),
+    ...mapActions("references", ["setReferences"]),
     open(event) {
       this.$router.push(`/reference/${event.id}`);
     },
     handleUpdatePage(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updatePage", event);
-      else this.updatePage(event);
+      this.$emit("update:options", { ...this.options, page: event });
     },
     handleUpdatePaginateBy(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updatePaginateBy", event);
-      else this.updatePaginateBy(event);
-    },
-    handleUpdateSortBy(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updateSortBy", event);
-      else this.updateSortBy(event);
-    },
-    handleUpdateSortDesc(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updateSortDesc", event);
-      else this.updateSortDesc(event);
+      this.$emit("update:options", {
+        ...this.options,
+        page: 1,
+        paginateBy: event
+      });
     },
     handleUpdateTableHeaders(event) {
-      if (this.$route.name === "library")
-        this.setReferenceInLibraryHeaders(event);
-      else this.setReferenceHeaders(event);
-    },
-    setResults(res) {
-      this.result = res.results;
-      this.isLoading = false;
-    },
-    handleReferencesResult() {
-      this.isLoading = true;
-      this.getReferences().then(this.setResults);
+      this.setReferenceHeaders(event);
     },
     handleReferencesInLibraryResult() {
       this.isLoading = true;

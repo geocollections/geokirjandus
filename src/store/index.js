@@ -9,7 +9,8 @@ import librarySearchModule from "@/store/modules/search/librarySearchModule";
 import references from "./modules/references";
 import library from "./modules/library";
 import tableSettings from "./modules/tableSettings";
-
+import reference from "@/store/modules/search/reference";
+import libraryReferences from "./modules/libraryReferences";
 Vue.use(Vuex);
 const version = "1.1.2";
 
@@ -33,7 +34,9 @@ export default new Vuex.Store({
     references,
     library,
     libraryReferenceSearch: libraryReferenceSearchModule,
-    librarySearch: librarySearchModule
+    librarySearch: librarySearchModule,
+    reference,
+    libraryReferences
   },
   plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"

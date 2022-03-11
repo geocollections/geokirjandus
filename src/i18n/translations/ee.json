@@ -45,7 +45,7 @@
   },
   "common": {
     "search": "Otsi",
-    "advancedSearch": "Detailotsing",
+    "advancedSearch": "Filtreeri",
     "found": "Leitud",
     "records": "kirjet",
     "listView": "Nimekiri",
@@ -146,7 +146,10 @@
     "pagesStart": "Algus lehekülg",
     "pagesEnd": "Lõpp lehekülg",
     "taxa": "Taksonid",
-    "volumeAndNumber": "Köide/Number"
+    "volumeAndNumber": "Köide/Number",
+    "sites": "Uuringupunkt",
+    "areas": "Alad"
+
   },
   "library": {
     "id": "ID",
@@ -213,5 +216,14 @@
       "stepLibraryCopyTitle": "Kogumiku viite kopeerimine",
       "stepLibraryCopyText": "Vajutades siia, kopeeritakse kogumiku viide."
     }
+  },
+  "headerMenu": {
+    "tooltipConfig": "Tabeli konfiguratsioon",
+    "headers": "Päised",
+    "tooltipResetHeaders": "Lähtesta päised",
+    "tooltipShowActiveHeaders": "Vaata aktiveeritud päiseid",
+    "tooltipShowAllHeaders": "Vaata kõiki päiseid",
+    "filter": "Filteeri",
+    "headerSelectDisabled": "Veergu sorteeritakse"
   }
 }

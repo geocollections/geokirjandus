@@ -1,7 +1,19 @@
 <template>
-  <v-btn icon @click="copyToClipboard">
-    <v-icon>fas fa-clipboard</v-icon>
-  </v-btn>
+  <v-tooltip top z-index="10000" open-delay="250">
+    <template #activator="{on, attrs}">
+      <v-btn
+        :class="buttonClass"
+        v-bind="attrs"
+        v-on="on"
+        icon
+        :small="small"
+        @click="copyToClipboard"
+      >
+        <v-icon :small="small">fas fa-clipboard</v-icon>
+      </v-btn>
+    </template>
+    <span>Copy</span>
+  </v-tooltip>
 </template>
 
 <script>
@@ -18,7 +30,11 @@ export default {
       type: String,
       required: false
     },
-    small: Boolean
+    buttonClass: {
+      type: String,
+      default: ""
+    },
+    small: { type: Boolean, default: false }
   },
   methods: {
     copyToClipboard() {

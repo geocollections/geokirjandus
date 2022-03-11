@@ -3,38 +3,40 @@
     <v-row justify="center">
       <v-col class="px-2 px-sm-3">
         <v-fade-transition :hide-on-leave="true">
-          <v-card
-            class="ml-auto mr-auto  card roundedBorder libraryTitle px-1 pb-1 px-sm-2 pb-sm-2"
-            v-if="library"
-          >
-            <v-card-title
-              class="pt-1 pb-1 pr-1 d-flex text-center libraryTitle"
-            >
-              <v-col cols="auto" class="px-0">
-                <v-btn large icon @click="handleBack()" aria-label="back">
-                  <v-icon>fas fa-arrow-left</v-icon>
-                </v-btn>
-              </v-col>
-              <div class="d-flex flex-column col">
-                <h5>{{ $t("common.virtualLibrary") }}</h5>
+          <div>
+            <v-card flat color="transparent" class="mb-4" v-if="library">
+              <v-card-title
+                class="title pt-1 pb-1 px-0 flex-column justify-center text-center font-family-exo-2 font-weight-medium text-h4"
+              >
+                <!-- <v-col cols="auto" class="py-0 px-0">
+                  <v-btn large icon @click="handleBack()" aria-label="back">
+                    <v-icon>fas fa-arrow-left</v-icon>
+                  </v-btn>
+                </v-col> -->
+                <div class="text-h5">
+                  {{ $t("common.virtualLibrary") }}
+                </div>
                 <div
                   class="col titleText"
                   v-translate="{ et: library.title, en: library.title_en }"
                 />
-
-                <h6 class="">
+                <div class="text-h5">
                   {{ $t("common.libraryCreatedBy") }}:
                   {{ library.author_txt }}
                   {{ library.year }}
-                </h6>
-              </div>
-              <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
-                <v-btn @click="exit" class="exitButton" icon>
-                  <v-icon>fas fa-times</v-icon>
-                </v-btn>
-              </v-col>
-            </v-card-title>
-            <div class="body elevation-0">
+                </div>
+
+                <!-- <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
+                  <v-btn @click="exit" class="exitButton" icon>
+                    <v-icon>fas fa-times</v-icon>
+                  </v-btn>
+                </v-col> -->
+              </v-card-title>
+            </v-card>
+            <v-card
+              class="ml-auto mr-auto roundedBorder body px-1 pb-1"
+              v-if="library"
+            >
               <v-card-actions
                 class="pr-2 px-4 d-flex justify-end flex-column flex-sm-row"
               >
@@ -53,26 +55,30 @@
                 </v-chip>
               </v-card-actions>
 
-              <v-card-text class="pt-0">
+              <v-card-text class="pt-0 px-2">
                 <div class="d-flex align-center pb-3">
-                  <h3 class="">
-                    <b>{{ $t("common.citation") }}</b>
-                  </h3>
+                  <div class="text-h6 ml-2">
+                    {{ $t("common.citation") }}
+                  </div>
 
-                  <citation-select id="citationSelect" class="col-sm-3 py-0" />
+                  <citation-select
+                    style="max-width: 350px"
+                    id="citationSelect"
+                    class="ml-auto  py-0"
+                  />
                 </div>
                 <base-citation-detail
                   :citation="citation($getWebpageCsl(library))"
                 />
-                <h3
-                  class="mt-3"
+                <div
+                  class="text-h6 ml-2 my-2"
                   v-if="
                     ($i18n.locale === 'ee' && library.abstract) ||
                       ($i18n.locale === 'en' && library.abstract_en)
                   "
                 >
-                  <b>{{ $t("common.summary") }}</b>
-                </h3>
+                  {{ $t("common.summary") }}
+                </div>
                 <div
                   v-if="
                     ($i18n.locale === 'ee' && library.abstract) ||
@@ -83,15 +89,18 @@
                     en: library.abstract_en
                   }"
                 />
-                <h3>
-                  <b>{{ $t("common.libraryReferences") }}</b>
-                </h3>
-              </v-card-text>
+                <div class="text-h6 mb-2 ml-2">
+                  {{ $t("common.libraryReferences") }}
+                </div>
+                <reference-viewer
+                  style="border-width: 1px; border-color: grey"
+                  class="elevation-0"
+                  :options.sync="options"
+                  :count="count"
+                  :data="results"
+                  @update:data="getLibraryReferencesFromApi"
+                />
 
-              <v-card class="mx-2 mx-sm-3 roundedBorder" color="#a5bac4">
-                <reference-viewer />
-              </v-card>
-              <v-card-text class="">
                 <v-row no-gutters>
                   <v-col cols="auto" class="pt-2 pr-3">
                     <b>{{ $t("common.libraryCreated") }}:</b>
@@ -103,20 +112,20 @@
                   </v-col>
                 </v-row>
               </v-card-text>
-            </div>
-          </v-card>
-          <v-card v-else-if="error">
-            <v-card-actions class="libraryTitle">
-              <v-col cols="auto" class="py-0 px-0">
-                <v-btn large icon @click="handleBack()" aria-label="back">
-                  <v-icon>fas fa-arrow-left</v-icon>
-                </v-btn>
-              </v-col>
-              <div class="col titleText">
-                {{ $t("error.libraryId", { text: id }) }}
-              </div>
-            </v-card-actions>
-          </v-card>
+            </v-card>
+            <v-card v-else-if="error">
+              <v-card-actions class="libraryTitle">
+                <v-col cols="auto" class="py-0 px-0">
+                  <v-btn large icon @click="handleBack()" aria-label="back">
+                    <v-icon>fas fa-arrow-left</v-icon>
+                  </v-btn>
+                </v-col>
+                <div class="col titleText">
+                  {{ $t("error.libraryId", { text: id }) }}
+                </div>
+              </v-card-actions>
+            </v-card>
+          </div>
         </v-fade-transition>
       </v-col>
     </v-row>
@@ -124,7 +133,7 @@
 </template>
 
 <script>
-import { fetchLibrary } from "@/utils/apiCalls";
+import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
@@ -133,6 +142,8 @@ import queryMixin from "@/mixins/queryMixin";
 import CopyButton from "@/components/CopyButton";
 import CitationSelect from "@/components/CitationSelect";
 import BaseCitationDetail from "@/components/base/BaseCitationDetail.vue";
+import { mapActions, mapState } from "vuex";
+import { mapFields } from "vuex-map-fields";
 export default {
   name: "Library",
   components: {
@@ -148,6 +159,11 @@ export default {
       isLoading: true,
       error: false
     };
+  },
+  computed: {
+    ...mapFields("search/libraryReference", ["options"]),
+    ...mapState("search/libraryReference", ["search", "advancedSearch"]),
+    ...mapState("libraryReferences", ["results", "count"])
   },
   metaInfo() {
     return {
@@ -194,6 +210,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("libraryReferences", ["setReferences"]),
     exit() {
       this.$router.replace({ name: "searchLibrary" }).catch(() => {});
     },
@@ -202,18 +219,25 @@ export default {
     },
     handleBack() {
       this.$router.back();
+    },
+    getLibraryReferencesFromApi() {
+      const searchObj = {
+        search: this.search,
+        page: this.options.page,
+        paginateBy: this.options.paginateBy,
+        sortBy: this.options.sortBy,
+        sortDesc: this.options.sortDesc,
+        advancedSearch: this.advancedSearch.byIds
+      };
+      fetchLibraryReferences(this.id, searchObj).then(res => {
+        this.setReferences(res);
+      });
     }
   }
 };
 </script>
 
 <style scoped>
-@media (min-width: 1904px) {
-  .card {
-    max-width: 1400px !important;
-  }
-}
-
 .libraryTitle {
   background-color: #a5bac4;
 }
@@ -228,6 +252,9 @@ export default {
 
 .body {
   border-radius: 12px;
+  border-width: 4px;
+  border-color: #a5bac4;
+  border-style: solid;
   background-color: white;
 }
 

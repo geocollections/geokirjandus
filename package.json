@@ -39,6 +39,7 @@
     "vue-shepherd": "^0.2.1",
     "vuetify": "^2.4.10",
     "vuex": "^3.6.2",
+    "vuex-map-fields": "^1.4.1",
     "vuex-persist": "^2.3.0"
   },
   "devDependencies": {

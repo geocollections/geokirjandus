@@ -1,37 +1,36 @@
 <template>
-  <div class="lang-buttons">
-    <v-menu transition="slide-y-transition" offset-y bottom right>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          aria-label="select language"
-          class="ml-auto d-block"
-          icon
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          <span :class="classObject" />
-        </v-btn>
-      </template>
-      <v-list color="#F6EDDF">
-        <div v-for="(language, idx) in languages" :key="idx">
-          <v-list-item @click="changeLang(language.value)">
-            <v-list-item-title class="d-flex ">
-              <span
-                v-if="language.value === 'ee'"
-                class="flag flag-ee flag-squared flag-circle mr-2 lang-button"
-              />
-              <span
-                v-if="language.value === 'en'"
-                class="flag flag-en flag-squared flag-circle mr-2 lang-button"
-              />
-              <span class="align-self-center">{{ language.text }}</span>
-            </v-list-item-title>
-          </v-list-item>
-        </div>
-      </v-list>
-    </v-menu>
-  </div>
+  <v-menu transition="slide-y-transition" offset-y bottom right>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        aria-label="select language"
+        class="ml-auto d-block"
+        icon
+        dark
+        :ripple="false"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <span :class="classObject" />
+      </v-btn>
+    </template>
+    <v-list color="#F6EDDF">
+      <div v-for="(language, idx) in languages" :key="idx">
+        <v-list-item @click="changeLang(language.value)">
+          <v-list-item-title class="d-flex ">
+            <span
+              v-if="language.value === 'ee'"
+              class="flag flag-ee flag-squared flag-circle mr-2 lang-button"
+            />
+            <span
+              v-if="language.value === 'en'"
+              class="flag flag-en flag-squared flag-circle mr-2 lang-button"
+            />
+            <span class="align-self-center">{{ language.text }}</span>
+          </v-list-item-title>
+        </v-list-item>
+      </div>
+    </v-list>
+  </v-menu>
 </template>
 
 <script>

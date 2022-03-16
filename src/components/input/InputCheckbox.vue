@@ -2,7 +2,7 @@
   <v-checkbox
     class="mt-0 pt-0"
     :label="label"
-    color="#fd8719"
+    color="#135ebf"
     :false-value="null"
     true-value="1"
     hide-details

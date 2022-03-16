@@ -12,6 +12,7 @@
     "CSVExportSuccess": "Exported file in <b>CSV</b> format"
   },
   "tooltip": {
+    "removeFilters": "Remove all filters",
     "map": "Shows localities with coordinates. Full list of localities is available below."
   },
 
@@ -76,7 +77,7 @@
     "newest": "Latest changes",
     "viewReferences": "Search/Browse",
     "map": "Map",
-    "misc": "Miscellaneous",
+    "misc": "Additional info",
     "searchCommand": "Search",
     "libraryPublisher": "Virtual reference collection in SARV",
     "yes": "yes",

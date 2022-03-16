@@ -2,11 +2,13 @@
   <v-text-field
     class="pt-2 pb-1"
     dense
-    color="grey darken-3"
+    color="#135ebf"
     outlined
     :value="value"
     :label="label"
     hide-details
+    clearable
+    clear-icon="fa-times"
     @input="$emit('input', $event)"
     @blur="$emit('blur')"
   />

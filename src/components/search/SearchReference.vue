@@ -4,31 +4,18 @@
       solo
       hide-details
       v-model="query"
+      clearable
+      clear-icon="fa-times"
       :label="$t('common.search')"
     />
     <div class="d-flex align-center pt-2">
-      <v-btn
-        icon
-        small
-        outlined
-        tile
-        color="red"
-        class="deleteSearch"
-        id="deleteSearchButton"
-        aria-label="delete"
-        @click="$emit('reset:search')"
-      >
-        <v-icon small>far fa-trash-alt</v-icon>
-      </v-btn>
-
-      <share-button />
       <v-spacer />
       <search-help-dialog />
       <v-btn
         class="text-capitalize"
         type="submit"
         id="searchButton"
-        color="#1C9BDE"
+        color="#135ebf"
         dark
       >
         <v-icon left small>fas fa-search</v-icon>
@@ -44,16 +31,36 @@
         {{ $t("common.advancedSearch") }}
         [{{ count }}]
         <v-spacer />
-        <v-chip
-          color="#fd8719"
-          outlined
-          v-if="getAdvancedSearchParametersAppliedCount > 0"
-        >
-          <div class="pr-1 black--text">
-            {{ getAdvancedSearchParametersAppliedCount }}
-          </div>
-          <v-icon x-small color="#fd8719">fas fa-filter</v-icon>
-        </v-chip>
+        <v-hover v-slot="{ hover }">
+          <v-chip
+            color="#eba142"
+            outlined
+            :class="{ 'pr-2': hover }"
+            v-if="getAdvancedSearchParametersAppliedCount > 0"
+          >
+            <div class="pr-1 black--text">
+              {{ getAdvancedSearchParametersAppliedCount }}
+            </div>
+            <v-icon x-small color="#eba142">fas fa-filter</v-icon>
+
+            <v-tooltip bottom open-delay="250">
+              <template #activator="{on, attrs}">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="ml-1"
+                  v-show="hover"
+                  icon
+                  x-small
+                  @click="$emit('reset:search')"
+                >
+                  <v-icon x-small>fas fa-times</v-icon>
+                </v-btn>
+              </template>
+              {{ $t("tooltip.removeFilters") }}
+            </v-tooltip>
+          </v-chip>
+        </v-hover>
       </v-card-title>
       <div>
         <input-checkbox
@@ -149,7 +156,6 @@ import { mapFields } from "vuex-map-fields";
 import { mapActions, mapState } from "vuex";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
-import ShareButton from "@/components/ShareButton";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
 import InputText from "../input/InputText.vue";
 import InputRange from "../input/InputRange.vue";
@@ -160,7 +166,6 @@ export default {
   name: "SearchReference",
   components: {
     SearchHelpDialog,
-    ShareButton,
     InputText,
     InputRange,
     InputSelect,

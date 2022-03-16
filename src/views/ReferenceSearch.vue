@@ -12,10 +12,10 @@
           v-on:reset:search="handleResetSearch"
         />
       </v-col>
-      <v-col md="9" lg="10" class="ml-md-8">
+      <v-col md="9" xl="10" class="ml-md-8">
         <div
           v-if="$vuetify.breakpoint.smAndDown"
-          class="text-h4 font-weight-medium mb-3 mb-md-0 mx-3"
+          class="text-h4 font-weight-medium mb-3 mb-md-0"
         >
           {{ $t("tabs.references") }} [{{ count }}]
         </div>
@@ -23,9 +23,9 @@
           <v-card
             id="view"
             flat
-            color="transparent"
             elevation="0"
-            class="ml-auto mr-auto card roundedBorder"
+            outlined
+            class="ml-auto mr-auto card"
           >
             <reference-viewer
               :options.sync="options"
@@ -40,7 +40,7 @@
     <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
       <v-btn
         class="mt-2 d-print-none d-md-none"
-        color="#1C9BDE"
+        color="#135ebf"
         fixed
         rounded
         dark
@@ -124,10 +124,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions("search", [
+    ...mapActions("search/reference", [
       "updateSearch",
       "updateAdvancedSearch",
-      "resetReferenceSearch",
+      "resetSearch",
       "resetPage"
     ]),
     ...mapActions("references", ["setReferences"]),
@@ -145,7 +145,7 @@ export default {
       else this.updateAdvancedSearch(event);
     },
     handleResetSearch(event) {
-      this.resetReferenceSearch(event);
+      this.resetSearch(event);
       this.getReferences().then(res => {
         this.setReferences(res);
       });
@@ -170,12 +170,5 @@ export default {
 <style scoped>
 .main {
   background-color: #f6eddf;
-}
-
-.roundedBorder {
-  border-radius: 12px;
-}
-.roundedBorderMobile {
-  border-radius: 0 12px 12px 12px;
 }
 </style>

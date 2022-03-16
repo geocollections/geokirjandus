@@ -88,7 +88,7 @@
                           dense
                           :disabled="sortBy.includes(item.value)"
                           :input-value="item.show"
-                          color="#fd8719"
+                          color="#135ebf"
                         />
                       </v-list-item-action>
                       <v-list-item-content>

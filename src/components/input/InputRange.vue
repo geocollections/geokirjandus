@@ -1,11 +1,6 @@
 <template>
   <div class="pb-1">
-    <v-subheader
-      v-if="label"
-      class="px-0 d-inline"
-      :class="{ 'grey--text text--darken-3': isFocused }"
-      >{{ label }}</v-subheader
-    >
+    <v-subheader v-if="label" class="px-0 d-inline">{{ label }}</v-subheader>
     <v-row no-gutters>
       <v-col cols="6">
         <v-text-field
@@ -13,7 +8,7 @@
           outlined
           dense
           :value="value[0]"
-          color="grey darken-3"
+          color="#135ebf"
           :label="fieldLabels.min"
           hide-details
           single-line
@@ -21,6 +16,8 @@
           @input="handleInput($event, true)"
           @focus="handleFocus"
           @blur="handleBlur"
+          clearable
+          clear-icon="fa-times"
         >
         </v-text-field>
       </v-col>
@@ -30,7 +27,7 @@
           outlined
           dense
           :value="value[1]"
-          color="grey darken-3"
+          color="#135ebf"
           :label="fieldLabels.max"
           hide-details
           single-line
@@ -38,6 +35,8 @@
           @input="handleInput($event, false)"
           @focus="handleFocus"
           @blur="handleBlur"
+          clearable
+          clear-icon="fa-times"
         />
       </v-col>
     </v-row>

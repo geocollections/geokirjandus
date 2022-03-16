@@ -9,9 +9,8 @@ const resetAdvancedSearch = advancedSearch => {
         cloneAdvancedSearch[id].value = [null, null];
         break;
       case "checkbox":
-        if (id !== "isEstonianAuthor" && id !== "isEstonianReference") {
-          cloneAdvancedSearch[id].value = null;
-        }
+        cloneAdvancedSearch[id].value = null;
+
         break;
       case "select":
         cloneAdvancedSearch[id].value = [];
@@ -53,7 +52,7 @@ import { updateField } from "vuex-map-fields";
 const mutations = {
   updateField,
   RESET_SEARCH(state) {
-    state.search.value = null;
+    // state.search.value = null;
 
     state.advancedSearch = {
       ...state.advancedSearch,

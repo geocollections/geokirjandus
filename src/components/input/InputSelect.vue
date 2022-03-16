@@ -4,11 +4,14 @@
     multiple
     outlined
     dense
-    color="grey darken-3"
+    chips
+    deletable-chips
+    clear-icon="fa-times"
+    color="#135ebf"
     :label="label"
     :value="value"
     :items="items"
-    item-color="#fd8719"
+    item-color="#135ebf"
     :menu-props="{
       bottom: true,
       offsetY: true,
@@ -25,6 +28,9 @@
     "
     @blur="$emit('blur')"
   >
+    <template #selection="{ item }">
+      <v-chip small>{{ item.text }}</v-chip>
+    </template>
   </v-select>
 </template>
 <script>

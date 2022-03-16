@@ -4,11 +4,7 @@
       <v-btn
         icon
         small
-        outlined
-        tile
         aria-label="share"
-        color="#fd8719"
-        class="mx-2 shareBtn"
         id="shareButton"
         v-bind="attrs"
         v-on="on"

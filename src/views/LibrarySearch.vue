@@ -9,13 +9,13 @@
           :col-size="12"
           v-on:update:search="handleUpdateSearch"
           v-on:update:advancedSearch="handleUpdateAdvancedSearch"
-          v-on:reset:parameters="handleResetSearch"
+          v-on:reset:search="handleResetSearch"
         />
       </v-col>
-      <v-col md="9" lg="10" class="ml-md-8">
+      <v-col md="9" xl="10" class="ml-md-8">
         <div
           v-if="$vuetify.breakpoint.smAndDown"
-          class="text-h4 font-weight-medium mb-3 mb-md-0 mx-3"
+          class="text-h4 font-weight-medium mb-3 mb-md-0"
         >
           {{ $t("tabs.libraries") }} [{{ count }}]
         </div>
@@ -23,9 +23,9 @@
           <v-card
             id="view"
             flat
-            color="transparent"
+            outlined
             elevation="0"
-            class="ml-auto mr-auto card roundedBorder"
+            class="ml-auto mr-auto card"
           >
             <library-viewer />
           </v-card>
@@ -35,7 +35,7 @@
     <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
       <v-btn
         class="mt-2 d-print-none d-md-none"
-        color="#1C9BDE"
+        color="#135ebf"
         fixed
         rounded
         dark
@@ -73,6 +73,7 @@
 import { mapActions, mapState } from "vuex";
 import LibraryViewer from "@/components/library/LibraryViewer";
 import SearchLibrary from "@/components/search/SearchLibrary";
+import { fetchLibraries } from "@/utils/apiCalls";
 export default {
   name: "Home",
   components: { LibraryViewer, SearchLibrary },
@@ -109,16 +110,17 @@ export default {
     };
   },
   computed: {
-    ...mapState("library", ["count"])
+    ...mapState("library", ["count"]),
+    ...mapState("search/library", ["options", "search", "advancedSearch"])
   },
   methods: {
-    ...mapActions("search", [
+    ...mapActions("search/library", [
       "updateSearch",
       "updateAdvancedSearch",
       "resetSearch",
       "resetPage"
     ]),
-    ...mapActions("references", ["setReferences"]),
+    ...mapActions("library", ["setLibraries"]),
     handleUpdateSearch(event) {
       if (this.$route.name === "library")
         this.$store.dispatch("libraryReferenceSearch/updateSearch", event);
@@ -133,9 +135,21 @@ export default {
       else this.updateAdvancedSearch(event);
     },
     handleResetSearch(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/resetSearch", event);
-      else this.resetSearch(event);
+      this.resetSearch(event);
+      this.getLibrariesFromApi();
+    },
+    getLibrariesFromApi() {
+      const searchObj = {
+        search: this.search,
+        page: this.options.page,
+        paginateBy: this.options.paginateBy,
+        sortBy: this.options.sortBy,
+        sortDesc: this.options.sortDesc,
+        advancedSearch: this.advancedSearch.byIds
+      };
+      fetchLibraries(searchObj).then(res => {
+        this.setLibraries(res);
+      });
     }
   }
 };
@@ -144,12 +158,5 @@ export default {
 <style scoped>
 .main {
   background-color: #f6eddf;
-}
-
-.roundedBorder {
-  border-radius: 12px;
-}
-.roundedBorderMobile {
-  border-radius: 0 12px 12px 12px;
 }
 </style>

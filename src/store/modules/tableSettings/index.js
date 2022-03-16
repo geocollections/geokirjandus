@@ -125,13 +125,6 @@ const INIT_STATE = {
   ],
   referenceInLibraryHeaders: [
     {
-      text: "reference.id",
-      value: "reference_id",
-      show: true,
-      fixed: false,
-      class: "text-no-wrap"
-    },
-    {
       text: "reference.author",
       value: "author",
       show: true,
@@ -232,7 +225,7 @@ const INIT_STATE = {
     {
       text: "reference.dateChanged",
       value: "date_changed",
-      show: true,
+      show: false,
       fixed: false,
       class: "text-no-wrap"
     },
@@ -242,6 +235,13 @@ const INIT_STATE = {
       value: "links",
       show: true,
       fixed: true
+    },
+    {
+      text: "reference.id",
+      value: "reference_id",
+      show: true,
+      fixed: false,
+      class: "text-no-wrap"
     }
   ],
   libraryHeaders: [

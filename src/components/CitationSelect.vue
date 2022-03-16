@@ -5,8 +5,8 @@
     hide-details
     dense
     outlined
-    color="#B76315"
-    item-color="#fd8719"
+    color="#135ebf"
+    item-color="#135ebf"
     :menu-props="{ bottom: true, offsetY: true }"
     :label="$t('common.citationStyle')"
     @change="changeTemplate($event)"

@@ -11,8 +11,9 @@
         :value="paginateBy"
         class="mt-0 text-caption"
         style="max-width: 100px"
-        color="grey darken-3"
+        color="#135ebf"
         dense
+        outlined
         :menu-props="{ bottom: true, offsetY: true }"
         :items="paginateByOptionsTranslated"
         item-color="black"
@@ -24,7 +25,7 @@
     <v-pagination
       class="pageSelect "
       :value="page"
-      color="#fd8719"
+      color="#135ebf"
       prev-icon="fas fa-angle-left"
       next-icon="fas fa-angle-right"
       :length="Math.ceil(count / paginateBy)"

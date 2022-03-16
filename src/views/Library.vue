@@ -13,14 +13,14 @@
                     <v-icon>fas fa-arrow-left</v-icon>
                   </v-btn>
                 </v-col> -->
-                <div class="text-h5">
+                <div class="text-h6 font-weight-regular">
                   {{ $t("common.virtualLibrary") }}
                 </div>
                 <div
-                  class="col titleText"
+                  class="text-h4 font-weight-medium"
                   v-translate="{ et: library.title, en: library.title_en }"
                 />
-                <div class="text-h5">
+                <div class="text-h6 font-weight-regular">
                   {{ $t("common.libraryCreatedBy") }}:
                   {{ library.author_txt }}
                   {{ library.year }}
@@ -34,8 +34,10 @@
               </v-card-title>
             </v-card>
             <v-card
-              class="ml-auto mr-auto roundedBorder body px-1 pb-1"
+              class="ml-auto mr-auto px-1 pb-1"
               v-if="library"
+              elevation="0"
+              outlined
             >
               <v-card-actions
                 class="pr-2 px-4 d-flex justify-end flex-column flex-sm-row"
@@ -57,7 +59,7 @@
 
               <v-card-text class="pt-0 px-2">
                 <div class="d-flex align-center pb-3">
-                  <div class="text-h6 ml-2">
+                  <div class="text-h6">
                     {{ $t("common.citation") }}
                   </div>
 
@@ -68,10 +70,11 @@
                   />
                 </div>
                 <base-citation-detail
+                  class="mb-2"
                   :citation="citation($getWebpageCsl(library))"
                 />
                 <div
-                  class="text-h6 ml-2 my-2"
+                  class="text-h6 mb-2"
                   v-if="
                     ($i18n.locale === 'ee' && library.abstract) ||
                       ($i18n.locale === 'en' && library.abstract_en)
@@ -89,17 +92,17 @@
                     en: library.abstract_en
                   }"
                 />
-                <div class="text-h6 mb-2 ml-2">
+                <div class="text-h6 mb-2">
                   {{ $t("common.libraryReferences") }}
                 </div>
-                <reference-viewer
-                  style="border-width: 1px; border-color: grey"
-                  class="elevation-0"
-                  :options.sync="options"
-                  :count="count"
-                  :data="results"
-                  @update:data="getLibraryReferencesFromApi"
-                />
+                <v-card flat outlined>
+                  <reference-viewer
+                    :options.sync="options"
+                    :count="count"
+                    :data="results"
+                    @update:data="getLibraryReferencesFromApi"
+                  />
+                </v-card>
 
                 <v-row no-gutters>
                   <v-col cols="auto" class="pt-2 pr-3">

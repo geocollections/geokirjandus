@@ -129,7 +129,7 @@ export default {
     this.getIntroduction();
   },
   methods: {
-    ...mapActions("search", [
+    ...mapActions("search/reference", [
       "resetSearch",
       "updateSearch",
       "updateAdvancedSearch"

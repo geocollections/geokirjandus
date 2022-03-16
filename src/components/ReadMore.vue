@@ -8,7 +8,7 @@
       class="mt-2"
       text
       rounded
-      color="primary"
+      color="#135ebf"
       @click="showMore = !showMore"
       x-small
       >{{ !showMore ? $t("common.showMore") : $t("common.showLess") }}</v-btn

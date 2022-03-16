@@ -1,7 +1,8 @@
 <template>
-  <div class="px-1 px-sm-2">
+  <div>
     <data-viewer
-      border-color="#a5bac4"
+      border-color="transparent"
+      style="border-width: 0px"
       :module="$route.meta.object"
       :data="results"
       :count="count"

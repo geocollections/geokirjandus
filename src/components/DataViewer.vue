@@ -2,20 +2,16 @@
   <div
     id="dataViewer"
     :style="{
-      'border-radius': '12px',
-      'border-width': '4px',
-      'border-style': 'solid',
-      'border-color': borderColor,
       overflow: 'hidden'
     }"
-    class="elevation-2 content"
+    class="content"
   >
     <div class="d-sm-flex py-2 px-2" style="background-color: whitesmoke">
       <v-card-actions class="d-print-none py-0 px-0">
         <v-btn-toggle
           id="viewChanger"
           :value="view"
-          color="#fd8719"
+          color="#135ebf"
           @change="updateView"
           class="mx-1 ml-auto"
           dense
@@ -79,6 +75,7 @@
           small
           :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
         />
+        <share-button />
       </v-card-actions>
 
       <view-helper
@@ -139,7 +136,7 @@
     </v-scroll-y-transition>
     <view-helper
       style="background-color: whitesmoke"
-      class="justify-end px-2 pb-2"
+      class="justify-end px-2 py-2"
       v-if="helpers"
       v-on="$listeners"
       :page="options.page"
@@ -157,6 +154,7 @@ import { mapState, mapActions } from "vuex";
 import i18n from "vue-i18n";
 import CitationSelect from "./CitationSelect.vue";
 import BaseDataTableHeaderMenu from "@/components/base/BaseDataTableHeaderMenu";
+import ShareButton from "./ShareButton.vue";
 export default {
   name: "DataViewer",
   components: {
@@ -164,7 +162,8 @@ export default {
     ListView,
     CopyButton,
     CitationSelect,
-    BaseDataTableHeaderMenu
+    BaseDataTableHeaderMenu,
+    ShareButton
   },
   props: {
     options: { type: Object, default: () => {} },
@@ -202,10 +201,6 @@ export default {
       default: function() {
         return this.$t("error.nothingFound");
       }
-    },
-    borderColor: {
-      type: String,
-      default: "#f3d3a5"
     }
   },
   data() {
@@ -274,7 +269,7 @@ export default {
 
 .content {
   background-color: white;
-  border-radius: 12px;
+  /* border-radius: 12px; */
 }
 
 .mobile-row >>> .v-data-table__mobile-row {
@@ -282,7 +277,7 @@ export default {
 }
 
 .data-viewer-table {
-  border-radius: 12px;
+  /* border-radius: 12px; */
 }
 .v-data-table {
   max-width: 100%;

@@ -8,7 +8,7 @@
       bottom
       right
       small
-      color="#fd8719"
+      color="#135ebf"
       dark
       @click="toTop"
     >

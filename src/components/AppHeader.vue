@@ -4,7 +4,7 @@
     app
     absolute
     class=" mx-1 mx-auto"
-    color="#ecc285"
+    color="#eba142"
     style="z-index: 9998"
   >
     <template v-slot:img="{ props }">
@@ -24,6 +24,7 @@
       <v-btn
         class="text-capitalize text-body-1 font-weight-medium"
         style="font-family: 'Exo 2' !important"
+        active-class="active-app-bar-btn "
         :ripple="false"
         dark
         text
@@ -37,6 +38,7 @@
       <v-btn
         class="text-capitalize text-body-1 font-weight-medium"
         style="font-family: 'Exo 2' !important"
+        active-class="active-app-bar-btn "
         :ripple="false"
         dark
         text
@@ -142,5 +144,18 @@ export default {
 .v-toolbar ::v-deep .v-toolbar__content {
   margin-left: auto;
   margin-right: auto;
+}
+
+.active-app-bar-btn::after {
+  position: absolute;
+  content: "";
+  bottom: 0%;
+  height: 3px;
+  width: 100%;
+  // border-radius: 5px;
+  background-color: #135ebf;
+  // border-color: #135ebf;
+  // border-bottom-style: solid;
+  // border-bottom-width: 2px;
 }
 </style>

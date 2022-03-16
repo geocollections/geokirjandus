@@ -12,6 +12,7 @@
     "CSVExportSuccess": "Fail eksporditud CSV formaadis"
   },
   "tooltip": {
+    "removeFilters": "Eemalda kõik filtrid",
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
   },
   "alert": {
@@ -75,7 +76,7 @@
     "newest": "Viimati muudetud teavikud",
     "viewReferences": "Otsi/Sirvi",
     "map": "Kaart",
-    "misc": "Muu",
+    "misc": "Lisainfo",
     "searchCommand": "Otsi",
     "libraryPublisher": "Virtuaalne kirjanduse kogumik e-Maapõues",
     "yes": "jah",

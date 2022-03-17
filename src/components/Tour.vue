@@ -78,12 +78,12 @@ export default {
     ["cancel", "complete"].forEach(event =>
       Shepherd.on(event, () => {
         this.btnIsDisabled = false;
-        if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
-          document.querySelector("#advancedSearchActivator").click();
-        }
-        if (this.$vuetify.breakpoint.mdAndDown) {
-          document.getElementById("searchFab").click();
-        }
+        // if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
+        //   document.querySelector("#advancedSearchActivator").click();
+        // }
+        // if (this.$vuetify.breakpoint.mdAndDown) {
+        //   document.getElementById("searchFab").click();
+        // }
       })
     );
   },
@@ -100,19 +100,19 @@ export default {
           this.stepReferenceCopyButton(),
           this.stepLibraryCopyButton(),
           this.stepDataViewer(),
-          this.stepTabs(),
-          this.stepPaginationSelect(),
-          this.stepPageSelect(),
+          // this.stepTabs(),
           this.stepViewChange(),
           this.stepFieldSelect(),
+          this.stepCitationSelect(),
           this.stepCopyButton(),
+          this.stepShareButton(),
+          this.stepPaginationSelect(),
+          this.stepPageSelect(),
           this.stepSearchField(),
           this.stepSearchButton(),
-          this.stepLibraryAlert(),
+          // this.stepLibraryAlert(),
           this.stepHelpButton(),
-          this.stepShareButton(),
-          this.stepDeleteSearch(),
-          this.stepCitationSelect(),
+          // this.stepDeleteSearch(),
           this.stepAdvancedSearch()
         ]
       });
@@ -122,9 +122,9 @@ export default {
     startTour() {
       const tour = this.buildTour();
 
-      this.isAdvancedSearchOpenBeforeTour = document
-        .querySelector(".advancedSearch")
-        .classList.contains("v-list-group--active");
+      // this.isAdvancedSearchOpenBeforeTour = document
+      //   .querySelector(".advancedSearch")
+      //   .classList.contains("v-list-group--active");
 
       tour.start();
       this.btnIsDisabled = true;
@@ -375,17 +375,17 @@ export default {
       return {
         beforeShowPromise: () => {
           return new Promise(resolve => {
-            if (
-              document
-                .getElementById("searchDrawer")
-                .classList.contains("v-navigation-drawer--close")
-            ) {
-              if (this.$vuetify.breakpoint.mdAndDown) {
-                document.getElementById("searchFab").click();
-              } else {
-                document.getElementById("showSearch").click();
-              }
-            }
+            // if (
+            //   document
+            //     .getElementById("searchDrawer")
+            //     .classList.contains("v-navigation-drawer--close")
+            // ) {
+            //   if (this.$vuetify.breakpoint.mdAndDown) {
+            //     document.getElementById("searchFab").click();
+            //   } else {
+            //     document.getElementById("showSearch").click();
+            //   }
+            // }
             if (document.querySelector("#searchField")) {
               resolve();
             }
@@ -551,13 +551,13 @@ export default {
       return {
         beforeShowPromise: () => {
           return new Promise(resolve => {
-            if (
-              !document
-                .querySelector(".advancedSearch")
-                .classList.contains("v-list-group--active")
-            ) {
-              document.querySelector("#advancedSearchActivator").click();
-            }
+            // if (
+            //   !document
+            //     .querySelector(".advancedSearch")
+            //     .classList.contains("v-list-group--active")
+            // ) {
+            //   document.querySelector("#advancedSearchActivator").click();
+            // }
 
             if (document.querySelector("#advancedSearch")) {
               resolve();
@@ -575,20 +575,20 @@ export default {
         buttons: [this.back, this.complete],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
-        },
-        when: {
-          cancel: () => {
-            if (!this.isAdvancedSearchOpenBeforeTour) {
-              document.querySelector("#advancedSearchActivator").click();
-            }
-          },
-
-          complete: () => {
-            if (!this.isAdvancedSearchOpenBeforeTour) {
-              document.querySelector("#advancedSearchActivator").click();
-            }
-          }
         }
+        // when: {
+        //   cancel: () => {
+        //     if (!this.isAdvancedSearchOpenBeforeTour) {
+        //       document.querySelector("#advancedSearchActivator").click();
+        //     }
+        //   },
+
+        //   complete: () => {
+        //     if (!this.isAdvancedSearchOpenBeforeTour) {
+        //       document.querySelector("#advancedSearchActivator").click();
+        //     }
+        //   }
+        // }
       };
     }
   }

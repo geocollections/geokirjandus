@@ -1,17 +1,57 @@
 <template>
+  <!-- COLORS: #eba142,#A44A3F, #FF9F1C, #D36135, #FF8C42, #F7934C -->
   <v-app-bar
     elevation="2"
+    flat
     app
-    absolute
-    class=" mx-1 mx-auto"
-    color="#eba142"
+    clipped-right
+    hide-on-scroll
+    class="mx-1 mx-auto"
+    color="#FF9F1C"
     style="z-index: 9998"
+    extension-height="48"
+    height="48"
   >
-    <template v-slot:img="{ props }">
-      <v-img
-        v-bind="props"
-        gradient="to top, rgba(225, 159, 61, 0.9), rgba(225, 159, 61, 0.9)"
-      ></v-img>
+    <template #extension v-if="isMobile">
+      <v-toolbar-items class="py-1" style="width: 100%" v-if="isMobile">
+        <v-btn
+          class="text-capitalize text-body-1 mr-1 rounded font-weight-medium"
+          style="font-family: 'Exo 2' !important"
+          active-class="active-app-bar-btn "
+          :ripple="false"
+          dark
+          text
+          link
+          :to="{ name: 'searchReference' }"
+        >
+          <v-icon left>fas fa-book</v-icon>
+          {{ $t("tabs.references") }}
+        </v-btn>
+
+        <v-btn
+          class="text-capitalize text-body-1 rounded font-weight-medium"
+          style="font-family: 'Exo 2' !important"
+          active-class="active-app-bar-btn"
+          :ripple="false"
+          dark
+          text
+          link
+          :to="{ name: 'searchLibrary' }"
+        >
+          {{ $t("tabs.libraries") }}
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          class="rounded"
+          icon
+          dark
+          :ripple="false"
+          aria-label="Open navigation drawer"
+          @click.stop="$emit('toggle:navigationDrawer')"
+        >
+          <v-icon>fas fa-bars</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </template>
     <v-toolbar-title
       tag="a"
@@ -20,9 +60,9 @@
     >
       {{ $t("title2") }}
     </v-toolbar-title>
-    <v-toolbar-items class="ml-4">
+    <v-toolbar-items v-if="!isMobile" class="ml-4 py-1">
       <v-btn
-        class="text-capitalize text-body-1 font-weight-medium"
+        class="text-capitalize text-body-1 mr-1 rounded font-weight-medium"
         style="font-family: 'Exo 2' !important"
         active-class="active-app-bar-btn "
         :ripple="false"
@@ -36,7 +76,7 @@
       </v-btn>
 
       <v-btn
-        class="text-capitalize text-body-1 font-weight-medium"
+        class="text-capitalize text-body-1  rounded font-weight-medium"
         style="font-family: 'Exo 2' !important"
         active-class="active-app-bar-btn "
         :ripple="false"
@@ -49,15 +89,26 @@
       </v-btn>
     </v-toolbar-items>
     <v-spacer />
-    <v-toolbar-items>
-      <tour v-if="$vuetify.breakpoint.smAndUp" />
-      <links v-if="$vuetify.breakpoint.smAndUp" />
-      <lang-buttons v-if="$vuetify.breakpoint.smAndUp" :is-dark="false" />
-      <emaapou-button />
+    <v-toolbar-items class="py-1">
+      <tour v-if="$vuetify.breakpoint.mdAndUp" class="rounded mr-1" />
+      <links v-if="$vuetify.breakpoint.mdAndUp" />
+      <lang-buttons v-if="$vuetify.breakpoint.mdAndUp" :is-dark="false" />
+      <emaapou-button v-if="$vuetify.breakpoint.mdAndUp" class="rounded" />
+      <v-btn
+        v-if="$vuetify.breakpoint.smOnly"
+        class="rounded"
+        icon
+        dark
+        :ripple="false"
+        aria-label="Open navigation drawer"
+        @click.stop="$emit('toggle:navigationDrawer')"
+      >
+        <v-icon>fas fa-bars</v-icon>
+      </v-btn>
     </v-toolbar-items>
     <!--  MOBILE MENU  -->
-    <v-menu
-      v-if="!$vuetify.breakpoint.smAndUp"
+    <!-- <v-menu
+      v-if="!$vuetify.breakpoint.mdAndUp"
       transition="slide-y-transition"
       offset-y
       bottom
@@ -79,7 +130,7 @@
           <lang-buttons />
         </div>
       </v-list>
-    </v-menu>
+    </v-menu> -->
   </v-app-bar>
 </template>
 
@@ -97,6 +148,9 @@ export default {
       if (this.$vuetify.breakpoint.lgOnly) return "1185px";
       if (this.$vuetify.breakpoint.mdOnly) return "900px";
       return "2000px";
+    },
+    isMobile() {
+      return this.$vuetify.breakpoint.xsOnly;
     }
   },
   methods: {
@@ -146,16 +200,31 @@ export default {
   margin-right: auto;
 }
 
+.v-toolbar ::v-deep .v-toolbar__extension {
+  background-color: #ff9f1c;
+}
+
 .active-app-bar-btn::after {
   position: absolute;
   content: "";
   bottom: 0%;
   height: 3px;
   width: 100%;
-  // border-radius: 5px;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
   background-color: #135ebf;
+
   // border-color: #135ebf;
   // border-bottom-style: solid;
   // border-bottom-width: 2px;
+}
+.v-toolbar ::v-deep .v-toolbar__extension {
+  &.v-btn {
+    height: 40px;
+  }
+}
+.app-bar-btn {
+  border-radius: 4px;
+  height: 40px !important;
 }
 </style>

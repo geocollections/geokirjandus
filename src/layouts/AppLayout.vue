@@ -2,7 +2,11 @@
   <div>
     <app-header
       class="d-print-none"
-      v-on:update:showSearch="showSearch = !showSearch"
+      @toggle:navigationDrawer="showMobileNavigation = !showMobileNavigation"
+    />
+    <app-navigation-mobile
+      :show="showMobileNavigation"
+      @update:navigationDrawer="showMobileNavigation = $event"
     />
     <v-main class="main fill-height mt-2 mt-md-5">
       <scroll-to-top />
@@ -19,17 +23,17 @@ import AppFooter from "../components/AppFooter.vue";
 import Fabs from "@/components/Fabs";
 import queryMixin from "@/mixins/queryMixin";
 import ScrollToTop from "@/components/ScrollToTop.vue";
+import AppNavigationMobile from "../components/AppNavigationMobile.vue";
 
 export default {
   name: "AppLayout",
-  components: { AppHeader, AppFooter, ScrollToTop },
+  components: { AppHeader, AppFooter, ScrollToTop, AppNavigationMobile },
   mixins: [queryMixin],
-  // data() {
-  //   return {
-  //     showSearch: false,
-  //     showAdvancedSearch: true
-  //   };
-  // },
+  data() {
+    return {
+      showMobileNavigation: false
+    };
+  },
   metaInfo: {
     title: "Otsing"
   },

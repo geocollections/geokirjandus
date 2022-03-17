@@ -96,7 +96,8 @@
     "tourView": "Vaate",
     "virtualLibrary": "Virtuaalne kirjanduse kogumik",
     "showMore": "kuva rohkem",
-    "showLess": "kuva vähem"
+    "showLess": "kuva vähem",
+    "language": "Keel"
   },
   "reference": {
     "id": "ID",

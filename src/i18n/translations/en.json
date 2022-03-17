@@ -97,7 +97,11 @@
     "tourView": "View",
     "virtualLibrary": "Virtual reference collection",
     "showMore": "show more",
-    "showLess": "show less"
+    "showLess": "show less",
+    "language": "Language",
+    "goTo": "Go to page",
+    "goToBtn": "Go",
+    "pageSelect": "{current} / {count}"
   },
   "reference": {
     "id": "ID",

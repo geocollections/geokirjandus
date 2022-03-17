@@ -12,7 +12,7 @@ import "izitoast/dist/css/iziToast.min.css";
 import "academicons/css/academicons.min.css";
 import "shepherd.js/dist/css/shepherd.css";
 import cslJson from "@/plugins/cslJson";
-import "@/assets/global.css";
+import "@/assets/global.scss";
 
 Vue.use(VueIziToast);
 Vue.use(VueShepherd);

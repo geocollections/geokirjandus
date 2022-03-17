@@ -162,9 +162,10 @@ import InputText from "../input/InputText.vue";
 import InputRange from "../input/InputRange.vue";
 import InputSelect from "../input/InputSelect.vue";
 import InputCheckbox from "../input/InputCheckbox.vue";
+import { fetchLibraryReferences } from "@/utils/apiCalls";
 
 export default {
-  name: "SearchReference",
+  name: "SearchLibraryReference",
   components: {
     SearchHelpDialog,
     InputText,
@@ -177,6 +178,10 @@ export default {
     colSize: {
       type: Number,
       default: 6
+    },
+    library: {
+      type: Number,
+      require: true
     }
   },
   data: () => ({
@@ -191,7 +196,7 @@ export default {
     showAlert: false
   }),
   computed: {
-    ...mapFields("search/reference", {
+    ...mapFields("search/libraryReference", {
       author: "advancedSearch.byIds.author.value",
       year: "advancedSearch.byIds.year.value",
       title: "advancedSearch.byIds.title.value",
@@ -207,10 +212,15 @@ export default {
       volumeAndNumber: "advancedSearch.byIds.volumeAndNumber.value",
       publisher: "advancedSearch.byIds.publisher.value",
       taxa: "advancedSearch.byIds.taxa.value",
-      query: "search.value"
+      query: "search.value",
+      page: "options.page"
     }),
-    ...mapState("references", ["facet", "result", "count"]),
-    ...mapState("search/reference", ["advancedSearch"]),
+    ...mapState("libraryReferences", ["facet", "result", "count"]),
+    ...mapState("search/libraryReference", [
+      "advancedSearch",
+      "options",
+      "search"
+    ]),
 
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
@@ -298,11 +308,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage"]),
-    ...mapActions("references", ["setReferences"]),
-    handleExitLibrary() {
-      this.$router.replace({ name: "searchReference" });
-    },
+    ...mapActions("search/libraryReference", ["resetSearch", "resetPage"]),
+    ...mapActions("libraryReferences", ["setReferences"]),
     updateCheckbox(event, id) {
       this.$emit("update:advancedSearch", {
         value: event,
@@ -314,9 +321,22 @@ export default {
       else if (id === "language") return this.getReferenceLanguages;
       return [];
     },
-    async handleSearch() {
-      const res = await this.getReferences();
-      this.setReferences(res);
+    getLibraryReferencesFromApi() {
+      this.page = 1;
+      const searchObj = {
+        search: this.search,
+        page: this.options.page,
+        paginateBy: this.options.paginateBy,
+        sortBy: this.options.sortBy,
+        sortDesc: this.options.sortDesc,
+        advancedSearch: this.advancedSearch.byIds
+      };
+      fetchLibraryReferences(this.library, searchObj).then(res => {
+        this.setReferences(res);
+      });
+    },
+    handleSearch() {
+      this.getLibraryReferencesFromApi();
     }
   }
 };

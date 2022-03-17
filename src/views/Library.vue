@@ -2,6 +2,33 @@
   <v-container>
     <v-row justify="center">
       <v-col class="px-2 px-sm-3">
+        <v-breadcrumbs
+          v-if="library"
+          class="pa-0"
+          :items="[
+            {
+              text: $t('tabs.libraries'),
+              to: { name: 'searchLibrary' },
+              exact: true
+            },
+            {
+              text: $i18n.locale == 'ee' ? library.title : library.title_en
+            }
+          ]"
+        >
+          <template v-slot:item="{ item }">
+            <v-breadcrumbs-item
+              v-if="item.to"
+              :exact="item.exact"
+              :to="item.to"
+            >
+              <span class="grey--text text--darken-3 link">
+                {{ item.text }}
+              </span>
+            </v-breadcrumbs-item>
+            <v-breadcrumbs-item v-else>{{ item.text }}</v-breadcrumbs-item>
+          </template>
+        </v-breadcrumbs>
         <v-fade-transition :hide-on-leave="true">
           <div>
             <v-card flat color="transparent" class="mb-4" v-if="library">
@@ -16,13 +43,32 @@
                 <div class="text-h6 font-weight-regular">
                   {{ $t("common.virtualLibrary") }}
                 </div>
-                <div
-                  class="text-h4 font-weight-medium"
-                  v-translate="{ et: library.title, en: library.title_en }"
-                />
+                <div class="d-flex">
+                  <div
+                    class="text-h4 font-weight-medium"
+                    v-translate="{ et: library.title, en: library.title_en }"
+                  />
+                  <v-btn
+                    link
+                    icon
+                    small
+                    style="vertical-align: top;"
+                    color="deep-orange darken-2"
+                    class="d-print-none"
+                    :href="
+                      `https://edit.geocollections.info/library/${library.id}`
+                    "
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <v-icon small>fas fa-edit</v-icon>
+                    <!-- <b>{{ $t("common.edit") }}</b> -->
+                  </v-btn>
+                </div>
                 <div class="text-h6 font-weight-regular">
                   {{ $t("common.libraryCreatedBy") }}:
                   {{ library.author_txt }}
+
                   {{ library.year }}
                 </div>
 
@@ -39,25 +85,7 @@
               elevation="0"
               outlined
             >
-              <v-card-actions
-                class="pr-2 px-4 d-flex justify-end flex-column flex-sm-row"
-              >
-                <v-chip
-                  outlined
-                  color="blue-grey darken-3"
-                  class="d-print-none mr-auto mr-sm-1 my-1"
-                  :href="
-                    `https://edit.geocollections.info/library/${library.id}`
-                  "
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <v-icon small class="pr-1">fas fa-edit</v-icon>
-                  <b>{{ $t("common.edit") }}</b>
-                </v-chip>
-              </v-card-actions>
-
-              <v-card-text class="pt-0 px-2">
+              <v-card-text class="px-2">
                 <div class="d-flex align-center pb-3">
                   <div class="text-h6">
                     {{ $t("common.citation") }}
@@ -95,14 +123,24 @@
                 <div class="text-h6 mb-2">
                   {{ $t("common.libraryReferences") }}
                 </div>
-                <v-card flat outlined>
-                  <reference-viewer
-                    :options.sync="options"
-                    :count="count"
-                    :data="results"
-                    @update:data="getLibraryReferencesFromApi"
-                  />
-                </v-card>
+                <v-row>
+                  <v-col md="3" xl="2">
+                    <search-library-reference
+                      :library="parseInt(id)"
+                      @reset:search="handleResetSearch"
+                    />
+                  </v-col>
+                  <v-col md="9" xl="10">
+                    <v-card flat outlined>
+                      <reference-viewer
+                        :options.sync="options"
+                        :count="count"
+                        :data="results"
+                        @update:data="getLibraryReferencesFromApi"
+                      />
+                    </v-card>
+                  </v-col>
+                </v-row>
 
                 <v-row no-gutters>
                   <v-col cols="auto" class="pt-2 pr-3">
@@ -147,12 +185,14 @@ import CitationSelect from "@/components/CitationSelect";
 import BaseCitationDetail from "@/components/base/BaseCitationDetail.vue";
 import { mapActions, mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
+import SearchLibraryReference from "../components/search/SearchLibraryReference.vue";
 export default {
   name: "Library",
   components: {
     ReferenceViewer,
     CitationSelect,
-    BaseCitationDetail
+    BaseCitationDetail,
+    SearchLibraryReference
   },
   mixins: [dateMixin, citationMixin, queryMixin],
   data() {
@@ -187,6 +227,7 @@ export default {
       if (this.library === undefined) {
         this.error = true;
       }
+      this.resetSearch();
     });
   },
   beforeRouteEnter(to, from, next) {
@@ -214,6 +255,7 @@ export default {
   },
   methods: {
     ...mapActions("libraryReferences", ["setReferences"]),
+    ...mapActions("search/libraryReference", ["resetSearch"]),
     exit() {
       this.$router.replace({ name: "searchLibrary" }).catch(() => {});
     },
@@ -235,6 +277,10 @@ export default {
       fetchLibraryReferences(this.id, searchObj).then(res => {
         this.setReferences(res);
       });
+    },
+    handleResetSearch(event) {
+      this.resetSearch(event);
+      this.getLibraryReferencesFromApi();
     }
   }
 };

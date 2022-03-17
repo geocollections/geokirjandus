@@ -1,6 +1,7 @@
 <template>
   <v-form @submit.prevent="handleSearch">
     <v-text-field
+      id="searchField"
       solo
       hide-details
       v-model="query"
@@ -32,7 +33,7 @@
         <v-spacer />
         <v-hover v-slot="{ hover }">
           <v-chip
-            color="#eba142"
+            color="#FF9F1C"
             outlined
             :class="{ 'pr-2': hover }"
             v-if="getAdvancedSearchParametersAppliedCount > 0"
@@ -40,7 +41,7 @@
             <div class="pr-1 black--text">
               {{ getAdvancedSearchParametersAppliedCount }}
             </div>
-            <v-icon x-small color="#eba142">fas fa-filter</v-icon>
+            <v-icon x-small color="#FF9F1C">fas fa-filter</v-icon>
 
             <v-tooltip bottom open-delay="250">
               <template #activator="{on, attrs}">

@@ -15,9 +15,9 @@
       <v-col md="9" xl="10" class="ml-md-8">
         <div
           v-if="$vuetify.breakpoint.smAndDown"
-          class="text-h4 font-weight-medium mb-3 mb-md-0"
+          class="text-center text-h4 font-weight-medium mb-3 mb-md-0"
         >
-          {{ $t("tabs.references") }} [{{ count }}]
+          {{ $t("tabs.references") }}
         </div>
         <v-fade-transition :hide-on-leave="true">
           <v-card

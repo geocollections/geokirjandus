@@ -56,7 +56,7 @@
             v-if="view === 'list'"
             class="px-2"
           />
-          <div v-else-if="view === 'table'" class="mx-2">
+          <div v-else-if="view === 'table'" id="fieldSelect" class="mx-2">
             <base-data-table-header-menu
               :headers="getHeaderOptions"
               :visibleHeaders="getHeadersShowing"
@@ -67,24 +67,34 @@
           </div>
         </v-scroll-y-transition>
         <v-divider vertical />
-        <copy-button
-          v-if="copyButton"
-          button-class="mx-2"
-          id="viewerCopyButton"
-          :table-data="data"
-          small
-          :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
-        />
+        <div id="viewerCopyButton">
+          <copy-button
+            v-if="copyButton"
+            button-class="mx-2"
+            :table-data="data"
+            small
+            :clipboard-class="
+              view === 'list' ? 'list-view' : 'data-viewer-table'
+            "
+          />
+        </div>
         <share-button />
       </v-card-actions>
-
-      <view-helper
+      <base-pagination
         class="ml-auto justify-end"
-        v-if="helpers"
-        v-on="$listeners"
-        :page="options.page"
-        :paginate-by="options.paginateBy"
+        :options="options"
         :count="count"
+        :items-per-page-options="footerProps['items-per-page-options']"
+        :items-per-page-text="footerProps['items-per-page-text']"
+        :page-select-text="
+          $t('common.pageSelect', {
+            current: options.page,
+            count: Math.ceil(this.count / this.options.paginateBy)
+          })
+        "
+        :go-to-text="$t('common.goTo')"
+        :go-to-button-text="$t('common.goToBtn')"
+        v-on="$listeners"
       />
     </div>
     <v-scroll-y-transition leave-absolute group>
@@ -134,7 +144,24 @@
         </v-data-table>
       </div>
     </v-scroll-y-transition>
-    <view-helper
+    <base-pagination
+      style="background-color: whitesmoke"
+      class="justify-end px-2 py-2"
+      :options="options"
+      :count="count"
+      :items-per-page-options="footerProps['items-per-page-options']"
+      :items-per-page-text="footerProps['items-per-page-text']"
+      :page-select-text="
+        $t('common.pageSelect', {
+          current: options.page,
+          count: Math.ceil(this.count / this.options.paginateBy)
+        })
+      "
+      :go-to-text="$t('common.goTo')"
+      :go-to-button-text="$t('common.goToBtn')"
+      v-on="$listeners"
+    />
+    <!-- <view-helper
       style="background-color: whitesmoke"
       class="justify-end px-2 py-2"
       v-if="helpers"
@@ -142,28 +169,30 @@
       :page="options.page"
       :paginate-by="options.paginateBy"
       :count="count"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import CopyButton from "./CopyButton";
 import ListView from "@/components/ListView";
-import ViewHelper from "@/components/ViewHelper";
+// import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
 import i18n from "vue-i18n";
 import CitationSelect from "./CitationSelect.vue";
 import BaseDataTableHeaderMenu from "@/components/base/BaseDataTableHeaderMenu";
 import ShareButton from "./ShareButton.vue";
+import BasePagination from "./base/BasePagination.vue";
 export default {
   name: "DataViewer",
   components: {
-    ViewHelper,
+    // ViewHelper,
     ListView,
     CopyButton,
     CitationSelect,
     BaseDataTableHeaderMenu,
-    ShareButton
+    ShareButton,
+    BasePagination
   },
   props: {
     options: { type: Object, default: () => {} },
@@ -207,6 +236,11 @@ export default {
     return {
       headerProps: {
         sortByText: this.$t("common.sortBy")
+      },
+      footerProps: {
+        showFirstLastPage: true,
+        "items-per-page-options": [10, 25, 50, 100],
+        "items-per-page-text": this.$t("common.paginateBy")
       }
     };
   },

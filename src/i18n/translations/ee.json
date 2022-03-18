@@ -1,5 +1,5 @@
 {
-  "title": "Eesti maapõue kirjanduse andmebaas",
+  "title": "Eesti maapõue kirjanduse",
   "title2": "Eesti maapõue kirjandus",
   "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
@@ -97,7 +97,8 @@
     "virtualLibrary": "Virtuaalne kirjanduse kogumik",
     "showMore": "kuva rohkem",
     "showLess": "kuva vähem",
-    "language": "Keel"
+    "language": "Keel",
+    "about": "Tutvustus"
   },
   "reference": {
     "id": "ID",

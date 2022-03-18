@@ -32,8 +32,8 @@ export default {
           "https://files.geocollections.info/img/geokirjandus/geokirjandus.jpg"
       },
       { name: "og:image:alt", content: "TalTech" },
-      { name: "theme-color", content: "#924F11" },
-      { name: "apple-mobile-web-app-status-bar-sytle", content: "#924F11" }
+      { name: "theme-color", content: "#FF9F1C" },
+      { name: "apple-mobile-web-app-status-bar-sytle", content: "#FF9F1C" }
     ],
     link: [
       {

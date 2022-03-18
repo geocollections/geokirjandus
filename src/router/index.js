@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import store from "@/store";
 import AppLayout from "../layouts/AppLayout.vue";
+import LandingLayout from "../layouts/LandingLayout.vue";
 
 const Reference = () => import("@/views/Reference");
 const ReferenceSearch = () => import("@/views/ReferenceSearch");
@@ -19,7 +20,11 @@ const routes = [
     path: "/",
     component: App,
     children: [
-      { path: "", name: "landing", component: Landing },
+      {
+        path: "",
+        component: LandingLayout,
+        children: [{ path: "", name: "landing", component: Landing }]
+      },
       {
         path: "",
         component: AppLayout,

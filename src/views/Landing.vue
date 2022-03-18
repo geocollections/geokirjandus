@@ -1,95 +1,119 @@
 <template>
-  <div class="main fill-height d-flex flex-wrap align-content-space-between">
-    <v-container fluid class="landing pt-0">
-      <v-row
-        :style="
-          `
-          background-image: linear-gradient(to top, rgba(229, 129, 36, 0.4), rgba(0, 0, 0, 0.40)),url('${require('@/assets/books4.jpg')}');
-          `
-        "
-        class="header"
-      >
-        <v-col class="elevation-4 header d-flex flex-column pt-0 pb-5">
-          <span class="d-flex mt-4 mb-2 mr-4">
+  <div>
+    <div
+      class=" spacer layer1"
+      :style="{ height: $vuetify.breakpoint.lgAndUp ? '400px' : '400px' }"
+    >
+      <v-container class="landing pt-0 pa-0">
+        <v-row
+          no-gutters
+          :style="{
+            height: $vuetify.breakpoint.lgAndUp ? '400px' : '400px',
+            'padding-top': $vuetify.breakpoint.smAndUp ? '48px' : '96px'
+          }"
+        >
+          <v-col class="header d-flex flex-column pt-sm-10">
+            <!-- <span class="d-flex mt-4 mb-2 mr-4">
             <emaapou-button class="mr-auto" />
             <links />
             <lang-buttons />
-          </span>
+          </span> -->
 
-          <h1 class="mt-2 white--text text-center title">
-            {{ $t("title") }}
-          </h1>
-          <span
-            class="text-center align-self-center col-12 col-sm-6 col-md-3 mt-6"
-          >
-            <v-text-field
-              v-model="searchStr"
-              :autofocus="true"
-              @keyup.native="search"
-              hide-details
-              :label="$t('common.search')"
-              solo
+            <div
+              class="mt-5 text-h3 white--text text-center font-weight-medium "
             >
-              <template v-slot:prepend-inner>
-                <v-icon small class="px-2">fas fa-search</v-icon>
-              </template>
-            </v-text-field>
-            <v-btn
-              class="mt-3 align-center"
-              color="#1C9BDE"
-              dark
-              large
-              @click="search"
-              >{{ $t("common.viewReferences") }}</v-btn
+              {{ $t("subtitle") }}
+            </div>
+            <span
+              class="text-center align-self-center align-center d-flex mt-6"
             >
-          </span>
-        </v-col>
-      </v-row>
-      <v-row class="d-flex flex-column align-center justify-center main">
-        <v-col cols="12" sm="11" lg="10">
+              <v-text-field
+                v-model="searchStr"
+                :autofocus="true"
+                @keyup.native="search"
+                hide-details
+                :label="$t('common.search')"
+                solo
+                style="width:300px"
+              >
+              </v-text-field>
+              <v-btn
+                class="ml-2"
+                height="48px"
+                color="#135ebf"
+                dark
+                large
+                @click="search"
+              >
+                <v-icon small class="px-2" left>fas fa-search</v-icon>
+                <div class="font-family-exo-2">
+                  {{ $t("common.search") }}
+                </div>
+              </v-btn>
+            </span>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+    <v-container class="my-5">
+      <v-row justify="center" class="main">
+        <v-col>
           <statistics class="roundedBorder" />
         </v-col>
       </v-row>
-      <v-row class="d-flex justify-center main">
-        <v-col cols="12" sm="11" md="5" lg="4">
+    </v-container>
+    <!-- <div class="spacer2 layer2" /> -->
+    <!-- <div style="background-color: #ffb85a"> -->
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="5" lg="4">
           <v-fade-transition>
-            <v-card v-if="intro" class="cardTitle roundedBorder">
-              <v-card-title class="cardTitle">
-                <h6 v-translate="{ et: intro.title_et, en: intro.title_en }" />
-              </v-card-title>
-              <div class="px-1 pb-1 px-sm-2 pb-sm-2">
-                <v-card-text
-                  style="background-color: white"
-                  class="py-3 roundedBorder"
-                  v-translate="{ et: intro.content_et, en: intro.content_en }"
-                />
+            <div>
+              <div class="text-center text-h4 mb-3">
+                {{ $t("common.about") }}
               </div>
-            </v-card>
+              <v-card v-if="intro" flat outlined>
+                <div class="px-1 pb-1 px-sm-2 pb-sm-2">
+                  <v-card-text
+                    style="background-color: white"
+                    class="py-3 roundedBorder"
+                    v-translate="{
+                      et: intro.content_et,
+                      en: intro.content_en
+                    }"
+                  />
+                </div>
+              </v-card>
+            </div>
           </v-fade-transition>
         </v-col>
 
-        <v-col cols="12" sm="11" md="6">
+        <v-col cols="12" md="7" lg="8">
           <v-fade-transition>
-            <v-card v-if="references" class="cardTitle roundedBorder">
-              <v-card-title class="cardTitle">
-                <h6>{{ $t("common.newest") }}</h6>
-              </v-card-title>
+            <div>
+              <div class="text-center text-h4 mb-3">
+                {{ $t("common.newest") }}
+              </div>
 
-              <v-expand-transition>
-                <div class="px-1 pb-1 px-sm-2 pb-sm-2">
-                  <reference-list-view
-                    class="pb-3 roundedBorder"
-                    style=" background-color: white"
-                    :data="references"
-                  ></reference-list-view>
-                </div>
-              </v-expand-transition>
-            </v-card>
+              <v-card v-if="references" flat outlined>
+                <v-expand-transition>
+                  <div class="px-1 pb-1 px-sm-2 pb-sm-2">
+                    <reference-list-view
+                      class="pb-3 roundedBorder"
+                      style=" background-color: white"
+                      :data="references"
+                    ></reference-list-view>
+                  </div>
+                </v-expand-transition>
+              </v-card>
+            </div>
           </v-fade-transition>
         </v-col>
       </v-row>
     </v-container>
-    <app-footer />
+
+    <!-- <div class="spacer2 layer3" /> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -107,11 +131,10 @@ export default {
   name: "Landing",
   components: {
     Statistics,
-    AppFooter,
-    Links,
-    LangButtons,
-    ReferenceListView,
-    EmaapouButton
+    // Links,
+    // LangButtons,
+    ReferenceListView
+    // EmaapouButton
   },
   data() {
     return {
@@ -180,8 +203,37 @@ export default {
 </script>
 
 <style scoped>
+.spacer {
+  aspect-ratio: 1920/570;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom, center, top;
+  background-size: cover, cover, cover;
+}
+.layer1 {
+  background-image: url("../assets/layered-steps-haikei (3).svg"),
+    linear-gradient(to right, #00000033, #00000033), url("../assets/books4.jpg");
+}
+
+.spacer2 {
+  aspect-ratio: 1930/210;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: cover;
+}
+
+.layer2 {
+  background-image: url("../assets/stacked-steps-haikei (2).svg");
+}
+
+.layer3 {
+  transform: rotate(180deg);
+  background-image: url("../assets/stacked-steps-haikei (2).svg");
+}
+
 .main {
-  background-color: #f6eddf;
+  background-color: #fffcf8;
 }
 .cardTitle {
   background-color: #f3d3a5;

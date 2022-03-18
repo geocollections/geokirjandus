@@ -1,6 +1,7 @@
 <template>
-  <v-footer color="#EFB66C" class="d-flex py-4 flex-grow-1 flex-column">
-    <div class="text-center">
+  <v-footer color="#ffb85a" class="d-flex pa-0 flex-grow-1 flex-column">
+    <div class="spacer2 layer2" />
+    <div class="text-center py-4">
       <a href="https://kik.ee" target="_blank" rel="noopener">
         <img
           src="https://files.geocollections.info/img/kik_valge.png"
@@ -115,5 +116,16 @@ export default {
 
 .footerText {
   max-width: 800px;
+}
+.spacer2 {
+  aspect-ratio: 1920/210;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: cover;
+}
+
+.layer2 {
+  background-image: url("../assets/stacked-steps-haikei (2).svg");
 }
 </style>

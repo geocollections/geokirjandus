@@ -1,15 +1,17 @@
 <template>
   <v-fade-transition>
-    <v-card v-if="statisticsData">
-      <div class="pa-3">
+    <v-card flat color="transparent" v-if="statisticsData">
+      <div>
         <v-card-text
-          class="d-flex justify-center"
+          class="text-h6 pt-0 d-flex justify-center"
           v-html="$t('charts.title_html', { num: statisticsData.count })"
         >
         </v-card-text>
-        <v-row>
-          <v-col cols="12" sm="6" md="3">
-            <h3 class="text-center pb-3">{{ $t("charts.keywords") }}</h3>
+        <v-row justify="space-around">
+          <v-col cols="12" sm="6" md="auto">
+            <div class="text-h6 text-center pb-3">
+              {{ $t("charts.keywords") }}
+            </div>
             <bar-chart
               id="keywords"
               class="d-flex justify-center"
@@ -18,8 +20,11 @@
               :locale="$i18n.locale"
             />
           </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <h3 class="text-center pb-3">{{ $t("charts.byDecade") }}</h3>
+          <v-divider class="mt-8" vertical />
+          <v-col cols="12" sm="6" md="auto">
+            <div class="text-h6 text-center pb-3">
+              {{ $t("charts.byDecade") }}
+            </div>
             <bar-chart
               id="byDecade"
               class="d-flex justify-center"
@@ -28,8 +33,9 @@
               :locale="$i18n.locale"
             />
           </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <h3 class="text-center pb-3">{{ $t("charts.types") }}</h3>
+          <v-divider class="mt-8" vertical />
+          <v-col cols="12" sm="6" md="auto">
+            <div class="text-h6 text-center pb-3">{{ $t("charts.types") }}</div>
             <pie-chart
               class="d-flex justify-center"
               :chartData="getTypesChartData"
@@ -37,7 +43,7 @@
               :locale="$i18n.locale"
             ></pie-chart>
           </v-col>
-          <v-col cols="12" sm="6" md="3">
+          <!-- <v-col cols="12" sm="6" md="3">
             <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
             <pie-chart
               class="d-flex justify-center"
@@ -45,7 +51,7 @@
               :options="getChartOptions('pie', handleLanguageClick)"
               :locale="$i18n.locale"
             ></pie-chart>
-          </v-col>
+          </v-col> -->
         </v-row>
       </div>
     </v-card>
@@ -66,16 +72,19 @@ export default {
       statisticsData: null,
       barChartOptions: {
         scales: {
-          yAxes: [
+          xAxes: [
             {
               type: "linear",
               ticks: {
                 autoSkip: true,
-                min: 0
-              }
+                min: 0,
+                display: false
+              },
+
+              gridLines: false
             }
           ],
-          xAxes: [
+          yAxes: [
             {
               ticks: {
                 padding: 10,
@@ -96,7 +105,7 @@ export default {
             formatter: function(value, context) {
               return context.chart.data.labels[context.dataIndex];
             },
-            rotation: 270,
+            // rotation: 270,
             align: "end",
             anchor: "end"
           }
@@ -207,7 +216,7 @@ export default {
         values.push(fields[i + 1]);
       }
       data.labels = labels;
-      data.datasets = [{ data: values }];
+      data.datasets = [{ data: values, borderWidth: 1 }];
 
       return data;
     },
@@ -234,7 +243,12 @@ export default {
         );
       }
       data.labels = labels;
-      data.datasets = [{ data: values }];
+      data.datasets = [
+        {
+          data: values,
+          borderWidth: 1
+        }
+      ];
 
       return data;
     },
@@ -260,19 +274,19 @@ export default {
     this.getStatisticsData();
   },
   methods: {
-    ...mapActions("search", ["resetSearch", "updateAdvancedSearch"]),
+    ...mapActions("search/reference", ["resetSearch", "updateAdvancedSearch"]),
 
     getKeywordsChartOptions(onClick) {
       let options = cloneDeep(this.getChartOptions("bar", onClick));
 
-      options.scales.yAxes[0].ticks.max = 7000;
+      options.scales.xAxes[0].ticks.max = 7000;
 
       return options;
     },
     getDecadesChartOptions(onClick) {
       let options = cloneDeep(this.getChartOptions("bar", onClick));
 
-      options.scales.yAxes[0].ticks.suggestedMax = 3000;
+      options.scales.xAxes[0].ticks.max = 4000;
 
       return options;
     },

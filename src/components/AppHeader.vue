@@ -1,13 +1,14 @@
 <template>
   <!-- COLORS: #eba142,#A44A3F, #FF9F1C, #D36135, #FF8C42, #F7934C -->
   <v-app-bar
-    elevation="2"
+    elevation="0"
+    v-bind="$attrs"
     flat
     app
     clipped-right
     hide-on-scroll
     class="mx-1 mx-auto"
-    color="#FF9F1C"
+    :color="color"
     style="z-index: 9998"
     extension-height="48"
     height="48"
@@ -142,6 +143,12 @@ import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "AppHeader",
   components: { Tour, Links, LangButtons, EmaapouButton },
+  props: {
+    color: {
+      type: String,
+      default: "#FF9F1C"
+    }
+  },
   computed: {
     maxWidth() {
       if (this.$vuetify.breakpoint.xlOnly) return "1785px";
@@ -200,9 +207,9 @@ export default {
   margin-right: auto;
 }
 
-.v-toolbar ::v-deep .v-toolbar__extension {
-  background-color: #ff9f1c;
-}
+// .v-toolbar ::v-deep .v-toolbar__extension {
+//   background-color: #ff9f1c;
+// }
 
 .active-app-bar-btn::after {
   position: absolute;

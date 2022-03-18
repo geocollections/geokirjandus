@@ -1,5 +1,5 @@
 {
-  "title": "Estonian geoscience literature database",
+  "title": "Estonian geoscience literature",
   "title2": "Estonian geoscience literature",
   "subtitle": "Estonian geoscience literature database",
   "pagination": "{num} results",
@@ -101,7 +101,8 @@
     "language": "Language",
     "goTo": "Go to page",
     "goToBtn": "Go",
-    "pageSelect": "{current} / {count}"
+    "pageSelect": "{current} / {count}",
+    "about": "About"
   },
   "reference": {
     "id": "ID",

@@ -124,7 +124,7 @@
                   {{ $t("common.libraryReferences") }}
                 </div>
                 <v-row no-gutters class="flex-nowrap">
-                  <v-col>
+                  <v-col v-if="!$vuetify.breakpoint.smAndDown">
                     <search-library-reference
                       :library="parseInt(id)"
                       @reset:search="handleResetSearch"
@@ -170,6 +170,38 @@
         </v-fade-transition>
       </v-col>
     </v-row>
+    <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
+      <v-btn
+        class="mt-2 d-print-none d-md-none font-family-exo-2"
+        color="#135ebf"
+        fixed
+        rounded
+        dark
+        bottom
+        style="left: 50%;transform: translateX(-50%);z-index: 4"
+        id="searchFab"
+        @click="showSearch = !showSearch"
+      >
+        <v-icon small left>fas fa-search</v-icon>
+        {{ $t("common.search") }}
+      </v-btn>
+    </v-fab-transition>
+    <v-navigation-drawer
+      v-if="$vuetify.breakpoint.smAndDown"
+      v-model="showSearch"
+      disable-route-watcher
+      mobile-breakpoint="960"
+      bottom
+      fixed
+      temporary
+      style="background-color: #fff5e6;"
+    >
+      <search-library-reference
+        class="my-3 mx-2"
+        :library="parseInt(id)"
+        @reset:search="handleResetSearch"
+      />
+    </v-navigation-drawer>
   </v-container>
 </template>
 
@@ -197,6 +229,7 @@ export default {
   mixins: [dateMixin, citationMixin, queryMixin],
   data() {
     return {
+      showSearch: false,
       id: this.$route.params.id,
       library: null,
       isLoading: true,

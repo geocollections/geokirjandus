@@ -10,14 +10,18 @@
   >
     <v-container>
       <v-list class="py-1 px-2">
-        <v-list-item class="header-menu-item pa-0">
+        <v-list-item class="header-menu-item pa-0 my-1">
           <tour
             class="rounded justify-start"
-            style="color: rgb(0, 0, 0, 0.87); width: 100%"
+            style="height: 48px;color: rgb(0, 0, 0, 0.87); width: 100%"
           />
         </v-list-item>
-        <v-list-item class="header-menu-item px-0">
-          <emaapou-button black withText style="width: 100%" />
+        <v-list-item class="header-menu-item pa-0 my-1">
+          <emaapou-button
+            black
+            withText
+            style="height: 48px;color: rgb(0, 0, 0, 0.87);width: 100%"
+          />
         </v-list-item>
       </v-list>
       <div class="font-family-exo-2 font-weight-medium pl-2 mt-2">

@@ -34,7 +34,7 @@
     </v-row>
     <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
       <v-btn
-        class="mt-2 d-print-none d-md-none"
+        class="mt-2 d-print-none d-md-none font-family-exo-2"
         color="#135ebf"
         fixed
         rounded

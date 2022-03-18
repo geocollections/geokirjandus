@@ -3,15 +3,16 @@
     v-if="withText"
     text
     elevation="0"
-    color="transparent"
     :ripple="false"
     href="https://geoloogia.info"
     class=" text-body-1 justify-start"
-    link
   >
     <v-icon left v-if="black" class="emaapou-icon">$emaapouIconBlack</v-icon>
     <v-icon left v-else class="emaapou-icon">$emaapouIcon</v-icon>
-    <div class="text-capitalize font-family-exo-2">
+    <div
+      style="color: rgb(0, 0, 0, 0.87)"
+      class="text-capitalize font-family-exo-2"
+    >
       E-maapõu
     </div>
   </v-btn>

@@ -12,7 +12,7 @@
           v-on:reset:search="handleResetSearch"
         />
       </v-col>
-      <v-col md="9" xl="10" class="ml-md-8">
+      <v-col md="9" xl="10" class="ml-md-4">
         <div
           v-if="$vuetify.breakpoint.smAndDown"
           class="text-center text-h4 font-weight-medium mb-3 mb-md-0"

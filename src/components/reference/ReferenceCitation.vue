@@ -8,7 +8,8 @@
         params: { ...$route.params, id: reference.id }
       }"
       v-html="citation($getCsl(reference))"
-    />
+    >
+    </router-link>
     <reference-links :item="reference" x-small />
   </div>
 </template>

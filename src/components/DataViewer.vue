@@ -81,7 +81,7 @@
         <share-button />
       </v-card-actions>
       <base-pagination
-        class="ml-auto justify-end"
+        class="ml-auto justify-end pt-2 pt-sm-0"
         :options="options"
         :count="count"
         :items-per-page-options="footerProps['items-per-page-options']"

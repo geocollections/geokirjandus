@@ -4,12 +4,12 @@
       class="d-flex align-center ml-sm-auto px-2 paginationSelect fill-height"
       style="flex: 0 0 0"
     >
-      <div
+      <!-- <div
         v-show="$vuetify.breakpoint.smAndUp"
         class="mr-3 text-no-wrap text-caption"
       >
         {{ itemsPerPageText }}
-      </div>
+      </div> -->
       <v-select
         class="mt-0 text-caption"
         style="max-width: 100px"
@@ -18,8 +18,9 @@
         dense
         outlined
         hide-details
+        :label="itemsPerPageText"
         :items="itemsPerPageOptions"
-        :value="options.itemsPerPage"
+        :value="options.paginateBy"
         :menu-props="{ bottom: true, offsetY: true }"
         @change="changeRowsPerPage"
       />

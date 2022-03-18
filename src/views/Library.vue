@@ -123,14 +123,14 @@
                 <div class="text-h6 mb-2">
                   {{ $t("common.libraryReferences") }}
                 </div>
-                <v-row>
-                  <v-col md="3" xl="2">
+                <v-row no-gutters class="flex-nowrap">
+                  <v-col>
                     <search-library-reference
                       :library="parseInt(id)"
                       @reset:search="handleResetSearch"
                     />
                   </v-col>
-                  <v-col md="9" xl="10">
+                  <v-col md="9" xl="10" class="ml-md-2">
                     <v-card flat outlined>
                       <reference-viewer
                         :options.sync="options"

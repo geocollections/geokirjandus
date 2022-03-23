@@ -170,7 +170,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
       }, "");
 
       let tag = "{!tag=type}";
-      if (v.id === "referenceType") {
+      if (v.id === "type") {
         tag = "{!tag=type,dt}";
       }
 

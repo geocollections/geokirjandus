@@ -338,7 +338,7 @@ export default {
       this.resetSearch();
 
       this.updateAdvancedSearch({
-        id: "referenceType",
+        id: "type",
         value: [type.id]
       });
 

@@ -22,6 +22,12 @@ export default {
   props: {
     markers: {
       type: Array
+    },
+    siteMarkers: {
+      type: Array
+    },
+    areas: {
+      type: Array
     }
   },
   data() {
@@ -151,6 +157,30 @@ export default {
 
         markerClusters.addLayer(markerObj);
       }
+
+      for (const m of this.siteMarkers) {
+        const markerObj = new L.CircleMarker(m.coordinates, {
+          title: m.title,
+          radius: 3,
+          color: "red"
+        });
+        markers.push(markerObj);
+        if (m.popup) markerObj.bindPopup(m.popup);
+
+        markerClusters.addLayer(markerObj);
+      }
+
+      for (const a of this.areas) {
+        const geoJSONObj = new L.geoJSON(JSON.parse(a.area.polygon)).addTo(
+          mapDiv
+        );
+        geoJSONObj.bindPopup(
+          `<a href="https://geoloogia.info/area/${a.area.id}" target="_blank">${
+            this.$i18n.locale === "ee" ? a.area.name : a.area.name_en
+          }</a>`
+        );
+      }
+
       if (markers.length > 100) {
         mapDiv.addLayer(markerClusters);
       } else mapDiv.addLayer(L.layerGroup(markers));

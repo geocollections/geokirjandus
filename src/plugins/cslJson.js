@@ -27,7 +27,7 @@ export default {
       return {
         id: data.id,
         type: "webpage",
-        author: parseNames(data.author),
+        author: parseNames(data.author_txt),
         issued: [
           {
             "date-parts": [data.year]
@@ -51,6 +51,30 @@ export default {
           }
         ],
         "container-title": data.book ?? data.journal_name,
+        "original-title": data.title_original,
+        editor: data.book_editor ? parseNames(data.book_editor) : null,
+        volume: data.volume,
+        number: data.number,
+        publisher: data.publisher,
+        abstract: data.abstract,
+        "publisher-place": data.publisher_place,
+        page: data.pages,
+        URL: data.url
+      };
+    };
+
+    Vue.prototype.$getCslDetail = data => {
+      return {
+        type: data.type.csl_type,
+        title: data.title,
+        DOI: data.doi,
+        author: parseNames(data.author),
+        issued: [
+          {
+            "date-parts": [data.year]
+          }
+        ],
+        "container-title": data.journal?.journal_name ?? null,
         "original-title": data.title_original,
         editor: data.book_editor ? parseNames(data.book_editor) : null,
         volume: data.volume,

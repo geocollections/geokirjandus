@@ -1,5 +1,5 @@
 {
-  "title": "Eesti maapõue kirjanduse andmebaas",
+  "title": "Eesti maapõue kirjanduse",
   "title2": "Eesti maapõue kirjandus",
   "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
@@ -12,6 +12,7 @@
     "CSVExportSuccess": "Fail eksporditud CSV formaadis"
   },
   "tooltip": {
+    "removeFilters": "Eemalda kõik filtrid",
     "map": "Kaart näitab koordinaatitega lokaliteete. Terve lokaliteetide nimekiri on allpool."
   },
   "alert": {
@@ -22,7 +23,8 @@
     "libraryId": "Ei leidnud kogumikku. ID: {text}",
     "nothingFound": "Ei leidnud otsingule vastavaid kirjeid",
     "nothingFoundReference": "Ei leidnud otsingule vastavat kirjandust",
-    "nothingFoundLibrary": "Ei leidnud otsingule vastavaid kogumikke"
+    "nothingFoundLibrary": "Ei leidnud otsingule vastavaid kogumikke",
+    "exportCount": "Korraga saab eksportida kuni 1000 kirjet"
   },
   "tabs": {
     "references": "Kirjandus",
@@ -41,11 +43,11 @@
     "language": "Keeled",
     "types": "Kirje tüübid",
     "byDecade": "Kirjed kümnendite kaupa",
-    "title_html": "<h2>Kirjeid kokku:</h2> <h1 class='px-3'>{num}</h1>"
+    "title_html": "<div class='text-h4'>Kirjeid kokku:</div> <div class='font-weight-bold text-h4 px-3'>{num}</div>"
   },
   "common": {
     "search": "Otsi",
-    "advancedSearch": "Detailotsing",
+    "advancedSearch": "Filtreeri",
     "found": "Leitud",
     "records": "kirjet",
     "listView": "Nimekiri",
@@ -75,7 +77,7 @@
     "newest": "Viimati muudetud teavikud",
     "viewReferences": "Otsi/Sirvi",
     "map": "Kaart",
-    "misc": "Muu",
+    "misc": "Lisainfo",
     "searchCommand": "Otsi",
     "libraryPublisher": "Virtuaalne kirjanduse kogumik e-Maapõues",
     "yes": "jah",
@@ -85,7 +87,7 @@
     "statistics": "Statistika",
     "edit": "MUUDA",
     "filename": "Faili nimi",
-    "exportFile": "Ekspordi fail",
+    "exportFile": "Nimekirja eksport",
     "amount": "Kogus",
     "all": "Kõik",
     "tour": "Juhend",
@@ -95,7 +97,9 @@
     "tourView": "Vaate",
     "virtualLibrary": "Virtuaalne kirjanduse kogumik",
     "showMore": "kuva rohkem",
-    "showLess": "kuva vähem"
+    "showLess": "kuva vähem",
+    "language": "Keel",
+    "about": "Tutvustus"
   },
   "reference": {
     "id": "ID",
@@ -131,7 +135,7 @@
     "describedTaxa": "Kirjeldatud taksonid",
     "titleOriginal": "Pealkiri originaal",
     "authorOriginal": "Autor originaal",
-    "parentReference": "Raamat",
+    "parentReference": "Kuulub kogumikku",
     "bookTranslated": "Raamatu pealkiri tõlgitud",
     "bookOriginal": "Raamatu pealkiri originaal",
     "figures": "Joonised",
@@ -146,7 +150,10 @@
     "pagesStart": "Algus lehekülg",
     "pagesEnd": "Lõpp lehekülg",
     "taxa": "Taksonid",
-    "volumeAndNumber": "Köide/Number"
+    "volumeAndNumber": "Köide/Number",
+    "sites": "Uuringupunkt",
+    "areas": "Alad"
+
   },
   "library": {
     "id": "ID",
@@ -213,5 +220,14 @@
       "stepLibraryCopyTitle": "Kogumiku viite kopeerimine",
       "stepLibraryCopyText": "Vajutades siia, kopeeritakse kogumiku viide."
     }
+  },
+  "headerMenu": {
+    "tooltipConfig": "Tabeli konfiguratsioon",
+    "headers": "Päised",
+    "tooltipResetHeaders": "Lähtesta päised",
+    "tooltipShowActiveHeaders": "Vaata aktiveeritud päiseid",
+    "tooltipShowAllHeaders": "Vaata kõiki päiseid",
+    "filter": "Filteeri",
+    "headerSelectDisabled": "Veergu sorteeritakse"
   }
 }

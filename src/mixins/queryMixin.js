@@ -6,13 +6,13 @@ import {
 import { mapActions, mapState } from "vuex";
 
 const queryMixin = {
-  data() {
-    return {
-      isLoading: false
-    };
-  },
+  // data() {
+  //   return {
+  //     isLoading: false
+  //   };
+  // },
   computed: {
-    ...mapState("references", ["facet", "count"]),
+    ...mapState("references", ["facet"]),
     referenceParameters() {
       return {
         ...this.$store.state.search.advancedSearch.byIds,
@@ -78,14 +78,14 @@ const queryMixin = {
       return res;
     },
     getReferences() {
-      const state = this.$store.state.search;
+      const state = this.$store.state.search.reference;
 
       const searchObj = {
         search: state.search,
-        page: state.page,
-        paginateBy: state.paginateBy,
-        sortBy: state.sortBy,
-        sortDesc: state.sortDesc,
+        page: state.options.page,
+        paginateBy: state.options.paginateBy,
+        sortBy: state.options.sortBy,
+        sortDesc: state.options.sortDesc,
         advancedSearch: state.advancedSearch.byIds
       };
       return fetchReferences(searchObj).then(this.handleFetchReferences);
@@ -106,18 +106,16 @@ const queryMixin = {
         this.handleFetchReferences
       );
     },
-    getLibraries(page = 1) {
-      const state = this.$store.state.librarySearch;
-
-      const { search, ...advancedSearch } = this.libraryParameters;
+    getLibraries() {
+      const state = this.$store.state.search.library;
 
       const libraryParams = {
-        search: search,
-        page: page,
-        paginateBy: 100,
+        search: state.search,
+        page: state.page,
+        paginateBy: state.paginateBy,
         sortBy: state.sortBy,
         sortDesc: state.sortDesc,
-        advancedSearch: advancedSearch
+        advancedSearch: state.advancedSearch.byIds
       };
       return fetchLibraries(libraryParams).then(res => {
         this.setLibraries(res);

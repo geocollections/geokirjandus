@@ -1,5 +1,5 @@
 <template>
-  <div v-if="onlyText" v-html="citation($getCsl(reference))"></div>
+  <div v-if="onlyText" v-html="citation($getCslDetail(reference))" />
   <div v-else>
     <router-link
       class="referenceLink"
@@ -8,7 +8,8 @@
         params: { ...$route.params, id: reference.id }
       }"
       v-html="citation($getCsl(reference))"
-    />
+    >
+    </router-link>
     <reference-links :item="reference" x-small />
   </div>
 </template>

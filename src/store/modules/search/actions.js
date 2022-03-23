@@ -1,7 +1,8 @@
-import { debounce } from "lodash";
+import { debounce, cloneDeep } from "lodash";
 
 const actions = {
   updatePaginateBy({ commit }, paginateBy) {
+    commit("UPDATE_PAGE", 1);
     commit("UPDATE_PAGINATE_BY", paginateBy);
   },
 
@@ -10,13 +11,15 @@ const actions = {
   },
 
   updateSortBy({ commit }, payload) {
-    commit("UPDATE_SORT_BY", payload);
+    commit("UPDATE_SORT_BY", cloneDeep(payload));
   },
 
   updateSortDesc({ commit }, payload) {
-    commit("UPDATE_SORT_DESC", payload);
+    commit("UPDATE_SORT_DESC", cloneDeep(payload));
   },
-
+  updateOptions({ commit }, payload) {
+    commit("UPDATE_OPTIONS", cloneDeep(payload));
+  },
   updateSearch({ commit }, searchValue) {
     commit("UPDATE_SEARCH", searchValue);
   },
@@ -25,6 +28,9 @@ const actions = {
   },
   resetSearch({ commit }, payload) {
     commit("RESET_SEARCH", payload);
+  },
+  resetReferenceSearch({ commit }, payload) {
+    commit("RESET_REFERENCE_SEARCH", payload);
   },
   resetLibraryReferenceSearch({ commit }, payload) {
     commit("RESET_LIBRARY_REFERENCE_SEARCH", payload);

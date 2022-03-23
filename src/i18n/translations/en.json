@@ -1,5 +1,5 @@
 {
-  "title": "Estonian geoscience literature database",
+  "title": "Estonian geoscience literature",
   "title2": "Estonian geoscience literature",
   "subtitle": "Estonian geoscience literature database",
   "pagination": "{num} results",
@@ -12,6 +12,7 @@
     "CSVExportSuccess": "Exported file in <b>CSV</b> format"
   },
   "tooltip": {
+    "removeFilters": "Remove all filters",
     "map": "Shows localities with coordinates. Full list of localities is available below."
   },
 
@@ -23,7 +24,8 @@
     "libraryId": "Could not find library. ID: {text}",
     "nothingFound": "No records found",
     "nothingFoundReference": "No references found",
-    "nothingFoundLibrary": "No libraries found"
+    "nothingFoundLibrary": "No libraries found",
+    "exportCount": "Max size of export is 1000"
   },
   "tabs": {
     "references": "References",
@@ -42,11 +44,11 @@
     "language": "Languages",
     "types": "Types",
     "byDecade": "Records by decade",
-    "title_html": "<h2>Total records:</h2> <h1 class='px-3'>{num}</h1>"
+    "title_html": "<div class='text-h4'>Total records:</div> <div class='font-weight-bold text-h4 px-3'>{num}</div>"
   },
   "common": {
     "search": "Search",
-    "advancedSearch": "Additional filters",
+    "advancedSearch": "Filter",
     "found": "Found",
     "records": "records",
     "listView": "List",
@@ -76,7 +78,7 @@
     "newest": "Latest changes",
     "viewReferences": "Search/Browse",
     "map": "Map",
-    "misc": "Miscellaneous",
+    "misc": "Additional info",
     "searchCommand": "Search",
     "libraryPublisher": "Virtual reference collection in SARV",
     "yes": "yes",
@@ -86,7 +88,7 @@
     "statistics": "Statistics",
     "edit": "EDIT",
     "filename": "Filename",
-    "exportFile": "Export file",
+    "exportFile": "File export",
     "amount": "Amount",
     "all": "All",
     "tour": "Guide",
@@ -96,7 +98,12 @@
     "tourView": "View",
     "virtualLibrary": "Virtual reference collection",
     "showMore": "show more",
-    "showLess": "show less"
+    "showLess": "show less",
+    "language": "Language",
+    "goTo": "Go to page",
+    "goToBtn": "Go",
+    "pageSelect": "{current} / {count}",
+    "about": "About"
   },
   "reference": {
     "id": "ID",
@@ -147,7 +154,9 @@
     "pagesStart": "Start page",
     "pagesEnd": "End page",
     "taxa": "Taxa",
-    "volumeAndNumber": "Volume/Number"
+    "volumeAndNumber": "Volume/Number",
+    "sites": "Sites",
+    "areas": "Areas"
   },
   "library": {
     "id": "ID",
@@ -215,5 +224,14 @@
       "stepLibraryCopyTitle": "Copy library citation",
       "stepLibraryCopyText": "By clicking here, the current library citation is copied to clipboard."
     }
+  },
+  "headerMenu": {
+    "tooltipConfig": "Tabel configuration",
+    "headers": "Headers",
+    "tooltipResetHeaders": "Reset headers",
+    "tooltipShowActiveHeaders": "Show active headers",
+    "tooltipShowAllHeaders": "Show all headers",
+    "filter": "Filter",
+    "headerSelectDisabled": "Sorting enabled"
   }
 }

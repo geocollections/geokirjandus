@@ -1,0 +1,26 @@
+.font-family-exo-2 {
+  font-family: "Exo 2", "Roboto", sans-serif !important;
+}
+
+.header-menu-item {
+  &.header-menu-item-active {
+    // border-left: 4px solid var(--v-primary-darken2);
+    background-color: rgb(19, 94, 191, 0.18);
+  }
+
+  &::before {
+    border-radius: 4px;
+  }
+
+  // &:hover {
+  //   border-left: 4px solid var(--v-primary-base);
+  //   div {
+  //     @include transition(all 350ms ease);
+  //     color: var(--v-primary-base);
+  //   }
+  // }
+
+  // div {
+  //   font-weight: 400;
+  // }
+}

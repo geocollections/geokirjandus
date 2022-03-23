@@ -1,253 +1,302 @@
 <template>
-  <div id="dataViewer" class="data-viewer pb-1">
-    <v-card-actions
-      class="d-print-none d-flex flex-column justify-space-around flex-sm-row justify-sm-space-between py-2 px-0"
-    >
-      <div class="col-12 col-sm px-2 py-0 d-flex align-center">
-        <span v-html="$t(title, { num: count })" class="title" />
-        <copy-button
-          v-if="copyButton"
-          class="ml-2"
-          id="viewerCopyButton"
-          :table-data="data"
-          :clipboard-class="view === 'list' ? 'list-view' : 'data-viewer-table'"
-        />
-      </div>
-      <div class="d-flex justify-end col-12 py-0 px-2 col-sm-auto ml-sm-auto">
-        <v-radio-group
-          class="mt-0"
+  <div
+    id="dataViewer"
+    :style="{
+      overflow: 'hidden'
+    }"
+    class="content"
+  >
+    <div class="d-sm-flex py-2 px-2" style="background-color: whitesmoke">
+      <v-card-actions class="d-print-none py-0 px-0">
+        <v-btn-toggle
           id="viewChanger"
           :value="view"
+          color="#135ebf"
           @change="updateView"
-          row
-          hide-details
+          class="mx-1 ml-auto"
           dense
+          mandatory
+          group
         >
-          <v-radio
-            color="#fd8719"
-            value="list"
-            :label="$t('common.listView')"
-          />
-          <v-radio
-            color="#fd8719"
-            value="table"
-            :label="$t('common.tableView')"
-          />
-        </v-radio-group>
-      </div>
-    </v-card-actions>
-    <v-scroll-y-transition>
-      <v-card-actions v-if="view === 'table'" id="fieldSelect" class="px-0">
-        <v-select
-          class="px-2"
-          :value="getHeadersShowing"
-          multiple
-          dense
-          chips
-          color="grey darken-3"
-          :menu-props="{
-            bottom: true,
-            offsetY: true,
-            offsetOverflow: true,
-          }"
-          :label="$t('common.fields')"
-          hide-details
-          :items="getHeaderOptions"
-          @change="setHeaders($event)"
-        >
-          <template v-slot:selection="{ item }">
-            <v-chip outlined small dense color="#fd8719" text-color="black">
-              {{ item.text }}
-            </v-chip>
-          </template>
-        </v-select>
-      </v-card-actions>
-    </v-scroll-y-transition>
-
-    <view-helper
-      v-if="helpers"
-      v-on="$listeners"
-      :page="page"
-      :paginate-by="paginateBy"
-      :count="count"
-      class="px-0"
-    />
-    <div class="content mb-2">
-      <v-scroll-y-transition leave-absolute group>
-        <v-card-text
-          key="noResults"
-          v-if="!isLoading && count <= 0"
-          class="text-center"
-        >
-          <h3>{{ nothingFound }}</h3>
-        </v-card-text>
-        <v-card-text key="loading" v-if="isLoading" class="text-center">
-          <v-progress-circular indeterminate :size="50"></v-progress-circular>
-        </v-card-text>
-        <!--  LIST VIEW  -->
-        <div key="view" v-else>
-          <list-view
-            v-if="view === 'list' && count > 0"
-            :module="module"
-            class="py-2"
-          >
-            <template>
-              <slot name="list-view" v-bind:data="data"></slot>
+          <v-tooltip top z-index="10000" open-delay="250">
+            <template #activator="{on, attrs}">
+              <v-btn
+                small
+                v-bind="attrs"
+                v-on="on"
+                class="rounded-lg"
+                value="list"
+              >
+                <v-icon small>fas fa-list</v-icon>
+              </v-btn>
             </template>
-          </list-view>
-          <!--  TABLE VIEW  -->
-
-          <v-data-table
-            v-if="view === 'table' && count > 0"
-            :headers="getHeadersShowing"
-            :items="data"
-            hide-default-footer
-            :server-items-length="paginateBy"
-            :page="page"
-            :sort-by="getSortBy"
-            :sort-desc="getSortDesc"
-            v-on:update:sort-by="$emit('update:sortBy', $event)"
-            v-on:update:sort-desc="$emit('update:sortDesc', $event)"
-            multi-sort
-            mobile-breakpoint="0"
-            @click:row="$emit('open', $event)"
-            :header-props="headerProps"
-            class="data-viewer-table pb-3"
-          >
-            <template
-              v-for="(_, slotName) in $scopedSlots"
-              v-slot:[slotName]="context"
-            >
-              <slot :name="slotName" v-bind="context" />
+            List view
+          </v-tooltip>
+          <v-tooltip top z-index="10000" open-delay="250">
+            <template #activator="{on, attrs}">
+              <v-btn
+                small
+                v-bind="attrs"
+                v-on="on"
+                class="rounded-lg"
+                value="table"
+              >
+                <v-icon small>fas fa-table</v-icon>
+              </v-btn>
             </template>
-          </v-data-table>
+            Table view
+          </v-tooltip>
+        </v-btn-toggle>
+        <v-divider vertical />
+
+        <v-scroll-y-transition hide-on-leave>
+          <citation-select
+            style="width: 120px"
+            id="citationSelect"
+            v-if="view === 'list'"
+            class="px-2"
+          />
+          <div v-else-if="view === 'table'" id="fieldSelect" class="mx-2">
+            <base-data-table-header-menu
+              :headers="getHeaderOptions"
+              :visibleHeaders="getHeadersShowing"
+              :sortBy="options.sortBy"
+              @change="setHeaders($event)"
+              @reset="$emit('reset:headers')"
+            />
+          </div>
+        </v-scroll-y-transition>
+        <v-divider vertical />
+        <div id="viewerCopyButton">
+          <copy-button
+            v-if="copyButton"
+            button-class="mx-2"
+            :table-data="data"
+            small
+            :clipboard-class="
+              view === 'list' ? 'list-view' : 'data-viewer-table'
+            "
+          />
         </div>
-      </v-scroll-y-transition>
+        <share-button v-if="showShare" :count="count" />
+      </v-card-actions>
+      <base-pagination
+        class="ml-auto justify-end pt-2 pt-sm-0"
+        :options="options"
+        :count="count"
+        :items-per-page-options="footerProps['items-per-page-options']"
+        :items-per-page-text="footerProps['items-per-page-text']"
+        :page-select-text="
+          $t('common.pageSelect', {
+            current: options.page,
+            count: Math.ceil(this.count / this.options.paginateBy)
+          })
+        "
+        :go-to-text="$t('common.goTo')"
+        :go-to-button-text="$t('common.goToBtn')"
+        v-on="$listeners"
+      />
     </div>
-    <view-helper
-      class="px-0"
+    <v-scroll-y-transition leave-absolute group>
+      <v-card-text
+        key="noResults"
+        v-if="!isLoading && count <= 0"
+        class="text-center"
+      >
+        <h3>{{ nothingFound }}</h3>
+      </v-card-text>
+      <v-card-text key="loading" v-if="isLoading" class="text-center">
+        <v-progress-circular indeterminate :size="50"></v-progress-circular>
+      </v-card-text>
+      <!--  LIST VIEW  -->
+      <div key="view" v-else>
+        <list-view
+          v-if="view === 'list' && count > 0"
+          :module="module"
+          class="py-2"
+        >
+          <template>
+            <slot name="list-view" v-bind:data="data"></slot>
+          </template>
+        </list-view>
+        <!--  TABLE VIEW  -->
+
+        <v-data-table
+          v-if="view === 'table' && count > 0"
+          class="data-viewer-table pb-3"
+          hide-default-footer
+          multi-sort
+          mobile-breakpoint="0"
+          :options="options"
+          :headers="getHeadersShowing"
+          :items="data"
+          :server-items-length="count"
+          :header-props="headerProps"
+          @click:row="$emit('open', $event)"
+          @update:options="$emit('update:options', $event)"
+        >
+          <template
+            v-for="(_, slotName) in $scopedSlots"
+            v-slot:[slotName]="context"
+          >
+            <slot :name="slotName" v-bind="context" />
+          </template>
+        </v-data-table>
+      </div>
+    </v-scroll-y-transition>
+    <base-pagination
+      style="background-color: whitesmoke"
+      class="justify-end px-2 py-2"
+      :options="options"
+      :count="count"
+      :items-per-page-options="footerProps['items-per-page-options']"
+      :items-per-page-text="footerProps['items-per-page-text']"
+      :page-select-text="
+        $t('common.pageSelect', {
+          current: options.page,
+          count: Math.ceil(this.count / this.options.paginateBy)
+        })
+      "
+      :go-to-text="$t('common.goTo')"
+      :go-to-button-text="$t('common.goToBtn')"
+      v-on="$listeners"
+    />
+    <!-- <view-helper
+      style="background-color: whitesmoke"
+      class="justify-end px-2 py-2"
       v-if="helpers"
       v-on="$listeners"
-      :page="page"
-      :paginate-by="paginateBy"
+      :page="options.page"
+      :paginate-by="options.paginateBy"
       :count="count"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import CopyButton from "./CopyButton";
 import ListView from "@/components/ListView";
-import ViewHelper from "@/components/ViewHelper";
+// import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
 import i18n from "vue-i18n";
+import CitationSelect from "./CitationSelect.vue";
+import BaseDataTableHeaderMenu from "@/components/base/BaseDataTableHeaderMenu";
+import ShareButton from "./ShareButton.vue";
+import BasePagination from "./base/BasePagination.vue";
 export default {
   name: "DataViewer",
-  components: { ViewHelper, ListView, CopyButton },
+  components: {
+    // ViewHelper,
+    ListView,
+    CopyButton,
+    CitationSelect,
+    BaseDataTableHeaderMenu,
+    ShareButton,
+    BasePagination
+  },
   props: {
+    options: { type: Object, default: () => {} },
     data: {
-      type: Array[Object],
+      type: Array[Object]
     },
     count: {
       type: Number,
-      default: 0,
+      default: 0
     },
     module: {
       type: String,
-      default: null,
+      default: null
     },
     copyButton: {
       type: Boolean,
-      default: true,
-    },
-    sortBy: {
-      type: Array[String],
-      default: ["id"],
-    },
-    sortDesc: {
-      type: Array[String],
-      default: [false],
+      default: true
     },
     isLoading: {
       type: Boolean,
-      default: false,
+      default: false
     },
     headers: {
-      type: Array[Object],
-    },
-    page: {
-      type: Number,
-    },
-    paginateBy: {
-      type: Number,
+      type: Array[Object]
     },
     title: {
-      type: String,
+      type: String
     },
     helpers: {
       type: Boolean,
-      default: true,
+      default: true
     },
     nothingFound: {
       type: String,
       default: function() {
         return this.$t("error.nothingFound");
-      },
+      }
     },
+    showShare: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
       headerProps: {
-        sortByText: this.$t("common.sortBy"),
+        sortByText: this.$t("common.sortBy")
       },
+      footerProps: {
+        showFirstLastPage: true,
+        "items-per-page-options": [10, 25, 50, 100],
+        "items-per-page-text": this.$t("common.paginateBy")
+      }
     };
   },
   computed: {
     ...mapState("settings", ["view"]),
     getHeadersTranslated() {
-      return this.headers.map((item) => {
+      return this.headers.map(item => {
         return {
           ...item,
-          text: this.$t(item.text),
+          text: this.$t(item.text)
         };
       });
     },
     getHeaderOptions() {
       return this.getHeadersTranslated
-        .filter((header) => {
+        .filter(header => {
           return !header.fixed;
         })
-        .map((header) => {
+        .map(header => {
           return {
             value: header.value,
             text: header.text,
-            disabled: this.sortBy.includes(header.value),
+            disabled: this.options.sortBy.includes(header.value),
+            show: header.show
           };
         });
     },
     getHeadersShowing() {
-      return this.getHeadersTranslated.filter((header) => {
+      return this.getHeadersTranslated.filter(header => {
         return header.show;
       });
-    },
-    getSortBy() {
-      return this.sortBy;
-    },
-    getSortDesc() {
-      return this.sortDesc;
-    },
+    }
   },
   methods: {
     ...mapActions("settings", ["updateView"]),
     setHeaders(event) {
-      const headers = this.headers.map((header) => {
-        if (event.includes(header.value)) return { ...header, show: true };
-        return { ...header, show: false };
+      const headers = this.headers.map(header => {
+        if (event.value == header.value)
+          return { ...header, show: !header.show };
+        return header;
       });
-
       this.$emit("update:headers", headers);
-    },
-  },
+    }
+    // handleUpdateSortBy(e) {
+    //   console.log("sortBy");
+    //   this.$emit("update:sortBy", e);
+    // },
+    // handleUpdateSortDesc(e) {
+    //   console.log("sortDesc");
+    //   this.$emit("update:sortDesc", e);
+    // }
+  }
 };
 </script>
 
@@ -258,7 +307,7 @@ export default {
 
 .content {
   background-color: white;
-  border-radius: 12px;
+  /* border-radius: 12px; */
 }
 
 .mobile-row >>> .v-data-table__mobile-row {
@@ -266,6 +315,9 @@ export default {
 }
 
 .data-viewer-table {
-  border-radius: 12px;
+  /* border-radius: 12px; */
+}
+.v-data-table {
+  max-width: 100%;
 }
 </style>

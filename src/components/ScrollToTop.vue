@@ -4,11 +4,15 @@
       v-scroll="onScroll"
       v-show="showFab"
       fab
-      color="#fd8719"
+      fixed
+      bottom
+      right
+      small
+      color="#135ebf"
       dark
       @click="toTop"
     >
-      <v-icon large small>fas fa-chevron-up</v-icon>
+      <v-icon small>fas fa-chevron-up</v-icon>
     </v-btn>
   </v-fab-transition>
 </template>

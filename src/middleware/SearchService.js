@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://api.geocollections.info/solr";
+const SOLR_API_URL = "https://api.geocollections.info/solr";
+const API_URL = "https://api.geoloogia.info";
 const FACET_QUERY_REFERENCE =
   "facet=on&facet.field={!ex=dt}type&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0&" +
   "facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=0";
@@ -14,7 +15,7 @@ class SearchService {
         parameters.search,
         parameters.advancedSearch ?? {}
       );
-      let url = `${API_URL}/${table}/`;
+      let url = `${SOLR_API_URL}/${table}/`;
 
       let urlParameters = [];
 
@@ -46,7 +47,7 @@ class SearchService {
 
   static async getDetailView(id, table) {
     try {
-      let url = `${API_URL}/${table}/?q=id:${decodeURIComponent(id)}`;
+      let url = `${API_URL}/${table}/${decodeURIComponent(id)}/?nest=1`;
 
       const res = await axios.get(url);
       return res.data;
@@ -169,7 +170,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
       }, "");
 
       let tag = "{!tag=type}";
-      if (v.id === "referenceType") {
+      if (v.id === "type") {
         tag = "{!tag=type,dt}";
       }
 

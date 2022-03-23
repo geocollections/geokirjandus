@@ -1,6 +1,9 @@
 import actions from "./actions";
 import mutations from "./mutations";
-
+import { getField } from "vuex-map-fields";
+import reference from "./reference";
+import library from "./library";
+import libraryReference from "@/store/modules/search/libraryReference";
 const INIT_STATE = {
   page: 1,
   paginateBy: 50,
@@ -167,7 +170,13 @@ const state = () => {
 
 export default {
   namespaced: true,
-  state,
+  // state,
+  getters: {
+    // Add the `getField` getter to the
+    // `getters` of your Vuex store instance.
+    getField
+  },
   actions,
-  mutations
+  mutations,
+  modules: { reference, library, libraryReference }
 };

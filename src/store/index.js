@@ -4,18 +4,22 @@ import VuexPersistence from "vuex-persist";
 
 import settings from "./modules/settings";
 import search from "./modules/search";
-import libraryReferenceSearchModule from "@/store/modules/search/libraryReferenceSearchModule";
-import librarySearchModule from "@/store/modules/search/librarySearchModule";
 import references from "./modules/references";
 import library from "./modules/library";
 import tableSettings from "./modules/tableSettings";
-
+import libraryReferences from "./modules/libraryReferences";
 Vue.use(Vuex);
-const version = "1.1.1";
+const version = "2.0.0";
 
 const vuexLocal = new VuexPersistence({
   key: `geoloogia.geokirjandus.${version}`,
-  reducer: state => ({ search: state.search, settings: state.settings }),
+  reducer: state => ({
+    search: {
+      advancedSearch: state.search.advancedSearch,
+      search: state.search.search
+    },
+    settings: state.settings
+  }),
   storage: window.localStorage
 });
 
@@ -26,8 +30,7 @@ export default new Vuex.Store({
     search,
     references,
     library,
-    libraryReferenceSearch: libraryReferenceSearchModule,
-    librarySearch: librarySearchModule
+    libraryReferences
   },
   plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"

@@ -6,12 +6,11 @@ const resetAdvancedSearch = advancedSearch => {
   advancedSearch.allIds.forEach(id => {
     switch (cloneAdvancedSearch[id].type) {
       case "range":
-        cloneAdvancedSearch[id].value = [NaN, NaN];
+        cloneAdvancedSearch[id].value = [null, null];
         break;
       case "checkbox":
-        if (id !== "isEstonianAuthor" && id !== "isEstonianReference") {
-          cloneAdvancedSearch[id].value = null;
-        }
+        cloneAdvancedSearch[id].value = null;
+
         break;
       case "select":
         cloneAdvancedSearch[id].value = [];
@@ -31,7 +30,7 @@ const resetAdvancedLibraryReferenceSearch = advancedSearch => {
   advancedSearch.allIds.forEach(id => {
     switch (cloneAdvancedSearch[id].type) {
       case "range":
-        cloneAdvancedSearch[id].value = [NaN, NaN];
+        cloneAdvancedSearch[id].value = [null, null];
         break;
       case "checkbox":
         cloneAdvancedSearch[id].value = null;
@@ -49,15 +48,26 @@ const resetAdvancedLibraryReferenceSearch = advancedSearch => {
   return cloneAdvancedSearch;
 };
 
+import { updateField } from "vuex-map-fields";
 const mutations = {
+  updateField,
   RESET_SEARCH(state) {
-    state.search.value = null;
+    // state.search.value = null;
 
     state.advancedSearch = {
       ...state.advancedSearch,
       byIds: resetAdvancedSearch(state.advancedSearch)
     };
-    state.page = 1;
+    state.options.page = 1;
+  },
+  RESET_REFERENCE_SEARCH(state) {
+    state.reference.search.value = null;
+
+    state.reference.advancedSearch = {
+      ...state.reference.advancedSearch,
+      byIds: resetAdvancedSearch(state.reference.advancedSearch)
+    };
+    state.reference.options.page = 1;
   },
   RESET_LIBRARY_REFERENCE_SEARCH(state) {
     state.search.value = null;
@@ -69,10 +79,10 @@ const mutations = {
     state.page = 1;
   },
   UPDATE_PAGE(state, page) {
-    state.page = page;
+    state.options.page = page;
   },
   UPDATE_PAGINATE_BY(state, paginateBy) {
-    state.paginateBy = paginateBy;
+    state.options.paginateBy = paginateBy;
   },
 
   UPDATE_SORT_BY(state, payload) {
@@ -81,6 +91,9 @@ const mutations = {
 
   UPDATE_SORT_DESC(state, payload) {
     state.sortDesc = payload;
+  },
+  UPDATE_OPTIONS(state, payload) {
+    state.options = payload;
   },
 
   UPDATE_ADVANCED_SEARCH(state, payload) {

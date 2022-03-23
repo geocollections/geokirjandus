@@ -1,6 +1,6 @@
 <template>
   <div class="fabs">
-    <v-layout column v-show="!showSearch" class="fabContainer ma-3 d-md-none">
+    <!-- <v-layout column v-show="!showSearch" class="fabContainer ma-3 d-md-none">
       <ScrollToTop class="d-print-none" />
       <v-fab-transition>
         <v-btn
@@ -14,9 +14,9 @@
           <v-icon large small>fas fa-search</v-icon>
         </v-btn>
       </v-fab-transition>
-    </v-layout>
+    </v-layout> -->
     <v-layout column class="fabContainer ma-3 d-none d-md-block">
-      <ScrollToTop class="d-print-none" />
+      <scroll-to-top class="d-print-none" />
     </v-layout>
   </div>
 </template>

@@ -1,23 +1,52 @@
 <template>
-  <v-menu transition="slide-y-transition" offset-y bottom right>
+  <v-menu
+    content-class="mt-2"
+    transition="slide-y-transition"
+    offset-y
+    bottom
+    right
+  >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn :class="btnClasses" text :dark="isDark" v-bind="attrs" v-on="on">
+      <v-btn
+        class="mr-1 text-capitalize text-body-1 font-weight-medium rounded"
+        style="font-family: 'Exo 2' !important"
+        :class="btnClasses"
+        text
+        :dark="isDark"
+        v-bind="attrs"
+        v-on="on"
+      >
         {{ $t("common.links") }}
       </v-btn>
     </template>
-    <v-list color="#F6EDDF">
-      <div v-for="(link, idx) in links" :key="idx">
-        <v-list-item :href="link.url" target="_blank">
-          <v-list-item-title>{{ $t(link.name) }}</v-list-item-title>
-        </v-list-item>
-      </div>
+    <v-list class="py-1 px-2">
+      <v-list-item class="header-menu-item pa-0 my-1">
+        <emaapou-button
+          black
+          withText
+          style="height: 48px;color: rgb(0, 0, 0, 0.87);width: 100%"
+        />
+      </v-list-item>
+      <v-list-item
+        v-for="(link, idx) in links"
+        :key="idx"
+        :href="link.url"
+        target="_blank"
+        class="header-menu-item rounded my-1"
+      >
+        <v-list-item-title class="font-family-exo-2">{{
+          $t(link.name)
+        }}</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
 
 <script>
+import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "Links",
+  components: { EmaapouButton },
   props: {
     isDark: {
       type: Boolean,
@@ -44,7 +73,6 @@ export default {
   computed: {
     btnClasses() {
       return {
-        "mx-3": true,
         linksButton: this.isDark
       };
     }
@@ -53,7 +81,7 @@ export default {
 </script>
 
 <style scoped>
-.linksButton {
+/* .linksButton {
   backdrop-filter: blur(1px);
 }
 .linksButton::before {
@@ -61,5 +89,5 @@ export default {
 }
 .linksButton:hover::before {
   opacity: 0.22;
-}
+} */
 </style>

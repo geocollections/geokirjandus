@@ -1,5 +1,7 @@
 <template>
   <v-btn
+    class="text-capitalize text-body-1 font-weight-medium"
+    style="font-family: 'Exo 2' !important"
     :class="btnClasses"
     :disabled="btnIsDisabled"
     text
@@ -42,7 +44,6 @@ export default {
   computed: {
     btnClasses() {
       return {
-        "mx-3": true,
         tourButton: this.isDark
       };
     },
@@ -77,12 +78,12 @@ export default {
     ["cancel", "complete"].forEach(event =>
       Shepherd.on(event, () => {
         this.btnIsDisabled = false;
-        if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
-          document.querySelector("#advancedSearchActivator").click();
-        }
-        if (this.$vuetify.breakpoint.mdAndDown) {
-          document.getElementById("searchFab").click();
-        }
+        // if (event === "complete" && !this.isAdvancedSearchOpenBeforeTour) {
+        //   document.querySelector("#advancedSearchActivator").click();
+        // }
+        // if (this.$vuetify.breakpoint.mdAndDown) {
+        //   document.getElementById("searchFab").click();
+        // }
       })
     );
   },
@@ -99,19 +100,19 @@ export default {
           this.stepReferenceCopyButton(),
           this.stepLibraryCopyButton(),
           this.stepDataViewer(),
-          this.stepTabs(),
-          this.stepPaginationSelect(),
-          this.stepPageSelect(),
+          // this.stepTabs(),
           this.stepViewChange(),
           this.stepFieldSelect(),
+          this.stepCitationSelect(),
           this.stepCopyButton(),
+          this.stepShareButton(),
+          this.stepPaginationSelect(),
+          this.stepPageSelect(),
           this.stepSearchField(),
           this.stepSearchButton(),
-          this.stepLibraryAlert(),
+          // this.stepLibraryAlert(),
           this.stepHelpButton(),
-          this.stepShareButton(),
-          this.stepDeleteSearch(),
-          this.stepCitationSelect(),
+          // this.stepDeleteSearch(),
           this.stepAdvancedSearch()
         ]
       });
@@ -121,9 +122,9 @@ export default {
     startTour() {
       const tour = this.buildTour();
 
-      this.isAdvancedSearchOpenBeforeTour = document
-        .querySelector(".advancedSearch")
-        .classList.contains("v-list-group--active");
+      // this.isAdvancedSearchOpenBeforeTour = document
+      //   .querySelector(".advancedSearch")
+      //   .classList.contains("v-list-group--active");
 
       tour.start();
       this.btnIsDisabled = true;
@@ -374,17 +375,17 @@ export default {
       return {
         beforeShowPromise: () => {
           return new Promise(resolve => {
-            if (
-              document
-                .getElementById("searchDrawer")
-                .classList.contains("v-navigation-drawer--close")
-            ) {
-              if (this.$vuetify.breakpoint.mdAndDown) {
-                document.getElementById("searchFab").click();
-              } else {
-                document.getElementById("showSearch").click();
-              }
-            }
+            // if (
+            //   document
+            //     .getElementById("searchDrawer")
+            //     .classList.contains("v-navigation-drawer--close")
+            // ) {
+            //   if (this.$vuetify.breakpoint.mdAndDown) {
+            //     document.getElementById("searchFab").click();
+            //   } else {
+            //     document.getElementById("showSearch").click();
+            //   }
+            // }
             if (document.querySelector("#searchField")) {
               resolve();
             }
@@ -522,6 +523,7 @@ export default {
         }
       };
     },
+    //
     stepCitationSelect() {
       return {
         beforeShowPromise: () => {
@@ -533,7 +535,7 @@ export default {
         },
         attachTo: {
           element: document.querySelector("#citationSelect"),
-          on: this.$vuetify.breakpoint.mdAndDown ? "top" : "right"
+          on: "bottom"
         },
         title: this.$t("tour.search.stepCitationTitle"),
         text: this.$t("tour.search.stepCitationText"),
@@ -549,13 +551,13 @@ export default {
       return {
         beforeShowPromise: () => {
           return new Promise(resolve => {
-            if (
-              !document
-                .querySelector(".advancedSearch")
-                .classList.contains("v-list-group--active")
-            ) {
-              document.querySelector("#advancedSearchActivator").click();
-            }
+            // if (
+            //   !document
+            //     .querySelector(".advancedSearch")
+            //     .classList.contains("v-list-group--active")
+            // ) {
+            //   document.querySelector("#advancedSearchActivator").click();
+            // }
 
             if (document.querySelector("#advancedSearch")) {
               resolve();
@@ -573,20 +575,20 @@ export default {
         buttons: [this.back, this.complete],
         popperOptions: {
           modifiers: [{ name: "offset", options: { offset: [0, 12] } }]
-        },
-        when: {
-          cancel: () => {
-            if (!this.isAdvancedSearchOpenBeforeTour) {
-              document.querySelector("#advancedSearchActivator").click();
-            }
-          },
-
-          complete: () => {
-            if (!this.isAdvancedSearchOpenBeforeTour) {
-              document.querySelector("#advancedSearchActivator").click();
-            }
-          }
         }
+        // when: {
+        //   cancel: () => {
+        //     if (!this.isAdvancedSearchOpenBeforeTour) {
+        //       document.querySelector("#advancedSearchActivator").click();
+        //     }
+        //   },
+
+        //   complete: () => {
+        //     if (!this.isAdvancedSearchOpenBeforeTour) {
+        //       document.querySelector("#advancedSearchActivator").click();
+        //     }
+        //   }
+        // }
       };
     }
   }
@@ -609,13 +611,13 @@ export default {
 .tour-exit:hover {
   background-color: red !important;
 }
-.tourButton {
-  backdrop-filter: blur(1px);
-}
-.tourButton::before {
-  opacity: 0.1 !important;
-}
-.tourButton:hover::before {
-  opacity: 0.22 !important;
-}
+/* .tourButton {
+    backdrop-filter: blur(1px);
+  }
+  .tourButton::before {
+    opacity: 0.1 !important;
+  }
+  .tourButton:hover::before {
+    opacity: 0.22 !important;
+  } */
 </style>

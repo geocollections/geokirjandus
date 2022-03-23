@@ -1,9 +1,9 @@
 <script>
-import { Bar } from "vue-chartjs";
+import { HorizontalBar } from "vue-chartjs";
 import ChartJSPluginColorSchemes from "chartjs-plugin-colorschemes";
 
 export default {
-  extends: Bar,
+  extends: HorizontalBar,
   props: {
     chartData: Object,
     options: Object,

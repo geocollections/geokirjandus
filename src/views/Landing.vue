@@ -28,7 +28,6 @@
               <v-card-actions class="text-center d-flex justify-center mt-6">
                 <v-text-field
                   v-model="searchStr"
-                  :autofocus="true"
                   @keyup.native="search"
                   hide-details
                   :label="$t('common.search')"

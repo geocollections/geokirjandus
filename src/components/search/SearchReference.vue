@@ -27,7 +27,7 @@
     <v-card id="advancedSearch" flat color="transparent" class="rounded-lg">
       <v-card-title
         style="font-size: 1rem;font-family: 'Exo 2' !important"
-        class="text-h6 pt-3 px-0 pb-2"
+        class="text-h6 pt-3 px-0 pb-2 d-block mb-2"
       >
         {{ $t("common.advancedSearch") }}
         [{{ count }}]

@@ -78,7 +78,7 @@
             "
           />
         </div>
-        <share-button />
+        <share-button v-if="showShare" :count="count" />
       </v-card-actions>
       <base-pagination
         class="ml-auto justify-end pt-2 pt-sm-0"
@@ -230,6 +230,10 @@ export default {
       default: function() {
         return this.$t("error.nothingFound");
       }
+    },
+    showShare: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

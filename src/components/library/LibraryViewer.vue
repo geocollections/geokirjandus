@@ -15,6 +15,7 @@
           : 'viewer.title.library_single_html'
       "
       :options.sync="options"
+      :show-share="false"
       @open="open"
       @update:paginateBy="handleUpdatePaginateBy"
       @update:page="handleUpdatePage"

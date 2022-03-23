@@ -23,7 +23,8 @@
     "libraryId": "Ei leidnud kogumikku. ID: {text}",
     "nothingFound": "Ei leidnud otsingule vastavaid kirjeid",
     "nothingFoundReference": "Ei leidnud otsingule vastavat kirjandust",
-    "nothingFoundLibrary": "Ei leidnud otsingule vastavaid kogumikke"
+    "nothingFoundLibrary": "Ei leidnud otsingule vastavaid kogumikke",
+    "exportCount": "Korraga saab eksportida kuni 1000 kirjet"
   },
   "tabs": {
     "references": "Kirjandus",
@@ -86,7 +87,7 @@
     "statistics": "Statistika",
     "edit": "MUUDA",
     "filename": "Faili nimi",
-    "exportFile": "Ekspordi fail",
+    "exportFile": "Nimekirja eksport",
     "amount": "Kogus",
     "all": "Kõik",
     "tour": "Juhend",

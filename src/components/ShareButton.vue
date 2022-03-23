@@ -12,50 +12,68 @@
         <v-icon small>fas fa-share-alt</v-icon>
       </v-btn>
     </template>
-    <v-card color="#F6EDDF" id="shareHelp">
-      <v-card-title>
+    <v-card color="#fffcf8" id="shareHelp">
+      <v-card-title class="text-h6">
         URL
-        <v-card-actions>
-          <copy-button clipboard-class="url" />
-        </v-card-actions>
       </v-card-title>
       <v-card-text>
-        <v-card outlined>
+        <v-card class="d-flex" outlined>
           <v-card-text class="url">
             {{ getShareURL }}
           </v-card-text>
+          <v-card-actions>
+            <copy-button clipboard-class="url" />
+          </v-card-actions>
         </v-card>
       </v-card-text>
 
       <v-divider class="mx-3" />
-      <v-card-title class="pb-0">{{ $t("common.exportFile") }}</v-card-title>
+      <v-card-title class="pb-0 text-h6">{{
+        $t("common.exportFile")
+      }}</v-card-title>
       <v-card-text>
         <v-form>
           <v-radio-group class="pb-2" hide-details v-model="exportType" row>
-            <v-radio color="#fd8719" value="csv" label="CSV" />
-            <v-radio color="#fd8719" value="ris" label="RIS" />
-            <v-radio color="#fd8719" value="bibtex" label="BibTeX" />
+            <v-radio color="#135ebf" value="csv" label="CSV" />
+            <v-radio color="#135ebf" value="ris" label="RIS" />
+            <v-radio color="#135ebf" value="bibtex" label="BibTeX" />
           </v-radio-group>
           <v-combobox
+            class="mt-2"
             v-if="$route.name !== 'reference'"
             :label="$t('common.amount')"
-            hide-details
+            color="#135ebf"
             type="number"
+            outlined
+            hide-details=""
+            dense
             :items="selectItems"
             :value="exportCount"
-            @input="exportCount = isNaN($event) ? $event.value : $event"
+            @input="
+              exportCount = isNaN($event)
+                ? parseInt($event.value)
+                : parseInt($event)
+            "
           >
           </v-combobox>
 
           <v-text-field
+            class="mt-2"
+            color="#135ebf"
             v-model="filename"
             hide-details
+            outlined
+            dense
             :suffix="getFileSuffix"
             :label="$t('common.filename')"
           />
-          <v-btn class="mt-3" color="#fd8719" dark @click="handleExport">{{
-            $t("common.export")
-          }}</v-btn>
+          <v-btn
+            class="mt-3 font-family-exo-2 text-capitalize"
+            color="#135ebf"
+            dark
+            @click="handleExport"
+            >{{ $t("common.export") }}</v-btn
+          >
         </v-form>
       </v-card-text>
 
@@ -87,17 +105,23 @@ export default {
   name: "ShareButton",
   components: { CopyButton },
   mixins: [urlMixin, toastMixin, queryMixin, citationMixin],
+  props: {
+    count: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
       open: false,
       exportType: "csv",
-      exportCount: 10,
+      exportCount: this.count,
       filename: ""
     };
   },
   computed: {
     ...mapState("settings", ["view"]),
-    ...mapState("references", ["count"]),
+    // ...mapState("references", ["count"]),
     selectItems() {
       return [
         { value: 10, text: "10" },
@@ -121,34 +145,7 @@ export default {
       return "";
     },
     getShareURL() {
-      let resolve;
-      if (this.$route.name === "library") {
-        resolve = this.$router.resolve({
-          name: "query",
-          query: this.setURLParameters({
-            ...this.getAdvancedSearch.byIds,
-            search: this.getSearch,
-            library: this.$route.params.id
-          })
-        });
-      } else if (this.$route.name === "reference") {
-        resolve = this.$router.resolve({
-          name: "query",
-          query: {
-            reference: this.$route.params.id,
-            lang: this.$store.state.settings.language
-          }
-        });
-      } else {
-        resolve = this.$router.resolve({
-          name: "query",
-          query: this.setURLParameters({
-            ...this.getAdvancedSearch.byIds,
-            search: this.getSearch
-          })
-        });
-      }
-
+      const resolve = this.$router.resolve(this.$route);
       return `${window.location.protocol}//${window.location.hostname}:${window.location.port}${resolve.href}`;
     }
   },
@@ -192,8 +189,6 @@ export default {
           sortDesc: this.getSortDesc,
           paginateBy: this.exportCount
         }).then(handleFileCreation);
-      } else if (this.$route.name === "reference") {
-        fetchReference(this.$route.params.id).then(handleFileCreation);
       } else {
         fetchReferences({
           search: this.getSearch,

@@ -12,7 +12,7 @@ const queryMixin = {
   //   };
   // },
   computed: {
-    ...mapState("references", ["facet", "count"]),
+    ...mapState("references", ["facet"]),
     referenceParameters() {
       return {
         ...this.$store.state.search.advancedSearch.byIds,

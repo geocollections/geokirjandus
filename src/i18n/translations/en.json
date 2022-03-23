@@ -24,7 +24,8 @@
     "libraryId": "Could not find library. ID: {text}",
     "nothingFound": "No records found",
     "nothingFoundReference": "No references found",
-    "nothingFoundLibrary": "No libraries found"
+    "nothingFoundLibrary": "No libraries found",
+    "exportCount": "Max size of export is 1000"
   },
   "tabs": {
     "references": "References",
@@ -87,7 +88,7 @@
     "statistics": "Statistics",
     "edit": "EDIT",
     "filename": "Filename",
-    "exportFile": "Export file",
+    "exportFile": "File export",
     "amount": "Amount",
     "all": "All",
     "tour": "Guide",

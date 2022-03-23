@@ -46,6 +46,7 @@
                 <div class="d-flex">
                   <div
                     class="text-h4 font-weight-medium"
+                    style="word-break: normal"
                     v-translate="{ et: library.title, en: library.title_en }"
                   />
                   <v-btn

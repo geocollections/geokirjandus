@@ -62,9 +62,9 @@ const INIT_STATE = {
         label: "reference.book",
         fields: ["book"]
       },
-      referenceType: {
+      type: {
         type: "select",
-        id: "referenceType",
+        id: "type",
         value: [],
         label: "reference.type",
         fields: ["type"]
@@ -150,7 +150,7 @@ const INIT_STATE = {
       "abstract",
       "keywords",
       "volumeAndNumber",
-      "referenceType",
+      "type",
       "language",
       "localities",
       "isEstonianReference",

@@ -125,7 +125,7 @@
 
         <input-select
           v-model="type"
-          :label="$t(advancedSearch.byIds.referenceType.label)"
+          :label="$t(advancedSearch.byIds.type.label)"
           :items="getSelectItems('referenceType')"
           @blur="handleSearch"
         />
@@ -155,6 +155,7 @@
 <script>
 import { mapFields } from "vuex-map-fields";
 import { mapActions, mapState } from "vuex";
+import { isEqual } from "lodash";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
@@ -197,7 +198,7 @@ export default {
       title: "advancedSearch.byIds.title.value",
       localities: "advancedSearch.byIds.localities.value",
       book: "advancedSearch.byIds.book.value",
-      type: "advancedSearch.byIds.referenceType.value",
+      type: "advancedSearch.byIds.type.value",
       language: "advancedSearch.byIds.language.value",
       journal: "advancedSearch.byIds.journal.value",
       abstract: "advancedSearch.byIds.abstract.value",
@@ -297,6 +298,43 @@ export default {
       return languages;
     }
   },
+  created() {
+    Object.entries(this.$route.query).forEach(([key, value]) => {
+      if (key === "query") {
+        this.query = value;
+        return;
+      }
+      const type = this.advancedSearch.byIds[key].type;
+
+      if (type === "text") {
+        this[key] = value;
+        return;
+      }
+
+      if (type === "range") {
+        if (!value.includes("-")) return;
+
+        const [start, end] = value.split("-");
+
+        if (!isNaN(Number(start))) this[key][0] = start;
+        if (!isNaN(Number(end))) this[key][1] = end;
+
+        return;
+      }
+      if (type === "select") {
+        const values = value.split(",").filter(strValue => {
+          return !isNaN(Number(strValue));
+        });
+
+        this[key] = values;
+      }
+      if (type === "checkbox") {
+        this[key] = "1";
+      }
+    });
+
+    this.handleSearch();
+  },
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     ...mapActions("references", ["setReferences"]),
@@ -314,7 +352,71 @@ export default {
       else if (id === "language") return this.getReferenceLanguages;
       return [];
     },
+
+    isEmpty(str) {
+      return !str || str.length === 0;
+    },
+    updateQueryParams() {
+      const query = {};
+      if (!this.isEmpty(this.query)) {
+        query.query = this.query;
+      }
+
+      if (!this.isEmpty(this.author)) {
+        query.author = this.author;
+      }
+
+      if (!this.isEmpty(this.title)) {
+        query.title = this.title;
+      }
+      if (!this.isEmpty(this.book)) {
+        query.book = this.book;
+      }
+      if (!this.isEmpty(this.journal)) {
+        query.journal = this.journal;
+      }
+      if (!this.isEmpty(this.abstract)) {
+        query.abstract = this.abstract;
+      }
+      if (!this.isEmpty(this.keywords)) {
+        query.keywords = this.keywords;
+      }
+      if (!this.isEmpty(this.volumeAndNumber)) {
+        query.volumeAndNumber = this.volumeAndNumber;
+      }
+      if (!this.isEmpty(this.localities)) {
+        query.localities = this.localities;
+      }
+      if (!this.isEmpty(this.taxa)) {
+        query.taxa = this.taxa;
+      }
+      if (this.isEstonianAuthor === "1") {
+        query.isEstonianAuthor = null;
+      }
+      if (this.isEstonianReference === "1") {
+        query.isEstonianReference = null;
+      }
+      if (this.year[0] !== null || this.year[1] !== null) {
+        const start = this.year[0] !== null ? this.year[0] : "*";
+        const end = this.year[1] !== null ? this.year[1] : "*";
+
+        query.year = `${start}-${end}`;
+      }
+      if (this.type.length > 0) {
+        query.type = this.type.join(",");
+      }
+
+      if (this.language.length > 0) {
+        query.language = this.language.join(",");
+      }
+
+      if (!isEqual(this.$route.query, query)) {
+        this.$router.push({ ...this.$route, query: query });
+      }
+    },
     async handleSearch() {
+      this.updateQueryParams();
+
       const res = await this.getReferences();
       this.setReferences(res);
     }

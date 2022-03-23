@@ -86,6 +86,7 @@
 <script>
 import { mapFields } from "vuex-map-fields";
 import { mapActions, mapState } from "vuex";
+import { isEqual } from "lodash";
 import urlMixin from "@/mixins/urlMixin";
 import queryMixin from "@/mixins/queryMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
@@ -158,13 +159,79 @@ export default {
       return count;
     }
   },
+  created() {
+    Object.entries(this.$route.query).forEach(([key, value]) => {
+      if (key === "query") {
+        this.query = value;
+        return;
+      }
+      const type = this.advancedSearch.byIds[key].type;
+
+      if (type === "text") {
+        this[key] = value;
+        return;
+      }
+
+      if (type === "range") {
+        if (!value.includes("-")) return;
+
+        const [start, end] = value.split("-");
+
+        if (!isNaN(Number(start))) this[key][0] = start;
+        if (!isNaN(Number(end))) this[key][1] = end;
+
+        return;
+      }
+      if (type === "select") {
+        const values = value.split(",").filter(strValue => {
+          return !isNaN(Number(strValue));
+        });
+
+        this[key] = values;
+      }
+      if (type === "checkbox") {
+        this[key] = "1";
+      }
+    });
+
+    this.handleSearch();
+  },
   methods: {
     ...mapActions("search", ["resetSearch", "resetPage"]),
     ...mapActions("library", ["setLibraries"]),
     handleExitLibrary() {
       this.$router.replace({ name: "searchReference" });
     },
+    isEmpty(str) {
+      return !str || str.length === 0;
+    },
+    updateQueryParams() {
+      const query = {};
+      if (!this.isEmpty(this.query)) {
+        query.query = this.query;
+      }
+
+      if (!this.isEmpty(this.author)) {
+        query.author = this.author;
+      }
+
+      if (!this.isEmpty(this.title)) {
+        query.title = this.title;
+      }
+
+      if (this.year[0] !== null || this.year[1] !== null) {
+        const start = this.year[0] !== null ? this.year[0] : "*";
+        const end = this.year[1] !== null ? this.year[1] : "*";
+
+        query.year = `${start}-${end}`;
+      }
+
+      if (!isEqual(this.$route.query, query)) {
+        this.$router.push({ ...this.$route, query: query });
+      }
+    },
     async handleSearch() {
+      this.updateQueryParams();
       const res = await this.getLibraries();
       this.setLibraries(res);
     }

@@ -70,7 +70,7 @@
               </v-card-title>
             </v-card>
             <v-card
-              class="ml-auto mr-auto rounded-lg elevation-3 px-1 py-1"
+              class="ml-auto mr-auto elevation-3 px-1 py-1"
               v-if="reference"
               elevation="0"
               outlined
@@ -325,7 +325,9 @@
                         {{ $t("reference.localities") }}
                       </div>
 
-                      <ul>
+                      <ul
+                        style="height:200px; overflow-y: auto; width: max-content"
+                      >
                         <li
                           v-for="locality in localities"
                           :key="locality.locality.id"
@@ -348,7 +350,9 @@
                         {{ $t("reference.sites") }}
                       </div>
 
-                      <ul>
+                      <ul
+                        style="height:200px; overflow-y: auto; width: max-content"
+                      >
                         <li v-for="site in sites" :key="site.site.id">
                           <a
                             :href="siteURL(site.site.id)"
@@ -368,7 +372,9 @@
                         {{ $t("reference.areas") }}
                       </div>
 
-                      <ul>
+                      <ul
+                        style="height:200px; overflow-y: auto; width: max-content"
+                      >
                         <li v-for="area in areas" :key="area.area.id">
                           <a
                             :href="areaURL(area.area.id)"
@@ -678,7 +684,7 @@ export default {
     },
     async getReferenceLocalities() {
       const localityReferenceResponse = await axios.get(
-        `https://api.geoloogia.info/locality_reference/?reference=${this.reference.id}&nest=1`
+        `https://api.geoloogia.info/locality_reference/?reference=${this.reference.id}&nest=1&limit=500&ordering=title`
       );
       return localityReferenceResponse.data;
     },

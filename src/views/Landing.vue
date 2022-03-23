@@ -12,45 +12,45 @@
             'padding-top': $vuetify.breakpoint.smAndUp ? '48px' : '96px'
           }"
         >
-          <v-col class="header d-flex flex-column pt-sm-10">
+          <v-col cols="12" class="header d-flex flex-column pt-sm-10">
             <!-- <span class="d-flex mt-4 mb-2 mr-4">
             <emaapou-button class="mr-auto" />
             <links />
             <lang-buttons />
           </span> -->
-
-            <div
-              class="mt-5 text-h3 white--text text-center font-weight-medium "
-            >
-              {{ $t("subtitle") }}
-            </div>
-            <span
-              class="text-center align-self-center align-center d-flex mt-6"
-            >
-              <v-text-field
-                v-model="searchStr"
-                :autofocus="true"
-                @keyup.native="search"
-                hide-details
-                :label="$t('common.search')"
-                solo
-                style="width:300px"
+            <v-card flat tile color="transparent">
+              <v-card-title
+                class="pb-0 text-h3 white--text text-center justify-center font-weight-medium "
+                style="word-break: normal"
               >
-              </v-text-field>
-              <v-btn
-                class="ml-2"
-                height="48px"
-                color="#135ebf"
-                dark
-                large
-                @click="search"
-              >
-                <v-icon small class="px-2" left>fas fa-search</v-icon>
-                <div class="font-family-exo-2">
-                  {{ $t("common.search") }}
-                </div>
-              </v-btn>
-            </span>
+                {{ $t("subtitle") }}
+              </v-card-title>
+              <v-card-actions class="text-center d-flex justify-center mt-6">
+                <v-text-field
+                  v-model="searchStr"
+                  :autofocus="true"
+                  @keyup.native="search"
+                  hide-details
+                  :label="$t('common.search')"
+                  solo
+                  style="max-width: 300px"
+                >
+                </v-text-field>
+                <v-btn
+                  class="ml-2 pr-4"
+                  height="48px"
+                  color="#135ebf"
+                  dark
+                  large
+                  @click="search"
+                >
+                  <v-icon small class="px-2" left>fas fa-search</v-icon>
+                  <div class="font-family-exo-2">
+                    {{ $t("common.search") }}
+                  </div>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -171,8 +171,15 @@ export default {
         return;
       this.resetSearch();
       this.updateSearch(this.searchStr);
+      let query = {};
+
+      if (this.searchStr && this.searchStr.length > 0) {
+        query.query = this.searchStr;
+      }
+
       this.$router.push({
-        name: "searchReference"
+        name: "searchReference",
+        query: query
       });
     },
     getReferences() {
@@ -211,25 +218,8 @@ export default {
   background-size: cover, cover, cover;
 }
 .layer1 {
-  background-image: url("../assets/layered-steps-haikei (3).svg"),
+  background-image: url("../assets/layered-steps-haikei (5).svg"),
     linear-gradient(to right, #00000033, #00000033), url("../assets/books4.jpg");
-}
-
-.spacer2 {
-  aspect-ratio: 1930/210;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  background-size: cover;
-}
-
-.layer2 {
-  background-image: url("../assets/stacked-steps-haikei (2).svg");
-}
-
-.layer3 {
-  transform: rotate(180deg);
-  background-image: url("../assets/stacked-steps-haikei (2).svg");
 }
 
 .main {

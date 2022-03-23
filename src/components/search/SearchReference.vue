@@ -13,7 +13,7 @@
       <v-spacer />
       <search-help-dialog />
       <v-btn
-        class="text-capitalize"
+        class="font-family-exo-2"
         type="submit"
         id="searchButton"
         color="#135ebf"

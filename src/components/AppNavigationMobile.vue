@@ -9,13 +9,11 @@
     @input="$emit('update:navigationDrawer', $event)"
   >
     <v-container>
+      <div class="font-family-exo-2 font-weight-medium pl-2 mt-2">
+        {{ $t("common.links") }}
+      </div>
+      <v-divider />
       <v-list class="py-1 px-2">
-        <v-list-item class="header-menu-item pa-0 my-1">
-          <tour
-            class="rounded justify-start"
-            style="height: 48px;color: rgb(0, 0, 0, 0.87); width: 100%"
-          />
-        </v-list-item>
         <v-list-item class="header-menu-item pa-0 my-1">
           <emaapou-button
             black
@@ -23,12 +21,6 @@
             style="height: 48px;color: rgb(0, 0, 0, 0.87);width: 100%"
           />
         </v-list-item>
-      </v-list>
-      <div class="font-family-exo-2 font-weight-medium pl-2 mt-2">
-        {{ $t("common.links") }}
-      </div>
-      <v-divider />
-      <v-list class="py-1 px-2">
         <v-list-item
           v-for="(link, idx) in links"
           :key="idx"
@@ -75,13 +67,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import toastMixin from "../mixins/toastMixin";
-import Tour from "@/components/Tour";
 import EmaapouButton from "./EmaapouButton.vue";
 
 export default {
   name: "AppNavigationMobile",
   mixins: [toastMixin],
-  components: { Tour, EmaapouButton },
+  components: { EmaapouButton },
   props: {
     show: {
       type: Boolean,

@@ -20,6 +20,13 @@
       </v-btn>
     </template>
     <v-list class="py-1 px-2">
+      <v-list-item class="header-menu-item pa-0 my-1">
+        <emaapou-button
+          black
+          withText
+          style="height: 48px;color: rgb(0, 0, 0, 0.87);width: 100%"
+        />
+      </v-list-item>
       <v-list-item
         v-for="(link, idx) in links"
         :key="idx"
@@ -36,8 +43,10 @@
 </template>
 
 <script>
+import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "Links",
+  components: { EmaapouButton },
   props: {
     isDark: {
       type: Boolean,

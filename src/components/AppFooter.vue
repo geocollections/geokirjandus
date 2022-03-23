@@ -55,7 +55,10 @@
         />
       </a>
     </div>
-    <small v-if="$i18n.locale === 'ee'" class="text-center pt-4 footerText">
+    <small
+      v-if="$i18n.locale === 'ee'"
+      class="text-center pt-4 footerText my-5"
+    >
       Siin leiduvad materjalid on enamasti kasutamiseks
       <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">
         CC BY-SA</a
@@ -77,7 +80,10 @@
         GitHubis</a
       >.
     </small>
-    <small v-if="$i18n.locale === 'en'" class="text-center pt-4 footerText">
+    <small
+      v-if="$i18n.locale === 'en'"
+      class="text-center pt-4 footerText  my-5"
+    >
       All materials in the portal are for free usage according to
       <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank"
         >CC BY-SA</a
@@ -126,6 +132,6 @@ export default {
 }
 
 .layer2 {
-  background-image: url("../assets/stacked-steps-haikei (2).svg");
+  background-image: url("../assets/stacked-steps-haikei (4).svg");
 }
 </style>

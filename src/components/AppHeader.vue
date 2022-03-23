@@ -14,7 +14,7 @@
     height="48"
   >
     <template #extension v-if="isMobile">
-      <v-toolbar-items class="py-1" style="width: 100%" v-if="isMobile">
+      <v-toolbar-items class="py-1 px-0" style="width: 100%" v-if="isMobile">
         <v-btn
           class="text-capitalize text-body-1 mr-1 rounded font-weight-medium"
           style="font-family: 'Exo 2' !important"
@@ -39,6 +39,7 @@
           link
           :to="{ name: 'searchLibrary' }"
         >
+          <v-icon left>fas fa-warehouse</v-icon>
           {{ $t("tabs.libraries") }}
         </v-btn>
         <v-spacer />
@@ -86,12 +87,13 @@
         link
         :to="{ name: 'searchLibrary' }"
       >
+        <v-icon left>fas fa-warehouse</v-icon>
         {{ $t("tabs.libraries") }}
       </v-btn>
     </v-toolbar-items>
     <v-spacer />
     <v-toolbar-items class="py-1">
-      <tour v-if="$vuetify.breakpoint.mdAndUp" class="rounded mr-1" />
+      <!-- <tour v-if="$vuetify.breakpoint.mdAndUp" class="rounded mr-1" /> -->
       <links v-if="$vuetify.breakpoint.mdAndUp" />
       <lang-buttons v-if="$vuetify.breakpoint.mdAndUp" :is-dark="false" />
       <emaapou-button v-if="$vuetify.breakpoint.mdAndUp" class="rounded" />
@@ -138,11 +140,10 @@
 <script>
 import LangButtons from "@/components/LangButtons";
 import Links from "@/components/Links";
-import Tour from "@/components/Tour";
 import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "AppHeader",
-  components: { Tour, Links, LangButtons, EmaapouButton },
+  components: { Links, LangButtons, EmaapouButton },
   props: {
     color: {
       type: String,
@@ -226,6 +227,8 @@ export default {
   // border-bottom-width: 2px;
 }
 .v-toolbar ::v-deep .v-toolbar__extension {
+  padding-right: 5px;
+  padding-left: 5px;
   &.v-btn {
     height: 40px;
   }

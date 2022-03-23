@@ -47,24 +47,27 @@
                   <div
                     class="text-h4 font-weight-medium"
                     style="word-break: normal"
-                    v-translate="{ et: library.title, en: library.title_en }"
-                  />
-                  <v-btn
-                    link
-                    icon
-                    small
-                    style="vertical-align: top;"
-                    color="deep-orange darken-2"
-                    class="d-print-none"
-                    :href="
-                      `https://edit.geocollections.info/library/${library.id}`
-                    "
-                    target="_blank"
-                    rel="noopener"
                   >
-                    <v-icon small>fas fa-edit</v-icon>
-                    <!-- <b>{{ $t("common.edit") }}</b> -->
-                  </v-btn>
+                    {{
+                      $i18n.locale === "ee" ? library.title : library.title_en
+                    }}
+                    <v-btn
+                      link
+                      icon
+                      small
+                      style="vertical-align: top;"
+                      color="deep-orange darken-2"
+                      class="d-print-none"
+                      :href="
+                        `https://edit.geocollections.info/library/${library.id}`
+                      "
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <v-icon small>fas fa-edit</v-icon>
+                      <!-- <b>{{ $t("common.edit") }}</b> -->
+                    </v-btn>
+                  </div>
                 </div>
                 <div class="text-h6 font-weight-regular">
                   {{ $t("common.libraryCreatedBy") }}:

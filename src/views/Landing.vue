@@ -66,14 +66,14 @@
     <!-- <div style="background-color: #ffb85a"> -->
     <v-container>
       <v-row>
-        <v-col cols="12" md="5" lg="4">
+        <v-col cols="12" md="6" lg="5" xl="4">
           <v-fade-transition>
             <div>
               <div class="text-center text-h4 mb-3">
                 {{ $t("common.about") }}
               </div>
               <v-card v-if="intro" flat outlined>
-                <div class="px-1 pb-1 px-sm-2 pb-sm-2">
+                <div class="px-1 py-1 px-sm-2 py-sm-2">
                   <v-card-text
                     style="background-color: white"
                     class="py-3 roundedBorder"
@@ -88,7 +88,7 @@
           </v-fade-transition>
         </v-col>
 
-        <v-col cols="12" md="7" lg="8">
+        <v-col cols="12" md="6" lg="7" xl="8">
           <v-fade-transition>
             <div>
               <div class="text-center text-h4 mb-3">
@@ -97,7 +97,7 @@
 
               <v-card v-if="references" flat outlined>
                 <v-expand-transition>
-                  <div class="px-1 pb-1 px-sm-2 pb-sm-2">
+                  <div class="px-1 py-1 px-sm-2 py-sm-2">
                     <reference-list-view
                       class="pb-3 roundedBorder"
                       style=" background-color: white"

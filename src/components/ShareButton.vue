@@ -67,18 +67,22 @@
             :suffix="getFileSuffix"
             :label="$t('common.filename')"
           />
-          <v-btn
-            class="mt-3 font-family-exo-2 text-capitalize"
-            color="#135ebf"
-            dark
-            @click="handleExport"
-            >{{ $t("common.export") }}</v-btn
-          >
+          <div class="d-flex justify-end">
+            <v-btn
+              class=" mt-3 font-family-exo-2"
+              color="#135ebf"
+              dark
+              @click="handleExport"
+            >
+              <v-icon left>fas fa-download</v-icon>
+              {{ $t("common.export") }}
+            </v-btn>
+          </div>
         </v-form>
       </v-card-text>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
+      <v-card-actions class="px-6">
+        <v-spacer />
         <v-btn text @click="open = false">
           {{ $t("common.close") }}
         </v-btn>

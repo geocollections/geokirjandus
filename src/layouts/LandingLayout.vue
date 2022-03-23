@@ -10,9 +10,9 @@
       :show="showMobileNavigation"
       @update:navigationDrawer="showMobileNavigation = $event"
     />
-    <v-main class="main fill-height pt-0">
+    <v-main class="main pt-0" style="min-height: 100vh">
       <scroll-to-top />
-      <router-view style="min-height: 100vh" />
+      <router-view />
     </v-main>
     <app-footer />
   </div>

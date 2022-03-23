@@ -75,24 +75,6 @@ const routes = [
     ]
   },
   {
-    path: "/query",
-    name: "query",
-    beforeEnter: (to, from, next) => {
-      const { lang, library, reference, ...query } = to.query;
-
-      store.dispatch("settings/updateLanguage", lang);
-      if (library) {
-        store.dispatch("libraryReferenceSearch/setSearchFromURL", query);
-        next({ name: "library", params: { id: library }, replace: true });
-      } else if (reference) {
-        next({ name: "reference", params: { id: reference }, replace: true });
-      } else {
-        store.dispatch("search/setSearchFromURL", query);
-        next({ name: "searchReference" });
-      }
-    }
-  },
-  {
     path: "*",
     redirect: "/"
   }

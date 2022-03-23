@@ -96,7 +96,7 @@
                   </div>
 
                   <citation-select
-                    style="max-width: 350px"
+                    style="max-width: 150px"
                     id="citationSelect"
                     class="ml-auto  py-0"
                   />

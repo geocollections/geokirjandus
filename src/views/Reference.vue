@@ -471,7 +471,7 @@
                     @click="
                       $router.push({
                         name: `library`,
-                        params: { id: library.id }
+                        params: { id: library.library.id }
                       })
                     "
                   />
@@ -621,7 +621,7 @@ export default {
     next();
   },
   methods: {
-    ...mapActions("search", ["updateAdvancedSearch"]),
+    ...mapActions("search/reference", ["updateAdvancedSearch"]),
     exit() {
       this.$router.replace({ name: "searchReference" }).catch(() => {});
     },
@@ -633,9 +633,8 @@ export default {
         value: keyword,
         id: "keywords"
       });
-      this.getReferences();
-      this.getLibraries();
-      this.handleBack();
+      this.$router.push({ name: "searchReference" });
+      // this.handleBack();
     },
     localityURL(id) {
       return `https://geoloogia.info/locality/${id}`;

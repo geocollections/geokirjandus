@@ -1,7 +1,7 @@
 <template>
-  <v-footer color="#ffb85a" class="d-flex pa-0 flex-grow-1 flex-column">
+  <v-footer color="#ea9219" class="d-flex pa-0 flex-grow-1 flex-column">
     <div class="spacer2 layer2" />
-    <div class="text-center py-4">
+    <div class="text-center pt-5">
       <a href="https://kik.ee" target="_blank" rel="noopener">
         <img
           src="https://files.geocollections.info/img/kik_valge.png"
@@ -57,50 +57,81 @@
     </div>
     <small
       v-if="$i18n.locale === 'ee'"
-      class="text-center pt-4 footerText my-5"
+      class="text-center pb-5 footerText my-5 white--text"
     >
       Siin leiduvad materjalid on enamasti kasutamiseks
-      <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">
+      <a
+        class="white--text"
+        href="https://creativecommons.org/licenses/by-sa/3.0/"
+        target="_blank"
+      >
         CC BY-SA</a
       >
       litsentsi alusel, kui pole näidatud teisiti.
       <br />
       Portaal on osaks
-      <a href="https://natarc.ut.ee" target="_blank">NATARC</a>
+      <a class="white--text" href="https://natarc.ut.ee" target="_blank"
+        >NATARC</a
+      >
       teadustaristust ning infosüsteemist
-      <a href="https://geocollections.info" target="_blank">SARV</a>, majutab
-      <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
+      <a class="white--text" href="https://geocollections.info" target="_blank"
+        >SARV</a
+      >, majutab
+      <a
+        class="white--text"
+        href="https://taltech.ee/geoloogia-instituut"
+        target="_blank"
+      >
         TalTech</a
       >.
       <br />
       Tarkvara on loodud kasutades
-      <a href="https://vuejs.org/" target="_blank">Vue.js</a>, raamistikku ning
-      kättesaadav
-      <a href="https://github.com/geocollections/geokirjandus" target="_blank">
+      <a class="white--text" href="https://vuejs.org/" target="_blank">Vue.js</a
+      >, raamistikku ning kättesaadav
+      <a
+        class="white--text"
+        href="https://github.com/geocollections/geokirjandus"
+        target="_blank"
+      >
         GitHubis</a
       >.
     </small>
     <small
       v-if="$i18n.locale === 'en'"
-      class="text-center pt-4 footerText  my-5"
+      class="text-center pb-5 footerText my-5 white--text"
     >
       All materials in the portal are for free usage according to
-      <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank"
+      <a
+        class="white--text"
+        href="https://creativecommons.org/licenses/by-sa/3.0/"
+        target="_blank"
         >CC BY-SA</a
       >
       licence, unless indicated otherwise.
       <br />
       Portal is part of
-      <a href="https://natarc.ut.ee" target="_blank">NATARC</a>
+      <a class="white--text" href="https://natarc.ut.ee" target="_blank"
+        >NATARC</a
+      >
       national research infrastructure and geoscience data platform
-      <a href="https://geocollections.info" target="_blank">SARV</a>, hosted by
-      <a href="https://taltech.ee/geoloogia-instituut" target="_blank"
+      <a class="white--text" href="https://geocollections.info" target="_blank"
+        >SARV</a
+      >, hosted by
+      <a
+        class="white--text"
+        href="https://taltech.ee/geoloogia-instituut"
+        target="_blank"
         >TalTech</a
       >.
       <br />
-      Built using <a href="https://vuejs.org/" target="_blank">Vue.js</a>,
-      available on
-      <a href="https://github.com/geocollections/geokirjandus" target="_blank">
+      Built using
+      <a class="white--text" href="https://vuejs.org/" target="_blank">Vue.js</a
+      >, available on
+      <a
+        class="white--text"
+        href="https://github.com/geocollections/geokirjandus"
+        target="_blank"
+      >
         GitHub</a
       >.
     </small>
@@ -132,6 +163,6 @@ export default {
 }
 
 .layer2 {
-  background-image: url("../assets/stacked-steps-haikei (4).svg");
+  background-image: url("../assets/stacked-steps-haikei (5).svg");
 }
 </style>

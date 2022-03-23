@@ -34,7 +34,7 @@
         <v-spacer />
         <v-hover v-slot="{ hover }">
           <v-chip
-            color="#FF9F1C"
+            color="#ea9219"
             outlined
             :class="{ 'pr-2': hover }"
             v-if="getAdvancedSearchParametersAppliedCount > 0"
@@ -42,7 +42,7 @@
             <div class="pr-1 black--text">
               {{ getAdvancedSearchParametersAppliedCount }}
             </div>
-            <v-icon x-small color="#FF9F1C">fas fa-filter</v-icon>
+            <v-icon x-small color="#ea9219">fas fa-filter</v-icon>
 
             <v-tooltip bottom open-delay="250">
               <template #activator="{on, attrs}">

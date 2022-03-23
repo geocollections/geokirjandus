@@ -6,7 +6,6 @@
     flat
     app
     clipped-right
-    hide-on-scroll
     class="mx-1 mx-auto"
     :color="color"
     style="z-index: 9998"
@@ -147,7 +146,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: "#FF9F1C"
+      default: "#ea9219"
     }
   },
   computed: {

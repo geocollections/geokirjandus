@@ -20,7 +20,7 @@
           </span> -->
             <v-card flat tile color="transparent">
               <v-card-title
-                class="pb-0 text-h3 white--text text-center justify-center font-weight-medium "
+                class="pb-0 text-h4 text-sm-h3 white--text text-center justify-center font-weight-medium "
                 style="word-break: normal"
               >
                 {{ $t("subtitle") }}

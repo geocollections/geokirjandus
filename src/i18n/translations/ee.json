@@ -43,7 +43,7 @@
     "language": "Keeled",
     "types": "Kirje tüübid",
     "byDecade": "Kirjed kümnendite kaupa",
-    "title_html": "<h2>Kirjeid kokku:</h2> <h1 class='px-3'>{num}</h1>"
+    "title_html": "<div class='text-h4'>Kirjeid kokku:</div> <div class='font-weight-bold text-h4 px-3'>{num}</div>"
   },
   "common": {
     "search": "Otsi",

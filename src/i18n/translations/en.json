@@ -44,7 +44,7 @@
     "language": "Languages",
     "types": "Types",
     "byDecade": "Records by decade",
-    "title_html": "<h2>Total records:</h2> <h1 class='px-3'>{num}</h1>"
+    "title_html": "<div class='text-h4'>Total records:</div> <div class='font-weight-bold text-h4 px-3'>{num}</div>"
   },
   "common": {
     "search": "Search",

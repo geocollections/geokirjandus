@@ -52,8 +52,6 @@ import { updateField } from "vuex-map-fields";
 const mutations = {
   updateField,
   RESET_SEARCH(state) {
-    // state.search.value = null;
-
     state.advancedSearch = {
       ...state.advancedSearch,
       byIds: resetAdvancedSearch(state.advancedSearch)

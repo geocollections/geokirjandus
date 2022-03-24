@@ -81,7 +81,6 @@ export default {
     };
   },
   computed: {
-    // ...mapFields("search/reference", ["options"]),
     ...mapState("search/reference", ["search", "advancedSearch"]),
     ...mapState("tableSettings", [
       "referenceHeaders",

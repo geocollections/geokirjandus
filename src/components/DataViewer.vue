@@ -161,24 +161,13 @@
       :go-to-button-text="$t('common.goToBtn')"
       v-on="$listeners"
     />
-    <!-- <view-helper
-      style="background-color: whitesmoke"
-      class="justify-end px-2 py-2"
-      v-if="helpers"
-      v-on="$listeners"
-      :page="options.page"
-      :paginate-by="options.paginateBy"
-      :count="count"
-    /> -->
   </div>
 </template>
 
 <script>
 import CopyButton from "./CopyButton";
 import ListView from "@/components/ListView";
-// import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
-import i18n from "vue-i18n";
 import CitationSelect from "./CitationSelect.vue";
 import BaseDataTableHeaderMenu from "@/components/base/BaseDataTableHeaderMenu";
 import ShareButton from "./ShareButton.vue";
@@ -186,7 +175,6 @@ import BasePagination from "./base/BasePagination.vue";
 export default {
   name: "DataViewer",
   components: {
-    // ViewHelper,
     ListView,
     CopyButton,
     CitationSelect,

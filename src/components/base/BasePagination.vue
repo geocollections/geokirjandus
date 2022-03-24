@@ -4,12 +4,6 @@
       class="d-flex align-center ml-sm-auto px-2 paginationSelect fill-height"
       style="flex: 0 0 0"
     >
-      <!-- <div
-        v-show="$vuetify.breakpoint.smAndUp"
-        class="mr-3 text-no-wrap text-caption"
-      >
-        {{ itemsPerPageText }}
-      </div> -->
       <v-select
         class="mt-0 text-caption"
         style="max-width: 100px"
@@ -26,13 +20,9 @@
       />
     </div>
     <div class="justify-end my-1 d-flex align-center">
-      <!-- <v-btn :disabled="options.page === 1" icon @click="first">
-        <v-icon>mdi-page-first</v-icon>
-      </v-btn> -->
       <v-btn small :disabled="options.page === 1" icon @click="previous">
         <v-icon small>fa-solid fa-chevron-left</v-icon>
       </v-btn>
-      <!-- NOTE: Template activator based menu is not visible on page load. For more info look at note in BaseDataTableHeaderMenu.vue -->
       <v-menu offset-y :close-on-content-click="false">
         <template #activator="{ on, attrs }">
           <v-btn
@@ -75,13 +65,6 @@
       <v-btn small :disabled="options.page === pageCount" icon @click="next">
         <v-icon small>fa-solid fa-chevron-right</v-icon>
       </v-btn>
-      <!-- <v-btn
-        :disabled="options.page === pagination.pageCount"
-        icon
-        @click="last"
-      >
-        <v-icon>mdi-page-last</v-icon>
-      </v-btn> -->
     </div>
   </div>
 </template>
@@ -104,19 +87,6 @@ export default {
         };
       }
     },
-    // pagination: {
-    //   type: Object,
-    //   default: () => {
-    //     return {
-    //       itemsLength: 0,
-    //       itemsPerPage: 0,
-    //       page: 1,
-    //       pageCount: 1,
-    //       pageStart: 0,
-    //       pageStop: 0
-    //     };
-    //   }
-    // },
     count: {
       type: Number,
       default: 0

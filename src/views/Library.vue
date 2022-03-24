@@ -35,11 +35,6 @@
               <v-card-title
                 class="title pt-1 pb-1 px-0 flex-column justify-center text-center font-family-exo-2 font-weight-medium text-h4"
               >
-                <!-- <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col> -->
                 <div class="text-h6 font-weight-regular">
                   {{ $t("common.virtualLibrary") }}
                 </div>
@@ -65,7 +60,6 @@
                       rel="noopener"
                     >
                       <v-icon small>fas fa-edit</v-icon>
-                      <!-- <b>{{ $t("common.edit") }}</b> -->
                     </v-btn>
                   </div>
                 </div>
@@ -75,12 +69,6 @@
 
                   {{ library.year }}
                 </div>
-
-                <!-- <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
-                  <v-btn @click="exit" class="exitButton" icon>
-                    <v-icon>fas fa-times</v-icon>
-                  </v-btn>
-                </v-col> -->
               </v-card-title>
             </v-card>
             <v-card

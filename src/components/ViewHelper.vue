@@ -21,7 +21,7 @@
         @change="$emit('update:paginateBy', $event)"
       />
     </div>
-    <!-- <div class="range">{{ getRange }}</div> -->
+
     <v-pagination
       class="pageSelect "
       :value="page"

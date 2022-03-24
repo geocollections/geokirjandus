@@ -13,11 +13,6 @@
           }"
         >
           <v-col cols="12" class="header d-flex flex-column pt-sm-10">
-            <!-- <span class="d-flex mt-4 mb-2 mr-4">
-            <emaapou-button class="mr-auto" />
-            <links />
-            <lang-buttons />
-          </span> -->
             <v-card flat tile color="transparent">
               <v-card-title
                 class="pb-0 text-h4 text-sm-h3 white--text text-center justify-center font-weight-medium "
@@ -61,8 +56,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <div class="spacer2 layer2" /> -->
-    <!-- <div style="background-color: #ffb85a"> -->
+
     <v-container>
       <v-row>
         <v-col cols="12" md="6" lg="5" xl="4">
@@ -110,30 +104,20 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- <div class="spacer2 layer3" /> -->
-    <!-- </div> -->
   </div>
 </template>
 
 <script>
-import LangButtons from "@/components/LangButtons";
-import Links from "@/components/Links";
 import { fetchReferences } from "@/utils/apiCalls";
 import ReferenceListView from "@/components/reference/ReferenceListView";
-import AppFooter from "@/components/AppFooter";
 import axios from "axios";
 import { mapActions } from "vuex";
 import Statistics from "@/components/Statistics";
-import EmaapouButton from "../components/EmaapouButton.vue";
 export default {
   name: "Landing",
   components: {
     Statistics,
-    // Links,
-    // LangButtons,
     ReferenceListView
-    // EmaapouButton
   },
   data() {
     return {

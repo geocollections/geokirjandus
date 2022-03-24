@@ -154,8 +154,8 @@
 
 <script>
 import { mapFields } from "vuex-map-fields";
-import { mapActions, mapState } from "vuex";
-import { isEqual } from "lodash";
+import { mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 import urlMixin from "@/mixins/urlMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
 import InputText from "../input/InputText.vue";

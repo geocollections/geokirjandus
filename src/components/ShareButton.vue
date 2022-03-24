@@ -95,14 +95,11 @@
 import { mapState } from "vuex";
 import urlMixin from "@/mixins/urlMixin";
 import toastMixin from "@/mixins/toastMixin";
-import {
-  fetchLibraryReferences,
-  fetchReference,
-  fetchReferences
-} from "@/utils/apiCalls";
+import { fetchLibraryReferences, fetchReferences } from "@/utils/apiCalls";
 import CopyButton from "@/components/CopyButton";
 import Cite from "citation-js";
 import citationMixin from "@/mixins/citationMixin";
+import { Parser } from "json2csv";
 
 export default {
   name: "ShareButton",
@@ -124,7 +121,6 @@ export default {
   },
   computed: {
     ...mapState("settings", ["view"]),
-    // ...mapState("references", ["count"]),
     selectItems() {
       return [
         { value: 10, text: "10" },
@@ -221,8 +217,6 @@ export default {
     },
 
     convertToCSV(data) {
-      const { Parser } = require("json2csv");
-
       // Possibility to export exact fields for each object
       const fields = Object.keys(data[0]);
       const opts = { fields };

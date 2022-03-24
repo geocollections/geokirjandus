@@ -40,11 +40,6 @@
               <v-card-title
                 class="title pt-1 pb-1 px-0 d-inline-block justify-center text-center font-family-exo-2 font-weight-medium text-h4"
               >
-                <!-- <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col> -->
                 {{ `${reference.reference}: ${reference.title}` }}
                 <v-btn
                   link
@@ -60,13 +55,7 @@
                   rel="noopener"
                 >
                   <v-icon small>fas fa-edit</v-icon>
-                  <!-- <b>{{ $t("common.edit") }}</b> -->
                 </v-btn>
-                <!-- <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
-                  <v-btn @click="exit" class="exitButton" icon>
-                    <v-icon>fas fa-times</v-icon>
-                  </v-btn>
-                </v-col> -->
               </v-card-title>
             </v-card>
             <v-card
@@ -516,7 +505,7 @@
             <v-card v-else-if="error">
               <v-card-actions class="referenceTitle">
                 <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
+                  <v-btn large icon @click="$router.back()" aria-label="back">
                     <v-icon>fas fa-arrow-left</v-icon>
                   </v-btn>
                 </v-col>
@@ -533,18 +522,12 @@
 </template>
 
 <script>
-import {
-  fetchReference,
-  fetchReferenceLibraries,
-  fetchReferenceLocalities,
-  fetchReferences
-} from "@/utils/apiCalls";
+import { fetchReference } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
 import CitationSelect from "@/components/CitationSelect";
 import { mapState, mapActions } from "vuex";
-import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
 import citationMixin from "@/mixins/citationMixin";
 
@@ -607,31 +590,13 @@ export default {
       return this.reference?.type;
     }
   },
-  watch: {
-    referenceParameters: {
-      // Handle search parameter change
-      handler: debounce(function() {
-        this.$router.push({ name: "searchReference" }).catch(() => {});
-      }, 300),
-      deep: true
-    }
-  },
   created() {
     this.getReference(this.$route.params.id);
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.getReference(to.params.id);
-    this.childReferences = [];
-    this.localities = [];
-    next();
   },
   methods: {
     ...mapActions("search/reference", ["updateAdvancedSearch"]),
     exit() {
       this.$router.replace({ name: "searchReference" }).catch(() => {});
-    },
-    handleBack() {
-      this.$router.back();
     },
     handleKeyword(keyword) {
       this.updateAdvancedSearch({
@@ -639,7 +604,6 @@ export default {
         id: "keywords"
       });
       this.$router.push({ name: "searchReference" });
-      // this.handleBack();
     },
     localityURL(id) {
       return `https://geoloogia.info/locality/${id}`;

@@ -180,7 +180,7 @@ const mutations = {
     };
   },
   RESET_PAGE(state) {
-    state.page = 1;
+    state.options.page = 1;
   }
 };
 

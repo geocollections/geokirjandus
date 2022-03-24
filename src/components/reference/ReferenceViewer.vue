@@ -14,10 +14,8 @@
     "
     :options="options"
     @open="open"
-    @update:paginateBy="handleUpdatePaginateBy"
-    @update:page="handleUpdatePage"
     @update:headers="handleUpdateTableHeaders"
-    @update:options="$emit('update:options', $event)"
+    @update:options="handleOptionsUpdate"
     @reset:headers="
       resetHeaders({
         module: 'referenceHeaders',
@@ -98,13 +96,6 @@ export default {
     }
   },
   watch: {
-    options: {
-      handler() {
-        this.$emit("update:data");
-        // this.getReferencesFromApi();
-      },
-      deep: true
-    },
     data: {
       handler() {
         this.isLoading = false;
@@ -114,7 +105,6 @@ export default {
   created() {
     this.isLoading = true;
     this.$emit("update:data");
-    // this.getReferencesFromApi();
   },
   methods: {
     ...mapActions("tableSettings", [
@@ -122,7 +112,6 @@ export default {
       "setReferenceInLibraryHeaders",
       "resetHeaders"
     ]),
-    ...mapActions("references", ["setReferences"]),
     open(event) {
       this.$router.push(`/reference/${event.id}`);
     },
@@ -135,6 +124,10 @@ export default {
         page: 1,
         paginateBy: event
       });
+    },
+    handleOptionsUpdate(event) {
+      this.isLoading = true;
+      this.$emit("update:options", event);
     },
     handleUpdateTableHeaders(event) {
       this.setReferenceHeaders(event);

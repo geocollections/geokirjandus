@@ -133,7 +133,7 @@
           :server-items-length="count"
           :header-props="headerProps"
           @click:row="$emit('open', $event)"
-          @update:options="$emit('update:options', $event)"
+          @update:options.native="$emit('update:options', $event)"
         >
           <template
             v-for="(_, slotName) in $scopedSlots"
@@ -288,14 +288,6 @@ export default {
       });
       this.$emit("update:headers", headers);
     }
-    // handleUpdateSortBy(e) {
-    //   console.log("sortBy");
-    //   this.$emit("update:sortBy", e);
-    // },
-    // handleUpdateSortDesc(e) {
-    //   console.log("sortDesc");
-    //   this.$emit("update:sortDesc", e);
-    // }
   }
 };
 </script>

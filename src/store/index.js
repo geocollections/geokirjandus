@@ -4,12 +4,10 @@ import VuexPersistence from "vuex-persist";
 
 import settings from "./modules/settings";
 import search from "./modules/search";
-import references from "./modules/references";
-import library from "./modules/library";
+import result from "./modules/result";
 import tableSettings from "./modules/tableSettings";
-import libraryReferences from "./modules/libraryReferences";
 Vue.use(Vuex);
-const version = "2.0.0";
+const version = "2.0.1";
 
 const vuexLocal = new VuexPersistence({
   key: `geoloogia.geokirjandus.${version}`,
@@ -28,9 +26,7 @@ export default new Vuex.Store({
     settings,
     tableSettings,
     search,
-    references,
-    library,
-    libraryReferences
+    result
   },
   plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== "production"

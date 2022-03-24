@@ -88,7 +88,6 @@ import { mapFields } from "vuex-map-fields";
 import { mapActions, mapState } from "vuex";
 import { isEqual } from "lodash";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
 import InputText from "../input/InputText.vue";
 import InputRange from "../input/InputRange.vue";
@@ -100,7 +99,7 @@ export default {
     InputText,
     InputRange
   },
-  mixins: [urlMixin, queryMixin],
+  mixins: [urlMixin],
   props: {
     colSize: {
       type: Number,
@@ -125,7 +124,7 @@ export default {
       title: "advancedSearch.byIds.title.value",
       query: "search.value"
     }),
-    ...mapState("library", ["facet", "count"]),
+    ...mapState("result/library", ["facet", "count"]),
     ...mapState("search/library", ["advancedSearch"]),
 
     getAdvancedSearchParametersAppliedCount() {
@@ -193,12 +192,10 @@ export default {
         this[key] = "1";
       }
     });
-
-    this.handleSearch();
   },
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage"]),
     ...mapActions("library", ["setLibraries"]),
+
     handleExitLibrary() {
       this.$router.replace({ name: "searchReference" });
     },
@@ -232,8 +229,7 @@ export default {
     },
     async handleSearch() {
       this.updateQueryParams();
-      const res = await this.getLibraries();
-      this.setLibraries(res);
+      this.$emit("update:data");
     }
   }
 };

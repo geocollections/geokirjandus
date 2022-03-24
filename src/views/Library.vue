@@ -132,15 +132,17 @@
                     <search-library-reference
                       :library="parseInt(id)"
                       @reset:search="handleResetSearch"
+                      @update:data="handleSearch"
                     />
                   </v-col>
                   <v-col md="9" xl="10" class="ml-md-2">
                     <v-card flat outlined>
                       <reference-viewer
-                        :options.sync="options"
+                        :options="options"
                         :count="count"
                         :data="results"
                         @update:data="getLibraryReferencesFromApi"
+                        @update:options="handleOptionsUpdate"
                       />
                     </v-card>
                   </v-col>
@@ -204,6 +206,7 @@
         class="my-3 mx-2"
         :library="parseInt(id)"
         @reset:search="handleResetSearch"
+        @update:data="handleSearch"
       />
     </v-navigation-drawer>
   </v-container>
@@ -214,9 +217,6 @@ import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import dateMixin from "@/mixins/dateMixin";
 import citationMixin from "@/mixins/citationMixin";
-import LibraryCitation from "@/components/library/LibraryCitation";
-import queryMixin from "@/mixins/queryMixin";
-import CopyButton from "@/components/CopyButton";
 import CitationSelect from "@/components/CitationSelect";
 import BaseCitationDetail from "@/components/base/BaseCitationDetail.vue";
 import { mapActions, mapState } from "vuex";
@@ -230,7 +230,7 @@ export default {
     BaseCitationDetail,
     SearchLibraryReference
   },
-  mixins: [dateMixin, citationMixin, queryMixin],
+  mixins: [dateMixin, citationMixin],
   data() {
     return {
       showSearch: false,
@@ -243,7 +243,7 @@ export default {
   computed: {
     ...mapFields("search/libraryReference", ["options"]),
     ...mapState("search/libraryReference", ["search", "advancedSearch"]),
-    ...mapState("libraryReferences", ["results", "count"])
+    ...mapState("result/libraryReference", ["results", "count"])
   },
   metaInfo() {
     return {
@@ -267,32 +267,11 @@ export default {
       this.resetSearch();
     });
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (from.name === "searchLibrary")
-        vm.$store.dispatch(
-          `libraryReferenceSearch/resetLibraryReferenceSearch`
-        );
-      const currentLibrary = vm.$store.state.library.currentLibrary;
-
-      if (to.params.id !== currentLibrary) {
-        vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
-        vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
-          "author",
-          "year"
-        ]);
-        vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
-          false,
-          false
-        ]);
-
-        vm.$store.dispatch("library/setCurrentLibrary", to.params.id);
-      }
-    });
-  },
   methods: {
-    ...mapActions("libraryReferences", ["setReferences"]),
-    ...mapActions("search/libraryReference", ["resetSearch"]),
+    ...mapActions("result/libraryReference", {
+      setLibraryReferenceResult: "setResult"
+    }),
+    ...mapActions("search/libraryReference", ["resetSearch", "resetPage"]),
     exit() {
       this.$router.replace({ name: "searchLibrary" }).catch(() => {});
     },
@@ -312,8 +291,16 @@ export default {
         advancedSearch: this.advancedSearch.byIds
       };
       fetchLibraryReferences(this.id, searchObj).then(res => {
-        this.setReferences(res);
+        this.setLibraryReferenceResult(res);
       });
+    },
+    handleOptionsUpdate(event) {
+      this.options = event;
+      this.getLibraryReferencesFromApi();
+    },
+    handleSearch(event) {
+      this.resetPage();
+      this.getLibraryReferencesFromApi();
     },
     handleResetSearch(event) {
       this.resetSearch(event);

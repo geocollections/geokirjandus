@@ -546,7 +546,6 @@ import CitationSelect from "@/components/CitationSelect";
 import { mapState, mapActions } from "vuex";
 import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
 import citationMixin from "@/mixins/citationMixin";
 
 import axios from "axios";
@@ -562,7 +561,7 @@ export default {
     CitationSelect,
     BaseCitationDetail
   },
-  mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
+  mixins: [dateMixin, urlMixin, citationMixin],
   props: {
     id: {
       type: String

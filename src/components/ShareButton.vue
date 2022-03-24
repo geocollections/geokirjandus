@@ -95,7 +95,6 @@
 import { mapState } from "vuex";
 import urlMixin from "@/mixins/urlMixin";
 import toastMixin from "@/mixins/toastMixin";
-import queryMixin from "@/mixins/queryMixin";
 import {
   fetchLibraryReferences,
   fetchReference,
@@ -108,7 +107,7 @@ import citationMixin from "@/mixins/citationMixin";
 export default {
   name: "ShareButton",
   components: { CopyButton },
-  mixins: [urlMixin, toastMixin, queryMixin, citationMixin],
+  mixins: [urlMixin, toastMixin, citationMixin],
   props: {
     count: {
       type: Number,
@@ -187,16 +186,18 @@ export default {
 
       if (this.$route.name === "library") {
         fetchLibraryReferences(this.$route.params.id, {
-          search: this.getSearch,
-          advancedSearch: this.getAdvancedSearch.byIds,
+          search: this.$store.state.search.libraryReference.search,
+          advancedSearch: this.$store.state.search.libraryReference
+            .advancedSearch.byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
           paginateBy: this.exportCount
         }).then(handleFileCreation);
       } else {
         fetchReferences({
-          search: this.getSearch,
-          advancedSearch: this.getAdvancedSearch.byIds,
+          search: this.$store.state.search.reference.search,
+          advancedSearch: this.$store.state.search.reference.advancedSearch
+            .byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
           paginateBy: parseInt(this.exportCount)

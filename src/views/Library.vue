@@ -248,7 +248,7 @@ export default {
       ]
     };
   },
-  beforeCreate() {
+  beforeDestroy() {
     this.resetSearch();
   },
   mounted() {
@@ -258,8 +258,8 @@ export default {
       if (this.library === undefined) {
         this.error = true;
       }
-      this.getLibraryReferencesFromApi();
     });
+    this.getLibraryReferencesFromApi();
   },
   methods: {
     ...mapActions("result/libraryReference", {

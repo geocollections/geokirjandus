@@ -21,7 +21,6 @@ const actions = {
         return { ...header, show: true };
       return header;
     });
-    console.log(initHeaders, options.sortBy, initHeadersSortHeadersEnabled);
     commit("RESET_HEADERS", {
       module,
       initHeaders: initHeadersSortHeadersEnabled

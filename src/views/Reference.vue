@@ -318,8 +318,8 @@
                         style="height:200px; overflow-y: auto; width: max-content"
                       >
                         <li
-                          v-for="locality in localities"
-                          :key="locality.locality.id"
+                          v-for="(locality, index) in localities"
+                          :key="`locality-${index}`"
                         >
                           <a
                             :href="localityURL(locality.locality.id)"
@@ -411,13 +411,13 @@
                     <tbody>
                       <tr
                         v-for="childReference in childReferences"
-                        :key="childReference.id"
+                        :key="`child-reference-${childReference.id}`"
                       >
                         <td>
                           <router-link
                             :to="{
                               name: 'reference',
-                              params: { id: childReference.id }
+                              params: { id: `${childReference.id}` }
                             }"
                           >
                             {{ childReference.author }}
@@ -437,7 +437,7 @@
                     {{ $t("reference.describedTaxa") }}
                   </div>
                   <ul>
-                    <li v-for="taxon in taxa" :key="taxon.id">
+                    <li v-for="taxon in taxa" :key="`taxon-${taxon.id}`">
                       <a :href="taxonURL(taxon.id)" target="_blank">{{
                         taxon.taxon
                       }}</a>
@@ -589,6 +589,12 @@ export default {
     type() {
       return this.reference?.type;
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.getReference(to.params.id);
+    this.childReferences = [];
+    this.localities = [];
+    next();
   },
   created() {
     this.getReference(this.$route.params.id);

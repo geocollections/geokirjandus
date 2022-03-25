@@ -274,7 +274,6 @@ export default {
       this.$emit("update:headers", headers);
     },
     handleOptionsUpdate(event) {
-      console.log("dataviewer options update");
       this.$emit("update:options", event);
     }
   }

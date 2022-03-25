@@ -66,21 +66,23 @@ export default {
   },
   computed: {
     pdf() {
+      if (this.item.parent_reference) {
+        return (
+          this.item.filename ?? this.item.parent_reference.filename ?? null
+        );
+      }
       return (
         this.item.attachment__filename ??
         this.item.parent_reference__attachment__filename ??
         this.item.filename ??
-        // this.item.parent_reference.filename ??
         null
       );
     },
     url() {
-      return (
-        this.item.url ??
-        this.item.parent_reference__url ??
-        // this.item.parent_reference.url ??
-        null
-      );
+      // if (this.item.parent_reference) {
+      //   return this.item.url ?? this.item.parent_reference.url ?? null;
+      // }
+      return this.item.url ?? this.item.parent_reference__url ?? null;
     }
   },
   methods: {

@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     pdf() {
-      if (this.item.parent_reference) {
+      if (typeof this.item.parent_reference === "object") {
         return (
           this.item.filename ?? this.item.parent_reference.filename ?? null
         );
@@ -79,9 +79,9 @@ export default {
       );
     },
     url() {
-      // if (this.item.parent_reference) {
-      //   return this.item.url ?? this.item.parent_reference.url ?? null;
-      // }
+      if (typeof this.item.parent_reference === "object") {
+        return this.item.url ?? this.item.parent_reference.url ?? null;
+      }
       return this.item.url ?? this.item.parent_reference__url ?? null;
     }
   },

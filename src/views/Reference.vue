@@ -601,9 +601,6 @@ export default {
   },
   methods: {
     ...mapActions("search/reference", ["updateAdvancedSearch"]),
-    exit() {
-      this.$router.replace({ name: "searchReference" }).catch(() => {});
-    },
     handleKeyword(keyword) {
       this.updateAdvancedSearch({
         value: keyword,

@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     goToLanding() {
-      this.$router.replace({ name: "landing" }).catch(() => {});
+      this.$router.push({ name: "landing" });
     }
   }
 };

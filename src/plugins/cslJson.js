@@ -65,7 +65,7 @@ export default {
 
     Vue.prototype.$getCslDetail = data => {
       return {
-        type: data.type.csl_type,
+        type: data.type?.csl_type ?? null,
         title: data.title,
         DOI: data.doi,
         author: parseNames(data.author),

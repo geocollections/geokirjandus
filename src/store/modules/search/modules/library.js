@@ -5,14 +5,14 @@ import { getField } from "vuex-map-fields";
 const INIT_STATE = {
   options: {
     page: 1,
-    paginateBy: 50,
+    itemsPerPage: 50,
     sortBy: ["date_added"],
-    sortDesc: [true]
+    sortDesc: [true],
+    groupBy: [],
+    groupDesc: [],
+    multiSort: true,
+    mustSort: false
   },
-  page: 1,
-  paginateBy: 50,
-  sortBy: [],
-  sortDesc: [],
   search: {
     id: "search",
     value: null,

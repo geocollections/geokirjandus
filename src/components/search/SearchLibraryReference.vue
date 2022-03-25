@@ -353,7 +353,7 @@ export default {
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds

@@ -70,11 +70,17 @@ export default {
         this.item.attachment__filename ??
         this.item.parent_reference__attachment__filename ??
         this.item.filename ??
+        // this.item.parent_reference.filename ??
         null
       );
     },
     url() {
-      return this.item.url ?? this.item.parent_reference__url ?? null;
+      return (
+        this.item.url ??
+        this.item.parent_reference__url ??
+        // this.item.parent_reference.url ??
+        null
+      );
     }
   },
   methods: {

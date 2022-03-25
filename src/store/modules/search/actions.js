@@ -11,14 +11,14 @@ const actions = {
   },
 
   updateSortBy({ commit }, payload) {
-    commit("UPDATE_SORT_BY", cloneDeep(payload));
+    commit("UPDATE_SORT_BY", payload);
   },
 
   updateSortDesc({ commit }, payload) {
-    commit("UPDATE_SORT_DESC", cloneDeep(payload));
+    commit("UPDATE_SORT_DESC", payload);
   },
   updateOptions({ commit }, payload) {
-    commit("UPDATE_OPTIONS", cloneDeep(payload));
+    commit("UPDATE_OPTIONS", payload);
   },
   updateSearch({ commit }, searchValue) {
     commit("UPDATE_SEARCH", searchValue);

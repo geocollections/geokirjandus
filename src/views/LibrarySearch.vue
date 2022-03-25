@@ -30,8 +30,9 @@
               :options="options"
               :data="results"
               :count="count"
-              @update:data="getLibrariesFromApi"
+              :isLoading="isLoading"
               @update:options="handleOptionsUpdate"
+              @update:pagination="handlePaginationUpdate"
             />
           </v-card>
         </v-fade-transition>
@@ -75,6 +76,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 import { mapFields } from "vuex-map-fields";
 import LibraryViewer from "@/components/library/LibraryViewer";
 import SearchLibrary from "@/components/search/SearchLibrary";
@@ -84,7 +86,8 @@ export default {
   components: { LibraryViewer, SearchLibrary },
   data() {
     return {
-      showSearch: false
+      showSearch: false,
+      isLoading: true
     };
   },
   metaInfo: {
@@ -94,6 +97,9 @@ export default {
     ...mapFields("search/library", ["options"]),
     ...mapState("search/library", ["search", "advancedSearch"]),
     ...mapState("result/library", ["count", "results"])
+  },
+  mounted() {
+    this.getLibrariesFromApi();
   },
   methods: {
     ...mapActions("search/library", [
@@ -108,25 +114,31 @@ export default {
       this.getLibrariesFromApi();
     },
     handleOptionsUpdate(event) {
+      if (isEqual(this.options, event)) return;
+      this.options = event;
+      this.getLibrariesFromApi();
+    },
+    handlePaginationUpdate(event) {
       this.options = event;
       this.getLibrariesFromApi();
     },
     handleSearch(event) {
-      console.log("handleSearch");
       this.resetPage();
       this.getLibrariesFromApi();
     },
     getLibrariesFromApi() {
+      this.isLoading = true;
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
       fetchLibraries(searchObj).then(res => {
         this.setLibraryResult(res);
+        this.isLoading = false;
       });
     }
   }

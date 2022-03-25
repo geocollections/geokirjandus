@@ -14,7 +14,7 @@
         hide-details
         :label="itemsPerPageText"
         :items="itemsPerPageOptions"
-        :value="options.paginateBy"
+        :value="options.itemsPerPage"
         :menu-props="{ bottom: true, offsetY: true }"
         @change="changeRowsPerPage"
       />
@@ -126,7 +126,7 @@ export default {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     },
     pageCount() {
-      return Math.ceil(this.count / this.options.paginateBy);
+      return Math.ceil(this.count / this.options.itemsPerPage);
     }
   },
   methods: {
@@ -136,7 +136,7 @@ export default {
     },
     selectPage() {
       if (this.$refs["go-to-field"].validate(true)) {
-        this.$emit("update:options", {
+        this.$emit("update:pagination", {
           ...this.options,
           page: this.goToValue
         });
@@ -144,33 +144,33 @@ export default {
       }
     },
     next() {
-      this.$emit("update:options", {
+      this.$emit("update:pagination", {
         ...this.options,
         page: this.options.page + 1
       });
     },
     previous() {
-      this.$emit("update:options", {
+      this.$emit("update:pagination", {
         ...this.options,
         page: this.options.page - 1
       });
     },
     first() {
-      this.$emit("update:options", {
+      this.$emit("update:pagination", {
         ...this.options,
         page: 1
       });
     },
     last() {
-      this.$emit("update:options", {
+      this.$emit("update:pagination", {
         ...this.options,
         page: this.pageCount
       });
     },
     changeRowsPerPage(e) {
-      this.$emit("update:options", {
+      this.$emit("update:pagination", {
         ...this.options,
-        paginateBy: e,
+        itemsPerPage: e,
         page: 1
       });
     },

@@ -18,7 +18,8 @@
       :show-share="false"
       @open="open"
       @update:headers="handleUpdateTableHeaders"
-      @update:options="handleOptionsUpdate"
+      @update:options="$emit('update:options', $event)"
+      @update:pagination="$emit('update:pagination', $event)"
       @reset:headers="
         resetHeaders({
           module: 'libraryHeaders',
@@ -41,7 +42,10 @@
       </template>
       <!--  LIST VIEW TEMPLATE  -->
       <template v-slot:list-view="{ data }">
-        <library-list-view :data="data"></library-list-view>
+        <library-list-view
+          :data="data"
+          :is-loading="isLoading"
+        ></library-list-view>
       </template>
     </data-viewer>
   </div>
@@ -77,23 +81,15 @@ export default {
     showLibraries: {
       type: Boolean,
       default: true
+    },
+    isLoading: {
+      type: Boolean,
+      default: true
     }
-  },
-  data() {
-    return {
-      isLoading: true
-    };
   },
   computed: {
     ...mapState("search/library", ["search", "advancedSearch"]),
     ...mapState("tableSettings", ["libraryHeaders"])
-  },
-  watch: {
-    data: {
-      handler() {
-        this.isLoading = false;
-      }
-    }
   },
   created() {
     this.$emit("update:data");
@@ -103,20 +99,7 @@ export default {
     handleUpdateTableHeaders(event) {
       this.setLibraryHeaders(event);
     },
-    handleUpdatePage(event) {
-      this.$emit("update:options", { ...this.options, page: event });
-    },
-    handleUpdatePaginateBy(event) {
-      this.$emit("update:options", {
-        ...this.options,
-        page: 1,
-        paginateBy: event
-      });
-    },
-    handleOptionsUpdate(event) {
-      this.isLoading = true;
-      this.$emit("update:options", event);
-    },
+
     open(event) {
       this.$router.push(`/library/${event.id}`);
     }

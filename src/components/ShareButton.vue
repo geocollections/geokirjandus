@@ -187,7 +187,7 @@ export default {
             .advancedSearch.byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          paginateBy: this.exportCount
+          itemsPerPage: this.exportCount
         }).then(handleFileCreation);
       } else {
         fetchReferences({
@@ -196,7 +196,7 @@ export default {
             .byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          paginateBy: parseInt(this.exportCount)
+          itemsPerPage: parseInt(this.exportCount)
         }).then(handleFileCreation);
       }
     },

@@ -30,8 +30,9 @@
               :options="options"
               :data="results"
               :count="count"
-              @update:data="getReferencesFromApi"
+              :is-loading="isLoading"
               @update:options="handleOptionsUpdate"
+              @update:pagination="handlePaginationUpdate"
             />
           </v-card>
         </v-fade-transition>
@@ -75,6 +76,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import SearchReference from "@/components/search/SearchReference";
 
@@ -88,7 +90,8 @@ export default {
   },
   data() {
     return {
-      showSearch: false
+      showSearch: false,
+      isLoading: true
     };
   },
   metaInfo: {
@@ -99,10 +102,14 @@ export default {
     ...mapState("search/reference", ["search", "advancedSearch"]),
     ...mapState("result/reference", ["count", "results"])
   },
+  mounted() {
+    this.getReferencesFromApi();
+  },
   methods: {
     ...mapActions("search/reference", [
       "updateSearch",
       "updateAdvancedSearch",
+      "updateOptions",
       "resetSearch",
       "resetPage"
     ]),
@@ -112,6 +119,11 @@ export default {
       this.getReferencesFromApi();
     },
     handleOptionsUpdate(event) {
+      if (isEqual(this.options, event)) return;
+      this.options = event;
+      this.getReferencesFromApi();
+    },
+    handlePaginationUpdate(event) {
       this.options = event;
       this.getReferencesFromApi();
     },
@@ -120,16 +132,18 @@ export default {
       this.getReferencesFromApi();
     },
     getReferencesFromApi() {
+      this.isLoading = true;
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
       fetchReferences(searchObj).then(res => {
         this.setReferenceResult(res);
+        this.isLoading = false;
       });
     }
   }

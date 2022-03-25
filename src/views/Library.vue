@@ -129,8 +129,10 @@
                         :options="options"
                         :count="count"
                         :data="results"
+                        :is-loading="isLoading"
                         @update:data="getLibraryReferencesFromApi"
                         @update:options="handleOptionsUpdate"
+                        @update:pagination="handlePaginationUpdate"
                       />
                     </v-card>
                   </v-col>
@@ -204,6 +206,7 @@
 import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import dateMixin from "@/mixins/dateMixin";
+import isEqual from "lodash/isEqual";
 import citationMixin from "@/mixins/citationMixin";
 import CitationSelect from "@/components/CitationSelect";
 import BaseCitationDetail from "@/components/base/BaseCitationDetail.vue";
@@ -245,14 +248,17 @@ export default {
       ]
     };
   },
-  created() {
+  beforeCreate() {
+    this.resetSearch();
+  },
+  mounted() {
     this.getLibrary().then(res => {
       this.library = res;
 
       if (this.library === undefined) {
         this.error = true;
       }
-      this.resetSearch();
+      this.getLibraryReferencesFromApi();
     });
   },
   methods: {
@@ -266,23 +272,27 @@ export default {
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
     },
-    handleBack() {
-      this.$router.back();
-    },
     getLibraryReferencesFromApi() {
+      this.isLoading = true;
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
       fetchLibraryReferences(this.id, searchObj).then(res => {
         this.setLibraryReferenceResult(res);
+        this.isLoading = false;
       });
     },
     handleOptionsUpdate(event) {
+      if (isEqual(this.options, event)) return;
+      this.options = event;
+      this.getLibraryReferencesFromApi();
+    },
+    handlePaginationUpdate(event) {
       this.options = event;
       this.getLibraryReferencesFromApi();
     },

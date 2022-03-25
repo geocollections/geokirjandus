@@ -15,7 +15,8 @@
     :options="options"
     @open="open"
     @update:headers="handleUpdateTableHeaders"
-    @update:options="handleOptionsUpdate"
+    @update:options="$emit('update:options', $event)"
+    @update:pagination="$emit('update:pagination', $event)"
     @reset:headers="
       resetHeaders({
         module: 'referenceHeaders',
@@ -41,7 +42,10 @@
     </template>
     <!--  LIST VIEW TEMPLATE  -->
     <template v-slot:list-view="{ data }">
-      <reference-list-view :data="data"></reference-list-view>
+      <reference-list-view
+        :data="data"
+        :is-loading="isLoading"
+      ></reference-list-view>
     </template>
   </data-viewer>
 </template>
@@ -73,12 +77,11 @@ export default {
     count: {
       type: Number,
       default: 0
+    },
+    isLoading: {
+      type: Boolean,
+      default: true
     }
-  },
-  data() {
-    return {
-      isLoading: true
-    };
   },
   computed: {
     ...mapState("search/reference", ["search", "advancedSearch"]),
@@ -94,17 +97,6 @@ export default {
       return this.referenceHeaders;
     }
   },
-  watch: {
-    data: {
-      handler() {
-        this.isLoading = false;
-      }
-    }
-  },
-  created() {
-    this.isLoading = true;
-    this.$emit("update:data");
-  },
   methods: {
     ...mapActions("tableSettings", [
       "setReferenceHeaders",
@@ -114,26 +106,8 @@ export default {
     open(event) {
       this.$router.push(`/reference/${event.id}`);
     },
-    handleUpdatePage(event) {
-      this.$emit("update:options", { ...this.options, page: event });
-    },
-    handleUpdatePaginateBy(event) {
-      this.$emit("update:options", {
-        ...this.options,
-        page: 1,
-        paginateBy: event
-      });
-    },
-    handleOptionsUpdate(event) {
-      this.isLoading = true;
-      this.$emit("update:options", event);
-    },
     handleUpdateTableHeaders(event) {
       this.setReferenceHeaders(event);
-    },
-    handleReferencesInLibraryResult() {
-      this.isLoading = true;
-      this.getReferencesInLibrary().then(this.setResults);
     }
   }
 };

@@ -266,9 +266,6 @@ export default {
       setLibraryReferenceResult: "setResult"
     }),
     ...mapActions("search/libraryReference", ["resetSearch", "resetPage"]),
-    exit() {
-      this.$router.replace({ name: "searchLibrary" }).catch(() => {});
-    },
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
     },

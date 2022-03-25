@@ -195,10 +195,6 @@ export default {
   },
   methods: {
     ...mapActions("library", ["setLibraries"]),
-
-    handleExitLibrary() {
-      this.$router.replace({ name: "searchReference" });
-    },
     isEmpty(str) {
       return !str || str.length === 0;
     },

@@ -1,5 +1,3 @@
-// import { mapActions, mapState } from "vuex";
-
 const toastMixin = {
   methods: {
     toastSuccess(data) {

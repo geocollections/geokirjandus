@@ -7,9 +7,8 @@
         </div>
         <search-library
           :col-size="12"
-          v-on:update:search="handleUpdateSearch"
-          v-on:update:advancedSearch="handleUpdateAdvancedSearch"
-          v-on:reset:search="handleResetSearch"
+          @update:data="handleSearch"
+          @reset:search="handleResetSearch"
         />
       </v-col>
       <v-col md="9" xl="10" class="ml-md-4">
@@ -27,7 +26,14 @@
             elevation="0"
             class="ml-auto mr-auto card"
           >
-            <library-viewer />
+            <library-viewer
+              :options="options"
+              :data="results"
+              :count="count"
+              :isLoading="isLoading"
+              @update:options="handleOptionsUpdate"
+              @update:pagination="handlePaginationUpdate"
+            />
           </v-card>
         </v-fade-transition>
       </v-col>
@@ -61,9 +67,8 @@
       <search-library
         class="my-3 mx-2"
         :col-size="12"
-        v-on:update:search="handleUpdateSearch"
-        v-on:update:advancedSearch="handleUpdateAdvancedSearch"
-        v-on:reset:parameters="handleResetSearch"
+        @update:data="handleSearch"
+        @reset:search="handleResetSearch"
       />
     </v-navigation-drawer>
   </v-container>
@@ -71,47 +76,30 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import isEqual from "lodash/isEqual";
+import { mapFields } from "vuex-map-fields";
 import LibraryViewer from "@/components/library/LibraryViewer";
 import SearchLibrary from "@/components/search/SearchLibrary";
 import { fetchLibraries } from "@/utils/apiCalls";
 export default {
   name: "Home",
   components: { LibraryViewer, SearchLibrary },
-
   data() {
     return {
-      showSearch: this.$vuetify.breakpoint.mdAndUp,
-      showAdvancedSearch: true,
-      isPrint: false,
-      printResult: []
+      showSearch: false,
+      isLoading: true
     };
   },
   metaInfo: {
     title: "Otsing"
   },
-  created() {
-    window.onbeforeprint = () => {
-      this.isPrint = true;
-
-      const setPrintResults = res => {
-        this.printResult = res.results;
-      };
-
-      if (this.$route.name === "library") {
-        this.getReferencesInLibrary(this.$route.params.id).then(
-          setPrintResults
-        );
-      } else {
-        this.getReferences().then(setPrintResults);
-      }
-    };
-    window.onafterprint = () => {
-      this.isPrint = false;
-    };
-  },
   computed: {
-    ...mapState("library", ["count"]),
-    ...mapState("search/library", ["options", "search", "advancedSearch"])
+    ...mapFields("search/library", ["options"]),
+    ...mapState("search/library", ["search", "advancedSearch"]),
+    ...mapState("result/library", ["count", "results"])
+  },
+  mounted() {
+    this.getLibrariesFromApi();
   },
   methods: {
     ...mapActions("search/library", [
@@ -120,35 +108,37 @@ export default {
       "resetSearch",
       "resetPage"
     ]),
-    ...mapActions("library", ["setLibraries"]),
-    handleUpdateSearch(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updateSearch", event);
-      else this.updateSearch(event);
-    },
-    handleUpdateAdvancedSearch(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch(
-          "libraryReferenceSearch/updateAdvancedSearch",
-          event
-        );
-      else this.updateAdvancedSearch(event);
-    },
+    ...mapActions("result/library", { setLibraryResult: "setResult" }),
     handleResetSearch(event) {
       this.resetSearch(event);
       this.getLibrariesFromApi();
     },
+    handleOptionsUpdate(event) {
+      if (isEqual(this.options, event)) return;
+      this.options = event;
+      this.getLibrariesFromApi();
+    },
+    handlePaginationUpdate(event) {
+      this.options = event;
+      this.getLibrariesFromApi();
+    },
+    handleSearch(event) {
+      this.resetPage();
+      this.getLibrariesFromApi();
+    },
     getLibrariesFromApi() {
+      this.isLoading = true;
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
       fetchLibraries(searchObj).then(res => {
-        this.setLibraries(res);
+        this.setLibraryResult(res);
+        this.isLoading = false;
       });
     }
   }

@@ -43,15 +43,6 @@
               :locale="$i18n.locale"
             ></pie-chart>
           </v-col>
-          <!-- <v-col cols="12" sm="6" md="3">
-            <h3 class="text-center pb-3">{{ $t("charts.language") }}</h3>
-            <pie-chart
-              class="d-flex justify-center"
-              :chartData="getLanguageChartData"
-              :options="getChartOptions('pie', handleLanguageClick)"
-              :locale="$i18n.locale"
-            ></pie-chart>
-          </v-col> -->
         </v-row>
       </div>
     </v-card>
@@ -63,7 +54,7 @@ import { mapActions } from "vuex";
 import axios from "axios";
 import BarChart from "@/components/charts/BarChart";
 import PieChart from "@/components/charts/PieChart";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 export default {
   name: "Statistics",
   components: { PieChart, BarChart },
@@ -105,7 +96,6 @@ export default {
             formatter: function(value, context) {
               return context.chart.data.labels[context.dataIndex];
             },
-            // rotation: 270,
             align: "end",
             anchor: "end"
           }
@@ -190,36 +180,6 @@ export default {
 
       return data;
     },
-    getLanguageChartData() {
-      let data = {};
-
-      let labels = [];
-      let values = [];
-
-      const fields = this.statisticsData.facet_counts.facet_fields.language;
-      const pivot = this.statisticsData.facet_counts.facet_pivot[
-        "language,reference_language,reference_language_en"
-      ];
-      for (let i = 0; i < fields.length; i += 2) {
-        if (this.$i18n.locale === "ee") {
-          labels.push({
-            id: fields[i],
-            name: pivot.find(o => o.value === fields[i]).pivot[0].value
-          });
-        } else {
-          labels.push({
-            id: fields[i],
-            name: pivot.find(o => o.value === fields[i]).pivot[0].pivot[0].value
-          });
-        }
-
-        values.push(fields[i + 1]);
-      }
-      data.labels = labels;
-      data.datasets = [{ data: values, borderWidth: 1 }];
-
-      return data;
-    },
     getDecadesChartData() {
       let data = {};
 
@@ -275,7 +235,6 @@ export default {
   },
   methods: {
     ...mapActions("search/reference", ["resetSearch", "updateAdvancedSearch"]),
-
     getKeywordsChartOptions(onClick) {
       let options = cloneDeep(this.getChartOptions("bar", onClick));
 
@@ -344,20 +303,6 @@ export default {
 
       this.$router.push({ name: "searchReference" });
     },
-    handleLanguageClick(point, e) {
-      if (e.length < 1) return;
-      const language = this.getLanguageChartData.labels[e[0]._index];
-
-      this.resetSearch();
-
-      this.updateAdvancedSearch({
-        id: "language",
-        value: [language.id]
-      });
-
-      this.$router.push({ name: "searchReference" });
-    },
-
     getStatisticsData() {
       axios
         .get(

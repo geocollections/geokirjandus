@@ -154,10 +154,9 @@
 
 <script>
 import { mapFields } from "vuex-map-fields";
-import { mapActions, mapState } from "vuex";
-import { isEqual } from "lodash";
+import { mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
 import InputText from "../input/InputText.vue";
 import InputRange from "../input/InputRange.vue";
@@ -173,7 +172,7 @@ export default {
     InputSelect,
     InputCheckbox
   },
-  mixins: [urlMixin, queryMixin],
+  mixins: [urlMixin],
   props: {
     colSize: {
       type: Number,
@@ -210,7 +209,7 @@ export default {
       taxa: "advancedSearch.byIds.taxa.value",
       query: "search.value"
     }),
-    ...mapState("references", ["facet", "result", "count"]),
+    ...mapState("result/reference", ["facet", "result", "count"]),
     ...mapState("search/reference", ["advancedSearch"]),
 
     getAdvancedSearchParametersAppliedCount() {
@@ -332,27 +331,13 @@ export default {
         this[key] = "1";
       }
     });
-
-    this.handleSearch();
   },
   methods: {
-    ...mapActions("search", ["resetSearch", "resetPage"]),
-    ...mapActions("references", ["setReferences"]),
-    handleExitLibrary() {
-      this.$router.replace({ name: "searchReference" });
-    },
-    updateCheckbox(event, id) {
-      this.$emit("update:advancedSearch", {
-        value: event,
-        id: id
-      });
-    },
     getSelectItems(id) {
       if (id === "referenceType") return this.getReferenceTypes;
       else if (id === "language") return this.getReferenceLanguages;
       return [];
     },
-
     isEmpty(str) {
       return !str || str.length === 0;
     },
@@ -416,9 +401,7 @@ export default {
     },
     async handleSearch() {
       this.updateQueryParams();
-
-      const res = await this.getReferences();
-      this.setReferences(res);
+      this.$emit("update:data");
     }
   }
 };

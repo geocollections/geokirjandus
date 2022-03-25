@@ -95,20 +95,16 @@
 import { mapState } from "vuex";
 import urlMixin from "@/mixins/urlMixin";
 import toastMixin from "@/mixins/toastMixin";
-import queryMixin from "@/mixins/queryMixin";
-import {
-  fetchLibraryReferences,
-  fetchReference,
-  fetchReferences
-} from "@/utils/apiCalls";
+import { fetchLibraryReferences, fetchReferences } from "@/utils/apiCalls";
 import CopyButton from "@/components/CopyButton";
 import Cite from "citation-js";
 import citationMixin from "@/mixins/citationMixin";
+import { Parser } from "json2csv";
 
 export default {
   name: "ShareButton",
   components: { CopyButton },
-  mixins: [urlMixin, toastMixin, queryMixin, citationMixin],
+  mixins: [urlMixin, toastMixin, citationMixin],
   props: {
     count: {
       type: Number,
@@ -125,7 +121,6 @@ export default {
   },
   computed: {
     ...mapState("settings", ["view"]),
-    // ...mapState("references", ["count"]),
     selectItems() {
       return [
         { value: 10, text: "10" },
@@ -187,19 +182,21 @@ export default {
 
       if (this.$route.name === "library") {
         fetchLibraryReferences(this.$route.params.id, {
-          search: this.getSearch,
-          advancedSearch: this.getAdvancedSearch.byIds,
+          search: this.$store.state.search.libraryReference.search,
+          advancedSearch: this.$store.state.search.libraryReference
+            .advancedSearch.byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          paginateBy: this.exportCount
+          itemsPerPage: this.exportCount
         }).then(handleFileCreation);
       } else {
         fetchReferences({
-          search: this.getSearch,
-          advancedSearch: this.getAdvancedSearch.byIds,
+          search: this.$store.state.search.reference.search,
+          advancedSearch: this.$store.state.search.reference.advancedSearch
+            .byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          paginateBy: parseInt(this.exportCount)
+          itemsPerPage: parseInt(this.exportCount)
         }).then(handleFileCreation);
       }
     },
@@ -220,8 +217,6 @@ export default {
     },
 
     convertToCSV(data) {
-      const { Parser } = require("json2csv");
-
       // Possibility to export exact fields for each object
       const fields = Object.keys(data[0]);
       const opts = { fields };

@@ -82,19 +82,19 @@
       </v-card-actions>
       <base-pagination
         class="ml-auto justify-end pt-2 pt-sm-0"
-        :options="options"
+        :options="{ ...options }"
         :count="count"
         :items-per-page-options="footerProps['items-per-page-options']"
         :items-per-page-text="footerProps['items-per-page-text']"
         :page-select-text="
           $t('common.pageSelect', {
             current: options.page,
-            count: Math.ceil(this.count / this.options.paginateBy)
+            count: Math.ceil(this.count / this.options.itemsPerPage)
           })
         "
         :go-to-text="$t('common.goTo')"
         :go-to-button-text="$t('common.goToBtn')"
-        v-on="$listeners"
+        @update:pagination="$emit('update:pagination', $event)"
       />
     </div>
     <v-scroll-y-transition leave-absolute group>
@@ -105,16 +105,8 @@
       >
         <h3>{{ nothingFound }}</h3>
       </v-card-text>
-      <v-card-text key="loading" v-if="isLoading" class="text-center">
-        <v-progress-circular indeterminate :size="50"></v-progress-circular>
-      </v-card-text>
-      <!--  LIST VIEW  -->
       <div key="view" v-else>
-        <list-view
-          v-if="view === 'list' && count > 0"
-          :module="module"
-          class="py-2"
-        >
+        <list-view v-if="view === 'list' && count > 0" :module="module">
           <template>
             <slot name="list-view" v-bind:data="data"></slot>
           </template>
@@ -130,11 +122,16 @@
           :options="options"
           :headers="getHeadersShowing"
           :items="data"
+          disable-pagination
+          :loading="isLoading"
           :server-items-length="count"
           :header-props="headerProps"
           @click:row="$emit('open', $event)"
-          @update:options="$emit('update:options', $event)"
+          @update:options="handleOptionsUpdate"
         >
+          <template #loading>
+            <v-progress-linear color="#135ebf" indeterminate />
+          </template>
           <template
             v-for="(_, slotName) in $scopedSlots"
             v-slot:[slotName]="context"
@@ -154,31 +151,20 @@
       :page-select-text="
         $t('common.pageSelect', {
           current: options.page,
-          count: Math.ceil(this.count / this.options.paginateBy)
+          count: Math.ceil(this.count / this.options.itemsPerPage)
         })
       "
       :go-to-text="$t('common.goTo')"
       :go-to-button-text="$t('common.goToBtn')"
-      v-on="$listeners"
+      @update:pagination="$emit('update:pagination', $event)"
     />
-    <!-- <view-helper
-      style="background-color: whitesmoke"
-      class="justify-end px-2 py-2"
-      v-if="helpers"
-      v-on="$listeners"
-      :page="options.page"
-      :paginate-by="options.paginateBy"
-      :count="count"
-    /> -->
   </div>
 </template>
 
 <script>
 import CopyButton from "./CopyButton";
 import ListView from "@/components/ListView";
-// import ViewHelper from "@/components/ViewHelper";
 import { mapState, mapActions } from "vuex";
-import i18n from "vue-i18n";
 import CitationSelect from "./CitationSelect.vue";
 import BaseDataTableHeaderMenu from "@/components/base/BaseDataTableHeaderMenu";
 import ShareButton from "./ShareButton.vue";
@@ -186,7 +172,6 @@ import BasePagination from "./base/BasePagination.vue";
 export default {
   name: "DataViewer",
   components: {
-    // ViewHelper,
     ListView,
     CopyButton,
     CitationSelect,
@@ -195,7 +180,7 @@ export default {
     BasePagination
   },
   props: {
-    options: { type: Object, default: () => {} },
+    options: { type: Object, require: true },
     data: {
       type: Array[Object]
     },
@@ -213,7 +198,7 @@ export default {
     },
     isLoading: {
       type: Boolean,
-      default: false
+      default: true
     },
     headers: {
       type: Array[Object]
@@ -287,15 +272,10 @@ export default {
         return header;
       });
       this.$emit("update:headers", headers);
+    },
+    handleOptionsUpdate(event) {
+      this.$emit("update:options", event);
     }
-    // handleUpdateSortBy(e) {
-    //   console.log("sortBy");
-    //   this.$emit("update:sortBy", e);
-    // },
-    // handleUpdateSortDesc(e) {
-    //   console.log("sortDesc");
-    //   this.$emit("update:sortDesc", e);
-    // }
   }
 };
 </script>

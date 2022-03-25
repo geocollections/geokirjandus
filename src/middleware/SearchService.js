@@ -9,7 +9,7 @@ const FACET_QUERY_REFERENCE =
 class SearchService {
   static async search(parameters, table) {
     try {
-      let start = (parameters.page - 1) * parameters.paginateBy;
+      let start = (parameters.page - 1) * parameters.itemsPerPage;
       let sort = buildSort(parameters.sortBy, parameters.sortDesc);
       let searchFields = buildQueryStr(
         parameters.search,
@@ -23,8 +23,8 @@ class SearchService {
 
       if (parameters.page) urlParameters.push(`start=${start}`);
 
-      if (parameters.paginateBy)
-        urlParameters.push(`rows=${parameters.paginateBy}`);
+      if (parameters.itemsPerPage)
+        urlParameters.push(`rows=${parameters.itemsPerPage}`);
 
       if (parameters.sortBy && parameters.sortDesc)
         urlParameters.push(`sort=${sort}`);

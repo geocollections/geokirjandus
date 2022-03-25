@@ -35,11 +35,6 @@
               <v-card-title
                 class="title pt-1 pb-1 px-0 flex-column justify-center text-center font-family-exo-2 font-weight-medium text-h4"
               >
-                <!-- <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col> -->
                 <div class="text-h6 font-weight-regular">
                   {{ $t("common.virtualLibrary") }}
                 </div>
@@ -65,7 +60,6 @@
                       rel="noopener"
                     >
                       <v-icon small>fas fa-edit</v-icon>
-                      <!-- <b>{{ $t("common.edit") }}</b> -->
                     </v-btn>
                   </div>
                 </div>
@@ -75,12 +69,6 @@
 
                   {{ library.year }}
                 </div>
-
-                <!-- <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
-                  <v-btn @click="exit" class="exitButton" icon>
-                    <v-icon>fas fa-times</v-icon>
-                  </v-btn>
-                </v-col> -->
               </v-card-title>
             </v-card>
             <v-card
@@ -132,15 +120,19 @@
                     <search-library-reference
                       :library="parseInt(id)"
                       @reset:search="handleResetSearch"
+                      @update:data="handleSearch"
                     />
                   </v-col>
                   <v-col md="9" xl="10" class="ml-md-2">
                     <v-card flat outlined>
                       <reference-viewer
-                        :options.sync="options"
+                        :options="options"
                         :count="count"
                         :data="results"
+                        :is-loading="isLoading"
                         @update:data="getLibraryReferencesFromApi"
+                        @update:options="handleOptionsUpdate"
+                        @update:pagination="handlePaginationUpdate"
                       />
                     </v-card>
                   </v-col>
@@ -204,6 +196,7 @@
         class="my-3 mx-2"
         :library="parseInt(id)"
         @reset:search="handleResetSearch"
+        @update:data="handleSearch"
       />
     </v-navigation-drawer>
   </v-container>
@@ -213,10 +206,8 @@
 import { fetchLibrary, fetchLibraryReferences } from "@/utils/apiCalls";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import dateMixin from "@/mixins/dateMixin";
+import isEqual from "lodash/isEqual";
 import citationMixin from "@/mixins/citationMixin";
-import LibraryCitation from "@/components/library/LibraryCitation";
-import queryMixin from "@/mixins/queryMixin";
-import CopyButton from "@/components/CopyButton";
 import CitationSelect from "@/components/CitationSelect";
 import BaseCitationDetail from "@/components/base/BaseCitationDetail.vue";
 import { mapActions, mapState } from "vuex";
@@ -230,7 +221,7 @@ export default {
     BaseCitationDetail,
     SearchLibraryReference
   },
-  mixins: [dateMixin, citationMixin, queryMixin],
+  mixins: [dateMixin, citationMixin],
   data() {
     return {
       showSearch: false,
@@ -243,7 +234,7 @@ export default {
   computed: {
     ...mapFields("search/libraryReference", ["options"]),
     ...mapState("search/libraryReference", ["search", "advancedSearch"]),
-    ...mapState("libraryReferences", ["results", "count"])
+    ...mapState("result/libraryReference", ["results", "count"])
   },
   metaInfo() {
     return {
@@ -257,63 +248,57 @@ export default {
       ]
     };
   },
-  created() {
+  beforeDestroy() {
+    this.resetSearch();
+  },
+  mounted() {
     this.getLibrary().then(res => {
       this.library = res;
 
       if (this.library === undefined) {
         this.error = true;
       }
-      this.resetSearch();
     });
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (from.name === "searchLibrary")
-        vm.$store.dispatch(
-          `libraryReferenceSearch/resetLibraryReferenceSearch`
-        );
-      const currentLibrary = vm.$store.state.library.currentLibrary;
-
-      if (to.params.id !== currentLibrary) {
-        vm.$store.dispatch(`libraryReferenceSearch/resetPage`);
-        vm.$store.dispatch(`libraryReferenceSearch/updateSortBy`, [
-          "author",
-          "year"
-        ]);
-        vm.$store.dispatch(`libraryReferenceSearch/updateSortDesc`, [
-          false,
-          false
-        ]);
-
-        vm.$store.dispatch("library/setCurrentLibrary", to.params.id);
-      }
-    });
+    this.getLibraryReferencesFromApi();
   },
   methods: {
-    ...mapActions("libraryReferences", ["setReferences"]),
-    ...mapActions("search/libraryReference", ["resetSearch"]),
+    ...mapActions("result/libraryReference", {
+      setLibraryReferenceResult: "setResult"
+    }),
+    ...mapActions("search/libraryReference", ["resetSearch", "resetPage"]),
     exit() {
       this.$router.replace({ name: "searchLibrary" }).catch(() => {});
     },
     getLibrary() {
       return fetchLibrary(this.$route.params.id);
     },
-    handleBack() {
-      this.$router.back();
-    },
     getLibraryReferencesFromApi() {
+      this.isLoading = true;
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
       fetchLibraryReferences(this.id, searchObj).then(res => {
-        this.setReferences(res);
+        this.setLibraryReferenceResult(res);
+        this.isLoading = false;
       });
+    },
+    handleOptionsUpdate(event) {
+      if (isEqual(this.options, event)) return;
+      this.options = event;
+      this.getLibraryReferencesFromApi();
+    },
+    handlePaginationUpdate(event) {
+      this.options = event;
+      this.getLibraryReferencesFromApi();
+    },
+    handleSearch(event) {
+      this.resetPage();
+      this.getLibraryReferencesFromApi();
     },
     handleResetSearch(event) {
       this.resetSearch(event);

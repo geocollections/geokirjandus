@@ -4,7 +4,7 @@
       border-color="transparent"
       style="border-width: 0px"
       :module="$route.meta.object"
-      :data="results"
+      :data="data"
       :count="count"
       :is-loading="isLoading"
       :headers="libraryHeaders"
@@ -14,12 +14,12 @@
           ? 'viewer.title.library_html'
           : 'viewer.title.library_single_html'
       "
-      :options.sync="options"
+      :options="options"
       :show-share="false"
       @open="open"
-      @update:paginateBy="handleUpdatePaginateBy"
-      @update:page="handleUpdatePage"
       @update:headers="handleUpdateTableHeaders"
+      @update:options="$emit('update:options', $event)"
+      @update:pagination="$emit('update:pagination', $event)"
       @reset:headers="
         resetHeaders({
           module: 'libraryHeaders',
@@ -42,7 +42,10 @@
       </template>
       <!--  LIST VIEW TEMPLATE  -->
       <template v-slot:list-view="{ data }">
-        <library-list-view :data="data"></library-list-view>
+        <library-list-view
+          :data="data"
+          :is-loading="isLoading"
+        ></library-list-view>
       </template>
     </data-viewer>
   </div>
@@ -50,13 +53,10 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { mapFields } from "vuex-map-fields";
 import LibraryListView from "@/components/library/LibraryListView";
 import DataViewer from "@/components/DataViewer";
 import dateMixin from "@/mixins/dateMixin";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
-import { fetchLibraries } from "@/utils/apiCalls";
 
 export default {
   name: "LibraryViewer",
@@ -64,66 +64,42 @@ export default {
     LibraryListView,
     DataViewer
   },
-  mixins: [dateMixin, urlMixin, queryMixin],
+  mixins: [dateMixin, urlMixin],
   props: {
+    options: {
+      type: Object,
+      default: () => {}
+    },
+    data: {
+      type: Array,
+      default: () => []
+    },
+    count: {
+      type: Number,
+      default: 0
+    },
     showLibraries: {
+      type: Boolean,
+      default: true
+    },
+    isLoading: {
       type: Boolean,
       default: true
     }
   },
-  data() {
-    return {
-      isLoading: true
-    };
-  },
   computed: {
-    ...mapFields("search/library", ["options"]),
     ...mapState("search/library", ["search", "advancedSearch"]),
-    ...mapState("library", ["count", "results"]),
     ...mapState("tableSettings", ["libraryHeaders"])
   },
-  watch: {
-    options: {
-      handler() {
-        this.getLibrariesFromApi();
-      },
-      deep: true
-    }
-  },
   created() {
-    this.getLibrariesFromApi();
+    this.$emit("update:data");
   },
   methods: {
-    ...mapActions("search/library", [
-      "updatePage",
-      "updatePaginateBy",
-      "updateOptions",
-      "resetPage"
-    ]),
     ...mapActions("tableSettings", ["setLibraryHeaders"]),
     handleUpdateTableHeaders(event) {
       this.setLibraryHeaders(event);
     },
-    handleUpdatePage(event) {
-      this.updatePage(event);
-    },
-    handleUpdatePaginateBy(event) {
-      this.updatePaginateBy(event);
-    },
-    getLibrariesFromApi() {
-      const searchObj = {
-        search: this.search,
-        page: this.options.page,
-        paginateBy: this.options.paginateBy,
-        sortBy: this.options.sortBy,
-        sortDesc: this.options.sortDesc,
-        advancedSearch: this.advancedSearch.byIds
-      };
-      fetchLibraries(searchObj).then(res => {
-        this.setLibraries(res);
-        this.isLoading = false;
-      });
-    },
+
     open(event) {
       this.$router.push(`/library/${event.id}`);
     }

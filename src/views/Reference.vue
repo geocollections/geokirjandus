@@ -40,11 +40,6 @@
               <v-card-title
                 class="title pt-1 pb-1 px-0 d-inline-block justify-center text-center font-family-exo-2 font-weight-medium text-h4"
               >
-                <!-- <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col> -->
                 {{ `${reference.reference}: ${reference.title}` }}
                 <v-btn
                   link
@@ -60,13 +55,7 @@
                   rel="noopener"
                 >
                   <v-icon small>fas fa-edit</v-icon>
-                  <!-- <b>{{ $t("common.edit") }}</b> -->
                 </v-btn>
-                <!-- <v-col cols="auto" class="py-0 px-0 d-flex align-self-start">
-                  <v-btn @click="exit" class="exitButton" icon>
-                    <v-icon>fas fa-times</v-icon>
-                  </v-btn>
-                </v-col> -->
               </v-card-title>
             </v-card>
             <v-card
@@ -326,11 +315,11 @@
                       </div>
 
                       <ul
-                        style="height:200px; overflow-y: auto; width: max-content"
+                        style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li
-                          v-for="locality in localities"
-                          :key="locality.locality.id"
+                          v-for="(locality, index) in localities"
+                          :key="`locality-${index}`"
                         >
                           <a
                             :href="localityURL(locality.locality.id)"
@@ -351,7 +340,7 @@
                       </div>
 
                       <ul
-                        style="height:200px; overflow-y: auto; width: max-content"
+                        style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li v-for="site in sites" :key="site.site.id">
                           <a
@@ -373,7 +362,7 @@
                       </div>
 
                       <ul
-                        style="height:200px; overflow-y: auto; width: max-content"
+                        style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li v-for="area in areas" :key="area.area.id">
                           <a
@@ -422,13 +411,13 @@
                     <tbody>
                       <tr
                         v-for="childReference in childReferences"
-                        :key="childReference.id"
+                        :key="`child-reference-${childReference.id}`"
                       >
                         <td>
                           <router-link
                             :to="{
                               name: 'reference',
-                              params: { id: childReference.id }
+                              params: { id: `${childReference.id}` }
                             }"
                           >
                             {{ childReference.author }}
@@ -448,7 +437,7 @@
                     {{ $t("reference.describedTaxa") }}
                   </div>
                   <ul>
-                    <li v-for="taxon in taxa" :key="taxon.id">
+                    <li v-for="taxon in taxa" :key="`taxon-${taxon.id}`">
                       <a :href="taxonURL(taxon.id)" target="_blank">{{
                         taxon.taxon
                       }}</a>
@@ -516,7 +505,7 @@
             <v-card v-else-if="error">
               <v-card-actions class="referenceTitle">
                 <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
+                  <v-btn large icon @click="$router.back()" aria-label="back">
                     <v-icon>fas fa-arrow-left</v-icon>
                   </v-btn>
                 </v-col>
@@ -533,20 +522,13 @@
 </template>
 
 <script>
-import {
-  fetchReference,
-  fetchReferenceLibraries,
-  fetchReferenceLocalities,
-  fetchReferences
-} from "@/utils/apiCalls";
+import { fetchReference } from "@/utils/apiCalls";
 import dateMixin from "@/mixins/dateMixin";
 import LeafletMap from "@/components/LeafletMap";
 import ReferenceLinks from "@/components/reference/ReferenceLinks";
 import CitationSelect from "@/components/CitationSelect";
 import { mapState, mapActions } from "vuex";
-import debounce from "lodash/debounce";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
 import citationMixin from "@/mixins/citationMixin";
 
 import axios from "axios";
@@ -562,7 +544,7 @@ export default {
     CitationSelect,
     BaseCitationDetail
   },
-  mixins: [dateMixin, urlMixin, queryMixin, citationMixin],
+  mixins: [dateMixin, urlMixin, citationMixin],
   props: {
     id: {
       type: String
@@ -608,31 +590,19 @@ export default {
       return this.reference?.type;
     }
   },
-  watch: {
-    referenceParameters: {
-      // Handle search parameter change
-      handler: debounce(function() {
-        this.$router.push({ name: "searchReference" }).catch(() => {});
-      }, 300),
-      deep: true
-    }
-  },
-  created() {
-    this.getReference(this.$route.params.id);
-  },
   beforeRouteUpdate(to, from, next) {
     this.getReference(to.params.id);
     this.childReferences = [];
     this.localities = [];
     next();
   },
+  created() {
+    this.getReference(this.$route.params.id);
+  },
   methods: {
     ...mapActions("search/reference", ["updateAdvancedSearch"]),
     exit() {
       this.$router.replace({ name: "searchReference" }).catch(() => {});
-    },
-    handleBack() {
-      this.$router.back();
     },
     handleKeyword(keyword) {
       this.updateAdvancedSearch({
@@ -640,7 +610,6 @@ export default {
         id: "keywords"
       });
       this.$router.push({ name: "searchReference" });
-      // this.handleBack();
     },
     localityURL(id) {
       return `https://geoloogia.info/locality/${id}`;

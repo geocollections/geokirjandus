@@ -7,9 +7,8 @@
         </div>
         <search-reference
           :col-size="12"
-          v-on:update:search="handleUpdateSearch"
-          v-on:update:advancedSearch="handleUpdateAdvancedSearch"
-          v-on:reset:search="handleResetSearch"
+          @update:data="handleSearch"
+          @reset:search="handleResetSearch"
         />
       </v-col>
       <v-col md="9" xl="10" class="ml-md-4">
@@ -28,10 +27,12 @@
             class="ml-auto mr-auto card"
           >
             <reference-viewer
-              :options.sync="options"
+              :options="options"
               :data="results"
               :count="count"
-              @update:data="getReferencesFromApi"
+              :is-loading="isLoading"
+              @update:options="handleOptionsUpdate"
+              @update:pagination="handlePaginationUpdate"
             />
           </v-card>
         </v-fade-transition>
@@ -66,9 +67,8 @@
       <search-reference
         class="my-3 mx-2"
         :col-size="12"
-        v-on:update:search="handleUpdateSearch"
-        v-on:update:advancedSearch="handleUpdateAdvancedSearch"
-        v-on:reset:search="handleResetSearch"
+        @update:data="handleSearch"
+        @reset:search="handleResetSearch"
       />
     </v-navigation-drawer>
   </v-container>
@@ -76,9 +76,10 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 import ReferenceViewer from "@/components/reference/ReferenceViewer";
 import SearchReference from "@/components/search/SearchReference";
-import queryMixin from "@/mixins/queryMixin";
+
 import { fetchReferences } from "@/utils/apiCalls";
 import { mapFields } from "vuex-map-fields";
 export default {
@@ -87,12 +88,10 @@ export default {
     ReferenceViewer,
     SearchReference
   },
-  mixins: [queryMixin],
   data() {
     return {
       showSearch: false,
-      isPrint: false,
-      printResult: []
+      isLoading: true
     };
   },
   metaInfo: {
@@ -101,66 +100,50 @@ export default {
   computed: {
     ...mapFields("search/reference", ["options"]),
     ...mapState("search/reference", ["search", "advancedSearch"]),
-    ...mapState("references", ["count", "results"])
+    ...mapState("result/reference", ["count", "results"])
   },
-  created() {
-    window.onbeforeprint = () => {
-      this.isPrint = true;
-
-      const setPrintResults = res => {
-        this.printResult = res.results;
-      };
-
-      if (this.$route.name === "library") {
-        this.getReferencesInLibrary(this.$route.params.id).then(
-          setPrintResults
-        );
-      } else {
-        this.getReferences().then(setPrintResults);
-      }
-    };
-    window.onafterprint = () => {
-      this.isPrint = false;
-    };
+  mounted() {
+    this.getReferencesFromApi();
   },
   methods: {
     ...mapActions("search/reference", [
       "updateSearch",
       "updateAdvancedSearch",
+      "updateOptions",
       "resetSearch",
       "resetPage"
     ]),
-    ...mapActions("references", ["setReferences"]),
-    handleUpdateSearch(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch("libraryReferenceSearch/updateSearch", event);
-      else this.updateSearch(event);
-    },
-    handleUpdateAdvancedSearch(event) {
-      if (this.$route.name === "library")
-        this.$store.dispatch(
-          "libraryReferenceSearch/updateAdvancedSearch",
-          event
-        );
-      else this.updateAdvancedSearch(event);
-    },
+    ...mapActions("result/reference", { setReferenceResult: "setResult" }),
     handleResetSearch(event) {
       this.resetSearch(event);
-      this.getReferences().then(res => {
-        this.setReferences(res);
-      });
+      this.getReferencesFromApi();
+    },
+    handleOptionsUpdate(event) {
+      if (isEqual(this.options, event)) return;
+      this.options = event;
+      this.getReferencesFromApi();
+    },
+    handlePaginationUpdate(event) {
+      this.options = event;
+      this.getReferencesFromApi();
+    },
+    handleSearch(event) {
+      this.resetPage();
+      this.getReferencesFromApi();
     },
     getReferencesFromApi() {
+      this.isLoading = true;
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
       fetchReferences(searchObj).then(res => {
-        this.setReferences(res);
+        this.setReferenceResult(res);
+        this.isLoading = false;
       });
     }
   }

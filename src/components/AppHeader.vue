@@ -1,5 +1,4 @@
 <template>
-  <!-- COLORS: #eba142,#A44A3F, #FF9F1C, #D36135, #FF8C42, #F7934C -->
   <v-app-bar
     elevation="0"
     v-bind="$attrs"
@@ -92,7 +91,6 @@
     </v-toolbar-items>
     <v-spacer />
     <v-toolbar-items class="py-1">
-      <!-- <tour v-if="$vuetify.breakpoint.mdAndUp" class="rounded mr-1" /> -->
       <links v-if="$vuetify.breakpoint.mdAndUp" />
       <lang-buttons v-if="$vuetify.breakpoint.mdAndUp" :is-dark="false" />
       <emaapou-button v-if="$vuetify.breakpoint.mdAndUp" class="rounded" />
@@ -108,31 +106,6 @@
         <v-icon>fas fa-bars</v-icon>
       </v-btn>
     </v-toolbar-items>
-    <!--  MOBILE MENU  -->
-    <!-- <v-menu
-      v-if="!$vuetify.breakpoint.mdAndUp"
-      transition="slide-y-transition"
-      offset-y
-      bottom
-      right
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon dark v-bind="attrs" v-on="on">
-          <v-icon>fas fa-bars</v-icon>
-        </v-btn>
-      </template>
-      <v-list color="#F6EDDF" class="text-center">
-        <div class="pb-2">
-          <tour :isDark="false" class="pb-2" />
-        </div>
-        <div class="pb-2">
-          <links :isDark="false" />
-        </div>
-        <div class="px-3">
-          <lang-buttons />
-        </div>
-      </v-list>
-    </v-menu> -->
   </v-app-bar>
 </template>
 
@@ -194,8 +167,6 @@ export default {
   border-color: $primary-color;
 }
 .title {
-  // color: white !important
-  // text-shadow: 1px 1px 1px #F6EDDF
   cursor: pointer;
   font-family: "Exo 2", "Roboto", sans-serif !important;
 }
@@ -207,10 +178,6 @@ export default {
   margin-right: auto;
 }
 
-// .v-toolbar ::v-deep .v-toolbar__extension {
-//   background-color: #ff9f1c;
-// }
-
 .active-app-bar-btn::after {
   position: absolute;
   content: "";
@@ -220,10 +187,6 @@ export default {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
   background-color: #135ebf;
-
-  // border-color: #135ebf;
-  // border-bottom-style: solid;
-  // border-bottom-width: 2px;
 }
 .v-toolbar ::v-deep .v-toolbar__extension {
   padding-right: 5px;

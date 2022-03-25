@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import store from "@/store";
 import AppLayout from "../layouts/AppLayout.vue";
 import LandingLayout from "../layouts/LandingLayout.vue";
 

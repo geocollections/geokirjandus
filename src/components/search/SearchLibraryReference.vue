@@ -154,10 +154,9 @@
 
 <script>
 import { mapFields } from "vuex-map-fields";
-import { mapActions, mapState } from "vuex";
-import { isEqual } from "lodash";
+import { mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 import urlMixin from "@/mixins/urlMixin";
-import queryMixin from "@/mixins/queryMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
 import InputText from "../input/InputText.vue";
 import InputRange from "../input/InputRange.vue";
@@ -174,7 +173,7 @@ export default {
     InputSelect,
     InputCheckbox
   },
-  mixins: [urlMixin, queryMixin],
+  mixins: [urlMixin],
   props: {
     colSize: {
       type: Number,
@@ -216,7 +215,7 @@ export default {
       query: "search.value",
       page: "options.page"
     }),
-    ...mapState("libraryReferences", ["facet", "result", "count"]),
+    ...mapState("result/libraryReference", ["facet", "result", "count"]),
     ...mapState("search/libraryReference", [
       "advancedSearch",
       "options",
@@ -342,18 +341,8 @@ export default {
         this[key] = "1";
       }
     });
-
-    this.handleSearch();
   },
   methods: {
-    ...mapActions("search/libraryReference", ["resetSearch", "resetPage"]),
-    ...mapActions("libraryReferences", ["setReferences"]),
-    updateCheckbox(event, id) {
-      this.$emit("update:advancedSearch", {
-        value: event,
-        id: id
-      });
-    },
     getSelectItems(id) {
       if (id === "referenceType") return this.getReferenceTypes;
       else if (id === "language") return this.getReferenceLanguages;
@@ -364,7 +353,7 @@ export default {
       const searchObj = {
         search: this.search,
         page: this.options.page,
-        paginateBy: this.options.paginateBy,
+        itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
@@ -436,7 +425,7 @@ export default {
     },
     handleSearch() {
       this.updateQueryParams();
-      this.getLibraryReferencesFromApi();
+      this.$emit("update:data");
     }
   }
 };

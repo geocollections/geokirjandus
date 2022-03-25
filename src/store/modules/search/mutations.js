@@ -1,4 +1,5 @@
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import isEqual from "lodash/isEqual";
 
 const resetAdvancedSearch = advancedSearch => {
   let cloneAdvancedSearch = cloneDeep(advancedSearch.byIds);
@@ -52,8 +53,6 @@ import { updateField } from "vuex-map-fields";
 const mutations = {
   updateField,
   RESET_SEARCH(state) {
-    // state.search.value = null;
-
     state.advancedSearch = {
       ...state.advancedSearch,
       byIds: resetAdvancedSearch(state.advancedSearch)
@@ -81,19 +80,20 @@ const mutations = {
   UPDATE_PAGE(state, page) {
     state.options.page = page;
   },
-  UPDATE_PAGINATE_BY(state, paginateBy) {
-    state.options.paginateBy = paginateBy;
+  UPDATE_PAGINATE_BY(state, itemsPerPage) {
+    state.options.itemsPerPage = itemsPerPage;
   },
 
   UPDATE_SORT_BY(state, payload) {
-    state.sortBy = payload;
+    state.options.sortBy = payload;
   },
 
   UPDATE_SORT_DESC(state, payload) {
-    state.sortDesc = payload;
+    state.options.sortDesc = payload;
   },
   UPDATE_OPTIONS(state, payload) {
-    state.options = payload;
+    if (isEqual(state.options, payload)) return;
+    state.options = Object.assign({}, state.options, payload);
   },
 
   UPDATE_ADVANCED_SEARCH(state, payload) {
@@ -180,7 +180,7 @@ const mutations = {
     };
   },
   RESET_PAGE(state) {
-    state.page = 1;
+    state.options.page = 1;
   }
 };
 

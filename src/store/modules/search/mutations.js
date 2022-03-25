@@ -126,59 +126,6 @@ const mutations = {
     state.search.value = searchValue;
     state.page = 1;
   },
-  SET_SEARCH_FROM_URL(state, payload) {
-    let resetAdvancedSearchObj = resetAdvancedSearch(state.advancedSearch);
-
-    state.page = 1;
-
-    Object.entries(payload).forEach(([k, v]) => {
-      const searchParameters = k.split("_");
-      const searchFieldName = searchParameters[0];
-
-      if (searchFieldName === "search") {
-        state.search.value = v;
-      } else if (searchFieldName === "page") {
-        state.page = parseInt(v);
-      } else if (searchFieldName === "paginateBy") {
-        state.paginateBy = parseInt(v);
-      } else {
-        switch (resetAdvancedSearchObj[searchFieldName].type) {
-          case "text":
-            resetAdvancedSearchObj[searchFieldName].value = v;
-            resetAdvancedSearchObj[searchFieldName].lookUpType =
-              searchParameters[1];
-            break;
-          case "range": {
-            const range = v.split("-").map(year => {
-              return parseInt(year);
-            });
-            resetAdvancedSearchObj[searchFieldName].value = range;
-            break;
-          }
-          case "select": {
-            const types = v.split(",").map(type => {
-              return type;
-            });
-            resetAdvancedSearchObj[searchFieldName].value = types;
-
-            break;
-          }
-          case "checkbox": {
-            resetAdvancedSearchObj[searchFieldName].value = v;
-
-            break;
-          }
-          default:
-            break;
-        }
-      }
-    });
-
-    state.advancedSearch = {
-      ...state.advancedSearch,
-      byIds: resetAdvancedSearchObj
-    };
-  },
   RESET_PAGE(state) {
     state.options.page = 1;
   }

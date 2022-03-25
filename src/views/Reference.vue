@@ -582,7 +582,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("search", ["search", "advancedSearch", "paginateBy", "page"]),
+    ...mapState("search", ["search", "advancedSearch"]),
     journal() {
       return this.reference?.journal;
     },

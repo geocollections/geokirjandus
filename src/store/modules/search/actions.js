@@ -1,5 +1,3 @@
-import { cloneDeep } from "lodash";
-
 const actions = {
   updatePaginateBy({ commit }, paginateBy) {
     commit("UPDATE_PAGE", 1);

@@ -315,7 +315,7 @@
                       </div>
 
                       <ul
-                        style="height:200px; overflow-y: auto; width: max-content"
+                        style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li
                           v-for="(locality, index) in localities"
@@ -340,7 +340,7 @@
                       </div>
 
                       <ul
-                        style="height:200px; overflow-y: auto; width: max-content"
+                        style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li v-for="site in sites" :key="site.site.id">
                           <a
@@ -362,7 +362,7 @@
                       </div>
 
                       <ul
-                        style="height:200px; overflow-y: auto; width: max-content"
+                        style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li v-for="area in areas" :key="area.area.id">
                           <a

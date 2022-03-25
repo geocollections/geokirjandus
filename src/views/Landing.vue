@@ -94,6 +94,7 @@
                     <reference-list-view
                       class="pb-3 roundedBorder"
                       style=" background-color: white"
+                      :is-loading="false"
                       :data="references"
                     ></reference-list-view>
                   </div>
@@ -168,7 +169,7 @@ export default {
     getReferences() {
       return fetchReferences({
         search: { id: "search", value: this.searchStr },
-        paginateBy: 10,
+        itemsPerPage: 10,
         page: 1,
         sortBy: ["date_changed"],
         sortDesc: [true],

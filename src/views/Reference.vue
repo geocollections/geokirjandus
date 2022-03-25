@@ -688,19 +688,31 @@ export default {
         this.reference = res;
 
         this.getReferenceLocalities().then(res => {
-          this.localities = res.results.filter(localityReference => {
-            return !!(
-              localityReference.locality?.latitude &&
-              localityReference.locality?.longitude
-            );
-          });
+          this.localities = res.results
+            .filter(localityReference => {
+              return !!(
+                localityReference.locality?.latitude &&
+                localityReference.locality?.longitude
+              );
+            })
+            .sort((a, b) => {
+              const textA = a.locality?.locality.toUpperCase();
+              const textB = b.locality?.locality.toUpperCase();
+              return textA < textB ? -1 : textA > textB ? 1 : 0;
+            });
 
-          this.sites = res.results.filter(localityReference => {
-            return !!(
-              localityReference.site?.latitude &&
-              localityReference.site?.longitude
-            );
-          });
+          this.sites = res.results
+            .filter(localityReference => {
+              return !!(
+                localityReference.site?.latitude &&
+                localityReference.site?.longitude
+              );
+            })
+            .sort((a, b) => {
+              const textA = a.site?.name.toUpperCase();
+              const textB = b.site?.name.toUpperCase();
+              return textA < textB ? -1 : textA > textB ? 1 : 0;
+            });
 
           this.areas = res.results
             .filter(localityReference => {
@@ -714,6 +726,11 @@ export default {
                   polygon: this.geojson(localityReference.area.polygon)
                 }
               };
+            })
+            .sort((a, b) => {
+              const textA = a.area?.name.toUpperCase();
+              const textB = b.area?.name.toUpperCase();
+              return textA < textB ? -1 : textA > textB ? 1 : 0;
             });
           this.localityMarkers = this.localities.map(localityReference => {
             const localityTitle =

@@ -9,7 +9,6 @@ import Meta from "vue-meta";
 import i18n from "./i18n";
 import "izitoast/dist/css/iziToast.min.css";
 import "academicons/css/academicons.min.css";
-import "shepherd.js/dist/css/shepherd.css";
 import cslJson from "@/plugins/cslJson";
 import "@/assets/global.scss";
 

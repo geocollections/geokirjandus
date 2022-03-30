@@ -37,7 +37,7 @@
             color="#ea9219"
             outlined
             :class="{ 'pr-2': hover }"
-            v-if="getAdvancedSearchParametersAppliedCount > 0"
+            v-show="getAdvancedSearchParametersAppliedCount > 0"
           >
             <div class="pr-1 black--text">
               {{ getAdvancedSearchParametersAppliedCount }}

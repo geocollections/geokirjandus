@@ -68,7 +68,7 @@ export default {
     pdf() {
       if (typeof this.item.parent_reference === "object") {
         return (
-          this.item.filename ?? this.item.parent_reference.filename ?? null
+          this.item.filename ?? this.item.parent_reference?.filename ?? null
         );
       }
       return (
@@ -80,7 +80,7 @@ export default {
     },
     url() {
       if (typeof this.item.parent_reference === "object") {
-        return this.item.url ?? this.item.parent_reference.url ?? null;
+        return this.item.url ?? this.item.parent_reference?.url ?? null;
       }
       return this.item.url ?? this.item.parent_reference__url ?? null;
     }

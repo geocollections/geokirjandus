@@ -1,9 +1,10 @@
-import Cite from "citation-js";
+import { Cite, plugins } from "@citation-js/core";
+import "@citation-js/plugin-csl";
 import templateStyles from "@/assets/templateStyles.json";
 import { mapActions, mapState } from "vuex";
 
 // Add custom template styles to Cite style configuration
-const styleConfig = Cite.plugins.config.get("@csl");
+const styleConfig = plugins.config.get("@csl");
 Object.entries(templateStyles).forEach(([k, v]) => {
   styleConfig.templates.add(k, v);
 });

@@ -97,9 +97,11 @@ import urlMixin from "@/mixins/urlMixin";
 import toastMixin from "@/mixins/toastMixin";
 import { fetchLibraryReferences, fetchReferences } from "@/utils/apiCalls";
 import CopyButton from "@/components/CopyButton";
-import Cite from "citation-js";
+import { Cite } from "@citation-js/core";
+import "@citation-js/plugin-ris";
+import "@citation-js/plugin-bibtex";
 import citationMixin from "@/mixins/citationMixin";
-import { Parser } from "json2csv";
+import Parser from "json2csv/lib/JSON2CSVParser";
 
 export default {
   name: "ShareButton",

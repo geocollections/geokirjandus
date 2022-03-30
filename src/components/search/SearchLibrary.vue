@@ -224,7 +224,11 @@ export default {
       }
     },
     async handleSearch() {
+      const oldQuery = this.$route.query;
       this.updateQueryParams();
+      const newQuery = this.$route.query;
+
+      if (isEqual(oldQuery, newQuery)) return;
       this.$emit("update:data");
     }
   }

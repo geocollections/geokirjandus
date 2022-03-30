@@ -24,7 +24,7 @@
     "@citation-js/plugin-ris": "^0.5.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "academicons": "^1.8.6",
-    "axios": "^0.20.0",
+    "axios": "^0.21.2",
     "chart.js": "^2.9.4",
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-datalabels": "^0.7.0",

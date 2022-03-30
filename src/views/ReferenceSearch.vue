@@ -83,7 +83,7 @@ import SearchReference from "@/components/search/SearchReference";
 import { fetchReferences } from "@/utils/apiCalls";
 import { mapFields } from "vuex-map-fields";
 export default {
-  name: "Home",
+  name: "ReferenceSearch",
   components: {
     ReferenceViewer,
     SearchReference

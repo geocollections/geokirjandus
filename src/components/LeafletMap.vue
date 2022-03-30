@@ -5,13 +5,23 @@
 <script>
 import "leaflet/dist/leaflet.css";
 
-import L from "leaflet/dist/leaflet";
+import {
+  Icon,
+  tileLayer,
+  map,
+  markerClusterGroup,
+  CircleMarker,
+  control,
+  geoJSON,
+  layerGroup,
+  featureGroup
+} from "leaflet/dist/leaflet";
 import "leaflet.markercluster/dist/leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png")
@@ -36,7 +46,7 @@ export default {
       maps: [
         {
           name: "CartoDB",
-          leafletObject: L.tileLayer(
+          leafletObject: tileLayer(
             "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
             {
               attribution:
@@ -48,7 +58,7 @@ export default {
         },
         {
           name: "OpenStreetMap",
-          leafletObject: L.tileLayer(
+          leafletObject: tileLayer(
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
               attribution:
@@ -60,7 +70,7 @@ export default {
         },
         {
           name: "OpenTopoMap",
-          leafletObject: L.tileLayer(
+          leafletObject: tileLayer(
             "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
             {
               attribution:
@@ -72,7 +82,7 @@ export default {
         },
         {
           name: "Estonian satellite",
-          leafletObject: L.tileLayer(
+          leafletObject: tileLayer(
             "https://tiles.maaamet.ee/tm/tms/1.0.0/foto@GMC/{z}/{x}/{-y}.png&ASUTUS=TALTECH&KESKKOND=LIVE&IS=SARV",
             {
               attribution:
@@ -90,7 +100,7 @@ export default {
         },
         {
           name: "Estonian map",
-          leafletObject: L.tileLayer(
+          leafletObject: tileLayer(
             "https://tiles.maaamet.ee/tm/tms/1.0.0/kaart@GMC/{z}/{x}/{-y}.png&ASUTUS=TALTECH&KESKKOND=LIVE&IS=SARV",
             {
               attribution:
@@ -110,7 +120,7 @@ export default {
       overlayMaps: [
         {
           name: "Estonian hybrid",
-          leafletObject: L.tileLayer(
+          leafletObject: tileLayer(
             "https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{-y}.png&ASUTUS=TALTECH&KESKKOND=LIVE&IS=SARV",
             {
               attribution:
@@ -134,7 +144,7 @@ export default {
   },
   methods: {
     setupLeafletMap() {
-      const mapDiv = L.map(this.$refs["mapElement"], {
+      const mapDiv = map(this.$refs["mapElement"], {
         layers: [this.maps[0].leafletObject]
       }).setView([0, 0], 1);
 
@@ -143,12 +153,12 @@ export default {
         provider => (baseMaps[provider.name] = provider.leafletObject)
       );
 
-      L.control.layers(baseMaps).addTo(mapDiv);
+      control.layers(baseMaps).addTo(mapDiv);
 
-      const markerClusters = L.markerClusterGroup({ maxClusterRadius: 30 });
+      const markerClusters = markerClusterGroup({ maxClusterRadius: 30 });
       let markers = [];
       for (const m of this.markers) {
-        const markerObj = new L.CircleMarker(m.coordinates, {
+        const markerObj = new CircleMarker(m.coordinates, {
           title: m.title,
           radius: 3
         });
@@ -159,7 +169,7 @@ export default {
       }
 
       for (const m of this.siteMarkers) {
-        const markerObj = new L.CircleMarker(m.coordinates, {
+        const markerObj = new CircleMarker(m.coordinates, {
           title: m.title,
           radius: 3,
           color: "red"
@@ -171,7 +181,7 @@ export default {
       }
 
       for (const a of this.areas) {
-        const geoJSONObj = new L.geoJSON(JSON.parse(a.area.polygon)).addTo(
+        const geoJSONObj = new geoJSON(JSON.parse(a.area.polygon)).addTo(
           mapDiv
         );
         geoJSONObj.bindPopup(
@@ -183,8 +193,8 @@ export default {
 
       if (markers.length > 100) {
         mapDiv.addLayer(markerClusters);
-      } else mapDiv.addLayer(L.layerGroup(markers));
-      let bounds = new L.featureGroup(markers).getBounds();
+      } else mapDiv.addLayer(layerGroup(markers));
+      let bounds = new featureGroup(markers).getBounds();
       mapDiv.fitBounds(bounds);
 
       if (markers.length < 2) {

@@ -82,7 +82,7 @@ import LibraryViewer from "@/components/library/LibraryViewer";
 import SearchLibrary from "@/components/search/SearchLibrary";
 import { fetchLibraries } from "@/utils/apiCalls";
 export default {
-  name: "Home",
+  name: "LibrarySearch",
   components: { LibraryViewer, SearchLibrary },
   data() {
     return {

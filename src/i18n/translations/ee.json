@@ -99,11 +99,11 @@
     "showMore": "kuva rohkem",
     "showLess": "kuva vähem",
     "language": "Keel",
-    
     "goTo": "Leheküljele",
     "goToBtn": "Mine",
     "pageSelect": "{current} / {count}",
-    "about": "Tutvustus"
+    "about": "Tutvustus",
+    "viewLibraries": "Vaata kogumike"
   },
   "reference": {
     "id": "ID",

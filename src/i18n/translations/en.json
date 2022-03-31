@@ -103,7 +103,8 @@
     "goTo": "Go to page",
     "goToBtn": "Go",
     "pageSelect": "{current} / {count}",
-    "about": "About"
+    "about": "About",
+    "viewLibraries": "View libraries"
   },
   "reference": {
     "id": "ID",

@@ -150,16 +150,18 @@
                 </v-row>
               </v-card-text>
             </v-card>
-            <v-card v-else-if="error">
-              <v-card-actions>
-                <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col>
-                <div class="col titleText">
-                  {{ $t("error.libraryId", { text: id }) }}
-                </div>
+            <v-card flat color="transparent" v-else-if="error">
+              <div class="text-h4 text-center">
+                {{ $t("error.libraryId", { text: id }) }}
+              </div>
+              <v-card-actions class="mt-4">
+                <v-btn
+                  class="ml-auto mr-auto font-family-exo-2"
+                  :to="{ name: 'searchLibrary' }"
+                  color="accent"
+                >
+                  {{ $t("common.viewLibraries") }}
+                </v-btn>
               </v-card-actions>
             </v-card>
           </div>
@@ -252,13 +254,17 @@ export default {
     this.resetSearch();
   },
   mounted() {
-    this.getLibrary().then(res => {
-      this.library = res;
+    this.getLibrary()
+      .then(res => {
+        this.library = res;
 
-      if (this.library === undefined) {
+        if (this.library === undefined) {
+          this.error = true;
+        }
+      })
+      .catch(err => {
         this.error = true;
-      }
-    });
+      });
     this.getLibraryReferencesFromApi();
   },
   methods: {

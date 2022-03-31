@@ -41,7 +41,7 @@
     <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
       <v-btn
         class="mt-2 d-print-none d-md-none font-family-exo-2"
-        color="#135ebf"
+        :color="$vuetify.theme.themes.light.accent"
         fixed
         rounded
         dark
@@ -62,7 +62,7 @@
       bottom
       fixed
       temporary
-      style="background-color: #fff5e6;"
+      class="navigation-search-mobile"
     >
       <search-library
         class="my-3 mx-2"
@@ -146,7 +146,7 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  background-color: #f6eddf;
+.navigation-search-mobile {
+  background-color: var(--v-primary-base);
 }
 </style>

@@ -2,6 +2,7 @@
   <div>
     <app-header
       class="d-print-none"
+      :color="$vuetify.theme.themes.light.secondary"
       @toggle:navigationDrawer="showMobileNavigation = !showMobileNavigation"
     />
     <app-navigation-mobile
@@ -35,6 +36,6 @@ export default {
 
 <style scoped>
 .main {
-  background-color: #fffcf8;
+  background-color: var(--v-primary-base);
 }
 </style>

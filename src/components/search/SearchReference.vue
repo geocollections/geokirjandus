@@ -16,7 +16,7 @@
         class="font-family-exo-2"
         type="submit"
         id="searchButton"
-        color="#135ebf"
+        :color="$vuetify.theme.themes.light.accent"
         dark
       >
         <v-icon left small>fas fa-search</v-icon>
@@ -34,7 +34,7 @@
         <v-spacer />
         <v-hover v-slot="{ hover }">
           <v-chip
-            color="#ea9219"
+            :color="$vuetify.theme.themes.light.secondary"
             outlined
             :class="{ 'pr-2': hover }"
             v-show="getAdvancedSearchParametersAppliedCount > 0"
@@ -42,7 +42,9 @@
             <div class="pr-1 black--text">
               {{ getAdvancedSearchParametersAppliedCount }}
             </div>
-            <v-icon x-small color="#ea9219">fas fa-filter</v-icon>
+            <v-icon x-small :color="$vuetify.theme.themes.light.secondary"
+              >fas fa-filter</v-icon
+            >
 
             <v-tooltip bottom open-delay="250">
               <template #activator="{on, attrs}">

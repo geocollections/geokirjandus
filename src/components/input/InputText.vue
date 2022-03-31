@@ -2,7 +2,7 @@
   <v-text-field
     class="pt-2 pb-1"
     dense
-    color="#135ebf"
+    :color="$vuetify.theme.themes.light.accent"
     outlined
     :value="value"
     :label="label"

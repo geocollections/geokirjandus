@@ -38,6 +38,6 @@ export default {
 
 <style scoped>
 .main {
-  background-color: #fffcf8;
+  background-color: var(--v-primary-base);
 }
 </style>

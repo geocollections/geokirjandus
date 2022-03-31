@@ -151,7 +151,7 @@
               </v-card-text>
             </v-card>
             <v-card v-else-if="error">
-              <v-card-actions class="libraryTitle">
+              <v-card-actions>
                 <v-col cols="auto" class="py-0 px-0">
                   <v-btn large icon @click="handleBack()" aria-label="back">
                     <v-icon>fas fa-arrow-left</v-icon>
@@ -169,7 +169,7 @@
     <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
       <v-btn
         class="mt-2 d-print-none d-md-none font-family-exo-2"
-        color="#135ebf"
+        :color="$vuetify.theme.themes.light.accent"
         fixed
         rounded
         dark
@@ -190,7 +190,7 @@
       bottom
       fixed
       temporary
-      style="background-color: #fff5e6;"
+      class="navigation-search-mobile"
     >
       <search-library-reference
         class="my-3 mx-2"
@@ -306,8 +306,8 @@ export default {
 </script>
 
 <style scoped>
-.libraryTitle {
-  background-color: #a5bac4;
+.navigation-search-mobile {
+  background-color: var(--v-primary-base);
 }
 
 .titleText {

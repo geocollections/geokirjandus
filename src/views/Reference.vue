@@ -393,7 +393,7 @@
                 <span v-for="(keyword, index) in keywords" :key="index">
                   <v-chip
                     outlined
-                    color="#135ebf"
+                    :color="$vuetify.theme.themes.light.accent"
                     text-color="black"
                     class="mr-1 mb-1"
                     @click="handleKeyword(keyword.keyword.keyword)"
@@ -456,7 +456,7 @@
                 >
                   <v-chip
                     outlined
-                    color="#135ebf"
+                    :color="$vuetify.theme.themes.light.accent"
                     text-color="black"
                     class="mr-1 mb-1"
                     v-translate="{

@@ -8,7 +8,7 @@
       bottom
       right
       small
-      color="#135ebf"
+      :color="$vuetify.theme.themes.light.accent"
       dark
       @click="toTop"
     >

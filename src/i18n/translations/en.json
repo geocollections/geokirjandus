@@ -20,8 +20,8 @@
     "infoLibrarySearch": "Searching in library"
   },
   "error": {
-    "referenceId": "Could not find reference. ID: {text}",
-    "libraryId": "Could not find library. ID: {text}",
+    "referenceId": "Reference \"{text}\" was not found",
+    "libraryId": "Library \"{text}\" was not found",
     "nothingFound": "No records found",
     "nothingFoundReference": "No references found",
     "nothingFoundLibrary": "No libraries found",
@@ -104,7 +104,8 @@
     "goToBtn": "Go",
     "pageSelect": "{current} / {count}",
     "about": "About",
-    "viewLibraries": "View libraries"
+    "viewLibraries": "View libraries",
+    "viewReferencesError": "View references"
   },
   "reference": {
     "id": "ID",

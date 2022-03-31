@@ -54,9 +54,9 @@
       </v-toolbar-items>
     </template>
     <v-toolbar-title
-      tag="a"
-      @click="goToLanding"
-      class="title white--text text-capitalize d-flex align-center font-weight-medium text-h6 pr-4"
+      tag="router-link"
+      :to="{ name: 'landing' }"
+      class="text-decoration-none title white--text text-capitalize d-flex align-center font-weight-medium text-h6 pr-4"
     >
       {{ $t("title2") }}
     </v-toolbar-title>
@@ -131,11 +131,6 @@ export default {
     },
     isMobile() {
       return this.$vuetify.breakpoint.xsOnly;
-    }
-  },
-  methods: {
-    goToLanding() {
-      this.$router.push({ name: "landing" });
     }
   }
 };

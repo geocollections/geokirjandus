@@ -11,7 +11,7 @@
         <v-btn-toggle
           id="viewChanger"
           :value="view"
-          color="#135ebf"
+          :color="$vuetify.theme.themes.light.accent"
           @change="updateView"
           class="mx-1 ml-auto"
           dense
@@ -130,7 +130,10 @@
           @update:options="handleOptionsUpdate"
         >
           <template #loading>
-            <v-progress-linear color="#135ebf" indeterminate />
+            <v-progress-linear
+              :color="$vuetify.theme.themes.light.accent"
+              indeterminate
+            />
           </template>
           <template
             v-for="(_, slotName) in $scopedSlots"

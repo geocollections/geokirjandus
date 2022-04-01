@@ -1,7 +1,11 @@
 <template>
   <div>
     <div v-show="isLoading">
-      <v-progress-linear indeterminate color="#135ebf" class="pa-0" />
+      <v-progress-linear
+        indeterminate
+        :color="$vuetify.theme.themes.light.accent"
+        class="pa-0"
+      />
     </div>
     <div v-if="data.length > 0" class="py-2">
       <v-card-text

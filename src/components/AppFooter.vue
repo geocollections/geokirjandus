@@ -1,5 +1,8 @@
 <template>
-  <v-footer color="#ea9219" class="d-flex pa-0 flex-grow-1 flex-column">
+  <v-footer
+    :color="$vuetify.theme.themes.light.secondary"
+    class="d-flex pa-0 flex-grow-1 flex-column"
+  >
     <div class="spacer2 layer2" />
     <div class="text-center pt-5">
       <a href="https://kik.ee" target="_blank" rel="noopener">

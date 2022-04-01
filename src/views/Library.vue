@@ -150,16 +150,18 @@
                 </v-row>
               </v-card-text>
             </v-card>
-            <v-card v-else-if="error">
-              <v-card-actions class="libraryTitle">
-                <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="handleBack()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col>
-                <div class="col titleText">
-                  {{ $t("error.libraryId", { text: id }) }}
-                </div>
+            <v-card flat color="transparent" v-else-if="error">
+              <div class="text-h4 text-center">
+                {{ $t("error.libraryId", { text: id }) }}
+              </div>
+              <v-card-actions class="mt-4">
+                <v-btn
+                  class="ml-auto mr-auto font-family-exo-2"
+                  :to="{ name: 'searchLibrary' }"
+                  color="accent"
+                >
+                  {{ $t("common.viewLibraries") }}
+                </v-btn>
               </v-card-actions>
             </v-card>
           </div>
@@ -169,7 +171,7 @@
     <v-fab-transition v-if="$vuetify.breakpoint.smAndDown">
       <v-btn
         class="mt-2 d-print-none d-md-none font-family-exo-2"
-        color="#135ebf"
+        :color="$vuetify.theme.themes.light.accent"
         fixed
         rounded
         dark
@@ -190,7 +192,7 @@
       bottom
       fixed
       temporary
-      style="background-color: #fff5e6;"
+      class="navigation-search-mobile"
     >
       <search-library-reference
         class="my-3 mx-2"
@@ -252,13 +254,17 @@ export default {
     this.resetSearch();
   },
   mounted() {
-    this.getLibrary().then(res => {
-      this.library = res;
+    this.getLibrary()
+      .then(res => {
+        this.library = res;
 
-      if (this.library === undefined) {
+        if (this.library === undefined) {
+          this.error = true;
+        }
+      })
+      .catch(err => {
         this.error = true;
-      }
-    });
+      });
     this.getLibraryReferencesFromApi();
   },
   methods: {
@@ -306,8 +312,8 @@ export default {
 </script>
 
 <style scoped>
-.libraryTitle {
-  background-color: #a5bac4;
+.navigation-search-mobile {
+  background-color: var(--v-primary-base);
 }
 
 .titleText {

@@ -33,7 +33,7 @@
                 <v-btn
                   class="ml-2 pr-4"
                   height="48px"
-                  color="#135ebf"
+                  :color="$vuetify.theme.themes.light.accent"
                   dark
                   large
                   @click="search"
@@ -207,7 +207,7 @@ export default {
 }
 
 .main {
-  background-color: #fffcf8;
+  background-color: var(--v-primary-base);
 }
 .cardTitle {
   background-color: #f3d3a5;

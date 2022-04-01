@@ -2,7 +2,7 @@
   <v-checkbox
     class="mt-0 pt-0"
     :label="label"
-    color="#135ebf"
+    :color="$vuetify.theme.themes.light.accent"
     :false-value="null"
     true-value="1"
     hide-details

@@ -88,7 +88,7 @@
                           dense
                           :disabled="sortBy.includes(item.value)"
                           :input-value="item.show"
-                          color="#135ebf"
+                          :color="$vuetify.theme.themes.light.accent"
                         />
                       </v-list-item-action>
                       <v-list-item-content>

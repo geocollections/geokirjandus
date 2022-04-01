@@ -12,7 +12,7 @@
         <v-icon small>fas fa-share-alt</v-icon>
       </v-btn>
     </template>
-    <v-card color="#fffcf8" id="shareHelp">
+    <v-card :color="$vuetify.theme.themes.light.primary" id="shareHelp">
       <v-card-title class="text-h6">
         URL
       </v-card-title>
@@ -34,15 +34,27 @@
       <v-card-text>
         <v-form>
           <v-radio-group class="pb-2" hide-details v-model="exportType" row>
-            <v-radio color="#135ebf" value="csv" label="CSV" />
-            <v-radio color="#135ebf" value="ris" label="RIS" />
-            <v-radio color="#135ebf" value="bibtex" label="BibTeX" />
+            <v-radio
+              :color="$vuetify.theme.themes.light.accent"
+              value="csv"
+              label="CSV"
+            />
+            <v-radio
+              :color="$vuetify.theme.themes.light.accent"
+              value="ris"
+              label="RIS"
+            />
+            <v-radio
+              :color="$vuetify.theme.themes.light.accent"
+              value="bibtex"
+              label="BibTeX"
+            />
           </v-radio-group>
           <v-combobox
             class="mt-2"
             v-if="$route.name !== 'reference'"
             :label="$t('common.amount')"
-            color="#135ebf"
+            :color="$vuetify.theme.themes.light.accent"
             type="number"
             outlined
             hide-details=""
@@ -59,7 +71,7 @@
 
           <v-text-field
             class="mt-2"
-            color="#135ebf"
+            :color="$vuetify.theme.themes.light.accent"
             v-model="filename"
             hide-details
             outlined
@@ -70,7 +82,7 @@
           <div class="d-flex justify-end">
             <v-btn
               class=" mt-3 font-family-exo-2"
-              color="#135ebf"
+              :color="$vuetify.theme.themes.light.accent"
               dark
               @click="handleExport"
             >

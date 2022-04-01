@@ -12,5 +12,15 @@ export default new Vuetify({
       emaapouIcon: { component: EmaapouIcon },
       emaapouIconBlack: { component: EmaapouIconBlack }
     }
+  },
+  theme: {
+    themes: {
+      light: {
+        primary: "#fffcf8",
+        secondary: "#ea9219",
+        accent: "#135ebf"
+      }
+    },
+    options: { customProperties: true }
   }
 });

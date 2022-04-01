@@ -7,8 +7,8 @@
       <v-select
         class="mt-0 text-caption"
         style="max-width: 100px"
-        color="#135ebf"
-        item-color="#135ebf"
+        :color="$vuetify.theme.themes.light.accent"
+        :item-color="$vuetify.theme.themes.light.accent"
         dense
         outlined
         hide-details

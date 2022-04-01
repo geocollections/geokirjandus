@@ -6,7 +6,6 @@
     app
     clipped-right
     class="mx-1 mx-auto"
-    :color="color"
     style="z-index: 9998"
     extension-height="48"
     height="48"
@@ -54,9 +53,9 @@
       </v-toolbar-items>
     </template>
     <v-toolbar-title
-      tag="a"
-      @click="goToLanding"
-      class="title white--text text-capitalize d-flex align-center font-weight-medium text-h6 pr-4"
+      tag="router-link"
+      :to="{ name: 'landing' }"
+      class="text-decoration-none title white--text text-capitalize d-flex align-center font-weight-medium text-h6 pr-4"
     >
       {{ $t("title2") }}
     </v-toolbar-title>
@@ -116,12 +115,6 @@ import EmaapouButton from "./EmaapouButton.vue";
 export default {
   name: "AppHeader",
   components: { Links, LangButtons, EmaapouButton },
-  props: {
-    color: {
-      type: String,
-      default: "#ea9219"
-    }
-  },
   computed: {
     maxWidth() {
       if (this.$vuetify.breakpoint.xlOnly) return "1785px";
@@ -131,11 +124,6 @@ export default {
     },
     isMobile() {
       return this.$vuetify.breakpoint.xsOnly;
-    }
-  },
-  methods: {
-    goToLanding() {
-      this.$router.push({ name: "landing" });
     }
   }
 };
@@ -186,7 +174,7 @@ export default {
   width: 100%;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
-  background-color: #135ebf;
+  background-color: var(--v-accent-base);
 }
 .v-toolbar ::v-deep .v-toolbar__extension {
   padding-right: 5px;

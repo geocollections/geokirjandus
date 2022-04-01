@@ -5,8 +5,8 @@
     hide-details
     dense
     outlined
-    color="#135ebf"
-    item-color="#135ebf"
+    :color="$vuetify.theme.themes.light.accent"
+    :item-color="$vuetify.theme.themes.light.accent"
     :menu-props="{ bottom: true, offsetY: true }"
     :label="$t('common.citationStyle')"
     @change="changeTemplate($event)"

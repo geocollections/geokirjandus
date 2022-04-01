@@ -19,8 +19,8 @@
     "infoLibrarySearch": "Otsing toimub kogumikus"
   },
   "error": {
-    "referenceId": "Ei leidnud kirjandust. ID: {text}",
-    "libraryId": "Ei leidnud kogumikku. ID: {text}",
+    "referenceId": "Kirjet \"{text}\" ei leitud.",
+    "libraryId": "Kogumiku \"{text}\" ei leitud",
     "nothingFound": "Ei leidnud otsingule vastavaid kirjeid",
     "nothingFoundReference": "Ei leidnud otsingule vastavat kirjandust",
     "nothingFoundLibrary": "Ei leidnud otsingule vastavaid kogumikke",
@@ -99,11 +99,12 @@
     "showMore": "kuva rohkem",
     "showLess": "kuva vähem",
     "language": "Keel",
-    
     "goTo": "Leheküljele",
     "goToBtn": "Mine",
     "pageSelect": "{current} / {count}",
-    "about": "Tutvustus"
+    "about": "Tutvustus",
+    "viewLibraries": "Sirvi kogumike",
+    "viewReferencesError": "Sirvi kirjeid"
   },
   "reference": {
     "id": "ID",

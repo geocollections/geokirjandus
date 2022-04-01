@@ -7,11 +7,11 @@
     chips
     deletable-chips
     clear-icon="fa-times"
-    color="#135ebf"
+    :color="$vuetify.theme.themes.light.accent"
     :label="label"
     :value="value"
     :items="items"
-    item-color="#135ebf"
+    :item-color="$vuetify.theme.themes.light.accent"
     :menu-props="{
       bottom: true,
       offsetY: true,

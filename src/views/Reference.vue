@@ -393,7 +393,7 @@
                 <span v-for="(keyword, index) in keywords" :key="index">
                   <v-chip
                     outlined
-                    color="#135ebf"
+                    :color="$vuetify.theme.themes.light.accent"
                     text-color="black"
                     class="mr-1 mb-1"
                     @click="handleKeyword(keyword.keyword.keyword)"
@@ -456,7 +456,7 @@
                 >
                   <v-chip
                     outlined
-                    color="#135ebf"
+                    :color="$vuetify.theme.themes.light.accent"
                     text-color="black"
                     class="mr-1 mb-1"
                     v-translate="{
@@ -502,16 +502,18 @@
                 </v-card>
               </v-card-text>
             </v-card>
-            <v-card v-else-if="error">
-              <v-card-actions class="referenceTitle">
-                <v-col cols="auto" class="py-0 px-0">
-                  <v-btn large icon @click="$router.back()" aria-label="back">
-                    <v-icon>fas fa-arrow-left</v-icon>
-                  </v-btn>
-                </v-col>
-                <div class="col title">
-                  {{ $t("error.referenceId", { text: id }) }}
-                </div>
+            <v-card flat color="transparent" v-else-if="error">
+              <div class="text-h4 text-center">
+                {{ $t("error.referenceId", { text: id }) }}
+              </div>
+              <v-card-actions class="mt-4">
+                <v-btn
+                  class="ml-auto mr-auto font-family-exo-2"
+                  :to="{ name: 'searchReference' }"
+                  color="accent"
+                >
+                  {{ $t("common.viewReferencesError") }}
+                </v-btn>
               </v-card-actions>
             </v-card>
           </div>
@@ -676,119 +678,123 @@ export default {
       return taxonResponse.data;
     },
     getReference(id) {
-      fetchReference(id).then(res => {
-        if (res === undefined) {
-          this.error = true;
-          return;
-        }
+      fetchReference(id)
+        .then(res => {
+          if (res === undefined) {
+            this.error = true;
+            return;
+          }
 
-        this.reference = res;
+          this.reference = res;
 
-        this.getReferenceLocalities().then(res => {
-          this.localities = res.results
-            .filter(localityReference => {
-              return !!(
-                localityReference.locality?.latitude &&
-                localityReference.locality?.longitude
-              );
-            })
-            .sort((a, b) => {
-              const textA = a.locality?.locality.toUpperCase();
-              const textB = b.locality?.locality.toUpperCase();
-              return textA < textB ? -1 : textA > textB ? 1 : 0;
-            });
+          this.getReferenceLocalities().then(res => {
+            this.localities = res.results
+              .filter(localityReference => {
+                return !!(
+                  localityReference.locality?.latitude &&
+                  localityReference.locality?.longitude
+                );
+              })
+              .sort((a, b) => {
+                const textA = a.locality?.locality.toUpperCase();
+                const textB = b.locality?.locality.toUpperCase();
+                return textA < textB ? -1 : textA > textB ? 1 : 0;
+              });
 
-          this.sites = res.results
-            .filter(localityReference => {
-              return !!(
-                localityReference.site?.latitude &&
-                localityReference.site?.longitude
-              );
-            })
-            .sort((a, b) => {
-              const textA = a.site?.name.toUpperCase();
-              const textB = b.site?.name.toUpperCase();
-              return textA < textB ? -1 : textA > textB ? 1 : 0;
-            });
+            this.sites = res.results
+              .filter(localityReference => {
+                return !!(
+                  localityReference.site?.latitude &&
+                  localityReference.site?.longitude
+                );
+              })
+              .sort((a, b) => {
+                const textA = a.site?.name.toUpperCase();
+                const textB = b.site?.name.toUpperCase();
+                return textA < textB ? -1 : textA > textB ? 1 : 0;
+              });
 
-          this.areas = res.results
-            .filter(localityReference => {
-              return !!localityReference.area?.polygon;
-            })
-            .map(localityReference => {
+            this.areas = res.results
+              .filter(localityReference => {
+                return !!localityReference.area?.polygon;
+              })
+              .map(localityReference => {
+                return {
+                  ...localityReference,
+                  area: {
+                    ...localityReference.area,
+                    polygon: this.geojson(localityReference.area.polygon)
+                  }
+                };
+              })
+              .sort((a, b) => {
+                const textA = a.area?.name.toUpperCase();
+                const textB = b.area?.name.toUpperCase();
+                return textA < textB ? -1 : textA > textB ? 1 : 0;
+              });
+            this.localityMarkers = this.localities.map(localityReference => {
+              const localityTitle =
+                this.$i18n.locale === "ee"
+                  ? localityReference.locality?.locality
+                  : localityReference.locality?.locality_en;
+
               return {
-                ...localityReference,
-                area: {
-                  ...localityReference.area,
-                  polygon: this.geojson(localityReference.area.polygon)
-                }
+                popup: `<a href="https://geoloogia.info/locality/${localityReference.locality?.id}" target="_blank">${localityTitle}</a>`,
+                title: localityTitle,
+                coordinates: [
+                  localityReference.locality?.latitude,
+                  localityReference.locality?.longitude
+                ]
               };
-            })
-            .sort((a, b) => {
-              const textA = a.area?.name.toUpperCase();
-              const textB = b.area?.name.toUpperCase();
-              return textA < textB ? -1 : textA > textB ? 1 : 0;
             });
-          this.localityMarkers = this.localities.map(localityReference => {
-            const localityTitle =
-              this.$i18n.locale === "ee"
-                ? localityReference.locality?.locality
-                : localityReference.locality?.locality_en;
 
-            return {
-              popup: `<a href="https://geoloogia.info/locality/${localityReference.locality?.id}" target="_blank">${localityTitle}</a>`,
-              title: localityTitle,
-              coordinates: [
-                localityReference.locality?.latitude,
-                localityReference.locality?.longitude
-              ]
-            };
+            this.siteMarkers = this.sites.map(localityReference => {
+              const siteTitle =
+                this.$i18n.locale === "ee"
+                  ? localityReference.site?.name
+                  : localityReference.site?.name_en;
+
+              return {
+                popup: `<a href="https://geoloogia.info/site/${localityReference.site?.id}" target="_blank">${siteTitle}</a>`,
+                title: siteTitle,
+                coordinates: [
+                  localityReference.site?.latitude,
+                  localityReference.site?.longitude
+                ]
+              };
+            });
           });
 
-          this.siteMarkers = this.sites.map(localityReference => {
-            const siteTitle =
-              this.$i18n.locale === "ee"
-                ? localityReference.site?.name
-                : localityReference.site?.name_en;
-
-            return {
-              popup: `<a href="https://geoloogia.info/site/${localityReference.site?.id}" target="_blank">${siteTitle}</a>`,
-              title: siteTitle,
-              coordinates: [
-                localityReference.site?.latitude,
-                localityReference.site?.longitude
-              ]
-            };
+          this.getReferenceLibraries().then(res => {
+            this.libraries = res.results;
           });
-        });
 
-        this.getReferenceLibraries().then(res => {
-          this.libraries = res.results;
-        });
-
-        this.getChildReferences().then(res => {
-          // NOTE: Has to be sorted client-side because the pages field is a string.
-          this.childReferences = res.results.sort((a, b) => {
-            if (a.pages === null && b.pages === null) return 0;
-            if (a.pages === null) return -1;
-            if (b.pages === null) return 1;
-            const aStart = a.pages.includes("-")
-              ? parseInt(a.pages.split("-")[0].trim())
-              : parseInt(a.pages);
-            const bStart = b.pages.includes("-")
-              ? parseInt(b.pages.split("-")[0].trim())
-              : parseInt(b.pages);
-            return aStart - bStart;
+          this.getChildReferences().then(res => {
+            // NOTE: Has to be sorted client-side because the pages field is a string.
+            this.childReferences = res.results.sort((a, b) => {
+              if (a.pages === null && b.pages === null) return 0;
+              if (a.pages === null) return -1;
+              if (b.pages === null) return 1;
+              const aStart = a.pages.includes("-")
+                ? parseInt(a.pages.split("-")[0].trim())
+                : parseInt(a.pages);
+              const bStart = b.pages.includes("-")
+                ? parseInt(b.pages.split("-")[0].trim())
+                : parseInt(b.pages);
+              return aStart - bStart;
+            });
           });
-        });
 
-        this.getKeywords().then(res => {
-          this.keywords = res.results;
+          this.getKeywords().then(res => {
+            this.keywords = res.results;
+          });
+          this.getTaxa().then(res => {
+            this.taxa = res.results;
+          });
+        })
+        .catch(err => {
+          this.error = true;
         });
-        this.getTaxa().then(res => {
-          this.taxa = res.results;
-        });
-      });
     }
   }
 };

@@ -8,7 +8,7 @@
           outlined
           dense
           :value="value[0]"
-          color="#135ebf"
+          :color="$vuetify.theme.themes.light.accent"
           :label="fieldLabels.min"
           hide-details
           single-line
@@ -27,7 +27,7 @@
           outlined
           dense
           :value="value[1]"
-          color="#135ebf"
+          :color="$vuetify.theme.themes.light.accent"
           :label="fieldLabels.max"
           hide-details
           single-line

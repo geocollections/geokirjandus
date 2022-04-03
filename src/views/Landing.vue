@@ -15,7 +15,7 @@
           <v-col cols="12" class="header d-flex flex-column pt-sm-10">
             <v-card flat tile color="transparent">
               <v-card-title
-                class="pb-0 text-h4 text-sm-h3 white--text text-center justify-center font-weight-medium "
+                class="pb-0 text-h3 text-sm-h2 white--text text-center justify-center font-weight-medium title"
                 style="word-break: normal"
               >
                 {{ $t("subtitle") }}
@@ -202,8 +202,9 @@ export default {
   background-size: cover, cover, cover;
 }
 .layer1 {
-  background-image: url("../assets/layered-steps-haikei (5).svg"),
-    linear-gradient(to right, #00000033, #00000033), url("../assets/books4.jpg");
+  background: linear-gradient(rgba(234, 146, 25, 0.8), rgba(234, 146, 25, 0)),
+    url("https://files.geocollections.info/img/geokirjandus/map.jpg");
+  background-size: cover;
 }
 
 .main {
@@ -224,7 +225,7 @@ export default {
 }
 
 .title {
-  font-size: 2.25rem !important;
-  text-shadow: 2px 2px 10px black;
+  /*font-size: 2.25rem !important;*/
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
 }
 </style>

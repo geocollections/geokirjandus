@@ -18,6 +18,12 @@
                 class="pb-0 text-h3 text-sm-h2 white--text text-center justify-center font-weight-medium title"
                 style="word-break: normal"
               >
+                {{ $t("title") }}
+              </v-card-title>
+              <v-card-title
+                class="pb-0 text-h5 text-sm-h4 white--text text-center justify-center font-weight-medium title"
+                style="word-break: normal"
+              >
                 {{ $t("subtitle") }}
               </v-card-title>
               <v-card-actions class="text-center d-flex justify-center mt-6">

@@ -1,6 +1,6 @@
 {
-  "title": "Eesti maapõue kirjanduse",
-  "title2": "Eesti maapõue teavikud",
+  "title": "GEOKIRJANDUS",
+  "title2": "Geokirjandus",
   "subtitle": "Eesti maapõue teavikute register",
   "pagination": "{num} kaupa",
   "messages": {
@@ -27,7 +27,7 @@
     "exportCount": "Korraga saab eksportida kuni 1000 kirjet"
   },
   "tabs": {
-    "references": "Kirjandus",
+    "references": "Teavikud",
     "libraries": "Kogumikud"
   },
   "viewer": {

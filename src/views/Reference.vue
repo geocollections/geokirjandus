@@ -144,10 +144,10 @@
                             <th>{{ $t("reference.journalName") }}</th>
                             <td>{{ journal.journal_name }}</td>
                           </tr>
-                          <tr v-if="journal && journal.journal_short">
-                            <th>{{ $t("reference.journalNameShort") }}</th>
-                            <td>{{ journal.journal_short }}</td>
-                          </tr>
+<!--                          <tr v-if="journal && journal.journal_short">-->
+<!--                            <th>{{ $t("reference.journalNameShort") }}</th>-->
+<!--                            <td>{{ journal.journal_short }}</td>-->
+<!--                          </tr>-->
                           <tr v-if="reference.parent_reference">
                             <th>{{ $t("reference.parentReference") }}</th>
                             <td>
@@ -252,6 +252,12 @@
                             <th>{{ $t("reference.isEstonianAuthor") }}</th>
                             <td>
                               {{ $t("common.yes") }}
+                            </td>
+                          </tr>
+                          <tr v-if="reference.id">
+                            <th>{{ $t("reference.id") }}</th>
+                            <td>
+                              {{ reference.id }}
                             </td>
                           </tr>
                         </tbody>
@@ -478,32 +484,17 @@
                 </span>
               </v-card-text>
               <v-card-text>
-                <div class="text-h6 pb-2">
-                  {{ $t("common.misc") }}
-                </div>
-                <v-card flat outlined>
-                  <v-simple-table>
-                    <template v-slot:default>
-                      <tbody>
-                        <tr>
-                          <th>{{ $t("reference.id") }}</th>
-                          <td>{{ reference.id }}</td>
-                        </tr>
-                        <tr v-if="reference.user_added">
-                          <th>{{ $t("reference.dateAdded") }}</th>
-                          <td>
-                            {{ formatDate(reference.date_added) }}
-                          </td>
-                        </tr>
-                        <tr v-if="reference.user_changed">
-                          <th>{{ $t("reference.dateChanged") }}</th>
-                          <td>
-                            {{ formatDate(reference.date_changed) }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
+                <v-card flat class="px-2">
+                  <v-row no-gutters>
+                    <v-col cols="auto" class="pt-2 pr-3">
+                      <b>{{ $t("reference.dateAdded") }}:</b>
+                      {{ formatDate(reference.date_added) }}
+                    </v-col>
+                    <v-col cols="auto" class="pt-2">
+                      <b>{{ $t("reference.dateChanged") }}:</b>
+                      {{ formatDate(reference.date_changed) }}
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-card-text>
             </v-card>

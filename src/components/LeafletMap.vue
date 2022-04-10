@@ -135,6 +135,21 @@ export default {
           ),
           minZoom: 6,
           maxZoom: 18
+        },
+        {
+          name: "Estonian bedrock",
+          leafletObject: tileLayer.wms(
+            "https://gis.geocollections.info/geoserver/wms",
+            {
+              attribution: `<a href='https://ttu.ee/geoloogia-instituut' target='MapReferenceWindow'>&copy; Geoloogia instituut</a>`,
+              layers: "geocollections:bedrock400k",
+              format: "image/png",
+              transparent: true,
+              tiled: true,
+              detectRetina: true,
+              updateWhenIdle: true
+            }
+          )
         }
       ]
     };
@@ -146,14 +161,18 @@ export default {
     setupLeafletMap() {
       const mapDiv = map(this.$refs["mapElement"], {
         layers: [this.maps[0].leafletObject]
-      }).setView([0, 0], 1);
+      }).setView([58.5, 25.5], 1);
 
       let baseMaps = {};
+      let overlayMaps = {};
       this.maps.forEach(
         provider => (baseMaps[provider.name] = provider.leafletObject)
       );
+      this.overlayMaps.forEach(
+        provider => (overlayMaps[provider.name] = provider.leafletObject)
+      );
 
-      control.layers(baseMaps).addTo(mapDiv);
+      control.layers(baseMaps, overlayMaps).addTo(mapDiv);
 
       const markerClusters = markerClusterGroup({ maxClusterRadius: 30 });
       let markers = [];
@@ -189,16 +208,15 @@ export default {
             this.$i18n.locale === "ee" ? a.area.name : a.area.name_en
           }</a>`
         );
+        mapDiv.fitBounds(geoJSONObj.getBounds(), { maxZoom: 8 });
       }
 
-      if (markers.length > 100) {
-        mapDiv.addLayer(markerClusters);
-      } else mapDiv.addLayer(layerGroup(markers));
-      let bounds = new featureGroup(markers).getBounds();
-      mapDiv.fitBounds(bounds);
+      if (markers.length > 0) {
+        if (markers.length > 100) mapDiv.addLayer(markerClusters);
+        else mapDiv.addLayer(layerGroup(markers));
 
-      if (markers.length < 2) {
-        mapDiv.setZoom(6);
+        let bounds = new featureGroup(markers).getBounds();
+        if (bounds.isValid()) mapDiv.fitBounds(bounds, { maxZoom: 10 });
       }
 
       this.map = mapDiv;

@@ -135,7 +135,29 @@ export default {
           ),
           minZoom: 6,
           maxZoom: 18
-        }
+        },
+        // {
+        //   id: 'est-bed-overlay',
+        //   isWMS: true,
+        //   name: 'Estonian bedrock',
+        //   url: 'https://gis.geocollections.info/geoserver/wms',
+        //   layers: 'geocollections:bedrock400k',
+        //   visible: this.estonianBedrockOverlay,
+        //   transparent: true,
+        //   zIndex: 10,
+        //   options: {
+        //     maxNativeZoom: 18,
+        //     maxZoom: 21,
+        //     attribution:
+        //         "Geology: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
+        //     format: 'image/png',
+        //     tiled: true,
+        //     detectRetina: true,
+        //     updateWhenIdle: true,
+        //     zIndex: 10,
+        //   },
+        // },
+
       ]
     };
   },
@@ -146,7 +168,7 @@ export default {
     setupLeafletMap() {
       const mapDiv = map(this.$refs["mapElement"], {
         layers: [this.maps[0].leafletObject]
-      }).setView([0, 0], 1);
+      }).setView([58.5, 25.5], 1);
 
       let baseMaps = {};
       this.maps.forEach(
@@ -189,16 +211,15 @@ export default {
             this.$i18n.locale === "ee" ? a.area.name : a.area.name_en
           }</a>`
         );
+        mapDiv.fitBounds(geoJSONObj.getBounds(), { maxZoom: 8 });
       }
 
-      if (markers.length > 100) {
-        mapDiv.addLayer(markerClusters);
-      } else mapDiv.addLayer(layerGroup(markers));
-      let bounds = new featureGroup(markers).getBounds();
-      mapDiv.fitBounds(bounds);
+      if (markers.length > 0) {
+        if (markers.length > 100) mapDiv.addLayer(markerClusters);
+        else mapDiv.addLayer(layerGroup(markers));
 
-      if (markers.length < 2) {
-        mapDiv.setZoom(6);
+        let bounds = new featureGroup(markers).getBounds();
+        if (bounds.isValid()) mapDiv.fitBounds(bounds, { maxZoom: 10 });
       }
 
       this.map = mapDiv;

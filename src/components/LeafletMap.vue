@@ -136,28 +136,21 @@ export default {
           minZoom: 6,
           maxZoom: 18
         },
-        // {
-        //   id: 'est-bed-overlay',
-        //   isWMS: true,
-        //   name: 'Estonian bedrock',
-        //   url: 'https://gis.geocollections.info/geoserver/wms',
-        //   layers: 'geocollections:bedrock400k',
-        //   visible: this.estonianBedrockOverlay,
-        //   transparent: true,
-        //   zIndex: 10,
-        //   options: {
-        //     maxNativeZoom: 18,
-        //     maxZoom: 21,
-        //     attribution:
-        //         "Geology: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
-        //     format: 'image/png',
-        //     tiled: true,
-        //     detectRetina: true,
-        //     updateWhenIdle: true,
-        //     zIndex: 10,
-        //   },
-        // },
-
+        {
+          name: "Estonian bedrock",
+          leafletObject: tileLayer.wms(
+            "https://gis.geocollections.info/geoserver/wms",
+            {
+              attribution: `<a href='https://ttu.ee/geoloogia-instituut' target='MapReferenceWindow'>&copy; Geoloogia instituut</a>`,
+              layers: "geocollections:bedrock400k",
+              format: "image/png",
+              transparent: true,
+              tiled: true,
+              detectRetina: true,
+              updateWhenIdle: true
+            }
+          )
+        }
       ]
     };
   },
@@ -171,11 +164,15 @@ export default {
       }).setView([58.5, 25.5], 1);
 
       let baseMaps = {};
+      let overlayMaps = {};
       this.maps.forEach(
         provider => (baseMaps[provider.name] = provider.leafletObject)
       );
+      this.overlayMaps.forEach(
+        provider => (overlayMaps[provider.name] = provider.leafletObject)
+      );
 
-      control.layers(baseMaps).addTo(mapDiv);
+      control.layers(baseMaps, overlayMaps).addTo(mapDiv);
 
       const markerClusters = markerClusterGroup({ maxClusterRadius: 30 });
       let markers = [];

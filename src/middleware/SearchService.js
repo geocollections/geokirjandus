@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SOLR_API_URL = "https://api.geocollections.info/solr";
+const SOLR_API_URL = "https://api.geoloogia.info/solr";
 const API_URL = "https://api.geoloogia.info";
 const FACET_QUERY_REFERENCE =
   "facet=on&facet.field={!ex=dt}type&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0&" +
@@ -15,7 +15,7 @@ class SearchService {
         parameters.search,
         parameters.advancedSearch ?? {}
       );
-      let url = `${SOLR_API_URL}/${table}/`;
+      let url = `${SOLR_API_URL}/${table}`;
 
       let urlParameters = [];
 
@@ -182,9 +182,7 @@ function buildQueryStr(queryObject, filterQueryObject) {
       if (prev.length > 0) return `${prev}&fq=${tag}${filterQueryParam}`;
       return `${prev}fq=${tag}${filterQueryParam}`;
     }, "");
-  return filterQueryStr.length > 0
-    ? encodeURIComponent(`${queryStr}&${filterQueryStr}`)
-    : encodeURIComponent(queryStr);
+  return filterQueryStr.length > 0 ? `${queryStr}&${filterQueryStr}` : queryStr;
 }
 
 export default SearchService;

@@ -85,7 +85,7 @@ export default {
         { name: "link.geocollections", url: "https://geocollections.info" },
         { name: "link.fossiilid", url: "https://fossiilid.info" },
         { name: "link.kivid", url: "https://kivid.info" },
-        { name: "link.sarvAPI", url: "https://api.geocollections.info" },
+        { name: "link.sarvAPI", url: "https://api.geoloogia.info" },
         { name: "link.sarvDOI", url: "https://doi.geocollections.info" },
         {
           name: "link.sarvEdit",

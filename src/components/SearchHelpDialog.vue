@@ -38,8 +38,8 @@ export default {
   },
   methods: {
     getHelp() {
-      axios.get("https://api.geocollections.info/page/76").then(res => {
-        this.help = res.data.results[0];
+      axios.get("https://api.geoloogia.info/web_pages/76/").then(res => {
+        this.help = res.data;
       });
     }
   }

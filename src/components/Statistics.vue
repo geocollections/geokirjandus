@@ -306,7 +306,7 @@ export default {
     getStatisticsData() {
       axios
         .get(
-          "https://api.geocollections.info/solr/reference/" +
+          "https://api.geoloogia.info/solr/reference" +
             "?q=*&rows=1&fq=is_estonian_reference:1" +
             "&facet=on&facet.query=keywords%3A*alusp%C3%B5hjageoloogia*&facet.query=keywords%3A*paleontoloogia*&facet.query=keywords%3A*kvaternaarigeoloogia*&facet.query=keywords%3A*maavarad*&facet.query=keywords%3A*h%C3%BCdrogeoloogia*&facet.query=keywords:*ehitusgeoloogia*&facet.query=keywords:*m%C3%A4endus*&facet.query=keywords:*personaalia*&facet.query=keywords:*kroonika*" +
             "&facet.field=language&facet.mincount=1&facet.field=type" +

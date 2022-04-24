@@ -148,8 +148,8 @@ export default {
       "updateAdvancedSearch"
     ]),
     getIntroduction() {
-      axios.get("https://api.geocollections.info/page/75").then(res => {
-        this.intro = res.data.results[0];
+      axios.get("https://api.geoloogia.info/web_pages/75/").then(res => {
+        this.intro = res.data;
       });
     },
     search(event) {
@@ -192,7 +192,7 @@ export default {
           }
         }
       }).then(res => {
-        this.references = res.results;
+        this.references = res?.response?.docs ?? [];
       });
     }
   }

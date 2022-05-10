@@ -4,7 +4,7 @@
       <div>
         <v-card-text
           class="text-h6 pt-0 d-flex justify-center"
-          v-html="$t('charts.title_html', { num: statisticsData.count })"
+          v-html="$t('charts.title_html', { num: statisticsData.response.numFound })"
         >
         </v-card-text>
         <v-row justify="space-around">

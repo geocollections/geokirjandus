@@ -150,6 +150,21 @@ export default {
               updateWhenIdle: true
             }
           )
+        },
+        {
+          name: "Estonian basement",
+          leafletObject: tileLayer.wms(
+            "https://gis.geoloogia.info/geoserver/sarv/wms",
+            {
+              attribution: `<a href='https://ttu.ee/geoloogia-instituut' target='MapReferenceWindow'>&copy; Geoloogia instituut</a>`,
+              layers: "sarv:basement",
+              format: "image/png",
+              transparent: true,
+              tiled: true,
+              detectRetina: true,
+              updateWhenIdle: true
+            }
+          )
         }
       ]
     };

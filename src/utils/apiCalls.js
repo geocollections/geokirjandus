@@ -1,5 +1,5 @@
-import SearchService from "@/middleware/SearchService";
-
+import SearchService, { SOLR_API_URL } from "@/middleware/SearchService";
+import axios from "axios";
 export const fetchReference = id => {
   return SearchService.getDetailView(id, "reference");
 };
@@ -43,4 +43,8 @@ export const fetchLibraryReferences = (id, query) => {
 
 export const fetchReferenceLocalities = data => {
   return SearchService.search(data, "locality");
+};
+
+export const fetchSolrFields = async schema => {
+  return await axios.get(`${SOLR_API_URL}/${schema}?q=*:*&wt=csv&rows=0`);
 };

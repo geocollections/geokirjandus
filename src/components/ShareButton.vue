@@ -107,7 +107,11 @@
 import { mapState } from "vuex";
 import urlMixin from "@/mixins/urlMixin";
 import toastMixin from "@/mixins/toastMixin";
-import { fetchLibraryReferences, fetchReferences } from "@/utils/apiCalls";
+import {
+  fetchLibraryReferences,
+  fetchReferences,
+  fetchSolrFields
+} from "@/utils/apiCalls";
 import CopyButton from "@/components/CopyButton";
 import { Cite } from "@citation-js/core";
 import "@citation-js/plugin-ris";
@@ -191,7 +195,7 @@ export default {
         const filename =
           this.filename.length > 0 ? this.filename : "exportFile";
 
-        createFile(filename, this.exportType, res.results);
+        createFile(filename, this.exportType, res.response.docs);
       };
 
       if (this.$route.name === "library") {
@@ -214,12 +218,10 @@ export default {
         }).then(handleFileCreation);
       }
     },
-    exportToCSV(data, filename) {
+    async exportToCSV(data, filename) {
       const failMsg = this.$t("messages.CSVExportFail");
       const successMsg = this.$t("messages.CSVExportSuccess");
-
-      let csvString = this.convertToCSV(data);
-
+      let csvString = await this.convertToCSV(data);
       if (csvString.length === 0) {
         this.toastError({ text: failMsg });
         return;
@@ -230,9 +232,16 @@ export default {
       this.toastSuccess({ text: successMsg });
     },
 
-    convertToCSV(data) {
-      // Possibility to export exact fields for each object
-      const fields = Object.keys(data[0]);
+    async convertToCSV(data) {
+      // BUG: Currently the fields are taken from the first object, but
+      // Solr does not return fields fields that are not set.
+      // Therefore the first object might not include all fields and some
+      // might be left out.
+
+      const fieldsRequest = await fetchSolrFields("reference");
+      const fields = fieldsRequest.data.split(",").sort();
+
+      // const fields = Object.keys(data[0]);
       const opts = { fields };
 
       try {

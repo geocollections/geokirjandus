@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SOLR_API_URL = "https://api.geoloogia.info/solr";
+export const SOLR_API_URL = "https://api.geoloogia.info/solr";
 const API_URL = "https://api.geoloogia.info";
 const FACET_QUERY_REFERENCE =
   "facet=on&facet.field={!ex=dt}type&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=0&" +

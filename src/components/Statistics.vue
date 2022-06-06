@@ -27,13 +27,15 @@
             <div class="text-h6 text-center pb-3">
               {{ $t("charts.byDecade") }}
             </div>
-            <bar-chart
-              id="byDecade"
-              class="d-flex justify-center"
-              :chartData="getDecadesChartData"
-              :options="getDecadesChartOptions(handleDecadeClick)"
-              :locale="$i18n.locale"
-            />
+            <div>
+              <bar-chart
+                id="byDecade"
+                class="d-flex justify-center"
+                :chartData="getDecadesChartData"
+                :options="getDecadesChartOptions(handleDecadeClick)"
+                :locale="$i18n.locale"
+              />
+            </div>
           </v-col>
           <v-divider class="mt-8" vertical />
           <v-col cols="12" sm="6" md="auto">
@@ -64,6 +66,8 @@ export default {
     return {
       statisticsData: null,
       barChartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [
             {
@@ -240,14 +244,14 @@ export default {
     getKeywordsChartOptions(onClick) {
       let options = cloneDeep(this.getChartOptions("bar", onClick));
 
-      options.scales.xAxes[0].ticks.max = 7000;
+      options.scales.xAxes[0].ticks.max = 10000;
 
       return options;
     },
     getDecadesChartOptions(onClick) {
       let options = cloneDeep(this.getChartOptions("bar", onClick));
 
-      options.scales.xAxes[0].ticks.max = 4000;
+      options.scales.xAxes[0].ticks.max = 6000;
 
       return options;
     },

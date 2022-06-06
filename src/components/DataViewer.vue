@@ -78,7 +78,7 @@
             "
           />
         </div>
-        <share-button v-if="showShare" :count="count" />
+        <share-button v-if="showShare" :count="options.itemsPerPage" />
       </v-card-actions>
       <base-pagination
         class="ml-auto justify-end pt-2 pt-sm-0"

@@ -695,10 +695,7 @@ export default {
           this.getReferenceLocalities().then(res => {
             this.localities = res.results
               .filter(localityReference => {
-                return !!(
-                  localityReference.locality?.latitude &&
-                  localityReference.locality?.longitude
-                );
+                return localityReference.locality;
               })
               .sort((a, b) => {
                 const textA = a.locality?.locality.toUpperCase();
@@ -708,10 +705,7 @@ export default {
 
             this.sites = res.results
               .filter(localityReference => {
-                return !!(
-                  localityReference.site?.latitude &&
-                  localityReference.site?.longitude
-                );
+                return localityReference.site;
               })
               .sort((a, b) => {
                 const textA = a.site?.name.toUpperCase();
@@ -737,37 +731,51 @@ export default {
                 const textB = b.area?.name.toUpperCase();
                 return textA < textB ? -1 : textA > textB ? 1 : 0;
               });
-            this.localityMarkers = this.localities.map(localityReference => {
-              const localityTitle =
-                this.$i18n.locale === "ee"
-                  ? localityReference.locality?.locality
-                  : localityReference.locality?.locality_en;
-
-              return {
-                popup: `<a class="link" href="https://geoloogia.info/locality/${localityReference.locality?.id}" target="_blank">${localityTitle}</a>`,
-                title: localityTitle,
-                coordinates: [
-                  localityReference.locality?.latitude,
+            this.localityMarkers = this.localities
+              .filter(localityReference => {
+                return !!(
+                  localityReference.locality?.latitude &&
                   localityReference.locality?.longitude
-                ]
-              };
-            });
+                );
+              })
+              .map(localityReference => {
+                const localityTitle =
+                  this.$i18n.locale === "ee"
+                    ? localityReference.locality?.locality
+                    : localityReference.locality?.locality_en;
 
-            this.siteMarkers = this.sites.map(localityReference => {
-              const siteTitle =
-                this.$i18n.locale === "ee"
-                  ? localityReference.site?.name
-                  : localityReference.site?.name_en;
+                return {
+                  popup: `<a class="link" href="https://geoloogia.info/locality/${localityReference.locality?.id}" target="_blank">${localityTitle}</a>`,
+                  title: localityTitle,
+                  coordinates: [
+                    localityReference.locality?.latitude,
+                    localityReference.locality?.longitude
+                  ]
+                };
+              });
 
-              return {
-                popup: `<a class="link" href="https://geoloogia.info/site/${localityReference.site?.id}" target="_blank">${siteTitle}</a>`,
-                title: siteTitle,
-                coordinates: [
-                  localityReference.site?.latitude,
+            this.siteMarkers = this.sites
+              .filter(localityReference => {
+                return !!(
+                  localityReference.site?.latitude &&
                   localityReference.site?.longitude
-                ]
-              };
-            });
+                );
+              })
+              .map(localityReference => {
+                const siteTitle =
+                  this.$i18n.locale === "ee"
+                    ? localityReference.site?.name
+                    : localityReference.site?.name_en;
+
+                return {
+                  popup: `<a class="link" href="https://geoloogia.info/site/${localityReference.site?.id}" target="_blank">${siteTitle}</a>`,
+                  title: siteTitle,
+                  coordinates: [
+                    localityReference.site?.latitude,
+                    localityReference.site?.longitude
+                  ]
+                };
+              });
           });
 
           this.getReferenceLibraries().then(res => {

@@ -275,22 +275,23 @@ export default {
       const decade = this.getDecadesChartData.labels[e[0]._index];
 
       this.resetSearch();
-      this.updateAdvancedSearch({
-        id: "year",
-        value: [parseInt(decade), parseInt(decade) + 9]
+      this.$router.push({
+        name: "searchReference",
+        query: {
+          year: `${parseInt(decade)}-${parseInt(decade) + 9}`,
+          isEstonianReference: null
+        }
       });
-      this.$router.push({ name: "searchReference" });
     },
     handleKeywordClick(point, e) {
       if (e.length < 1) return;
       const keyword = this.getKeywordsChartData.labels[e[0]._index];
 
       this.resetSearch();
-      this.updateAdvancedSearch({
-        id: "keywords",
-        value: keyword
+      this.$router.push({
+        name: "searchReference",
+        query: { keywords: keyword, isEstonianReference: null }
       });
-      this.$router.push({ name: "searchReference" });
     },
     handleTypeClick(point, e) {
       if (e.length < 1) return;
@@ -298,12 +299,10 @@ export default {
 
       this.resetSearch();
 
-      this.updateAdvancedSearch({
-        id: "type",
-        value: [type.id]
+      this.$router.push({
+        name: "searchReference",
+        query: { type: type.id, isEstonianReference: null }
       });
-
-      this.$router.push({ name: "searchReference" });
     },
     getStatisticsData() {
       axios

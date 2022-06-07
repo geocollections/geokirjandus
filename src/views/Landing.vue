@@ -155,7 +155,7 @@ export default {
         return;
       this.resetSearch();
       this.updateSearch(this.searchStr);
-      let query = {};
+      let query = { isEstonianReference: null };
 
       if (this.searchStr && this.searchStr.length > 0) {
         query.query = this.searchStr;

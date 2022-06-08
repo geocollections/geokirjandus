@@ -52,7 +52,7 @@ const INIT_STATE = {
         lookUpType: "equals",
         value: null,
         label: "reference.localities",
-        fields: ["localities"]
+        fields: ["localities", "localities_en"]
       },
       book: {
         type: "text",

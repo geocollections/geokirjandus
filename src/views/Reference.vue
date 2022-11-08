@@ -9,11 +9,11 @@
             {
               text: $t('tabs.references'),
               to: { name: 'searchReference' },
-              exact: true
+              exact: true,
             },
             {
-              text: `${reference.reference}`
-            }
+              text: `${reference.reference}`,
+            },
           ]"
         >
           <template v-slot:item="{ item }">
@@ -153,7 +153,7 @@
                             <td>
                               <router-link
                                 :to="{
-                                  path: `${reference.parent_reference.id}`
+                                  path: `${reference.parent_reference.id}`,
                                 }"
                               >
                                 {{ reference.parent_reference.title }}
@@ -177,7 +177,7 @@
                             <td
                               v-translate="{
                                 et: reference.type.value,
-                                en: reference.type.value_en
+                                en: reference.type.value_en,
                               }"
                             />
                           </tr>
@@ -190,7 +190,7 @@
                             <td
                               v-translate="{
                                 et: reference.language.value,
-                                en: reference.language.value_en
+                                en: reference.language.value_en,
                               }"
                             />
                           </tr>
@@ -209,7 +209,7 @@
                             <td>
                               <a
                                 class="link"
-                                :href="reference.doi_url"
+                                :href="`https://doi.org/${reference.doi}`"
                                 target="_blank"
                                 >{{ reference.doi }}</a
                               >
@@ -235,7 +235,7 @@
                                 :href="reference.licence_url"
                                 v-translate="{
                                   et: reference.licence.licence,
-                                  en: reference.licence.licence_en
+                                  en: reference.licence.licence_en,
                                 }"
                                 target="_blank"
                               />
@@ -332,7 +332,7 @@
                             target="_blank"
                             v-translate="{
                               et: locality.locality.locality,
-                              en: locality.locality.locality_en
+                              en: locality.locality.locality_en,
                             }"
                           />
                         </li>
@@ -372,7 +372,7 @@
                             target="_blank"
                             v-translate="{
                               et: area.area.name,
-                              en: area.area.name_en
+                              en: area.area.name_en,
                             }"
                           />
                         </li>
@@ -419,7 +419,7 @@
                           <router-link
                             :to="{
                               name: 'reference',
-                              params: { id: `${childReference.id}` }
+                              params: { id: `${childReference.id}` },
                             }"
                           >
                             {{ childReference.author }}
@@ -466,12 +466,12 @@
                     class="mr-1 mb-1"
                     v-translate="{
                       et: library.library.title,
-                      en: library.library.title_en
+                      en: library.library.title_en,
                     }"
                     @click="
                       $router.push({
                         name: `library`,
-                        params: { id: library.library.id }
+                        params: { id: library.library.id },
                       })
                     "
                   />
@@ -549,13 +549,13 @@ export default {
     ReferenceLinks,
     LeafletMap,
     CitationSelect,
-    BaseCitationDetail
+    BaseCitationDetail,
   },
   mixins: [dateMixin, urlMixin, citationMixin],
   props: {
     id: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
@@ -569,7 +569,7 @@ export default {
       taxa: [],
       sites: [],
       siteMarkers: [],
-      areas: []
+      areas: [],
     };
   },
   metaInfo() {
@@ -579,13 +579,13 @@ export default {
         {
           property: "og:title",
           vmid: "og:title",
-          content: `${this.reference?.reference}: ${this.reference?.title}`
+          content: `${this.reference?.reference}: ${this.reference?.title}`,
         },
         {
           property: "keywords",
-          content: this.reference?.keywords
-        }
-      ]
+          content: this.reference?.keywords,
+        },
+      ],
     };
   },
   computed: {
@@ -595,7 +595,7 @@ export default {
     },
     type() {
       return this.reference?.type;
-    }
+    },
   },
   beforeRouteUpdate(to, from, next) {
     this.getReference(to.params.id);
@@ -611,7 +611,7 @@ export default {
     handleKeyword(keyword) {
       this.updateAdvancedSearch({
         value: keyword,
-        id: "keywords"
+        id: "keywords",
       });
       this.$router.push({ name: "searchReference" });
     },
@@ -645,8 +645,8 @@ export default {
           type: "Feature",
           geometry: {
             type: "Polygon",
-            coordinates: polygon
-          }
+            coordinates: polygon,
+          },
         };
     },
     async getReferenceLibraries() {
@@ -684,7 +684,7 @@ export default {
     },
     getReference(id) {
       fetchReference(id)
-        .then(res => {
+        .then((res) => {
           if (res === undefined) {
             this.error = true;
             return;
@@ -692,9 +692,9 @@ export default {
 
           this.reference = res;
 
-          this.getReferenceLocalities().then(res => {
+          this.getReferenceLocalities().then((res) => {
             this.localities = res.results
-              .filter(localityReference => {
+              .filter((localityReference) => {
                 return localityReference.locality;
               })
               .sort((a, b) => {
@@ -704,7 +704,7 @@ export default {
               });
 
             this.sites = res.results
-              .filter(localityReference => {
+              .filter((localityReference) => {
                 return localityReference.site;
               })
               .sort((a, b) => {
@@ -714,16 +714,16 @@ export default {
               });
 
             this.areas = res.results
-              .filter(localityReference => {
+              .filter((localityReference) => {
                 return !!localityReference.area?.polygon;
               })
-              .map(localityReference => {
+              .map((localityReference) => {
                 return {
                   ...localityReference,
                   area: {
                     ...localityReference.area,
-                    polygon: this.geojson(localityReference.area.polygon)
-                  }
+                    polygon: this.geojson(localityReference.area.polygon),
+                  },
                 };
               })
               .sort((a, b) => {
@@ -732,13 +732,13 @@ export default {
                 return textA < textB ? -1 : textA > textB ? 1 : 0;
               });
             this.localityMarkers = this.localities
-              .filter(localityReference => {
+              .filter((localityReference) => {
                 return !!(
                   localityReference.locality?.latitude &&
                   localityReference.locality?.longitude
                 );
               })
-              .map(localityReference => {
+              .map((localityReference) => {
                 const localityTitle =
                   this.$i18n.locale === "ee"
                     ? localityReference.locality?.locality
@@ -749,19 +749,19 @@ export default {
                   title: localityTitle,
                   coordinates: [
                     localityReference.locality?.latitude,
-                    localityReference.locality?.longitude
-                  ]
+                    localityReference.locality?.longitude,
+                  ],
                 };
               });
 
             this.siteMarkers = this.sites
-              .filter(localityReference => {
+              .filter((localityReference) => {
                 return !!(
                   localityReference.site?.latitude &&
                   localityReference.site?.longitude
                 );
               })
-              .map(localityReference => {
+              .map((localityReference) => {
                 const siteTitle =
                   this.$i18n.locale === "ee"
                     ? localityReference.site?.name
@@ -772,17 +772,17 @@ export default {
                   title: siteTitle,
                   coordinates: [
                     localityReference.site?.latitude,
-                    localityReference.site?.longitude
-                  ]
+                    localityReference.site?.longitude,
+                  ],
                 };
               });
           });
 
-          this.getReferenceLibraries().then(res => {
+          this.getReferenceLibraries().then((res) => {
             this.libraries = res.results;
           });
 
-          this.getChildReferences().then(res => {
+          this.getChildReferences().then((res) => {
             // NOTE: Has to be sorted client-side because the pages field is a string.
             this.childReferences = res.results.sort((a, b) => {
               if (a.pages === null && b.pages === null) return 0;
@@ -798,18 +798,18 @@ export default {
             });
           });
 
-          this.getKeywords().then(res => {
+          this.getKeywords().then((res) => {
             this.keywords = res.results;
           });
-          this.getTaxa().then(res => {
+          this.getTaxa().then((res) => {
             this.taxa = res.results;
           });
         })
-        .catch(err => {
+        .catch((err) => {
           this.error = true;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

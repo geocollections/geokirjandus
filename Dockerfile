@@ -7,7 +7,7 @@ COPY package*.json ./
 
 #
 # ---- Dependencies ----
-FROM base AS dependencies
+# FROM base AS dependencies
 # install node packages
 # RUN npm set progress=false && npm config set depth 0
 # RUN npm install --only=production
@@ -18,7 +18,7 @@ RUN npm install
 
 #
 # ---- Production ----
-FROM dependencies AS build
+# FROM dependencies AS build
 # copy production node_modules
 # COPY --from=dependencies /app/prod_node_modules ./node_modules
 # copy app source
@@ -28,7 +28,7 @@ RUN npm run build
 
 #
 # ---- Serve using nginx ----
-FROM nginx:alpine AS production
+# FROM nginx:alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=build /app/nginx/default.conf /etc/nginx/conf.d/
 EXPOSE 80

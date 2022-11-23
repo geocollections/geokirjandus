@@ -28,7 +28,7 @@ RUN npm run build
 
 #
 # ---- Serve using nginx ----
-# FROM nginx:alpine AS production
+FROM nginx:alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=build /app/nginx/default.conf /etc/nginx/conf.d/
 EXPOSE 80

@@ -1,26 +1,26 @@
 
 #
 # ---- Base ----
-FROM node:lts-alpine AS base
+FROM node:lts-alpine3.14 AS build
 WORKDIR /app
-COPY package.json .
+COPY package*.json ./
 
 #
 # ---- Dependencies ----
-FROM base AS dependencies
+# FROM base AS dependencies
 # install node packages
-RUN npm set progress=false && npm config set depth 0
-RUN npm install --only=production
+# RUN npm set progress=false && npm config set depth 0
+# RUN npm install --only=production
 # copy production node_modules aside
-RUN cp -R node_modules prod_node_modules
+# RUN cp -R node_modules prod_node_modules
 # install ALL node_modules, including 'devDependencies'
 RUN npm install
 
 #
 # ---- Production ----
-FROM dependencies AS build
+# FROM dependencies AS build
 # copy production node_modules
-COPY --from=dependencies /app/prod_node_modules ./node_modules
+# COPY --from=dependencies /app/prod_node_modules ./node_modules
 # copy app source
 COPY . .
 # build files for production

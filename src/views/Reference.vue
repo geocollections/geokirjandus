@@ -355,9 +355,15 @@
                         style="max-height:200px; overflow-y: auto; width: max-content"
                       >
                         <li v-for="site in sites" :key="site.site.id">
-                          class="link" :href="siteURL(site.site.id)"
-                          target="_blank" v-translate="{ et: site.site.name, en:
-                          site.site.name_en }" />
+                          <a
+                            class="link"
+                            :href="siteURL(site.site.id)"
+                            target="_blank"
+                            v-translate="{
+                              et: site.site.name,
+                              en: site.site.name_en,
+                            }"
+                          />
                         </li>
                       </ul>
                     </div>

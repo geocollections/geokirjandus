@@ -155,16 +155,16 @@
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
-import { mapState } from "vuex";
-import isEqual from "lodash/isEqual";
-import urlMixin from "@/mixins/urlMixin";
 import SearchHelpDialog from "@/components/SearchHelpDialog";
-import InputText from "../input/InputText.vue";
+import urlMixin from "@/mixins/urlMixin";
+import { fetchLibraryReferences } from "@/utils/apiCalls";
+import isEqual from "lodash/isEqual";
+import { mapState } from "vuex";
+import { mapFields } from "vuex-map-fields";
+import InputCheckbox from "../input/InputCheckbox.vue";
 import InputRange from "../input/InputRange.vue";
 import InputSelect from "../input/InputSelect.vue";
-import InputCheckbox from "../input/InputCheckbox.vue";
-import { fetchLibraryReferences } from "@/utils/apiCalls";
+import InputText from "../input/InputText.vue";
 
 export default {
   name: "SearchLibraryReference",
@@ -173,18 +173,18 @@ export default {
     InputText,
     InputRange,
     InputSelect,
-    InputCheckbox
+    InputCheckbox,
   },
   mixins: [urlMixin],
   props: {
     colSize: {
       type: Number,
-      default: 6
+      default: 6,
     },
     library: {
       type: Number,
-      require: true
-    }
+      require: true,
+    },
   },
   data: () => ({
     range: [1900, 2000],
@@ -195,7 +195,7 @@ export default {
     showAdvancedSearch: true,
     infoAlert: null,
     filterCount: 2,
-    showAlert: false
+    showAlert: false,
   }),
   computed: {
     ...mapFields("search/libraryReference", {
@@ -215,19 +215,19 @@ export default {
       publisher: "advancedSearch.byIds.publisher.value",
       taxa: "advancedSearch.byIds.taxa.value",
       query: "search.value",
-      page: "options.page"
+      page: "options.page",
     }),
     ...mapState("result/libraryReference", ["facet", "result", "count"]),
     ...mapState("search/libraryReference", [
       "advancedSearch",
       "options",
-      "search"
+      "search",
     ]),
 
     getAdvancedSearchParametersAppliedCount() {
       let count = 0;
 
-      this.advancedSearch.allIds.forEach(id => {
+      this.advancedSearch.allIds.forEach((id) => {
         const obj = this.advancedSearch.byIds[id];
         if (obj.type === "text") {
           if (obj.value?.length > 0) {
@@ -262,19 +262,22 @@ export default {
 
       for (let i = 0; i < this.facet.facet_fields.type.length; i += 2) {
         // TODO: Query from pivot only once. Remove the need for using find function.
+
         types.push({
           value: this.facet.facet_fields.type[i],
           text: `${
             this.$i18n.locale === "ee"
               ? this.facet.facet_pivot[
                   "type,reference_type,reference_type_en"
-                ].find(o => o.value === this.facet.facet_fields.type[i])
-                  .pivot[0].value
+                ].find(
+                  (o) => o.value === parseInt(this.facet.facet_fields.type[i])
+                ).pivot[0].value
               : this.facet.facet_pivot[
                   "type,reference_type,reference_type_en"
-                ].find(o => o.value === this.facet.facet_fields.type[i])
-                  .pivot[0].pivot[0].value
-          } [${this.facet.facet_fields.type[i + 1]}]`
+                ].find(
+                  (o) => o.value === parseInt(this.facet.facet_fields.type[i])
+                ).pivot[0].pivot[0].value
+          } [${this.facet.facet_fields.type[i + 1]}]`,
         });
       }
 
@@ -294,20 +297,20 @@ export default {
               ? this.facet.facet_pivot[
                   "language,reference_language,reference_language_en"
                 ].find(
-                  o =>
+                  (o) =>
                     o.value.toString() === this.facet.facet_fields.language[i]
                 ).pivot[0].value
               : this.facet.facet_pivot[
                   "language,reference_language,reference_language_en"
                 ].find(
-                  o =>
+                  (o) =>
                     o.value.toString() === this.facet.facet_fields.language[i]
                 ).pivot[0].pivot[0].value
-          } [${this.facet.facet_fields.language[i + 1]}]`
+          } [${this.facet.facet_fields.language[i + 1]}]`,
         });
       }
       return languages;
-    }
+    },
   },
   created() {
     Object.entries(this.$route.query).forEach(([key, value]) => {
@@ -333,7 +336,7 @@ export default {
         return;
       }
       if (type === "select") {
-        const values = value.split(",").filter(strValue => {
+        const values = value.split(",").filter((strValue) => {
           return !isNaN(Number(strValue));
         });
 
@@ -358,9 +361,9 @@ export default {
         itemsPerPage: this.options.itemsPerPage,
         sortBy: this.options.sortBy,
         sortDesc: this.options.sortDesc,
-        advancedSearch: this.advancedSearch.byIds
+        advancedSearch: this.advancedSearch.byIds,
       };
-      fetchLibraryReferences(this.library, searchObj).then(res => {
+      fetchLibraryReferences(this.library, searchObj).then((res) => {
         this.setReferences(res);
       });
     },
@@ -432,8 +435,8 @@ export default {
 
       if (isEqual(oldQuery, newQuery)) return;
       this.$emit("update:data");
-    }
-  }
+    },
+  },
 };
 </script>
 

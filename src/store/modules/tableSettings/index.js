@@ -19,7 +19,7 @@ const INIT_STATE = {
     },
     {
       text: "reference.title",
-      value: "title_s",
+      value: "title",
       show: true,
       fixed: false,
       class: "text-no-wrap"

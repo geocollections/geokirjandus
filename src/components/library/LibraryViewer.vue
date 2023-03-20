@@ -23,10 +23,15 @@
       @reset:headers="
         resetHeaders({
           module: 'libraryHeaders',
-          options: { sortBy: options.sortBy }
+          options: { sortBy: options.sortBy },
         })
       "
     >
+      <template v-slot:item.title="{ item }">
+        <div>
+          {{ $i18n.locale === "ee" ? item.title : item.title_en }}
+        </div>
+      </template>
       <!--  TABLE VIEW CUSTOM TEMPLATES  -->
       <template v-slot:item.bookJournal="{ item }">
         <div v-if="item.book">{{ item.book }}</div>
@@ -52,44 +57,44 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import LibraryListView from "@/components/library/LibraryListView";
 import DataViewer from "@/components/DataViewer";
+import LibraryListView from "@/components/library/LibraryListView";
 import dateMixin from "@/mixins/dateMixin";
 import urlMixin from "@/mixins/urlMixin";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "LibraryViewer",
   components: {
     LibraryListView,
-    DataViewer
+    DataViewer,
   },
   mixins: [dateMixin, urlMixin],
   props: {
     options: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     count: {
       type: Number,
-      default: 0
+      default: 0,
     },
     showLibraries: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isLoading: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   computed: {
     ...mapState("search/library", ["search", "advancedSearch"]),
-    ...mapState("tableSettings", ["libraryHeaders"])
+    ...mapState("tableSettings", ["libraryHeaders"]),
   },
   created() {
     this.$emit("update:data");
@@ -102,7 +107,7 @@ export default {
 
     open(event) {
       this.$router.push(`/library/${event.id}`);
-    }
-  }
+    },
+  },
 };
 </script>

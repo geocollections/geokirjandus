@@ -104,20 +104,20 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import urlMixin from "@/mixins/urlMixin";
+import CopyButton from "@/components/CopyButton";
+import citationMixin from "@/mixins/citationMixin";
 import toastMixin from "@/mixins/toastMixin";
+import urlMixin from "@/mixins/urlMixin";
 import {
   fetchLibraryReferences,
   fetchReferences,
-  fetchSolrFields
+  fetchSolrFields,
 } from "@/utils/apiCalls";
-import CopyButton from "@/components/CopyButton";
 import { Cite } from "@citation-js/core";
-import "@citation-js/plugin-ris";
 import "@citation-js/plugin-bibtex";
-import citationMixin from "@/mixins/citationMixin";
+import "@citation-js/plugin-ris";
 import Parser from "json2csv/lib/JSON2CSVParser";
+import { mapState } from "vuex";
 
 export default {
   name: "ShareButton",
@@ -126,15 +126,15 @@ export default {
   props: {
     count: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       open: false,
       exportType: "csv",
       exportCount: this.count,
-      filename: ""
+      filename: "",
     };
   },
   computed: {
@@ -146,7 +146,7 @@ export default {
         { value: 50, text: "50" },
         { value: 100, text: "100" },
         { value: 1000, text: "1000" },
-        { value: this.count, text: this.$t("common.all") }
+        { value: this.count, text: this.$t("common.all") },
       ];
     },
     getFileSuffix() {
@@ -163,15 +163,17 @@ export default {
     },
     getShareURL() {
       const resolve = this.$router.resolve(this.$route);
-      return `${window.location.protocol}//${window.location.hostname}:${window.location.port}${resolve.href}`;
-    }
+      const port =
+        window.location.port.length > 0 ? `:${window.location.port}` : "";
+      return `${window.location.protocol}//${window.location.hostname}${port}${resolve.href}`;
+    },
   },
   watch: {
     count: {
       handler() {
         this.exportCount = this.count;
-      }
-    }
+      },
+    },
   },
   methods: {
     handleExport() {
@@ -191,7 +193,7 @@ export default {
         }
       };
 
-      const handleFileCreation = res => {
+      const handleFileCreation = (res) => {
         const filename =
           this.filename.length > 0 ? this.filename : "exportFile";
 
@@ -205,7 +207,7 @@ export default {
             .advancedSearch.byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          itemsPerPage: this.exportCount
+          itemsPerPage: this.exportCount,
         }).then(handleFileCreation);
       } else {
         fetchReferences({
@@ -214,7 +216,7 @@ export default {
             .byIds,
           sortBy: this.getSortBy,
           sortDesc: this.getSortDesc,
-          itemsPerPage: parseInt(this.exportCount)
+          itemsPerPage: parseInt(this.exportCount),
         }).then(handleFileCreation);
       }
     },
@@ -269,7 +271,7 @@ export default {
       this.toastSuccess({ text: successMsg });
     },
     convertToRIS(data) {
-      const cslArray = data.map(reference => {
+      const cslArray = data.map((reference) => {
         return this.$getCsl(reference);
       });
 
@@ -291,7 +293,7 @@ export default {
       this.toastSuccess({ text: successMsg });
     },
     convertToBibTeX(data) {
-      const cslArray = data.map(reference => {
+      const cslArray = data.map((reference) => {
         return this.$getCsl(reference);
       });
 
@@ -320,8 +322,8 @@ export default {
           window.URL.revokeObjectURL(url);
         }, 0);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

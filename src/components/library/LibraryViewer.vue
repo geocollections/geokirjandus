@@ -27,6 +27,11 @@
         })
       "
     >
+      <template v-slot:item.title="{ item }">
+        <div>
+          {{ title(item) }}
+        </div>
+      </template>
       <!--  TABLE VIEW CUSTOM TEMPLATES  -->
       <template v-slot:item.bookJournal="{ item }">
         <div v-if="item.book">{{ item.book }}</div>
@@ -52,11 +57,11 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import LibraryListView from "@/components/library/LibraryListView";
 import DataViewer from "@/components/DataViewer";
+import LibraryListView from "@/components/library/LibraryListView";
 import dateMixin from "@/mixins/dateMixin";
 import urlMixin from "@/mixins/urlMixin";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "LibraryViewer",
@@ -99,9 +104,14 @@ export default {
     handleUpdateTableHeaders(event) {
       this.setLibraryHeaders(event);
     },
-
     open(event) {
       this.$router.push(`/library/${event.id}`);
+    },
+    title(library) {
+      const value =
+        this.$i18n.locale === "ee" ? library.title : library.title_en;
+      if (!value) return library.title;
+      return value;
     }
   }
 };

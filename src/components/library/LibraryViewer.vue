@@ -23,13 +23,13 @@
       @reset:headers="
         resetHeaders({
           module: 'libraryHeaders',
-          options: { sortBy: options.sortBy },
+          options: { sortBy: options.sortBy }
         })
       "
     >
       <template v-slot:item.title="{ item }">
         <div>
-          {{ $i18n.locale === "ee" ? item.title : item.title_en }}
+          {{ title(item) }}
         </div>
       </template>
       <!--  TABLE VIEW CUSTOM TEMPLATES  -->
@@ -67,34 +67,34 @@ export default {
   name: "LibraryViewer",
   components: {
     LibraryListView,
-    DataViewer,
+    DataViewer
   },
   mixins: [dateMixin, urlMixin],
   props: {
     options: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     data: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     count: {
       type: Number,
-      default: 0,
+      default: 0
     },
     showLibraries: {
       type: Boolean,
-      default: true,
+      default: true
     },
     isLoading: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   computed: {
     ...mapState("search/library", ["search", "advancedSearch"]),
-    ...mapState("tableSettings", ["libraryHeaders"]),
+    ...mapState("tableSettings", ["libraryHeaders"])
   },
   created() {
     this.$emit("update:data");
@@ -104,10 +104,15 @@ export default {
     handleUpdateTableHeaders(event) {
       this.setLibraryHeaders(event);
     },
-
     open(event) {
       this.$router.push(`/library/${event.id}`);
     },
-  },
+    title(library) {
+      const value =
+        this.$i18n.locale === "ee" ? library.title : library.title_en;
+      if (!value) return library.title;
+      return value;
+    }
+  }
 };
 </script>

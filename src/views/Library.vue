@@ -285,7 +285,7 @@ export default {
         sortDesc: this.options.sortDesc,
         advancedSearch: this.advancedSearch.byIds
       };
-      fetchLibraryReferences(this.id, searchObj).then(res => {
+      return fetchLibraryReferences(this.id, searchObj).then(res => {
         this.setLibraryReferenceResult(res);
         this.isLoading = false;
       });

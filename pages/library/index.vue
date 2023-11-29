@@ -17,6 +17,30 @@
         </UForm>
         <div class="space-y-1">
           <div class="text-xl font-medium">{{ t("filters") }}</div>
+          <UFormGroup :label="t('author')">
+            <UInput
+              v-model="searchStore.filterState.author"
+              @blur="handleFilterChange"
+            />
+          </UFormGroup>
+          <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
+            <UInput
+              v-model="searchStore.filterState.year[0]"
+              @blur="handleFilterChange"
+              placeholder="Start"
+            />
+            <UInput
+              v-model="searchStore.filterState.year[1]"
+              @blur="handleFilterChange"
+              placeholder="End"
+            />
+          </UFormGroup>
+          <UFormGroup :label="t('title')">
+            <UInput
+              v-model="searchStore.filterState.title"
+              @blur="handleFilterChange"
+            />
+          </UFormGroup>
         </div>
       </div>
       <div class="col-span-9 lg:py-8">
@@ -75,9 +99,13 @@
 </template>
 
 <script setup lang="ts">
+import type { LocationQueryRaw } from "vue-router";
 import { useSearchStore } from "~/stores/librarySearchStore";
 const { t } = useI18n({ useScope: "local" });
+const router = useRouter();
+const route = useRoute();
 const searchStore = useSearchStore();
+searchStore.setStateFromQueryParams(route);
 const perPageOptions = [10, 25, 50, 100];
 type SolrResponse<T = any> = {
   facets: any;
@@ -124,8 +152,67 @@ watch(
   () => execute(),
 );
 
+watch(
+  [
+    () => searchStore.sort,
+    () => searchStore.perPage,
+    () => searchStore.page,
+    searchStore.searchState,
+  ],
+  () => {
+    setQueryParamsFromState();
+  },
+);
+
+function setQueryParamsFromState() {
+  const query: z.input<typeof ParamsSchema> = {
+    page: searchStore.page,
+    perPage: searchStore.perPage,
+    sort: searchStore.sort.value,
+    q: searchStore.searchState.activeQuery,
+  };
+
+  if (searchStore.filterState.year.some((val) => val !== null)) {
+    const start = searchStore.filterState.year[0] ?? "*";
+    const end = searchStore.filterState.year[1] ?? "*";
+
+    query.year = `${start}-${end}`;
+  }
+  if (searchStore.filterState.author.length > 0) {
+    query.author = searchStore.filterState.author;
+  }
+  if (searchStore.filterState.title.length > 0) {
+    query.title = searchStore.filterState.title;
+  }
+
+  router.push({
+    query: query as LocationQueryRaw,
+  });
+}
+
+function handleFilterChange() {
+  setQueryParamsFromState();
+  execute();
+}
 function handleSubmit() {
   searchStore.searchState.activeQuery = searchStore.searchState.query;
   execute();
 }
 </script>
+
+<i18n lang="yaml">
+et:
+  search: "Otsi"
+  filters: "Filtrid"
+  year: "Aasta"
+  author: "Koostaja(d)"
+  title: "Pealkiri"
+  searchAllFields: "Otsi kõigilt väljadelt"
+en:
+  search: "Search"
+  filters: "Filters"
+  year: "Year"
+  author: "Compiler(s)"
+  title: "Title"
+  searchAllFields: "Search all fields"
+</i18n>

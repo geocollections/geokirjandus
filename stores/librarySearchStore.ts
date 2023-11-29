@@ -1,5 +1,6 @@
 import { z } from "zod";
 export const useSearchStore = defineStore("searchLibrary", () => {
+  const { locale } = useI18n();
   const allowedValues = {
     perPage: [10, 25, 50, 100],
     sort: ["date_added desc", "date_added asc", "title desc", "title asc"],
@@ -22,6 +23,26 @@ export const useSearchStore = defineStore("searchLibrary", () => {
       )
       .catch(allowedValues.perPage[1]),
     q: z.string().catch(""),
+    year: z
+      .string()
+      .transform((val, ctx) => {
+        let [startStr, endStr] = val.split("-");
+        const start = parseInt(startStr) || null;
+        const end = parseInt(endStr) || null;
+
+        if (start && end && start > end) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Start year cannot be later than end year",
+          });
+          return z.NEVER;
+        }
+
+        return [start, end];
+      })
+      .catch([null, null]),
+    author: z.string().catch(""),
+    title: z.string().catch(""),
   });
   const sortOptions = computed(() => [
     { value: "date_added desc", name: "Newest" },
@@ -38,20 +59,42 @@ export const useSearchStore = defineStore("searchLibrary", () => {
     query: "",
     activeQuery: "",
   });
-  const filterState = reactive({});
+  const filterState = reactive({
+    year: [null, null] as (number | null)[],
+    author: "",
+    title: "",
+  });
   function $reset() {
     page.value = 1;
     searchState.query = "";
     searchState.activeQuery = "";
+    filterState.year = [null, null];
+    filterState.author = "";
+    filterState.title = "";
   }
 
   const solrFilter = computed(() => {
     const filters = [];
 
+    if (filterState.year.some((val) => val !== null)) {
+      const start = filterState.year[0] ?? "*";
+      const end = filterState.year[1] ?? "*";
+      filters.push(`year:[${start} TO ${end}]`);
+    }
+
+    if (filterState.author.length > 0) {
+      filters.push(`author:*${filterState.author}*`);
+    }
+    if (filterState.title.length > 0) {
+      if (locale.value === "et") {
+        filters.push(`title:*${filterState.title}*`);
+      } else {
+        filters.push(`title_en:*${filterState.title}*`);
+      }
+    }
+
     return filters;
   });
-
-  // setStateFromQueryParams();
 
   function setStateFromQueryParams(route) {
     const params = ParamsSchema.parse({
@@ -59,6 +102,9 @@ export const useSearchStore = defineStore("searchLibrary", () => {
       page: route.query.page,
       perPage: route.query.perPage,
       q: route.query.q,
+      year: route.query.year,
+      author: route.query.author,
+      title: route.query.title,
     });
 
     page.value = params.page;
@@ -68,6 +114,9 @@ export const useSearchStore = defineStore("searchLibrary", () => {
       sortOptions.value[0];
     searchState.query = params.q;
     searchState.activeQuery = params.q;
+    filterState.year = params.year;
+    filterState.author = params.author;
+    filterState.title = params.title;
   }
 
   const solrQuery = computed(() => {

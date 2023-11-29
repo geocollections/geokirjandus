@@ -2,8 +2,15 @@ import { z } from "zod";
 export const useSearchStore = defineStore("searchReference", () => {
   const allowedValues = {
     perPage: [10, 25, 50, 100],
-    sort: ["date_added desc", "date_added asc", "title desc", "title asc"],
+    sort: [
+      "score desc",
+      "date_added desc",
+      "date_added asc",
+      "title desc",
+      "title asc",
+    ],
   } as const;
+
   const ParamsSchema = z.object({
     sort: z.enum(allowedValues.sort).catch(allowedValues.sort[0]),
     page: z
@@ -26,6 +33,10 @@ export const useSearchStore = defineStore("searchReference", () => {
       .transform((val) => val === "true")
       .catch(true),
     isEstonianAuthor: z
+      .string()
+      .transform((val) => val === "true")
+      .catch(false),
+    pdf: z
       .string()
       .transform((val) => val === "true")
       .catch(false),
@@ -68,6 +79,7 @@ export const useSearchStore = defineStore("searchReference", () => {
       .catch([null, null]),
   });
   const sortOptions = computed(() => [
+    { value: "score desc", name: "Best match" },
     { value: "date_added desc", name: "Newest" },
     { value: "date_added asc", name: "Oldest" },
     { value: "title asc", name: "Title A-Z" },
@@ -85,6 +97,7 @@ export const useSearchStore = defineStore("searchReference", () => {
   const filterState = reactive({
     isEstonianReference: true,
     isEstonianAuthor: false,
+    pdf: false,
     title: "",
     book: "",
     journal: "",
@@ -103,6 +116,7 @@ export const useSearchStore = defineStore("searchReference", () => {
     searchState.activeQuery = "";
     filterState.isEstonianReference = true;
     filterState.isEstonianAuthor = false;
+    filterState.pdf = false;
     filterState.title = "";
     filterState.book = "";
     filterState.journal = "";
@@ -123,6 +137,9 @@ export const useSearchStore = defineStore("searchReference", () => {
     }
     if (filterState.isEstonianAuthor) {
       filters.push("is_estonian_author:true");
+    }
+    if (filterState.pdf) {
+      filters.push("pdf:*");
     }
     if (filterState.title.length > 0) {
       filters.push(`title:*${filterState.title}*`);
@@ -188,6 +205,7 @@ export const useSearchStore = defineStore("searchReference", () => {
       q: route.query.q,
       isEstonianReference: route.query.isEstonianReference,
       isEstonianAuthor: route.query.isEstonianAuthor,
+      pdf: route.query.pdf,
       title: route.query.title,
       book: route.query.book,
       journal: route.query.journal,
@@ -210,6 +228,7 @@ export const useSearchStore = defineStore("searchReference", () => {
     searchState.activeQuery = params.q;
     filterState.isEstonianReference = params.isEstonianReference;
     filterState.isEstonianAuthor = params.isEstonianAuthor;
+    filterState.pdf = params.pdf;
     filterState.year = params.year;
     filterState.title = params.title;
     filterState.book = params.book;

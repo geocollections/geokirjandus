@@ -20,13 +20,12 @@
           <UCheckbox
             v-model="searchStore.filterState.isEstonianReference"
             :label="t('isEstonianReference')"
-            @input="handleFilterChange"
           />
           <UCheckbox
             v-model="searchStore.filterState.isEstonianAuthor"
             :label="t('isEstonianAuthor')"
-            @input="handleFilterChange"
           />
+          <UCheckbox v-model="searchStore.filterState.pdf" :label="t('pdf')" />
           <UFormGroup :label="t('title')">
             <UInput
               v-model="searchStore.filterState.title"
@@ -183,7 +182,7 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
-import { useSearchStore } from "~/stores/searchStore";
+import { useSearchStore } from "~/stores/referenceSearchStore";
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
@@ -315,6 +314,17 @@ watch(
   },
 );
 
+watch(
+  [
+    () => searchStore.filterState.isEstonianAuthor,
+    () => searchStore.filterState.isEstonianReference,
+    () => searchStore.filterState.pdf,
+  ],
+  () => {
+    handleFilterChange();
+  },
+);
+
 function setQueryParamsFromState() {
   const query: z.input<typeof ParamsSchema> = {
     page: searchStore.page,
@@ -329,6 +339,9 @@ function setQueryParamsFromState() {
   if (searchStore.filterState.isEstonianAuthor) {
     query.isEstonianAuthor =
       searchStore.filterState.isEstonianAuthor.toString();
+  }
+  if (searchStore.filterState.isEstonianAuthor) {
+    query.pdf = searchStore.filterState.pdf.toString();
   }
   if (searchStore.filterState.title.length > 0) {
     query.title = searchStore.filterState.title;
@@ -373,48 +386,6 @@ function setQueryParamsFromState() {
   });
 }
 
-// function setStateFromQueryParams() {
-//   const params = ParamsSchema.parse({
-//     searchStore.sort: route.query.searchStore.sort,
-//     searchStore.page: route.query.searchStore.page,
-//     searchStore.perPage: route.query.searchStore.perPage,
-//     q: route.query.q,
-//     isEstonianReference: route.query.isEstonianReference,
-//     isEstonianAuthor: route.query.isEstonianAuthor,
-//     title: route.query.title,
-//     book: route.query.book,
-//     journal: route.query.journal,
-//     year: route.query.year,
-//     publisher: route.query.publisher,
-//     type: route.query.type,
-//     language: route.query.language,
-//     keywords: route.query.keywords,
-//     volumeOrNumber: route.query.volumeOrNumber,
-//     localities: route.query.localites,
-//     taxa: route.query.taxa,
-//   });
-//
-//   searchStore.page= params.searchStore.page;
-//   searchStore.perPage= params.searchStore.perPage;
-//   searchStore.sort=
-//     searchStore.sortOptions.find((option) => option.value === params.searchStore.sort) ??
-//     searchStore.sortOptions[0];
-//   searchStore.searchState.query = params.q;
-//   searchStore.searchState.activeQuery = params.q;
-//   searchStore.filterState.isEstonianReference = params.isEstonianReference;
-//   searchStore.filterState.isEstonianAuthor = params.isEstonianAuthor;
-//   searchStore.filterState.year = params.year;
-//   searchStore.filterState.title = params.title;
-//   searchStore.filterState.book = params.book;
-//   searchStore.filterState.journal = params.journal;
-//   searchStore.filterState.publisher = params.publisher;
-//   searchStore.filterState.volumeOrNumber = params.volumeOrNumber;
-//   searchStore.filterState.type = params.type;
-//   searchStore.filterState.language = params.language;
-//   searchStore.filterState.keywords = params.keywords;
-//   searchStore.filterState.localities = params.localities;
-//   searchStore.filterState.taxa = params.taxa;
-// }
 function handleFilterChange() {
   setQueryParamsFromState();
   execute();
@@ -458,6 +429,7 @@ et:
   searchAllFields: "Otsi kõigilt väljadelt"
   localities: "Lokaliteedid"
   taxa: "Taksonid"
+  pdf: "PDF saadaval"
 en:
   search: "Search"
   filters: "Filters"
@@ -475,4 +447,5 @@ en:
   searchAllFields: "Search all fields"
   localities: "Localities"
   taxa: "Taxa"
+  pdf: "PDF available"
 </i18n>

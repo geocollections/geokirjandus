@@ -12,8 +12,8 @@
       <div class="w-96 space-y-2 p-4">
         <USelect
           class="w-40"
-          v-model="style"
-          :options="styleOptions"
+          v-model="settings.citationStyle"
+          :options="settings.citationStyleOptions"
           value-attribute="value"
           option-attribute="name"
         ></USelect>
@@ -47,6 +47,8 @@
 </template>
 
 <script setup lang="ts">
+import { useSettingsStore } from "~/stores/settingsStore";
+
 const props = defineProps<{ id: number | string }>();
 
 const { t } = useI18n({ useScope: "local" });
@@ -54,14 +56,10 @@ const citation = ref();
 const openCite = ref(false);
 const { copy, copied, isSupported } = useClipboardItems();
 
-const styleOptions = computed(() => [
-  { value: "apa", name: "APA" },
-  { value: "harvard1", name: "Harvard" },
-  { value: "sedimentology", name: "Sedimentology" },
-]);
-const style = ref(styleOptions.value[0].value);
+const settings = useSettingsStore();
+
 watch(
-  () => style.value,
+  () => settings.citationStyle,
   () => fetchCitation(),
 );
 
@@ -78,7 +76,10 @@ async function fetchCitation() {
   const res = await $fetch(
     `https://rwapi-dev.geoloogia.info/api/v1/public/references/${props.id}/`,
     {
-      query: { view_type: "bibliography", citation_style: style.value },
+      query: {
+        view_type: "bibliography",
+        citation_style: settings.citationStyle,
+      },
     },
   );
   citation.value = res;

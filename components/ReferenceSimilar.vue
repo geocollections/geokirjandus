@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSearchStore } from "~/stores/searchStore";
+import { useSearchStore } from "~/stores/referenceSearchStore";
 const { t } = useI18n({ useScope: "local" });
 const searchStore = useSearchStore();
 const localePath = useLocalePath();

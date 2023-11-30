@@ -63,7 +63,7 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ reference: any; position: number }>();
+const props = defineProps<{ reference: any; position?: number }>();
 const { t } = useI18n({ useScope: "local" });
 const { $translate } = useNuxtApp();
 
@@ -102,7 +102,7 @@ const info = computed(() => {
 
 const searchStore = useSearchStore();
 function handleDetailNavigation() {
-  if (props.position < 0) return;
+  if (!props.position || props.position < 0) return;
   searchStore.selectedPosition = props.position;
 }
 </script>

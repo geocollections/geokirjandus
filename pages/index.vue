@@ -44,7 +44,12 @@
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-book-open"></UIcon>
-                <span>+40000</span>
+                <span
+                  >+
+                  {{
+                    roundToRank(referencesRes.facets.estonianReferences.count)
+                  }}
+                </span>
               </div>
               <div>{{ t("estonianReferences") }}</div>
             </div>
@@ -62,7 +67,10 @@
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-book-open"></UIcon>
-                <span>+50000</span>
+                <span
+                  >+
+                  {{ roundToRank(referencesRes.facets.allReferences.count) }}
+                </span>
               </div>
               <div>{{ t("allReferences") }}</div>
             </div>
@@ -75,7 +83,10 @@
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-building-library"></UIcon>
-                <span>+200</span>
+                <span
+                  >+
+                  {{ roundToRank(libraryRes.facets.allLibraries.count, 1e1) }}
+                </span>
               </div>
               <div>{{ t("libraries") }}</div>
             </div>
@@ -84,7 +95,7 @@
       </div>
     </div>
   </div>
-  <div class="bg-[url('layered-steps-haikei4.svg')] bg-cover">
+  <div :class="`bg-[url('/layered-steps-haikei4.svg')] bg-cover`">
     <div class="container pt-10">
       <div class="grid grid-cols-2 gap-x-4">
         <div class="col-span-1 space-y-4">
@@ -127,6 +138,7 @@
 const router = useRouter();
 const localePath = useLocalePath();
 const { t } = useI18n({ useScope: "local" });
+const img = useImage();
 const state = reactive({
   searchStr: "",
   references: [] as any[],
@@ -134,11 +146,37 @@ const state = reactive({
   statisticsData: null,
 });
 
-const { data: referencesRes, execute } = await useSolrFetch("/reference", {
+const { data: referencesRes } = await useSolrFetch("/reference", {
   query: {
     q: "*",
     rows: 10,
     sort: "date_added desc",
+    json: {
+      facet: {
+        allReferences: {
+          type: "query",
+          q: "*",
+        },
+        estonianReferences: {
+          type: "query",
+          q: "is_estonian_reference:true",
+        },
+      },
+    },
+  },
+});
+const { data: libraryRes } = await useSolrFetch("/library", {
+  query: {
+    q: "*",
+    rows: 0,
+    json: {
+      facet: {
+        allLibraries: {
+          type: "query",
+          q: "*",
+        },
+      },
+    },
   },
 });
 const references = computed(() => referencesRes.value?.response.docs ?? []);
@@ -149,6 +187,10 @@ function handleSearch() {
   router.push(
     localePath({ path: "/reference", query: { q: state.searchStr } }),
   );
+}
+
+function roundToRank(n: number, rank: number = 1e3) {
+  return Math.floor(n / rank) * rank;
 }
 </script>
 

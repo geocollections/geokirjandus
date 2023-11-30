@@ -4,7 +4,9 @@
       <div
         class="col-span-2 overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
-        <ReferenceSimilar />
+        <ClientOnly>
+          <ReferenceSimilar />
+        </ClientOnly>
       </div>
 
       <div class="col-span-8 space-y-2 px-4 py-8">
@@ -263,33 +265,13 @@
         <div
           class="sticky space-y-2 overflow-y-auto lg:top-[57px] lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
         >
-          <div>
+          <div class="flex flex-col items-start space-y-1">
             <CitePopover :id="reference.id" />
-            <UButton
-              v-if="reference.doi"
-              variant="soft"
-              color="yellow"
-              icon="i-simple-icons-doi"
-              :to="`https://doi.org/${reference.doi}`"
-            >
-              DOI
-            </UButton>
-            <UButton
-              v-if="reference.pdf"
-              variant="soft"
-              color="red"
-              icon="i-heroicons-document"
-            >
-              PDF
-            </UButton>
-            <UButton
-              v-if="url"
-              variant="soft"
-              color="blue"
-              icon="i-heroicons-arrow-top-right-on-square"
-            >
-              URL
-            </UButton>
+            <ReferenceLinks
+              :doi="reference.doi"
+              :pdf="reference.pdf"
+              :url="url"
+            />
           </div>
           <UDivider />
           <div class="space-y-2">
@@ -538,6 +520,8 @@ const url = computed(() => {
   if (!reference.value) return null;
   return reference.value.url ?? reference.value.parent?.url ?? null;
 });
+const getRouteBaseName = useRouteBaseName();
+const router = useRouter();
 </script>
 
 <i18n lang="yaml">

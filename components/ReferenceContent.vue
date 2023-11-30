@@ -1,16 +1,21 @@
 <template>
   <table>
     <tbody>
-      <tr class="border-t first:border-none" v-for="content in orderedContent">
-        <td class="whitespace-nowrap pr-2 text-end italic text-gray-600">
+      <tr
+        class="border-t first:border-none dark:border-t-gray-700"
+        v-for="content in orderedContent"
+      >
+        <td
+          class="whitespace-nowrap pr-2 text-end align-top italic text-gray-600 dark:text-gray-400"
+        >
           {{ content.pages }}
         </td>
-        <td class="px-2">
+        <td class="px-2 align-top">
           <NuxtLinkLocale :to="`/reference/${content.id}`">
             {{ content.title }}
           </NuxtLinkLocale>
         </td>
-        <td class="pl-2">
+        <td class="pl-2 align-top">
           {{ content.author }}
         </td>
       </tr>

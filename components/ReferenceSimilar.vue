@@ -26,7 +26,7 @@
     <div class="space-y-1">
       <template v-for="(reference, idx) in references">
         <UDivider v-if="idx !== 0" />
-        <div>
+        <div class="space-y-1">
           <UButton
             color="white"
             variant="ghost"
@@ -37,34 +37,16 @@
             @click="handleDetailNavigation(idx)"
           >
             <div class="font-semibold">{{ reference.reference }}</div>
-            <div>{{ reference.title }}</div>
+            <div class="text-gray-600 dark:text-gray-400">
+              {{ reference.title }}
+            </div>
           </UButton>
-          <div>
-            <UButton
-              v-if="reference.doi_url"
-              variant="soft"
-              color="yellow"
-              icon="i-simple-icons-doi"
-              :to="reference.doi_url"
-            >
-              DOI
-            </UButton>
-            <UButton
-              v-if="pdf(reference)"
-              variant="soft"
-              color="red"
-              icon="i-heroicons-document"
-            >
-              PDF
-            </UButton>
-            <UButton
-              v-if="url(reference)"
-              variant="soft"
-              color="blue"
-              icon="i-heroicons-arrow-top-right-on-square"
-            >
-              URL
-            </UButton>
+          <div class="space-x-1">
+            <ReferenceLinks
+              :doi="reference.doi_url"
+              :pdf="pdf(reference)"
+              :url="url(reference)"
+            />
           </div>
         </div>
       </template>

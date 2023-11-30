@@ -1,5 +1,5 @@
 <template>
-  <UPopover>
+  <UPopover :ui="{ wrapper: 'w-fit' }">
     <UButton
       color="black"
       variant="soft"

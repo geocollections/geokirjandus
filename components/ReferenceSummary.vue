@@ -27,32 +27,8 @@
       >
         Abstract
       </UButton>
-      <UButton
-        v-if="reference.doi_url"
-        variant="soft"
-        color="yellow"
-        icon="i-simple-icons-doi"
-        :to="reference.doi_url"
-      >
-        DOI
-      </UButton>
-      <UButton
-        v-if="pdf"
-        variant="soft"
-        color="red"
-        icon="i-heroicons-document"
-      >
-        PDF
-      </UButton>
-      <UButton
-        v-if="url"
-        variant="soft"
-        color="blue"
-        icon="i-heroicons-arrow-top-right-on-square"
-      >
-        URL
-      </UButton>
       <CitePopover :id="reference.id" />
+      <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />
     </div>
     <div v-if="showAbstract">
       <div

@@ -95,7 +95,7 @@
       </div>
     </div>
   </div>
-  <div :class="`bg-[url('/layered-steps-haikei4.svg')] bg-cover`">
+  <div class="mb-4 bg-[url('/layered-steps-haikei4.svg')] bg-cover">
     <div class="container pt-10">
       <div class="grid grid-cols-2 gap-x-4">
         <div class="col-span-1 space-y-4">

@@ -91,6 +91,11 @@ onMounted(async () => {
     plugins: [ChartDataLabels],
     options: {
       onClick: handleDecadeClick,
+      onHover: (event, chartElement) => {
+        event.native.target.style.cursor = chartElement[0]
+          ? "pointer"
+          : "default";
+      },
       aspectRatio: 1,
       indexAxis: "y",
       layout: {
@@ -122,6 +127,9 @@ onMounted(async () => {
         },
       },
       plugins: {
+        tooltip: {
+          enabled: false,
+        },
         legend: {
           display: false,
         },
@@ -152,6 +160,11 @@ onMounted(async () => {
         },
       },
       onClick: handleKeywordClick,
+      onHover: (event, chartElement) => {
+        event.native.target.style.cursor = chartElement[0]
+          ? "pointer"
+          : "default";
+      },
       scales: {
         x: {
           type: "linear",
@@ -174,6 +187,9 @@ onMounted(async () => {
         },
       },
       plugins: {
+        tooltip: {
+          enabled: false,
+        },
         legend: {
           display: false,
         },

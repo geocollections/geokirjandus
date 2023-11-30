@@ -58,12 +58,12 @@
             <UInput
               v-model="searchStore.filterState.year[0]"
               @blur="handleFilterChange"
-              placeholder="Start"
+              :placeholder="t('start')"
             />
             <UInput
               v-model="searchStore.filterState.year[1]"
               @blur="handleFilterChange"
-              placeholder="End"
+              :placeholder="t('end')"
             />
           </UFormGroup>
           <UFormGroup :label="t('book')">
@@ -494,6 +494,8 @@ et:
     titleDesc: "Pealkiri Z-A"
   noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
   reset: "Puhasta"
+  start: "Algus"
+  end: "Lõpp"
 en:
   search: "Search"
   filters: "Filters"
@@ -520,4 +522,6 @@ en:
     titleDesc: "Title Z-A"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
   reset: "Reset"
+  start: "Start"
+  end: "End"
 </i18n>

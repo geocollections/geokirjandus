@@ -5,7 +5,7 @@ export default defineAppConfig({
     button: {
       color: {
         black: {
-          soft: "text-black dark:text-white bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:disabled:bg-gray-950 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-carrot-orange-500 dark:focus-visible:ring-carrot-orange-400",
+          soft: "text-black dark:text-white bg-stone-200 hover:bg-stone-300 disabled:bg-stone-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:disabled:bg-gray-950 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-carrot-orange-500 dark:focus-visible:ring-carrot-orange-400",
         },
       },
     },

@@ -117,9 +117,9 @@ export const useSearchStore = defineStore(
       filterState.localities = "";
       filterState.taxa = "";
       filterState.year = [null, null];
-      filterState.type = new Set();
-      filterState.language = new Set();
-      filterState.keywords = new Set();
+      filterState.type.clear();
+      filterState.language.clear();
+      filterState.keywords.clear();
     }
 
     const solrFilter = computed(() => {

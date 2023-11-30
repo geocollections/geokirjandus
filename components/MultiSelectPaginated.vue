@@ -1,6 +1,6 @@
 <template>
   <UCheckbox
-    v-for="(option, idx) in selected.values()"
+    v-for="(option, idx) in modelValue.values()"
     :key="`selected-${option.value}`"
     class="label-w-full"
     :ui="{ label: 'flex' }"
@@ -56,7 +56,7 @@
       {{ t("noMoreOptions") }}
     </div>
   </template>
-  <div class="flex justify-around items-center">
+  <div class="flex items-center justify-around">
     <UButton
       variant="link"
       icon="i-heroicons-chevron-double-left"
@@ -78,10 +78,12 @@ const emit = defineEmits<{
   "update:model-value": [value: Set<string>];
   "update:pagination": [value: { page: number; paginateBy: number }];
   "update:query": [value: string];
+  add: [value: any];
+  remove: [value: any];
 }>();
 
 const props = defineProps<{
-  modelValue: Set<string>;
+  modelValue: Set<any>;
   selectedCounts: { [K: string]: number };
   pagination: { page: number; paginateBy: number };
   query: string;
@@ -100,11 +102,13 @@ selected.value = props.modelValue;
 
 function removeSelected(option) {
   selected.value.delete(option);
-  emit("update:model-value", selected.value);
+  // emit("update:model-value", selected.value);
+  emit("remove", option);
 }
 function addOption(option) {
   selected.value.add(option);
-  emit("update:model-value", selected.value);
+  // emit("update:model-value", selected.value);
+  emit("add", option);
 }
 function prevPage() {
   emit("update:pagination", {

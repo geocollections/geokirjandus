@@ -1,10 +1,12 @@
 <template>
   <MultiSelectPaginated
-    v-model="selected"
+    :model-value="selected"
     v-model:query="query"
     v-model:pagination="pagination"
     :options="options"
     :selected-counts="selectedCounts"
+    @add="handleAdd"
+    @remove="handleRemove"
   />
 </template>
 
@@ -14,6 +16,8 @@ import debounce from "lodash/debounce";
 const emit = defineEmits<{
   "update:model-value": [value: Set<string>];
   change: [];
+  add: [value: any];
+  remove: [value: any];
 }>();
 const props = defineProps<{
   q: string;
@@ -34,7 +38,7 @@ const selectedCounts = computed(() => {
     Object.entries(countsFacetRes.value?.facet_counts.facet_queries).map(
       ([key, value]) => {
         return [key.split(":")[1], value];
-      }
+      },
     ) ?? [];
   return Object.fromEntries(entries);
 });
@@ -102,7 +106,7 @@ watch(
   debounce(() => {
     pagination.value.page = 1;
     refreshOptions();
-  }, 200)
+  }, 200),
 );
 
 watch(pagination, () => {
@@ -114,17 +118,26 @@ watch(
     pagination.value.page = 1;
     emit(
       "update:model-value",
-      new Set(Array.from(newSelected).map((option) => option.value))
+      new Set(Array.from(newSelected).map((option) => option.value)),
     );
     emit("change");
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch([() => props.q, () => props.filters], async () => {
   await refreshCounts();
   refreshOptions();
 });
+
+// NOTE: In case filters are reset, clear the selected value
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue.size < 1) selected.value.clear();
+  },
+  { deep: true },
+);
 
 async function hydrateSelected() {
   await refreshCounts();
@@ -135,8 +148,18 @@ async function hydrateSelected() {
         value: val,
         count: selectedCounts.value[val],
       };
-    })
+    }),
   );
+}
+function handleAdd(obj) {
+  pagination.value.page = 1;
+  emit("add", obj.value);
+  emit("change");
+}
+function handleRemove(obj) {
+  pagination.value.page = 1;
+  emit("remove", obj.value);
+  emit("change");
 }
 </script>
 

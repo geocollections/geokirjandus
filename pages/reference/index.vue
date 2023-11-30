@@ -9,15 +9,36 @@
             <UInput
               v-model="searchStore.searchState.query"
               :placeholder="t('searchAllFields')"
-              :ui="{ wrapper: 'w-full' }"
-            />
+              :ui="{ wrapper: 'w-full', icon: { trailing: { pointer: '' } } }"
+            >
+              <template #trailing>
+                <UButton
+                  v-show="searchStore.searchState.query !== ''"
+                  color="gray"
+                  variant="link"
+                  icon="i-heroicons-x-mark-20-solid"
+                  :padded="false"
+                  @click="searchStore.searchState.query = ''"
+                />
+              </template>
+            </UInput>
             <UButton icon="i-heroicons-magnifying-glass" type="submit">
             </UButton>
           </UButtonGroup>
         </UForm>
+        <UDivider />
         <div class="space-y-1">
-          <div class="text-xl font-medium">{{ t("filters") }}</div>
-          <!-- <UButton @click="searchStore.resetFilters()">Reset</UButton> -->
+          <div class="flex">
+            <div class="text-xl font-medium">{{ t("filters") }}</div>
+            <UButton
+              class="ml-auto"
+              icon="i-heroicons-trash"
+              variant="ghost"
+              @click="handleReset"
+            >
+              {{ t("reset") }}
+            </UButton>
+          </div>
           <UCheckbox
             v-model="searchStore.filterState.isEstonianReference"
             :label="t('isEstonianReference')"
@@ -355,8 +376,12 @@ function setQueryParamsFromState() {
     page: searchStore.page,
     perPage: searchStore.perPage,
     sort: searchStore.sort,
-    q: searchStore.searchState.activeQuery,
   };
+
+  if (searchStore.searchState.activeQuery.length > 0) {
+    query.q = searchStore.searchState.activeQuery;
+  }
+
   if (searchStore.filterState.isEstonianReference) {
     query.isEstonianReference =
       searchStore.filterState.isEstonianReference.toString();
@@ -420,6 +445,11 @@ function handleSubmit() {
   searchStore.page = 1;
   execute();
 }
+function handleReset() {
+  searchStore.resetFilters();
+  setQueryParamsFromState();
+  execute();
+}
 
 function handleOptionClick(option: any, valueSet: Set<string>) {
   if (valueSet.has(option.value)) {
@@ -463,6 +493,7 @@ et:
     titleAsc: "Pealkiri A-Z"
     titleDesc: "Pealkiri Z-A"
   noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
+  reset: "Puhasta"
 en:
   search: "Search"
   filters: "Filters"
@@ -488,4 +519,5 @@ en:
     titleAsc: "Title A-Z"
     titleDesc: "Title Z-A"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
+  reset: "Reset"
 </i18n>

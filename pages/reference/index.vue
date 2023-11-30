@@ -521,7 +521,7 @@ en:
     titleAsc: "Title A-Z"
     titleDesc: "Title Z-A"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
-  reset: "Reset"
+  reset: "Clear"
   start: "Start"
   end: "End"
 </i18n>

@@ -17,6 +17,7 @@
         </UForm>
         <div class="space-y-1">
           <div class="text-xl font-medium">{{ t("filters") }}</div>
+          <!-- <UButton @click="searchStore.resetFilters()">Reset</UButton> -->
           <UCheckbox
             v-model="searchStore.filterState.isEstonianReference"
             :label="t('isEstonianReference')"
@@ -125,24 +126,32 @@
         </div>
       </div>
       <div class="col-span-9 lg:py-8">
-        <div class="space-y-2">
-          <div class="flex items-center">
-            <div class="text-xl">
-              <span class="font-bold">{{
-                referencesRes?.response.numFound ?? 0
-              }}</span>
-              results
-            </div>
-          </div>
+        <i18n-t
+          keypath="results"
+          tag="div"
+          class="mb-2 text-xl"
+          :plural="referencesRes?.response.numFound ?? 0"
+        >
+          <template #count>
+            <span class="font-bold">{{
+              referencesRes?.response.numFound ?? 0
+            }}</span>
+          </template>
+        </i18n-t>
+        <div v-if="referencesRes?.response.numFound" class="space-y-2">
           <div class="flex items-center space-x-2">
             <USelectMenu
               class="w-40"
               v-model="searchStore.sort"
-              :options="searchStore.sortOptions"
-              by="value"
+              :options="sortOptions"
+              value-attribute="value"
               option-attribute="name"
+              icon="i-heroicons-arrows-up-down"
               :ui="{ wrapper: 'mr-auto' }"
             >
+              <template #label>
+                {{ currentSort.name }}
+              </template>
             </USelectMenu>
             <USelectMenu
               class="ml-auto"
@@ -157,22 +166,29 @@
               show-last
             />
           </div>
-        </div>
-        <template v-for="(reference, index) in references">
-          <UDivider v-if="index !== 0" />
-          <ReferenceSummary
-            :reference="reference"
-            :position="index + (searchStore.page - 1) * searchStore.perPage"
-          />
-        </template>
+          <template v-for="(reference, index) in references">
+            <UDivider v-if="index !== 0" />
+            <ReferenceSummary
+              :reference="reference"
+              :position="index + (searchStore.page - 1) * searchStore.perPage"
+            />
+          </template>
 
-        <UPagination
-          v-model="searchStore.page"
-          :ui="{ base: 'ml-auto' }"
-          :page-count="searchStore.perPage"
-          :total="referencesRes?.response.numFound ?? 0"
-          show-first
-          show-last
+          <UPagination
+            v-model="searchStore.page"
+            :ui="{ base: 'ml-auto' }"
+            :page-count="searchStore.perPage"
+            :total="referencesRes?.response.numFound ?? 0"
+            show-first
+            show-last
+          />
+        </div>
+        <UAlert
+          v-else
+          color="yellow"
+          variant="subtle"
+          icon="i-heroicons-exclamation-triangle"
+          :description="t('noResults')"
         />
       </div>
     </div>
@@ -187,10 +203,19 @@ const router = useRouter();
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
 
-const searchStore = useSearchStore();
-searchStore.setStateFromQueryParams(route);
-
 const perPageOptions = [10, 25, 50, 100];
+const sortOptions = computed(() => [
+  { value: "score desc", name: t("sort.best") },
+  { value: "date_added desc", name: t("sort.newest") },
+  { value: "title asc", name: t("sort.titleAsc") },
+  { value: "title desc", name: t("sort.titleDesc") },
+]);
+
+const searchStore = useSearchStore();
+const currentSort = computed(() =>
+  sortOptions.value.find((option) => option.value === searchStore.sort),
+);
+searchStore.setStateFromQueryParams(route, sortOptions);
 
 type SolrResponse<T = any> = {
   facets: any;
@@ -207,7 +232,7 @@ const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
       q: searchStore.solrQuery,
       rows: searchStore.perPage,
       start: (searchStore.page - 1) * searchStore.perPage,
-      sort: searchStore.sort.value,
+      sort: searchStore.sort,
       json: {
         filter: searchStore.solrFilter,
         facet: {
@@ -329,7 +354,7 @@ function setQueryParamsFromState() {
   const query: z.input<typeof ParamsSchema> = {
     page: searchStore.page,
     perPage: searchStore.perPage,
-    sort: searchStore.sort.value,
+    sort: searchStore.sort,
     q: searchStore.searchState.activeQuery,
   };
   if (searchStore.filterState.isEstonianReference) {
@@ -392,6 +417,7 @@ function handleFilterChange() {
 }
 function handleSubmit() {
   searchStore.searchState.activeQuery = searchStore.searchState.query;
+  searchStore.page = 1;
   execute();
 }
 
@@ -415,6 +441,7 @@ function handleOptionClick(option: any, valueSet: Set<string>) {
 et:
   search: "Otsi"
   filters: "Filtrid"
+  results: "Tulemused puuduvad | {count} tulemus | {count} tulemust"
   isEstonianReference: "Eesti kirjandus"
   isEstonianAuthor: "Eesti author"
   title: "Pealkiri"
@@ -430,9 +457,16 @@ et:
   localities: "Lokaliteedid"
   taxa: "Taksonid"
   pdf: "PDF saadaval"
+  sort:
+    best: "Parim vaste"
+    newest: "Hiljuti lisatud"
+    titleAsc: "Pealkiri A-Z"
+    titleDesc: "Pealkiri Z-A"
+  noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
 en:
   search: "Search"
   filters: "Filters"
+  results: "No results | {count} result | {count} results"
   isEstonianReference: "Estonian reference"
   isEstonianAuthor: "Estonian author"
   title: "Title"
@@ -442,10 +476,16 @@ en:
   publisher: "Publisher"
   volumeOrNumber: "Volume/Number"
   keywords: "Keywords"
-  type: "type"
+  type: "Type"
   language: "Language"
   searchAllFields: "Search all fields"
   localities: "Localities"
   taxa: "Taxa"
   pdf: "PDF available"
+  sort:
+    best: "Best match"
+    newest: "Recently added"
+    titleAsc: "Title A-Z"
+    titleDesc: "Title Z-A"
+  noResults: "Search resulted in zero matching results. Change the search query and filters."
 </i18n>

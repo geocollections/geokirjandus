@@ -4,13 +4,7 @@ export const useSearchStore = defineStore(
   () => {
     const allowedValues = {
       perPage: [10, 25, 50, 100],
-      sort: [
-        "score desc",
-        "date_added desc",
-        "date_added asc",
-        "title desc",
-        "title asc",
-      ],
+      sort: ["score desc", "date_added desc", "title desc", "title asc"],
     } as const;
 
     const ParamsSchema = z.object({
@@ -33,7 +27,7 @@ export const useSearchStore = defineStore(
       isEstonianReference: z
         .string()
         .transform((val) => val === "true")
-        .catch(true),
+        .catch(false),
       isEstonianAuthor: z
         .string()
         .transform((val) => val === "true")
@@ -80,24 +74,16 @@ export const useSearchStore = defineStore(
         })
         .catch([null, null]),
     });
-    const sortOptions = computed(() => [
-      { value: "score desc", name: "Best match" },
-      { value: "date_added desc", name: "Newest" },
-      { value: "date_added asc", name: "Oldest" },
-      { value: "title asc", name: "Title A-Z" },
-      { value: "title desc", name: "Title Z-A" },
-    ]);
-    const perPageOptions = [10, 25, 50, 100];
     const perPage = ref(25);
 
-    const sort = ref(sortOptions.value[0]);
+    const sort = ref("score desc");
     const page = ref(1);
     const searchState = reactive({
       query: "",
       activeQuery: "",
     });
     const filterState = reactive({
-      isEstonianReference: true,
+      isEstonianReference: false,
       isEstonianAuthor: false,
       pdf: false,
       title: "",
@@ -116,7 +102,11 @@ export const useSearchStore = defineStore(
       page.value = 1;
       searchState.query = "";
       searchState.activeQuery = "";
-      filterState.isEstonianReference = true;
+      resetFilters();
+    }
+
+    function resetFilters() {
+      filterState.isEstonianReference = false;
       filterState.isEstonianAuthor = false;
       filterState.pdf = false;
       filterState.title = "";
@@ -197,9 +187,7 @@ export const useSearchStore = defineStore(
       return filters;
     });
 
-    // setStateFromQueryParams();
-
-    function setStateFromQueryParams(route) {
+    function setStateFromQueryParams(route, sortOptions) {
       const params = ParamsSchema.parse({
         sort: route.query.sort,
         page: route.query.page,
@@ -224,8 +212,8 @@ export const useSearchStore = defineStore(
       page.value = params.page;
       perPage.value = params.perPage;
       sort.value =
-        sortOptions.value.find((option) => option.value === params.sort) ??
-        sortOptions.value[0];
+        sortOptions.value.find((option) => option.value === params.sort)
+          ?.value ?? sortOptions.value[0].value;
       searchState.query = params.q;
       searchState.activeQuery = params.q;
       filterState.isEstonianReference = params.isEstonianReference;
@@ -255,11 +243,11 @@ export const useSearchStore = defineStore(
       solrFilter,
       solrQuery,
       sort,
-      sortOptions,
       page,
       perPage,
       setStateFromQueryParams,
       selectedPosition,
+      resetFilters,
     };
   },
   {
@@ -276,7 +264,6 @@ export const useSearchStore = defineStore(
       serializer: {
         serialize: (value) => {
           return JSON.stringify(value, (_key, v) => {
-            console.log(v, v instanceof Set);
             return v instanceof Set ? [...v] : v;
           });
         },

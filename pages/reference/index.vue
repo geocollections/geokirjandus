@@ -31,6 +31,7 @@
           <div class="flex">
             <div class="text-xl font-medium">{{ t("filters") }}</div>
             <UButton
+              v-if="searchStore.activeFiltersCount"
               class="ml-auto"
               icon="i-heroicons-trash"
               variant="ghost"
@@ -230,6 +231,8 @@ const sortOptions = computed(() => [
   { value: "date_added desc", name: t("sort.newest") },
   { value: "title asc", name: t("sort.titleAsc") },
   { value: "title desc", name: t("sort.titleDesc") },
+  { value: "year_numeric asc", name: t("sort.yearAsc") },
+  { value: "year_numeric desc", name: t("sort.yearDesc") },
 ]);
 
 const searchStore = useSearchStore();
@@ -492,6 +495,8 @@ et:
     newest: "Hiljuti lisatud"
     titleAsc: "Pealkiri A-Z"
     titleDesc: "Pealkiri Z-A"
+    yearAsc: "Aasta kasvav"
+    yearDesc: "Aasta kahanev"
   noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
   reset: "Puhasta"
   start: "Algus"
@@ -520,6 +525,8 @@ en:
     newest: "Recently added"
     titleAsc: "Title A-Z"
     titleDesc: "Title Z-A"
+    yearAsc: "Year ascending"
+    yearDesc: "Year descending"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
   reset: "Clear"
   start: "Start"

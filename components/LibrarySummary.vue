@@ -35,6 +35,7 @@ const info = computed(() => {
   }
   return infoList.join(" | ");
 });
+
 function handleDetailNavigation() {
   if (props.position < 0) return;
   searchStore.selectedPosition = props.position;

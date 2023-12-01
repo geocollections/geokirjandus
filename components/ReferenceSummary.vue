@@ -58,7 +58,11 @@ const url = computed(() => {
 });
 
 const info = computed(() => {
-  const infoList = [`${t("year")}: ${props.reference.year}`];
+  const infoList = [];
+
+  if (props.reference.year_numeric) {
+    infoList.push(`${t("year")}: ${props.reference.year_numeric}`);
+  }
   if (props.reference.volume) {
     infoList.push(`${t("volume")}: ${props.reference.volume}`);
   }

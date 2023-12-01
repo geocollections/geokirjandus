@@ -98,6 +98,16 @@ export const useSearchStore = defineStore(
       language: new Set<string>(),
       keywords: new Set<string>(),
     });
+
+    const activeFiltersCount = computed(() => {
+      return Object.values(filterState).filter((val) => {
+        if (typeof val === "string") return val.length > 0;
+        if (typeof val === "boolean") return val;
+        if (val instanceof Set) return val.size;
+        if (Array.isArray(val)) return !val.every((v) => v === null);
+      }).length;
+    });
+
     function $reset() {
       page.value = 1;
       searchState.query = "";
@@ -248,6 +258,7 @@ export const useSearchStore = defineStore(
       setStateFromQueryParams,
       selectedPosition,
       resetFilters,
+      activeFiltersCount,
     };
   },
   {

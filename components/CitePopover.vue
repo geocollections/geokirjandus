@@ -37,9 +37,9 @@
             </span>
           </UButton>
           <span v-else>Clipboard API not supported by browser</span>
-          <UButton color="gray" variant="ghost" size="sm">{{
-            t("exportRis")
-          }}</UButton>
+          <UButton color="gray" variant="ghost" size="sm" @click="exportRis">
+            {{ t("exportRis") }}
+          </UButton>
         </div>
       </div>
     </template>
@@ -83,6 +83,26 @@ async function fetchCitation() {
     },
   );
   citation.value = res;
+}
+async function exportRis() {
+  const res = await $fetch(
+    `https://rwapi-dev.geoloogia.info/api/v1/public/references/${props.id}/`,
+    {
+      query: {
+        format: "ris",
+      },
+    },
+  );
+
+  const blob = new Blob([res], { type: "text/plain" });
+  const urlForDownload = window.URL.createObjectURL(blob);
+  const linkElement = document.createElement("a");
+
+  linkElement.href = urlForDownload;
+  linkElement.download = `reference_${props.id}.ris`;
+  linkElement.click();
+
+  URL.revokeObjectURL(urlForDownload); // free memory
 }
 
 async function openCitationPopover() {

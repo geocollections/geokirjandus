@@ -2,152 +2,15 @@
   <div class="container">
     <div class="grid grid-cols-12 gap-x-4">
       <div
-        class="col-span-3 space-y-2 overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
+        class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
-        <UForm :state="searchStore.searchState" @submit="handleSubmit">
-          <UButtonGroup size="lg" :ui="{ wrapper: { horizontal: 'w-full' } }">
-            <UInput
-              v-model="searchStore.searchState.query"
-              :placeholder="t('searchAllFields')"
-              :ui="{ wrapper: 'w-full', icon: { trailing: { pointer: '' } } }"
-            >
-              <template #trailing>
-                <UButton
-                  v-show="searchStore.searchState.query !== ''"
-                  color="gray"
-                  variant="link"
-                  icon="i-heroicons-x-mark-20-solid"
-                  :padded="false"
-                  @click="searchStore.searchState.query = ''"
-                />
-              </template>
-            </UInput>
-            <UButton icon="i-heroicons-magnifying-glass" type="submit">
-            </UButton>
-          </UButtonGroup>
-        </UForm>
-        <UDivider />
-        <div class="space-y-1">
-          <div class="flex">
-            <div class="text-xl font-medium">{{ t("filters") }}</div>
-            <UButton
-              v-if="searchStore.activeFiltersCount"
-              class="ml-auto"
-              icon="i-heroicons-trash"
-              variant="ghost"
-              @click="handleReset"
-            >
-              {{ t("reset") }}
-            </UButton>
-          </div>
-          <UCheckbox
-            v-model="searchStore.filterState.isEstonianReference"
-            :label="t('isEstonianReference')"
-          />
-          <UCheckbox
-            v-model="searchStore.filterState.isEstonianAuthor"
-            :label="t('isEstonianAuthor')"
-          />
-          <UCheckbox v-model="searchStore.filterState.pdf" :label="t('pdf')" />
-          <UFormGroup :label="t('title')">
-            <UInput
-              v-model="searchStore.filterState.title"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
-            <UInput
-              v-model="searchStore.filterState.year[0]"
-              @blur="handleFilterChange"
-              :placeholder="t('start')"
-            />
-            <UInput
-              v-model="searchStore.filterState.year[1]"
-              @blur="handleFilterChange"
-              :placeholder="t('end')"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('book')">
-            <UInput
-              v-model="searchStore.filterState.book"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('journal')">
-            <UInput
-              v-model="searchStore.filterState.journal"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('publisher')">
-            <UInput
-              v-model="searchStore.filterState.publisher"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('volumeOrNumber')">
-            <UInput
-              v-model="searchStore.filterState.volumeOrNumber"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('keywords')" :ui="{ container: 'space-y-1' }">
-            <FilterKeywords
-              v-model="searchStore.filterState.keywords"
-              :q="searchStore.solrQuery"
-              :filters="searchStore.solrFilter"
-              @change="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('type')" :ui="{ container: 'space-y-1' }">
-            <UCheckbox
-              v-for="option in typeOptions"
-              class="label-w-full"
-              :ui="{ label: 'flex' }"
-              :model-value="searchStore.filterState.type.has(option.value)"
-              @click="handleOptionClick(option, searchStore.filterState.type)"
-              :label="option.name"
-            >
-              <template #label>
-                {{ option.name }}
-                <UBadge size="xs" class="ml-auto block h-min">{{
-                  option.count
-                }}</UBadge>
-              </template>
-            </UCheckbox>
-          </UFormGroup>
-          <UFormGroup :label="t('language')" :ui="{ container: 'space-y-1' }">
-            <UCheckbox
-              v-for="option in languageOptions"
-              class="label-w-full"
-              :ui="{ label: 'flex' }"
-              :model-value="searchStore.filterState.language.has(option.value)"
-              @click="
-                handleOptionClick(option, searchStore.filterState.language)
-              "
-              :label="option.name"
-            >
-              <template #label>
-                {{ option.name }}
-                <UBadge size="xs" class="ml-auto">{{ option.count }}</UBadge>
-              </template>
-            </UCheckbox>
-          </UFormGroup>
-          <UFormGroup :label="t('localities')">
-            <UInput
-              v-model="searchStore.filterState.localities"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('taxa')">
-            <UInput
-              v-model="searchStore.filterState.taxa"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-        </div>
+        <SearchFormReference
+          :store="searchStore"
+          @update="handleSubmit"
+          @reset="handleReset"
+        />
       </div>
-      <div class="col-span-9 lg:py-8">
+      <div class="col-span-full py-4 lg:col-span-9 lg:py-8">
         <i18n-t
           keypath="results"
           tag="div"
@@ -162,37 +25,50 @@
         </i18n-t>
         <div v-if="referencesRes?.response.numFound" class="space-y-2">
           <div class="flex items-center space-x-2">
-            <USelectMenu
-              class="w-40"
-              v-model="searchStore.sort"
-              :options="sortOptions"
-              value-attribute="value"
-              option-attribute="name"
-              icon="i-heroicons-arrows-up-down"
-              :ui="{ wrapper: 'mr-auto' }"
+            <ExportPopover v-if="selectStore.selected.length > 0" />
+            <span
+              class="text-sm text-green-600"
+              v-if="selectStore.selected.length > 0"
             >
-              <template #label>
-                {{ currentSort.name }}
-              </template>
-            </USelectMenu>
-            <USelectMenu
-              class="ml-auto"
-              v-model="searchStore.perPage"
-              :options="perPageOptions"
-            />
-            <UPagination
-              v-model="searchStore.page"
-              :page-count="searchStore.perPage"
-              :total="referencesRes?.response.numFound ?? 0"
-              show-first
-              show-last
-            />
+              {{ t("selected", { count: selectStore.selected.length }) }}
+            </span>
+          </div>
+          <div class="flex">
+            <div class="flex items-center space-x-2">
+              <USelectMenu
+                class="w-40"
+                v-model="searchStore.sort"
+                :options="sortOptions"
+                value-attribute="value"
+                option-attribute="name"
+                icon="i-heroicons-arrows-up-down"
+              >
+                <template #label>
+                  {{ currentSort.name }}
+                </template>
+              </USelectMenu>
+            </div>
+            <div class="ml-auto flex items-center space-x-2">
+              <USelectMenu
+                v-model="searchStore.perPage"
+                :options="perPageOptions"
+              />
+              <UPagination
+                v-model="searchStore.page"
+                :page-count="searchStore.perPage"
+                :total="referencesRes?.response.numFound ?? 0"
+                show-first
+                show-last
+              />
+            </div>
           </div>
           <template v-for="(reference, index) in references">
             <UDivider v-if="index !== 0" />
             <ReferenceSummary
               :reference="reference"
+              :selected="isSelected(reference.id)"
               :position="index + (searchStore.page - 1) * searchStore.perPage"
+              @update:selected="handleSelectUpdate(reference.id)"
             />
           </template>
 
@@ -214,6 +90,35 @@
         />
       </div>
     </div>
+    <UButton
+      class="fixed bottom-2 left-1/2 mx-auto -translate-x-1/2 rounded-full lg:hidden"
+      size="lg"
+      icon="i-heroicons-adjustments-horizontal"
+      @click="openFilters = !openFilters"
+    >
+      <span>
+        {{ t("filters") }}
+      </span>
+      <span v-if="searchStore.activeFiltersCount > 0">
+        ({{ searchStore.activeFiltersCount }})
+      </span>
+    </UButton>
+    <USlideover v-model="openFilters" side="left">
+      <div class="space-y-2 overflow-y-auto p-2">
+        <UButton
+          variant="ghost"
+          color="gray"
+          trailing-icon="i-heroicons-x-mark"
+          @click="openFilters = !openFilters"
+          >Close</UButton
+        >
+        <SearchFormReference
+          :store="searchStore"
+          @update="handleSubmit"
+          @reset="handleReset"
+        />
+      </div>
+    </USlideover>
   </div>
 </template>
 
@@ -221,10 +126,12 @@
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
 import { useSearchStore } from "~/stores/referenceSearchStore";
+import { useReferenceSelectStore } from "~/stores/referenceSelectStore";
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
 
+const openFilters = ref(false);
 const perPageOptions = [10, 25, 50, 100];
 const sortOptions = computed(() => [
   { value: "score desc", name: t("sort.best") },
@@ -234,6 +141,8 @@ const sortOptions = computed(() => [
   { value: "year_numeric asc", name: t("sort.yearAsc") },
   { value: "year_numeric desc", name: t("sort.yearDesc") },
 ]);
+
+const selectStore = useReferenceSelectStore();
 
 const searchStore = useSearchStore();
 const currentSort = computed(() =>
@@ -259,50 +168,6 @@ const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
       sort: searchStore.sort,
       json: {
         filter: searchStore.solrFilter,
-        facet: {
-          type: {
-            type: "terms",
-            field: "type",
-            limit: -1,
-            domain: {
-              excludeTags: "type",
-            },
-            facet: {
-              name: {
-                type: "terms",
-                field: "reference_type",
-                limit: 1,
-                mincount: 0,
-              },
-              name_en: {
-                type: "terms",
-                field: "reference_type_en",
-                limit: 1,
-                mincount: 0,
-              },
-            },
-          },
-          language: {
-            type: "terms",
-            field: "language",
-            domain: {
-              excludeTags: "language",
-            },
-            limit: -1,
-            facet: {
-              name: {
-                type: "terms",
-                field: "reference_language",
-                limit: 1,
-              },
-              name_en: {
-                type: "terms",
-                field: "reference_language_en",
-                limit: 1,
-              },
-            },
-          },
-        },
       },
     })),
     watch: false,
@@ -444,8 +309,6 @@ function handleFilterChange() {
   execute();
 }
 function handleSubmit() {
-  searchStore.searchState.activeQuery = searchStore.searchState.query;
-  searchStore.page = 1;
   execute();
 }
 function handleReset() {
@@ -461,6 +324,16 @@ function handleOptionClick(option: any, valueSet: Set<string>) {
     valueSet.add(option.value);
   }
   handleFilterChange();
+}
+
+function handleSelectUpdate(updatedId: string) {
+  const index = selectStore.selected.findIndex((id) => id === updatedId);
+  if (index === -1) selectStore.selected.push(updatedId);
+  else selectStore.selected.splice(index, 1);
+}
+
+function isSelected(id: string) {
+  return selectStore.selected.includes(id);
 }
 </script>
 
@@ -501,6 +374,7 @@ et:
   reset: "Puhasta"
   start: "Algus"
   end: "Lõpp"
+  selected: "{count} kirje valitud | {count} kirjet valitud"
 en:
   search: "Search"
   filters: "Filters"
@@ -531,4 +405,5 @@ en:
   reset: "Clear"
   start: "Start"
   end: "End"
+  selected: "{count} item selected | {count} items selected"
 </i18n>

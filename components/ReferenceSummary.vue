@@ -1,45 +1,57 @@
 <template>
-  <div class="space-y-2 py-2">
-    <div>
-      <NuxtLinkLocale
-        :to="`/reference/${reference.id}`"
-        class="text-xl hover:underline"
-        @click="handleDetailNavigation"
-      >
-        {{ reference.title ? reference.title : reference.reference }}
-      </NuxtLinkLocale>
-      <div>{{ reference.author }}</div>
-      <div>{{ reference.journal_name }}</div>
-      <div>{{ reference.book }}</div>
+  <div class="flex items-start space-x-4 py-2">
+    <UCheckbox
+      :model-value="selected"
+      color="blue"
+      @input="emit('update:selected')"
+    />
+    <div class="space-y-2">
       <div>
-        {{ info }}
+        <NuxtLinkLocale
+          :to="`/reference/${reference.id}`"
+          class="text-lg hover:underline"
+          @click="handleDetailNavigation"
+        >
+          {{ reference.title ? reference.title : reference.reference }}
+        </NuxtLinkLocale>
+        <div>{{ reference.author }}</div>
+        <div>{{ reference.journal_name }}</div>
+        <div>{{ reference.book }}</div>
+        <div>
+          {{ info }}
+        </div>
       </div>
-    </div>
-    <div class="flex items-center space-x-1">
-      <UButton
-        v-if="reference.abstract"
-        color="black"
-        variant="ghost"
-        :trailing-icon="
-          showAbstract ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'
-        "
-        @click="showAbstract = !showAbstract"
-      >
-        Abstract
-      </UButton>
-      <CitePopover :id="reference.id" />
-      <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />
-    </div>
-    <div v-if="showAbstract">
-      <div
-        class="rounded bg-gray-100 p-4 text-justify"
-        v-html="reference.abstract"
-      />
+      <div class="flex items-center space-x-1">
+        <UButton
+          v-if="reference.abstract"
+          color="black"
+          variant="ghost"
+          :trailing-icon="
+            showAbstract ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'
+          "
+          @click="showAbstract = !showAbstract"
+        >
+          Abstract
+        </UButton>
+        <CitePopover :id="reference.id" />
+        <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />
+      </div>
+      <div v-if="showAbstract">
+        <div
+          class="rounded bg-gray-100 p-4 text-justify"
+          v-html="reference.abstract"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ reference: any; position?: number }>();
+const emit = defineEmits<{ "update:selected" }>();
+const props = defineProps<{
+  reference: any;
+  selected: boolean;
+  position?: number;
+}>();
 const { t } = useI18n({ useScope: "local" });
 const { $translate } = useNuxtApp();
 

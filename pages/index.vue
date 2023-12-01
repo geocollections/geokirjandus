@@ -125,7 +125,7 @@
 
             <template v-for="(reference, index) in references">
               <UDivider v-if="index !== 0" />
-              <ReferenceSummary :reference="reference" />
+              <ReferenceItem :reference="reference" />
             </template>
           </div>
         </div>

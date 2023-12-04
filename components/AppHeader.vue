@@ -6,7 +6,7 @@
     <div class="container mx-auto">
       <nav class="flex h-14 items-center gap-x-2 py-2">
         <NuxtLinkLocale
-          class="mr-4 text-base font-bold text-carrot-orange-500 md:text-lg"
+          class="mr-4 text-base font-bold text-carrot-orange-500 dark:text-carrot-orange-400 md:text-lg"
           to="/"
         >
           {{ $t("title") }}

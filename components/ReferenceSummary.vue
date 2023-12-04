@@ -97,6 +97,7 @@ const searchStore = useSearchStore();
 function handleDetailNavigation() {
   if (!props.position || props.position < 0) return;
   searchStore.selectedPosition = props.position;
+  searchStore.fromSearch = true;
 }
 </script>
 

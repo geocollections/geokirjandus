@@ -3,6 +3,7 @@
     <UButton
       :to="localePath(`/library/${referenceLibrary.library.id}`)"
       size="2xs"
+      color="blue"
       v-for="referenceLibrary in referenceLibraries?.results"
     >
       {{
@@ -17,7 +18,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{ referenceLibrariesUrl: string }>();
-const localePath = useLocalePath()
+const localePath = useLocalePath();
 
 const { data: referenceLibraries } = await useNewApiFetch(
   props.referenceLibrariesUrl,

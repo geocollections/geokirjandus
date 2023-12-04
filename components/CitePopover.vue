@@ -74,7 +74,7 @@ function createClipboardItems(text: string) {
 
 async function fetchCitation() {
   const res = await $fetch(
-    `https://rwapi-dev.geoloogia.info/api/v1/public/references/${props.id}/`,
+    `https://rwapi.geoloogia.info/api/v1/public/references/${props.id}/`,
     {
       query: {
         view_type: "bibliography",
@@ -86,7 +86,7 @@ async function fetchCitation() {
 }
 async function exportRis() {
   const res = await $fetch(
-    `https://rwapi-dev.geoloogia.info/api/v1/public/references/${props.id}/`,
+    `https://rwapi.geoloogia.info/api/v1/public/references/${props.id}/`,
     {
       query: {
         format: "ris",

@@ -4,7 +4,16 @@ export const useSearchStore = defineStore(
   () => {
     const allowedValues = {
       perPage: [10, 25, 50, 100],
-      sort: ["score desc", "date_added desc", "title desc", "title asc"],
+      sort: [
+        "score desc",
+        "date_added desc",
+        "author desc",
+        "author asc",
+        "year_numeric desc",
+        "year_numeric asc",
+        "title desc",
+        "title asc",
+      ],
     } as const;
 
     const ParamsSchema = z.object({
@@ -247,6 +256,9 @@ export const useSearchStore = defineStore(
     });
 
     const selectedPosition = ref(0);
+
+    // indicates if navigated to detail view from search
+    const fromSearch = ref(false);
     return {
       filterState,
       searchState,
@@ -257,6 +269,7 @@ export const useSearchStore = defineStore(
       perPage,
       setStateFromQueryParams,
       selectedPosition,
+      fromSearch,
       resetFilters,
       activeFiltersCount,
     };

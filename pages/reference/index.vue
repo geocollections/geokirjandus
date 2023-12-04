@@ -93,7 +93,7 @@
       </div>
     </div>
     <UButton
-      class="fixed bottom-2 left-1/2 mx-auto -translate-x-1/2 rounded-full lg:hidden"
+      class="fixed bottom-2 left-1/2 z-10 mx-auto -translate-x-1/2 rounded-full lg:hidden"
       size="lg"
       icon="i-heroicons-adjustments-horizontal"
       @click="openFilters = !openFilters"
@@ -138,11 +138,13 @@ const openFilters = ref(false);
 const perPageOptions = [10, 25, 50, 100];
 const sortOptions = computed(() => [
   { value: "score desc", name: t("sort.best") },
-  { value: "date_added desc", name: t("sort.newest") },
+  { value: "author asc", name: t("sort.authorAsc") },
+  { value: "author desc", name: t("sort.authorDesc") },
   { value: "title asc", name: t("sort.titleAsc") },
   { value: "title desc", name: t("sort.titleDesc") },
   { value: "year_numeric asc", name: t("sort.yearAsc") },
   { value: "year_numeric desc", name: t("sort.yearDesc") },
+  { value: "date_added desc", name: t("sort.newest") },
 ]);
 
 const selectStore = useReferenceSelectStore();
@@ -369,6 +371,8 @@ et:
   sort:
     best: "Parim vaste"
     newest: "Hiljuti lisatud"
+    authorAsc: "Autorid A-Z"
+    authorDesc: "Autorid Z-A"
     titleAsc: "Pealkiri A-Z"
     titleDesc: "Pealkiri Z-A"
     yearAsc: "Aasta kasvav"
@@ -400,6 +404,8 @@ en:
   sort:
     best: "Best match"
     newest: "Recently added"
+    authorAsc: "Authors A-Z"
+    authorDesc: "Authors Z-A"
     titleAsc: "Title A-Z"
     titleDesc: "Title Z-A"
     yearAsc: "Year ascending"

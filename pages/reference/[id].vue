@@ -2,20 +2,36 @@
   <div class="container" v-if="reference">
     <div class="grid grid-cols-12 gap-x-2">
       <div
-        class="col-span-2 overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
+        class="col-span-2 hidden overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
         <ClientOnly>
           <ReferenceSimilar />
         </ClientOnly>
       </div>
 
-      <div class="col-span-8 space-y-2 px-4 py-8">
+      <div class="col-span-12 space-y-2 px-4 py-8 lg:col-span-8">
+        <UButton
+          class="lg:hidden"
+          variant="link"
+          icon="i-heroicons-arrow-small-left"
+          :to="localePath({ path: '/reference', query: searchQueryParams })"
+        >
+          {{ t("back") }}
+        </UButton>
         <div id="general" class="scroll-mt-20">
           <div class="text-xl italic">{{ reference.reference }}</div>
           <h1 class="text-4xl font-semibold">
             {{ reference.title }}
           </h1>
           <div class="text-2xl">{{ reference.author }}</div>
+        </div>
+        <div class="flex space-x-2 lg:hidden">
+          <CitePopover :id="reference.id" />
+          <ReferenceLinks
+            :doi="reference.doi"
+            :pdf="reference.pdf"
+            :url="url"
+          />
         </div>
         <div>
           <table>
@@ -188,11 +204,15 @@
           </table>
         </div>
         <div v-if="reference.abstract" id="abstract" class="scroll-mt-16">
-          <h2 class="mb-2 text-xl font-semibold">{{ t("abstract") }}</h2>
+          <HashLink hash="abstract">
+            {{ t("abstract") }}
+          </HashLink>
           <div v-html="reference.abstract"></div>
         </div>
         <div v-if="reference.remarks" id="remarks" class="scroll-mt-16">
-          <h2 class="mb-2 text-xl font-semibold">{{ t("remarks") }}</h2>
+          <HashLink hash="remarks">
+            {{ t("remarks") }}
+          </HashLink>
           <div v-html="reference.remarks"></div>
         </div>
         <div
@@ -200,7 +220,9 @@
           id="keywords"
           class="scroll-mt-16"
         >
-          <h2 class="mb-2 text-xl font-semibold">{{ t("keywords") }}</h2>
+          <HashLink hash="keywords">
+            {{ t("keywords") }}
+          </HashLink>
           <ReferenceKeywords :keywords-url="reference.keywords_url" />
         </div>
         <div
@@ -208,7 +230,9 @@
           id="libraries"
           class="scroll-mt-16"
         >
-          <h2 class="mb-2 text-xl font-semibold">{{ t("libraries") }}</h2>
+          <HashLink hash="libraries">
+            {{ t("libraries") }}
+          </HashLink>
           <ReferenceLibraries
             :reference-libraries-url="reference.reference_libraries_url"
           />
@@ -223,7 +247,9 @@
           id="geography"
           class="scroll-mt-16"
         >
-          <h2 class="mb-2 text-xl font-semibold">{{ t("geography") }}</h2>
+          <HashLink hash="geography">
+            {{ t("geography") }}
+          </HashLink>
           <ReferenceGeography
             :locality-url="reference.reference_localities_url"
             :locality-count="reference.reference_locality_count"
@@ -234,7 +260,9 @@
           />
         </div>
         <div v-if="reference.taxon_count > 0" id="taxa" class="scroll-mt-16">
-          <h2 class="mb-2 text-xl font-semibold">{{ t("taxa") }}</h2>
+          <HashLink hash="taxa">
+            {{ t("taxa") }}
+          </HashLink>
           <ReferenceTaxa
             :url="reference.taxa_url"
             :count="reference.taxon_count"
@@ -242,10 +270,12 @@
         </div>
         <div
           v-if="reference.content_count > 0"
-          id="content"
+          id="contents"
           class="scroll-mt-16"
         >
-          <h2 class="mb-2 text-xl font-semibold">{{ t("contents") }}</h2>
+          <HashLink hash="contents">
+            {{ t("contents") }}
+          </HashLink>
           <ReferenceContent
             :contents-url="reference.contents_url"
             :count="reference.content_count"
@@ -261,9 +291,9 @@
           </span>
         </div>
       </div>
-      <div class="col-span-2">
+      <div class="hidden lg:col-span-2 lg:block">
         <div
-          class="sticky space-y-2 overflow-y-auto lg:top-[57px] lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
+          class="space-y-2 overflow-y-auto py-8 lg:sticky lg:top-[57px] lg:max-h-[calc(100vh-57px)] lg:px-4"
         >
           <div class="flex flex-col items-start space-y-1">
             <CitePopover :id="reference.id" />
@@ -300,6 +330,7 @@ import type { VerticalNavigationLink } from "@nuxt/ui/dist/runtime/types";
 
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
+const localePath = useLocalePath();
 
 type Reference = {
   id: number;
@@ -508,7 +539,7 @@ const navigationLinks = computed(() => {
   if (reference.value.content_count > 0) {
     links.push({
       label: t("contents"),
-      to: "#content",
+      to: "#contents",
       exactHash: true,
       count: reference.value.content_count,
     });
@@ -520,8 +551,14 @@ const url = computed(() => {
   if (!reference.value) return null;
   return reference.value.url ?? reference.value.parent?.url ?? null;
 });
-const getRouteBaseName = useRouteBaseName();
-const router = useRouter();
+const searchStore = useSearchStore();
+const searchQueryParams = buildReferenceSearchQueryParams({
+  query: searchStore.searchState.activeQuery,
+  page: searchStore.page,
+  perPage: searchStore.perPage,
+  sort: searchStore.sort,
+  filters: searchStore.filterState,
+});
 </script>
 
 <i18n lang="yaml">
@@ -558,6 +595,7 @@ et:
   remarks: "Märkused"
   taxa: "Kirjeldatud taksonid"
   changed: "Viimati muudetud: {date}"
+  back: "Tagasi otsingusse"
 en:
   doi: "DOI"
   authorOriginal: "Author original"
@@ -591,4 +629,5 @@ en:
   remarks: "Remarks"
   taxa: "Described taxa"
   changed: "Last change: {date}"
+  back: "Back to search"
 </i18n>

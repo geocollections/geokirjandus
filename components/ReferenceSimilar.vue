@@ -6,7 +6,7 @@
   >
     {{ t("back") }}
   </UButton>
-  <template v-if="true">
+  <template v-if="searchStore.fromSearch">
     <div class="text-center font-bold">{{ t("results") }}</div>
     <div class="flex items-center justify-around">
       <UButton
@@ -72,7 +72,7 @@ const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
       q: searchStore.solrQuery,
       rows: perPage,
       start: (page.value - 1) * perPage,
-      sort: searchStore.sort.value,
+      sort: searchStore.sort,
       json: {
         filter: searchStore.solrFilter,
       },
@@ -87,7 +87,7 @@ const searchQueryParams = buildReferenceSearchQueryParams({
   query: searchStore.searchState.activeQuery,
   page: searchStore.page,
   perPage: searchStore.perPage,
-  sort: searchStore.sort.value,
+  sort: searchStore.sort,
   filters: searchStore.filterState,
 });
 function pdf(reference) {
@@ -106,6 +106,7 @@ function handleDetailNavigation(index: number) {
   const position = index + (page.value - 1) * perPage;
   if (position < 0) return;
   searchStore.selectedPosition = position;
+  searchStore.fromSearch = true;
 }
 </script>
 

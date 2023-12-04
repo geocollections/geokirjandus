@@ -26,7 +26,7 @@ const openExport = ref(false);
 
 async function exportRis() {
   const res = await $fetch(
-    `https://rwapi-dev.geoloogia.info/api/v1/public/references/`,
+    `https://rwapi.geoloogia.info/api/v1/public/references/`,
     {
       query: {
         format: "ris",

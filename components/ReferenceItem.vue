@@ -4,6 +4,7 @@
       <NuxtLinkLocale
         :to="`/reference/${reference.id}`"
         class="text-xl visited:text-purple-600 hover:underline"
+        @click="handleLinkClick"
       >
         {{ reference.title ? reference.title : reference.reference }}
       </NuxtLinkLocale>
@@ -30,6 +31,11 @@ const pdf = computed(() => {
 const url = computed(() => {
   return props.reference.url ?? props.reference.parent_reference__url ?? null;
 });
+
+const searchStore = useSearchStore();
+function handleLinkClick() {
+  searchStore.fromSearch = false;
+}
 </script>
 
 <i18n lang="yaml">

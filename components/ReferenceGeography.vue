@@ -1,16 +1,16 @@
 <template>
-  <div class="grid grid-cols-2 gap-x-4">
-    <div class="col-span-1">
+  <div class="grid grid-cols-2 gap-x-4 gap-y-4">
+    <div class="col-span-full lg:col-span-1">
       <div class="z-0 h-96 w-full rounded border bg-stone-200" id="map" />
     </div>
-    <UTabs :items="tabs">
+    <UTabs class="col-span-full lg:col-span-1" :items="tabs">
       <template #default="{ item }">
         <span>{{ item.label }}</span>
         <UBadge class="ml-2 rounded-full">{{ item.count }}</UBadge>
       </template>
       <template #localities>
         <ol
-          class="col-span-1 h-96 list-inside list-disc overflow-y-auto marker:text-gray-500"
+          class="col-span-1 list-inside list-disc marker:text-gray-500 lg:h-96 lg:overflow-y-auto"
         >
           <li v-for="referenceLocality in referenceLocalities?.results ?? []">
             <NuxtLink
@@ -29,7 +29,7 @@
       </template>
       <template #areas>
         <ol
-          class="col-span-1 h-96 list-inside list-disc overflow-y-auto marker:text-gray-500"
+          class="col-span-1 list-inside list-disc marker:text-gray-500 lg:h-96 lg:overflow-y-auto"
         >
           <li v-for="referenceArea in referenceAreas?.results ?? []">
             <NuxtLink
@@ -48,7 +48,7 @@
       </template>
       <template #sites>
         <ol
-          class="col-span-1 h-96 list-inside list-disc overflow-y-auto marker:text-gray-500"
+          class="col-span-1 list-inside list-disc marker:text-gray-500 lg:h-96 lg:overflow-y-auto"
         >
           <li v-for="referenceSite in referenceSites?.results ?? []">
             <NuxtLink
@@ -71,9 +71,12 @@
 
 <script setup lang="ts">
 let L: typeof import("leaflet");
+
 if (process.client) {
   L = await import("leaflet");
+  import("leaflet-gesture-handling");
   import("leaflet/dist/leaflet.css");
+  import("leaflet-gesture-handling/dist/leaflet-gesture-handling.css");
 }
 const props = defineProps<{
   localityUrl: string;
@@ -262,11 +265,34 @@ if (props.localityCount > 0) await refreshLocalities();
 if (props.areaCount > 0) await refreshAreas();
 if (props.siteCount > 0) await refreshSites();
 
+const { width } = useWindowSize();
+const isMobile = ref();
+
+watchPostEffect(() => {
+  const prev = isMobile.value;
+  isMobile.value = width.value < 1024;
+  if (prev !== isMobile.value && map.value) {
+    if (isMobile.value) map.value.gestureHandling.enable();
+    else map.value.gestureHandling.disable();
+    L.Util.setOptions(map.value, { gestureHandling: isMobile });
+  }
+});
 onMounted(() => {
+  const mobile = width.value < 1024;
   map.value = L.map("map", {
     center: [0, 0],
     zoom: 1,
     layers: [baseMaps.value.CartoDB],
+    //@ts-ignore
+    gestureHandling: mobile,
+    gestureHandlingOptions: {
+      text: {
+        touch: t("gestureHandling.touch"),
+        scroll: t("gestureHandling.scroll"),
+        scrollMac: t("gestureHandling.scrollMac"),
+      },
+      duration: 1000,
+    },
   });
   L.control.layers(baseMaps.value, overlayMaps.value).addTo(map.value);
 
@@ -388,8 +414,16 @@ et:
   localities: "Lokaliteedid"
   areas: "Alad"
   sites: "Uuringupunktid"
+  gestureHandling:
+    touch: "Kasuta kahte näppu kaardi liigutamiseks"
+    scroll: "Kasuta ctrl + scroll kaardi suumimiseks"
+    scrollMac: 'Kasuta \u2318 + scroll kaardi suumimiseks'
 en:
   localities: "Localities"
   areas: "Areas"
   sites: "Sites"
+  gestureHandling:
+    touch: "Use two fingers to move the map"
+    scroll: "Use ctrl + scroll to zoom the map"
+    scrollMac: 'Use \u2318 + scroll to zoom the map'
 </i18n>

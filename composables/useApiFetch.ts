@@ -3,7 +3,7 @@ import { defu } from "defu";
 
 export function useApiFetch<T>(url: string, options: UseFetchOptions<T> = {}) {
   const defaults: UseFetchOptions<T> = {
-    baseURL: "https://rwapi-dev.geoloogia.info/api/v0/public",
+    baseURL: "https://rwapi.geoloogia.info/api/v0/public",
   };
   const params = defu(options, defaults);
 
@@ -15,7 +15,7 @@ export function useNewApiFetch<T>(
   options: UseFetchOptions<T> = {},
 ) {
   const defaults: UseFetchOptions<T> = {
-    baseURL: "https://rwapi-dev.geoloogia.info/api/v1/public",
+    baseURL: "https://rwapi.geoloogia.info/api/v1/public",
   };
   const params = defu(options, defaults);
 

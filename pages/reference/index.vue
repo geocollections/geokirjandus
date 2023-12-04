@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container px-1 lg:px-0">
     <div class="grid grid-cols-12 gap-x-4">
-      <div
-        class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
-      >
-        <SearchFormReference
-          :store="searchStore"
-          @update="handleSubmit"
-          @reset="handleReset"
-        />
-      </div>
+      <!-- <div -->
+      <!--   class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8" -->
+      <!-- > -->
+      <!--   <SearchFormReference -->
+      <!--     :store="searchStore" -->
+      <!--     @update="handleSubmit" -->
+      <!--     @reset="handleReset" -->
+      <!--   /> -->
+      <!-- </div> -->
       <div class="col-span-full py-4 lg:col-span-9 lg:py-8">
         <i18n-t
           keypath="results"
@@ -33,8 +33,8 @@
               {{ t("selected", { count: selectStore.selected.length }) }}
             </span>
           </div>
-          <div class="flex">
-            <div class="flex items-center space-x-2">
+          <div class="flex flex-col items-end space-y-2 lg:flex-row">
+            <div class="flex items-center">
               <USelectMenu
                 class="w-40"
                 v-model="searchStore.sort"
@@ -57,6 +57,7 @@
                 v-model="searchStore.page"
                 :page-count="searchStore.perPage"
                 :total="referencesRes?.response.numFound ?? 0"
+                :max="5"
                 show-first
                 show-last
               />
@@ -113,6 +114,7 @@
           >Close</UButton
         >
         <SearchFormReference
+          :num-found="referencesRes?.response.numFound"
           :store="searchStore"
           @update="handleSubmit"
           @reset="handleReset"

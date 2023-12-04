@@ -1,6 +1,7 @@
 <template>
-  <div class="flex items-start space-x-4 py-2">
+  <div class="flex items-start space-x-2 py-2 lg:space-x-4">
     <UCheckbox
+      class="hidden lg:block"
       :model-value="selected"
       color="blue"
       @input="emit('update:selected')"
@@ -31,7 +32,7 @@
           "
           @click="showAbstract = !showAbstract"
         >
-          Abstract
+          {{ t("abstract") }}
         </UButton>
         <CitePopover :id="reference.id" />
         <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />

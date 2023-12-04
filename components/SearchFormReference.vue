@@ -1,5 +1,16 @@
 <template>
   <UForm :state="store.searchState" @submit="handleSubmit">
+    <i18n-t
+      v-if="numFound"
+      keypath="found"
+      tag="div"
+      class="mb-2 text-xl"
+      :plural="numFound ?? 0"
+    >
+      <template #count>
+        <span class="font-bold">{{ numFound ?? 0 }}</span>
+      </template>
+    </i18n-t>
     <UButtonGroup size="lg" :ui="{ wrapper: { horizontal: 'w-full' } }">
       <UInput
         v-model="store.searchState.query"
@@ -129,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ store: any }>();
+const props = defineProps<{ store: any; numFound?: number }>();
 const emit = defineEmits<{ update: []; reset: [] }>();
 
 const { t } = useI18n({ useScope: "local" });
@@ -262,6 +273,7 @@ et:
   reset: "Puhasta"
   start: "Algus"
   end: "Lõpp"
+  found: "Tulemused puuduvad | {count} tulemus leitud | {count} tulemust leitud"
 en:
   search: "Search"
   filters: "Filters"
@@ -283,4 +295,5 @@ en:
   reset: "Clear"
   start: "Start"
   end: "End"
+  found: "No results found | Found {count} result | Found {count} results"
 </i18n>

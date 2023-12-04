@@ -1,9 +1,9 @@
 <template>
-  <div class="relative flex h-full w-full">
-    <div class="h-full w-1/2">
+  <div class="relative h-full w-full lg:flex">
+    <div class="h-full w-full lg:w-1/2">
       <canvas id="myChart"></canvas>
     </div>
-    <div class="h-full w-1/2">
+    <div class="h-full w-full lg:w-1/2">
       <canvas id="myChart2"></canvas>
     </div>
   </div>
@@ -14,8 +14,9 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getRelativePosition } from "chart.js/helpers";
 import sortBy from "lodash/sortBy";
+
 const router = useRouter();
-const state = reactive({
+const state = shallowReactive({
   categoryChart: null,
   decadesChart: null,
 });
@@ -80,8 +81,39 @@ const keywordsChartData = computed(() => {
   return data;
 });
 
+const { width, height } = useWindowSize();
+const isMobile = ref();
+watchPostEffect(() => {
+  const prev = isMobile.value;
+  isMobile.value = width.value < 1024;
+  if (prev !== isMobile.value && state.decadesChart) {
+    state.decadesChart.options.scales.x.reverse = !isMobile.value;
+    state.decadesChart.options.maintainAspectRatio = isMobile.value;
+    if (isMobile.value) {
+      state.decadesChart.options.aspectRatio = 1;
+    }
+    state.decadesChart.options.plugins.datalabels.align = !isMobile.value
+      ? "start"
+      : "end";
+    state.decadesChart.options.plugins.datalabels.anchor = !isMobile.value
+      ? "start"
+      : "end";
+    state.decadesChart.update();
+    state.decadesChart.resize();
+  }
+  if (prev !== isMobile.value && state.categoryChart) {
+    state.categoryChart.options.maintainAspectRatio = isMobile.value;
+    if (isMobile.value) {
+      state.categoryChart.options.aspectRatio = 1;
+    }
+    state.categoryChart.update();
+    state.categoryChart.resize();
+  }
+});
+
 onMounted(async () => {
   const yearsCtx = document.getElementById("myChart");
+  const mobile = width.value < 1024;
   state.decadesChart = new Chart(yearsCtx, {
     type: "bar",
     data: {
@@ -96,7 +128,7 @@ onMounted(async () => {
           ? "pointer"
           : "default";
       },
-      aspectRatio: 1,
+      maintainAspectRatio: mobile,
       indexAxis: "y",
       layout: {
         padding: {
@@ -113,7 +145,7 @@ onMounted(async () => {
           grid: {
             display: false,
           },
-          reverse: true,
+          reverse: !mobile,
         },
         y: {
           ticks: {
@@ -137,8 +169,8 @@ onMounted(async () => {
           formatter: function (value, context) {
             return context.chart.data.labels[context.dataIndex];
           },
-          align: "start",
-          anchor: "start",
+          align: mobile ? "end" : "start",
+          anchor: mobile ? "end" : "start",
         },
       },
     },
@@ -152,7 +184,7 @@ onMounted(async () => {
     },
     plugins: [ChartDataLabels],
     options: {
-      aspectRatio: 1,
+      maintainAspectRatio: mobile,
       indexAxis: "y",
       layout: {
         padding: {

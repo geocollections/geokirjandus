@@ -3,8 +3,7 @@
     <div>
       <NuxtLinkLocale
         :to="`/reference/${reference.id}`"
-        class="text-xl hover:underline"
-        @click="handleDetailNavigation"
+        class="text-xl visited:text-purple-600 hover:underline"
       >
         {{ reference.title ? reference.title : reference.reference }}
       </NuxtLinkLocale>

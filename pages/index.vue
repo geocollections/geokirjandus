@@ -1,7 +1,7 @@
 <template>
   <div class="-mt-[57px]">
     <div class="container pt-[calc(57px+2em)]">
-      <div class="mx-auto w-fit space-y-4">
+      <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
           <h1 class="text-center text-6xl" style="word-break: normal">
             {{ t("title") }}
@@ -30,7 +30,7 @@
           </UButton>
         </UForm>
         <UDivider :label="t('browse')" icon="i-heroicons-arrow-left" />
-        <div class="space-x-1 text-center">
+        <div class="flex flex-col space-y-1 text-center lg:block lg:space-x-1">
           <UButton
             :to="
               localePath({
@@ -38,7 +38,6 @@
                 query: { isEstonianReference: true },
               })
             "
-            trailing-icon="i-heroicons-arrow-right"
             size="xl"
           >
             <div class="text-start">
@@ -53,6 +52,7 @@
               </div>
               <div>{{ t("estonianReferences") }}</div>
             </div>
+            <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
           </UButton>
           <UButton
             :to="
@@ -61,7 +61,6 @@
                 query: { isEstonianReference: false },
               })
             "
-            trailing-icon="i-heroicons-arrow-right"
             size="xl"
           >
             <div class="text-start">
@@ -74,12 +73,9 @@
               </div>
               <div>{{ t("allReferences") }}</div>
             </div>
+            <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
           </UButton>
-          <UButton
-            :to="localePath({ path: '/library' })"
-            trailing-icon="i-heroicons-arrow-right"
-            size="xl"
-          >
+          <UButton :to="localePath({ path: '/library' })" size="xl">
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-building-library"></UIcon>
@@ -90,6 +86,7 @@
               </div>
               <div>{{ t("libraries") }}</div>
             </div>
+            <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
           </UButton>
         </div>
       </div>
@@ -98,8 +95,10 @@
   <div class="mb-4 bg-[url('/layered-steps-haikei4.svg')] bg-cover">
     <div class="container pt-10">
       <div class="grid grid-cols-2 gap-x-4">
-        <div class="col-span-1 space-y-4">
-          <div class="h-96 w-full p-4">
+        <div
+          class="order-2 col-span-full space-y-4 lg:order-none lg:col-span-1"
+        >
+          <div class="w-full p-4 lg:h-96">
             <Statistics />
           </div>
           <div class="rounded border bg-stone-50 p-4 dark:bg-gray-800">
@@ -117,7 +116,7 @@
           </div>
         </div>
 
-        <div class="col-span-1">
+        <div class="order-1 col-span-full lg:order-none lg:col-span-1">
           <div class="rounded border bg-stone-50 p-4 dark:bg-gray-800">
             <div class="mb-3 text-2xl">
               {{ t("latest") }}
@@ -199,7 +198,7 @@ et:
   title: "Geokirjandus"
   subtitle: "Eesti maapõue teavikute register"
   search: "Otsi"
-  enterKeyword: "Sisesta märksõna"
+  enterKeyword: "Sisesta otsingu termin"
   browse: "või sirvi"
   estonianReferences: "Eesti kirjandus"
   allReferences: "Kõik kirjandus"
@@ -210,7 +209,7 @@ en:
   title: "Geoliterature"
   subtitle: "Estonian geoscience literature database"
   search: "Search"
-  enterKeyword: "Enter keyword"
+  enterKeyword: "Enter a search term"
   browse: "or browse"
   estonianReferences: "Estonian references"
   allReferences: "All references"

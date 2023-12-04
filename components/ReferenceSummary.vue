@@ -10,7 +10,7 @@
       <div>
         <NuxtLinkLocale
           :to="`/reference/${reference.id}`"
-          class="text-lg hover:underline"
+          class="text-lg visited:text-purple-600 hover:underline"
           @click="handleDetailNavigation"
         >
           {{ reference.title ? reference.title : reference.reference }}

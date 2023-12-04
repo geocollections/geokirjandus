@@ -1,15 +1,15 @@
 <template>
   <div class="container px-1 lg:px-0">
     <div class="grid grid-cols-12 gap-x-4">
-      <!-- <div -->
-      <!--   class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8" -->
-      <!-- > -->
-      <!--   <SearchFormReference -->
-      <!--     :store="searchStore" -->
-      <!--     @update="handleSubmit" -->
-      <!--     @reset="handleReset" -->
-      <!--   /> -->
-      <!-- </div> -->
+      <div
+        class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
+      >
+        <SearchFormReference
+          :store="searchStore"
+          @update="handleSubmit"
+          @reset="handleReset"
+        />
+      </div>
       <div class="col-span-full py-4 lg:col-span-9 lg:py-8">
         <i18n-t
           keypath="results"

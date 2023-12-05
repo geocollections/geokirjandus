@@ -4,10 +4,10 @@
       <div
         class="col-span-3 space-y-2 overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
-        <UForm :state="searchStore.searchState" @submit="handleSubmit">
+        <UForm :state="{ localQuery }" @submit="handleSubmit">
           <UButtonGroup size="lg" :ui="{ wrapper: { horizontal: 'w-full' } }">
             <UInput
-              v-model="searchStore.searchState.query"
+              v-model="localQuery"
               :placeholder="t('searchAllFields')"
               :ui="{ wrapper: 'w-full' }"
             />
@@ -19,25 +19,25 @@
           <div class="text-xl font-medium">{{ t("filters") }}</div>
           <UFormGroup :label="t('author')">
             <UInput
-              v-model="searchStore.filterState.author"
+              v-model="searchStore.filters.author"
               @blur="handleFilterChange"
             />
           </UFormGroup>
           <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
             <UInput
-              v-model="searchStore.filterState.year[0]"
+              v-model="searchStore.filters.year[0]"
               @blur="handleFilterChange"
               placeholder="Start"
             />
             <UInput
-              v-model="searchStore.filterState.year[1]"
+              v-model="searchStore.filters.year[1]"
               @blur="handleFilterChange"
               placeholder="End"
             />
           </UFormGroup>
           <UFormGroup :label="t('title')">
             <UInput
-              v-model="searchStore.filterState.title"
+              v-model="searchStore.filters.title"
               @blur="handleFilterChange"
             />
           </UFormGroup>
@@ -66,7 +66,7 @@
             <USelectMenu
               class="ml-auto"
               v-model="searchStore.perPage"
-              :options="perPageOptions"
+              :options="searchStore.perPageOptions"
             />
             <UPagination
               v-model="searchStore.page"
@@ -100,13 +100,18 @@
 
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
-import { useSearchStore } from "~/stores/librarySearchStore";
+import { z } from "zod";
+definePageMeta({
+  alias: "/library",
+});
+
 const { t } = useI18n({ useScope: "local" });
 const router = useRouter();
 const route = useRoute();
-const searchStore = useSearchStore();
+const searchStore = useLibrariesStore();
 searchStore.setStateFromQueryParams(route);
-const perPageOptions = [10, 25, 50, 100];
+const localQuery = ref("");
+
 type SolrResponse<T = any> = {
   facets: any;
   response: {
@@ -123,9 +128,9 @@ const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
       q: searchStore.solrQuery,
       rows: searchStore.perPage,
       start: (searchStore.page - 1) * searchStore.perPage,
-      sort: searchStore.sort.value,
+      sort: searchStore.sort,
       json: {
-        filter: searchStore.solrFilter,
+        filter: searchStore.solrFilters,
       },
     })),
     watch: false,
@@ -157,7 +162,7 @@ watch(
     () => searchStore.sort,
     () => searchStore.perPage,
     () => searchStore.page,
-    searchStore.searchState,
+    () => searchStore.query,
   ],
   () => {
     setQueryParamsFromState();
@@ -165,24 +170,24 @@ watch(
 );
 
 function setQueryParamsFromState() {
-  const query: z.input<typeof ParamsSchema> = {
+  const query: z.input<typeof searchStore.querySchema> = {
     page: searchStore.page,
     perPage: searchStore.perPage,
-    sort: searchStore.sort.value,
-    q: searchStore.searchState.activeQuery,
+    sort: searchStore.sort,
+    q: searchStore.query,
   };
 
-  if (searchStore.filterState.year.some((val) => val !== null)) {
-    const start = searchStore.filterState.year[0] ?? "*";
-    const end = searchStore.filterState.year[1] ?? "*";
+  if (searchStore.filters.year.some((val) => val !== null)) {
+    const start = searchStore.filters.year[0] ?? "*";
+    const end = searchStore.filters.year[1] ?? "*";
 
     query.year = `${start}-${end}`;
   }
-  if (searchStore.filterState.author.length > 0) {
-    query.author = searchStore.filterState.author;
+  if (searchStore.filters.author.length > 0) {
+    query.author = searchStore.filters.author;
   }
-  if (searchStore.filterState.title.length > 0) {
-    query.title = searchStore.filterState.title;
+  if (searchStore.filters.title.length > 0) {
+    query.title = searchStore.filters.title;
   }
 
   router.push({
@@ -195,7 +200,7 @@ function handleFilterChange() {
   execute();
 }
 function handleSubmit() {
-  searchStore.searchState.activeQuery = searchStore.searchState.query;
+  searchStore.query = localQuery.value;
   execute();
 }
 </script>

@@ -2,11 +2,11 @@
   <UButton
     variant="link"
     icon="i-heroicons-arrow-small-left"
-    :to="localePath({ path: '/reference', query: searchQueryParams })"
+    :to="localePath({ path: '/references', query: searchQueryParams })"
   >
     {{ t("back") }}
   </UButton>
-  <template v-if="searchStore.fromSearch">
+  <template v-if="referencesStore.fromSearch">
     <div class="text-center font-bold">{{ t("results") }}</div>
     <div class="flex items-center justify-around">
       <UButton
@@ -31,7 +31,7 @@
             color="white"
             variant="ghost"
             class="block"
-            :to="localePath(`/reference/${reference.id}`)"
+            :to="localePath(`/references/${reference.id}`)"
             exact
             active-class="bg-carrot-orange-500/10 border border-carrot-orange-500"
             @click="handleDetailNavigation(idx)"
@@ -55,26 +55,25 @@
 </template>
 
 <script setup lang="ts">
-import { useSearchStore } from "~/stores/referenceSearchStore";
 const { t } = useI18n({ useScope: "local" });
-const searchStore = useSearchStore();
+const referencesStore = useReferencesStore();
 const localePath = useLocalePath();
 const perPage = 10;
 const page = ref(
-  searchStore.selectedPosition < 0
+  !referencesStore.fromSearch
     ? 1
-    : Math.floor(searchStore.selectedPosition / perPage) + 1,
+    : Math.floor(referencesStore.searchPosition / perPage) + 1,
 );
 const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
   "/reference",
   {
     query: computed(() => ({
-      q: searchStore.solrQuery,
+      q: referencesStore.solrQuery,
       rows: perPage,
       start: (page.value - 1) * perPage,
-      sort: searchStore.sort,
+      sort: referencesStore.sort,
       json: {
-        filter: searchStore.solrFilter,
+        filter: referencesStore.solrFilters,
       },
     })),
   },
@@ -84,11 +83,11 @@ const hasNext = computed(
   () => (page.value - 1) * perPage < referencesRes.value?.response.numFound,
 );
 const searchQueryParams = buildReferenceSearchQueryParams({
-  query: searchStore.searchState.activeQuery,
-  page: searchStore.page,
-  perPage: searchStore.perPage,
-  sort: searchStore.sort,
-  filters: searchStore.filterState,
+  query: referencesStore.query,
+  page: referencesStore.page,
+  perPage: referencesStore.perPage,
+  sort: referencesStore.sort,
+  filters: referencesStore.filters,
 });
 function pdf(reference) {
   return (
@@ -105,8 +104,7 @@ function url(reference) {
 function handleDetailNavigation(index: number) {
   const position = index + (page.value - 1) * perPage;
   if (position < 0) return;
-  searchStore.selectedPosition = position;
-  searchStore.fromSearch = true;
+  referencesStore.searchPosition = position;
 }
 </script>
 

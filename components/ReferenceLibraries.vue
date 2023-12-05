@@ -1,7 +1,7 @@
 <template>
   <div class="space-x-1">
     <UButton
-      :to="localePath(`/library/${referenceLibrary.library.id}`)"
+      :to="localePath(`/libraries/${referenceLibrary.library.id}`)"
       size="2xs"
       color="blue"
       v-for="referenceLibrary in referenceLibraries?.results"

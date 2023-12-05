@@ -14,7 +14,7 @@
           class="lg:hidden"
           variant="link"
           icon="i-heroicons-arrow-small-left"
-          :to="localePath({ path: '/reference', query: searchQueryParams })"
+          :to="localePath({ path: '/references', query: searchQueryParams })"
         >
           {{ t("back") }}
         </UButton>
@@ -114,7 +114,7 @@
               <tr v-if="reference.parent">
                 <th class="w-40 text-start font-semibold">{{ t("parent") }}</th>
                 <td>
-                  <NuxtLinkLocale :to="`/reference/${reference.parent.id}`">
+                  <NuxtLinkLocale :to="`/references/${reference.parent.id}`">
                     {{ reference.parent.reference }}
                   </NuxtLinkLocale>
                 </td>
@@ -327,6 +327,10 @@
 
 <script setup lang="ts">
 import type { VerticalNavigationLink } from "@nuxt/ui/dist/runtime/types";
+
+definePageMeta({
+  alias: "/reference/:id",
+});
 
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
@@ -551,13 +555,13 @@ const url = computed(() => {
   if (!reference.value) return null;
   return reference.value.url ?? reference.value.parent?.url ?? null;
 });
-const searchStore = useSearchStore();
+const referencesStore = useReferencesStore();
 const searchQueryParams = buildReferenceSearchQueryParams({
-  query: searchStore.searchState.activeQuery,
-  page: searchStore.page,
-  perPage: searchStore.perPage,
-  sort: searchStore.sort,
-  filters: searchStore.filterState,
+  query: referencesStore.query,
+  page: referencesStore.page,
+  perPage: referencesStore.perPage,
+  sort: referencesStore.sort,
+  filters: referencesStore.filters,
 });
 </script>
 

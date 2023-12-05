@@ -75,6 +75,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  alias: "/library/:id",
+});
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
 const { data: library } = await useNewApiFetch(

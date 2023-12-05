@@ -4,11 +4,7 @@
       <div
         class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
-        <SearchFormReference
-          :store="searchStore"
-          @update="handleSubmit"
-          @reset="handleReset"
-        />
+        <SearchFormReference @update="handleSubmit" @reset="handleReset" />
       </div>
       <div class="col-span-full py-4 lg:col-span-9 lg:py-8">
         <i18n-t
@@ -37,25 +33,25 @@
             <div class="flex items-center">
               <USelectMenu
                 class="w-40"
-                v-model="searchStore.sort"
-                :options="sortOptions"
+                v-model="referencesStore.sort"
+                :options="referencesStore.sortOptions"
                 value-attribute="value"
                 option-attribute="name"
                 icon="i-heroicons-arrows-up-down"
               >
                 <template #label>
-                  {{ currentSort.name }}
+                  {{ referencesStore.currentSort.name }}
                 </template>
               </USelectMenu>
             </div>
             <div class="ml-auto flex items-center space-x-2">
               <USelectMenu
-                v-model="searchStore.perPage"
-                :options="perPageOptions"
+                v-model="referencesStore.perPage"
+                :options="referencesStore.perPageOptions"
               />
               <UPagination
-                v-model="searchStore.page"
-                :page-count="searchStore.perPage"
+                v-model="referencesStore.page"
+                :page-count="referencesStore.perPage"
                 :total="referencesRes?.response.numFound ?? 0"
                 :max="5"
                 show-first
@@ -68,15 +64,17 @@
             <ReferenceSummary
               :reference="reference"
               :selected="isSelected(reference.id)"
-              :position="index + (searchStore.page - 1) * searchStore.perPage"
+              :position="
+                index + (referencesStore.page - 1) * referencesStore.perPage
+              "
               @update:selected="handleSelectUpdate(reference.id)"
             />
           </template>
 
           <UPagination
-            v-model="searchStore.page"
+            v-model="referencesStore.page"
             :ui="{ base: 'ml-auto' }"
-            :page-count="searchStore.perPage"
+            :page-count="referencesStore.perPage"
             :total="referencesRes?.response.numFound ?? 0"
             :max="5"
             show-first
@@ -101,8 +99,8 @@
       <span>
         {{ t("filters") }}
       </span>
-      <span v-if="searchStore.activeFiltersCount > 0">
-        ({{ searchStore.activeFiltersCount }})
+      <span v-if="referencesStore.activeFiltersCount > 0">
+        ({{ referencesStore.activeFiltersCount }})
       </span>
     </UButton>
     <USlideover v-model="openFilters" side="left">
@@ -116,7 +114,6 @@
         >
         <SearchFormReference
           :num-found="referencesRes?.response.numFound"
-          :store="searchStore"
           @update="handleSubmit"
           @reset="handleReset"
         />
@@ -128,32 +125,23 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
-import { useSearchStore } from "~/stores/referenceSearchStore";
+import { useReferencesStore } from "~/stores/references";
 import { useReferenceSelectStore } from "~/stores/referenceSelectStore";
+
+definePageMeta({
+  alias: "/references",
+});
+
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
 
 const openFilters = ref(false);
-const perPageOptions = [10, 25, 50, 100];
-const sortOptions = computed(() => [
-  { value: "score desc", name: t("sort.best") },
-  { value: "author asc", name: t("sort.authorAsc") },
-  { value: "author desc", name: t("sort.authorDesc") },
-  { value: "title asc", name: t("sort.titleAsc") },
-  { value: "title desc", name: t("sort.titleDesc") },
-  { value: "year_numeric asc", name: t("sort.yearAsc") },
-  { value: "year_numeric desc", name: t("sort.yearDesc") },
-  { value: "date_added desc", name: t("sort.newest") },
-]);
 
+const referencesStore = useReferencesStore();
 const selectStore = useReferenceSelectStore();
 
-const searchStore = useSearchStore();
-const currentSort = computed(() =>
-  sortOptions.value.find((option) => option.value === searchStore.sort),
-);
-searchStore.setStateFromQueryParams(route, sortOptions);
+referencesStore.setStateFromQueryParams(route);
 
 type SolrResponse<T = any> = {
   facets: any;
@@ -163,70 +151,36 @@ type SolrResponse<T = any> = {
     docs: T[];
   };
 };
-const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
-  "/reference",
-  {
+const { data: referencesRes, refresh: refreshReferences } =
+  await useSolrFetch<SolrResponse>("/reference", {
     query: computed(() => ({
-      q: searchStore.solrQuery,
-      rows: searchStore.perPage,
-      start: (searchStore.page - 1) * searchStore.perPage,
-      sort: searchStore.sort,
+      q: referencesStore.solrQuery,
+      rows: referencesStore.perPage,
+      start: referencesStore.offset,
+      sort: referencesStore.sort,
       json: {
-        filter: searchStore.solrFilter,
+        filter: referencesStore.solrFilters,
       },
     })),
     watch: false,
-  },
-);
+  });
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 
-const typeOptions = computed(() => {
-  return referencesRes.value?.facets.type.buckets.map((bucket) => {
-    return {
-      value: bucket.val,
-      name: bucket.name.buckets[0].val,
-      name_en: bucket.name_en.buckets[0].val,
-      count: bucket.count,
-    };
-  });
+watch([() => referencesStore.sort, () => referencesStore.perPage], () => {
+  referencesStore.page = 1;
+  refreshReferences();
 });
-
-const languageOptions = computed(() => {
-  return referencesRes.value?.facets.language.buckets.map((bucket) => {
-    return {
-      value: bucket.val,
-      name: bucket.name.buckets[0].val,
-      name_en: bucket.name_en.buckets[0].val,
-      count: bucket.count,
-    };
-  });
-});
-
 watch(
-  () => searchStore.sort,
-  () => {
-    searchStore.page = 1;
-    execute();
-  },
-);
-watch(
-  () => searchStore.perPage,
-  () => {
-    searchStore.page = 1;
-    execute();
-  },
-);
-watch(
-  () => searchStore.page,
-  () => execute(),
+  () => referencesStore.page,
+  () => refreshReferences(),
 );
 
 watch(
   [
-    () => searchStore.sort,
-    () => searchStore.perPage,
-    () => searchStore.page,
-    searchStore.searchState,
+    () => referencesStore.sort,
+    () => referencesStore.perPage,
+    () => referencesStore.page,
+    () => referencesStore.query,
   ],
   () => {
     setQueryParamsFromState();
@@ -235,9 +189,9 @@ watch(
 
 watch(
   [
-    () => searchStore.filterState.isEstonianAuthor,
-    () => searchStore.filterState.isEstonianReference,
-    () => searchStore.filterState.pdf,
+    () => referencesStore.filters.isEstonianAuthor,
+    () => referencesStore.filters.isEstonianReference,
+    () => referencesStore.filters.pdf,
   ],
   () => {
     handleFilterChange();
@@ -245,62 +199,62 @@ watch(
 );
 
 function setQueryParamsFromState() {
-  const query: z.input<typeof ParamsSchema> = {
-    page: searchStore.page,
-    perPage: searchStore.perPage,
-    sort: searchStore.sort,
+  const query: z.input<typeof referencesStore.querySchema> = {
+    page: referencesStore.page,
+    perPage: referencesStore.perPage,
+    sort: referencesStore.sort,
   };
 
-  if (searchStore.searchState.activeQuery.length > 0) {
-    query.q = searchStore.searchState.activeQuery;
+  if (referencesStore.query.length > 0) {
+    query.q = referencesStore.query;
   }
 
-  if (searchStore.filterState.isEstonianReference) {
+  if (referencesStore.filters.isEstonianReference) {
     query.isEstonianReference =
-      searchStore.filterState.isEstonianReference.toString();
+      referencesStore.filters.isEstonianReference.toString();
   }
-  if (searchStore.filterState.isEstonianAuthor) {
+  if (referencesStore.filters.isEstonianAuthor) {
     query.isEstonianAuthor =
-      searchStore.filterState.isEstonianAuthor.toString();
+      referencesStore.filters.isEstonianAuthor.toString();
   }
-  if (searchStore.filterState.isEstonianAuthor) {
-    query.pdf = searchStore.filterState.pdf.toString();
+  if (referencesStore.filters.isEstonianAuthor) {
+    query.pdf = referencesStore.filters.pdf.toString();
   }
-  if (searchStore.filterState.title.length > 0) {
-    query.title = searchStore.filterState.title;
+  if (referencesStore.filters.title.length > 0) {
+    query.title = referencesStore.filters.title;
   }
-  if (searchStore.filterState.book.length > 0) {
-    query.book = searchStore.filterState.book;
+  if (referencesStore.filters.book.length > 0) {
+    query.book = referencesStore.filters.book;
   }
-  if (searchStore.filterState.journal.length > 0) {
-    query.journal = searchStore.filterState.journal;
+  if (referencesStore.filters.journal.length > 0) {
+    query.journal = referencesStore.filters.journal;
   }
-  if (searchStore.filterState.publisher.length > 0) {
-    query.publisher = searchStore.filterState.publisher;
+  if (referencesStore.filters.publisher.length > 0) {
+    query.publisher = referencesStore.filters.publisher;
   }
-  if (searchStore.filterState.volumeOrNumber.length > 0) {
-    query.volumeOrNumber = searchStore.filterState.volumeOrNumber;
+  if (referencesStore.filters.volumeOrNumber.length > 0) {
+    query.volumeOrNumber = referencesStore.filters.volumeOrNumber;
   }
-  if (searchStore.filterState.localities.length > 0) {
-    query.localities = searchStore.filterState.localities;
+  if (referencesStore.filters.localities.length > 0) {
+    query.localities = referencesStore.filters.localities;
   }
-  if (searchStore.filterState.taxa.length > 0) {
-    query.taxa = searchStore.filterState.taxa;
+  if (referencesStore.filters.taxa.length > 0) {
+    query.taxa = referencesStore.filters.taxa;
   }
-  if (searchStore.filterState.type.size > 0) {
-    query.type = Array.from(searchStore.filterState.type).join(",");
+  if (referencesStore.filters.type.size > 0) {
+    query.type = Array.from(referencesStore.filters.type).join(",");
   }
-  if (searchStore.filterState.language.size > 0) {
-    query.language = Array.from(searchStore.filterState.type).join(",");
-  }
-
-  if (searchStore.filterState.keywords.size > 0) {
-    query.keywords = Array.from(searchStore.filterState.keywords).join(",");
+  if (referencesStore.filters.language.size > 0) {
+    query.language = Array.from(referencesStore.filters.type).join(",");
   }
 
-  if (searchStore.filterState.year.some((val) => val !== null)) {
-    const start = searchStore.filterState.year[0] ?? "*";
-    const end = searchStore.filterState.year[1] ?? "*";
+  if (referencesStore.filters.keywords.size > 0) {
+    query.keywords = Array.from(referencesStore.filters.keywords).join(",");
+  }
+
+  if (referencesStore.filters.year.some((val) => val !== null)) {
+    const start = referencesStore.filters.year[0] ?? "*";
+    const end = referencesStore.filters.year[1] ?? "*";
 
     query.year = `${start}-${end}`;
   }
@@ -311,24 +265,15 @@ function setQueryParamsFromState() {
 
 function handleFilterChange() {
   setQueryParamsFromState();
-  execute();
+  refreshReferences();
 }
 function handleSubmit() {
-  execute();
+  refreshReferences();
 }
 function handleReset() {
-  searchStore.resetFilters();
+  referencesStore.resetFilters();
   setQueryParamsFromState();
-  execute();
-}
-
-function handleOptionClick(option: any, valueSet: Set<string>) {
-  if (valueSet.has(option.value)) {
-    valueSet.delete(option.value);
-  } else {
-    valueSet.add(option.value);
-  }
-  handleFilterChange();
+  refreshReferences();
 }
 
 function handleSelectUpdate(updatedId: string) {

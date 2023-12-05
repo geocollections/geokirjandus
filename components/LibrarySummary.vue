@@ -2,7 +2,7 @@
   <div class="space-y-2 py-2">
     <div>
       <NuxtLinkLocale
-        :to="`/library/${library.id}`"
+        :to="`/libraries/${library.id}`"
         class="text-xl hover:underline"
         @click="handleDetailNavigation"
       >
@@ -14,11 +14,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useSearchStore } from "~/stores/librarySearchStore";
 const props = defineProps<{ library: any; position: number }>();
 const { t } = useI18n({ useScope: "local" });
 
-const searchStore = useSearchStore();
+const searchStore = useLibrariesStore();
 
 const info = computed(() => {
   const infoList = [];
@@ -38,7 +37,7 @@ const info = computed(() => {
 
 function handleDetailNavigation() {
   if (props.position < 0) return;
-  searchStore.selectedPosition = props.position;
+  searchStore.searchPosition = props.position;
 }
 </script>
 

@@ -17,6 +17,6 @@ const props = defineProps<{ keywordsUrl: string }>();
 const { data: keywords } = await useNewApiFetch(props.keywordsUrl);
 
 function getKeywordSearchRoute(keyword: string) {
-  return { path: "/reference", query: { keywords: keyword } };
+  return { path: "/references", query: { keywords: keyword } };
 }
 </script>

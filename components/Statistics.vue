@@ -243,7 +243,7 @@ function handleDecadeClick(e) {
   const decade = decadesChartData.value.labels[dataY];
 
   router.push({
-    path: "/reference",
+    path: "/references",
     query: {
       year: `${parseInt(decade)}-${parseInt(decade) + 9}`,
       isEstonianReference: false,
@@ -257,7 +257,7 @@ function handleKeywordClick(e) {
   const keyword = keywordsChartData.value.labels[dataY];
 
   router.push({
-    path: "/reference",
+    path: "/references",
     query: { keywords: keyword, isEstonianReference: false },
   });
 }

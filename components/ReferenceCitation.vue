@@ -1,7 +1,7 @@
 <template>
   <div v-if="onlyText" v-html="reference.source" />
   <div class="space-x-1" v-else>
-    <NuxtLinkLocale :to="`/reference/${reference.id}`">
+    <NuxtLinkLocale :to="`/references/${reference.id}`">
       <span v-html="reference.source" />
     </NuxtLinkLocale>
     <ReferenceLinks :item="reference" x-small />

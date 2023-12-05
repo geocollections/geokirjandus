@@ -9,7 +9,7 @@
     <div class="space-y-2">
       <div>
         <NuxtLinkLocale
-          :to="`/reference/${reference.id}`"
+          :to="`/references/${reference.id}`"
           class="text-lg visited:text-purple-600 hover:underline"
           @click="handleDetailNavigation"
         >
@@ -47,7 +47,7 @@
   </div>
 </template>
 <script setup lang="ts">
-const emit = defineEmits<{ "update:selected" }>();
+const emit = defineEmits<{ "update:selected": [] }>();
 const props = defineProps<{
   reference: any;
   selected: boolean;
@@ -93,11 +93,10 @@ const info = computed(() => {
   return infoList.join(" | ");
 });
 
-const searchStore = useSearchStore();
+const searchStore = useReferencesStore();
 function handleDetailNavigation() {
   if (!props.position || props.position < 0) return;
-  searchStore.selectedPosition = props.position;
-  searchStore.fromSearch = true;
+  searchStore.searchPosition = props.position;
 }
 </script>
 

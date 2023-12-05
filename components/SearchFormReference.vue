@@ -1,5 +1,5 @@
 <template>
-  <UForm :state="store.searchState" @submit="handleSubmit">
+  <UForm :state="{ localQuery }" @submit="handleSubmit">
     <i18n-t
       v-if="numFound"
       keypath="found"
@@ -13,18 +13,18 @@
     </i18n-t>
     <UButtonGroup size="lg" :ui="{ wrapper: { horizontal: 'w-full' } }">
       <UInput
-        v-model="store.searchState.query"
+        v-model="localQuery"
         :placeholder="t('searchAllFields')"
         :ui="{ wrapper: 'w-full', icon: { trailing: { pointer: '' } } }"
       >
         <template #trailing>
           <UButton
-            v-show="store.searchState.query !== ''"
+            v-show="localQuery !== ''"
             color="gray"
             variant="link"
             icon="i-heroicons-x-mark-20-solid"
             :padded="false"
-            @click="store.searchState.query = ''"
+            @click="localQuery = ''"
           />
         </template>
       </UInput>
@@ -36,7 +36,7 @@
     <div class="flex">
       <div class="text-xl font-medium">{{ t("filters") }}</div>
       <UButton
-        v-if="store.activeFiltersCount"
+        v-if="activeFiltersCount"
         class="ml-auto"
         icon="i-heroicons-trash"
         variant="ghost"
@@ -46,52 +46,46 @@
       </UButton>
     </div>
     <UCheckbox
-      v-model="store.filterState.isEstonianReference"
+      v-model="filters.isEstonianReference"
       :label="t('isEstonianReference')"
     />
     <UCheckbox
-      v-model="store.filterState.isEstonianAuthor"
+      v-model="filters.isEstonianAuthor"
       :label="t('isEstonianAuthor')"
     />
-    <UCheckbox v-model="store.filterState.pdf" :label="t('pdf')" />
+    <UCheckbox v-model="filters.pdf" :label="t('pdf')" />
     <UFormGroup :label="t('title')">
-      <UInput v-model="store.filterState.title" @blur="handleFilterChange" />
+      <UInput v-model="filters.title" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
       <UInput
-        v-model="store.filterState.year[0]"
+        v-model="filters.year[0]"
         @blur="handleFilterChange"
         :placeholder="t('start')"
       />
       <UInput
-        v-model="store.filterState.year[1]"
+        v-model="filters.year[1]"
         @blur="handleFilterChange"
         :placeholder="t('end')"
       />
     </UFormGroup>
     <UFormGroup :label="t('book')">
-      <UInput v-model="store.filterState.book" @blur="handleFilterChange" />
+      <UInput v-model="filters.book" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('journal')">
-      <UInput v-model="store.filterState.journal" @blur="handleFilterChange" />
+      <UInput v-model="filters.journal" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('publisher')">
-      <UInput
-        v-model="store.filterState.publisher"
-        @blur="handleFilterChange"
-      />
+      <UInput v-model="filters.publisher" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('volumeOrNumber')">
-      <UInput
-        v-model="store.filterState.volumeOrNumber"
-        @blur="handleFilterChange"
-      />
+      <UInput v-model="filters.volumeOrNumber" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('keywords')" :ui="{ container: 'space-y-1' }">
       <FilterKeywords
-        v-model="store.filterState.keywords"
-        :q="store.solrQuery"
-        :filters="store.solrFilter"
+        v-model="filters.keywords"
+        :q="solrQuery"
+        :filters="solrFilters"
         @change="handleFilterChange"
       />
     </UFormGroup>
@@ -100,8 +94,8 @@
         v-for="option in typeOptions"
         class="label-w-full"
         :ui="{ label: 'flex' }"
-        :model-value="store.filterState.type.has(option.value)"
-        @click="handleOptionClick(option, store.filterState.type)"
+        :model-value="filters.type.has(option.value)"
+        @click="handleOptionClick(option, filters.type)"
         :label="option.name"
       >
         <template #label>
@@ -117,8 +111,8 @@
         v-for="option in languageOptions"
         class="label-w-full"
         :ui="{ label: 'flex' }"
-        :model-value="store.filterState.language.has(option.value)"
-        @click="handleOptionClick(option, store.filterState.language)"
+        :model-value="filters.language.has(option.value)"
+        @click="handleOptionClick(option, filters.language)"
         :label="option.name"
       >
         <template #label>
@@ -128,30 +122,32 @@
       </UCheckbox>
     </UFormGroup>
     <UFormGroup :label="t('localities')">
-      <UInput
-        v-model="store.filterState.localities"
-        @blur="handleFilterChange"
-      />
+      <UInput v-model="filters.localities" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('taxa')">
-      <UInput v-model="store.filterState.taxa" @blur="handleFilterChange" />
+      <UInput v-model="filters.taxa" @blur="handleFilterChange" />
     </UFormGroup>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ store: any; numFound?: number }>();
+defineProps<{ numFound?: number }>();
 const emit = defineEmits<{ update: []; reset: [] }>();
 
 const { t } = useI18n({ useScope: "local" });
+const referencesStore = useReferencesStore();
+const { solrQuery, solrFilters, filters, query, activeFiltersCount } =
+  storeToRefs(referencesStore);
+
+const localQuery = ref("");
 
 const { data: referencesRes, refresh: refreshOptions } =
   await useSolrFetch<SolrResponse>("/reference", {
     query: computed(() => ({
-      q: props.store.solrQuery,
+      q: solrQuery.value,
       rows: 0,
       json: {
-        filter: props.store.solrFilter,
+        filter: solrFilters.value,
         facet: {
           type: {
             type: "terms",
@@ -198,7 +194,6 @@ const { data: referencesRes, refresh: refreshOptions } =
         },
       },
     })),
-    watch: false,
   });
 const typeOptions = computed(() => {
   return referencesRes.value?.facets.type.buckets.map((bucket) => {
@@ -228,6 +223,7 @@ function handleFilterChange() {
 }
 function handleSubmit() {
   refreshOptions();
+  query.value = localQuery.value;
   emit("update");
 }
 function handleReset() {

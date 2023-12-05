@@ -2,7 +2,7 @@
   <div class="space-y-2 py-2">
     <div>
       <NuxtLinkLocale
-        :to="`/reference/${reference.id}`"
+        :to="`/references/${reference.id}`"
         class="text-xl visited:text-purple-600 hover:underline"
         @click="handleLinkClick"
       >
@@ -32,9 +32,10 @@ const url = computed(() => {
   return props.reference.url ?? props.reference.parent_reference__url ?? null;
 });
 
-const searchStore = useSearchStore();
+const referencesStore = useReferencesStore();
+
 function handleLinkClick() {
-  searchStore.fromSearch = false;
+  referencesStore.searchPosition = -1;
 }
 </script>
 

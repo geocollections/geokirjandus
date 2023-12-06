@@ -47,9 +47,11 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { ReferenceDoc } from "~/pages/references/index.vue";
+
 const emit = defineEmits<{ "update:selected": [] }>();
 const props = defineProps<{
-  reference: any;
+  reference: ReferenceDoc;
   selected: boolean;
   position?: number;
 }>();

@@ -53,15 +53,6 @@ const options = computed(() => {
   });
 });
 
-type SolrResponse<T = any> = {
-  facets: any;
-  response: {
-    numFound: number;
-    start: number;
-    docs: T[];
-  };
-};
-
 const { data: optionsFacet, refresh: refreshOptions } =
   await useSolrFetch<SolrResponse>("/reference", {
     query: computed(() => ({

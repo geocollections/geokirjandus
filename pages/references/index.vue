@@ -7,86 +7,9 @@
         <SearchFormReference @update="handleSubmit" @reset="handleReset" />
       </div>
       <div class="col-span-full py-4 lg:col-span-9 lg:py-8">
-        <i18n-t
-          keypath="results"
-          tag="div"
-          class="mb-2 text-xl"
-          :plural="referencesRes?.response.numFound ?? 0"
-        >
-          <template #count>
-            <span class="font-bold">{{
-              referencesRes?.response.numFound ?? 0
-            }}</span>
-          </template>
-        </i18n-t>
-        <div v-if="referencesRes?.response.numFound" class="space-y-2">
-          <div class="flex items-center space-x-2">
-            <ExportPopover v-if="selectStore.selected.length > 0" />
-            <span
-              class="text-sm text-green-600"
-              v-if="selectStore.selected.length > 0"
-            >
-              {{ t("selected", { count: selectStore.selected.length }) }}
-            </span>
-          </div>
-          <div class="flex flex-col items-end space-y-2 lg:flex-row">
-            <div class="flex items-center">
-              <USelectMenu
-                class="w-40"
-                v-model="referencesStore.sort"
-                :options="referencesStore.sortOptions"
-                value-attribute="value"
-                option-attribute="name"
-                icon="i-heroicons-arrows-up-down"
-              >
-                <template #label>
-                  {{ referencesStore.currentSort.name }}
-                </template>
-              </USelectMenu>
-            </div>
-            <div class="ml-auto flex items-center space-x-2">
-              <USelectMenu
-                v-model="referencesStore.perPage"
-                :options="referencesStore.perPageOptions"
-              />
-              <UPagination
-                v-model="referencesStore.page"
-                :page-count="referencesStore.perPage"
-                :total="referencesRes?.response.numFound ?? 0"
-                :max="5"
-                show-first
-                show-last
-              />
-            </div>
-          </div>
-          <template v-for="(reference, index) in references">
-            <UDivider v-if="index !== 0" />
-            <ReferenceSummary
-              :reference="reference"
-              :selected="isSelected(reference.id)"
-              :position="
-                index + (referencesStore.page - 1) * referencesStore.perPage
-              "
-              @update:selected="handleSelectUpdate(reference.id)"
-            />
-          </template>
-
-          <UPagination
-            v-model="referencesStore.page"
-            :ui="{ base: 'ml-auto' }"
-            :page-count="referencesStore.perPage"
-            :total="referencesRes?.response.numFound ?? 0"
-            :max="5"
-            show-first
-            show-last
-          />
-        </div>
-        <UAlert
-          v-else
-          color="yellow"
-          variant="subtle"
-          icon="i-heroicons-exclamation-triangle"
-          :description="t('noResults')"
+        <ReferenceSummaryList
+          :references="references"
+          :count="referencesRes?.response.numFound ?? 0"
         />
       </div>
     </div>
@@ -125,8 +48,6 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
-import { useReferencesStore } from "~/stores/references";
-import { useReferenceSelectStore } from "~/stores/referenceSelectStore";
 
 definePageMeta({
   alias: "/references",
@@ -139,39 +60,61 @@ const selectStore = useReferenceSelectStore();
 
 const openFilters = ref(false);
 
-type SolrResponse<T = any> = {
-  facets: any;
-  response: {
-    numFound: number;
-    start: number;
-    docs: T[];
-  };
+export type ReferenceDoc = {
+  id: string;
+  reference: string;
+  title?: string;
+  author?: string;
+  journal_name?: string;
+  book?: string;
+  abstract?: string;
+  doi_url?: string;
+  attachment__filename?: string;
+  parent_reference__attachment__filename?: string;
+  filename?: string;
+  url?: string;
+  parent_reference__url?: string;
+  year_numeric?: number;
+  volume?: string;
+  pages?: string;
 };
 
-const { data: referencesRes, refresh: refreshReferences } =
-  await useSolrFetch<SolrResponse>("/reference", {
-    query: computed(() => ({
-      q: referencesStore.solrQuery,
-      rows: referencesStore.perPage,
-      start: referencesStore.offset,
-      sort: referencesStore.sort,
-      json: {
-        filter: referencesStore.solrFilters,
-      },
-    })),
-    watch: false,
-  });
-const references = computed(() => referencesRes.value?.response.docs ?? []);
-
-watch([() => referencesStore.sort, () => referencesStore.perPage], () => {
-  referencesStore.page = 1;
-  refreshReferences();
+const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
+  SolrResponse<ReferenceDoc>
+>("/reference", {
+  query: computed(() => ({
+    q: referencesStore.solrQuery,
+    fl: [
+      "id",
+      "reference",
+      "title",
+      "author",
+      "journal_name",
+      "book",
+      "abstract",
+      "doi_url",
+      "attachment__filename",
+      "parent_reference__attachment__filename",
+      "filename",
+      "url",
+      "parent_reference__url",
+      "year_numeric",
+      "volume",
+      "pages",
+    ] as (keyof ReferenceDoc)[],
+    rows: referencesStore.perPage,
+    start: referencesStore.offset,
+    sort: referencesStore.sort,
+    json: {
+      filter: referencesStore.solrFilters,
+    },
+  })),
+  watch: false,
+  onRequest: (res) => {
+    console.log(res.request, res.options.query?.json.filter);
+  },
 });
-watch(
-  () => referencesStore.page,
-  () => refreshReferences(),
-);
-
+const references = computed(() => referencesRes.value?.response.docs ?? []);
 watch(
   [
     () => referencesStore.sort,
@@ -181,17 +124,6 @@ watch(
   ],
   () => {
     setQueryParamsFromState();
-  },
-);
-
-watch(
-  [
-    () => referencesStore.filters.isEstonianAuthor,
-    () => referencesStore.filters.isEstonianReference,
-    () => referencesStore.filters.pdf,
-  ],
-  () => {
-    handleFilterChange();
   },
 );
 
@@ -272,16 +204,6 @@ function handleReset() {
   setQueryParamsFromState();
   refreshReferences();
 }
-
-function handleSelectUpdate(updatedId: string) {
-  const index = selectStore.selected.findIndex((id) => id === updatedId);
-  if (index === -1) selectStore.selected.push(updatedId);
-  else selectStore.selected.splice(index, 1);
-}
-
-function isSelected(id: string) {
-  return selectStore.selected.includes(id);
-}
 </script>
 
 <style scoped lang="scss">
@@ -294,7 +216,6 @@ function isSelected(id: string) {
 et:
   search: "Otsi"
   filters: "Filtrid"
-  results: "Tulemused puuduvad | {count} tulemus | {count} tulemust"
   isEstonianReference: "Eesti kirjandus"
   isEstonianAuthor: "Eesti author"
   title: "Pealkiri"
@@ -319,7 +240,6 @@ et:
     titleDesc: "Pealkiri Z-A"
     yearAsc: "Aasta kasvav"
     yearDesc: "Aasta kahanev"
-  noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
   reset: "Puhasta"
   start: "Algus"
   end: "Lõpp"
@@ -327,7 +247,6 @@ et:
 en:
   search: "Search"
   filters: "Filters"
-  results: "No results | {count} result | {count} results"
   isEstonianReference: "Estonian reference"
   isEstonianAuthor: "Estonian author"
   title: "Title"
@@ -352,7 +271,6 @@ en:
     titleDesc: "Title Z-A"
     yearAsc: "Year ascending"
     yearDesc: "Year descending"
-  noResults: "Search resulted in zero matching results. Change the search query and filters."
   reset: "Clear"
   start: "Start"
   end: "End"

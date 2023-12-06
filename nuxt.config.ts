@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxtjs/google-fonts",
   ],
+  imports: {
+    dirs: ["types/*.ts"],
+  },
   router: {
     options: {
       scrollBehaviorType: "smooth",

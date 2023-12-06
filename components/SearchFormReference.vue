@@ -148,61 +148,64 @@ const localQuery = ref("");
 
 referencesStore.setStateFromQueryParams(route);
 localQuery.value = query.value;
-
-const { data: referencesRes, refresh: refreshOptions } =
-  await useSolrFetch<SolrResponse>("/reference", {
-    query: computed(() => ({
-      q: solrQuery.value,
-      rows: 0,
-      json: {
-        filter: [...solrFilters.value, ...props.defaultSolrFilters],
-        facet: {
-          type: {
-            type: "terms",
-            field: "type",
-            limit: -1,
-            domain: {
-              excludeTags: "type",
+const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
+  SolrFacets<{
+    type: { name: {}; name_en: {} };
+    language: { name: {}; name_en: {} };
+  }>
+>("/reference", {
+  query: computed(() => ({
+    q: solrQuery.value,
+    rows: 0,
+    json: {
+      filter: [...solrFilters.value, ...props.defaultSolrFilters],
+      facet: {
+        type: {
+          type: "terms",
+          field: "type",
+          limit: -1,
+          domain: {
+            excludeTags: "type",
+          },
+          facet: {
+            name: {
+              type: "terms",
+              field: "reference_type",
+              limit: 1,
+              mincount: 0,
             },
-            facet: {
-              name: {
-                type: "terms",
-                field: "reference_type",
-                limit: 1,
-                mincount: 0,
-              },
-              name_en: {
-                type: "terms",
-                field: "reference_type_en",
-                limit: 1,
-                mincount: 0,
-              },
+            name_en: {
+              type: "terms",
+              field: "reference_type_en",
+              limit: 1,
+              mincount: 0,
             },
           },
-          language: {
-            type: "terms",
-            field: "language",
-            domain: {
-              excludeTags: "language",
+        },
+        language: {
+          type: "terms",
+          field: "language",
+          domain: {
+            excludeTags: "language",
+          },
+          limit: -1,
+          facet: {
+            name: {
+              type: "terms",
+              field: "reference_language",
+              limit: 1,
             },
-            limit: -1,
-            facet: {
-              name: {
-                type: "terms",
-                field: "reference_language",
-                limit: 1,
-              },
-              name_en: {
-                type: "terms",
-                field: "reference_language_en",
-                limit: 1,
-              },
+            name_en: {
+              type: "terms",
+              field: "reference_language_en",
+              limit: 1,
             },
           },
         },
       },
-    })),
-  });
+    },
+  })),
+});
 const typeOptions = computed(() => {
   return referencesRes.value?.facets.type.buckets.map((bucket) => {
     return {
@@ -218,12 +221,23 @@ const languageOptions = computed(() => {
   return referencesRes.value?.facets.language.buckets.map((bucket) => {
     return {
       value: bucket.val,
-      name: bucket.name.buckets[0].val,
+      name: bucket.name.buckets[0]?.val,
       name_en: bucket.name_en.buckets[0].val,
       count: bucket.count,
     };
   });
 });
+
+watch(
+  [
+    () => referencesStore.filters.isEstonianAuthor,
+    () => referencesStore.filters.isEstonianReference,
+    () => referencesStore.filters.pdf,
+  ],
+  () => {
+    handleFilterChange();
+  },
+);
 
 function handleFilterChange() {
   refreshOptions();

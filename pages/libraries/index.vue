@@ -115,15 +115,6 @@ const localQuery = ref("");
 librariesStore.setStateFromQueryParams(route);
 localQuery.value = librariesStore.query;
 
-type SolrResponse<T = any> = {
-  facets: any;
-  response: {
-    numFound: number;
-    start: number;
-    docs: T[];
-  };
-};
-
 const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
   "/library",
   {

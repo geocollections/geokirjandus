@@ -13,7 +13,7 @@ export const useReferenceFilters = () => {
     localities: "",
     taxa: "",
     year: [null, null] as (number | null)[],
-    type: new Set<string>(["1.0"]),
+    type: new Set<string>(),
     language: new Set<string>(),
     keywords: new Set<string>(),
   });

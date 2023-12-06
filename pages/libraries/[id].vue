@@ -4,11 +4,9 @@
       <div
         class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
-        <SearchFormReference
-          :default-solr-filters="[librarySolrFilter]"
-          @update="handleSubmit"
-          @reset="handleReset"
-        />
+        <SearchFormReference @update="handleSubmit" @reset="handleReset" />
+        :default-solr-filters="[librarySolrFilter]" @update="handleSubmit"
+        @reset="handleReset" />
       </div>
 
       <div class="col-span-8 space-y-2 px-4 py-8">
@@ -37,41 +35,10 @@
         </div>
         <div id="references" class="scroll-mt-16">
           <h2 class="mb-2 text-xl font-semibold">{{ t("references") }}</h2>
-          <div v-if="referencesRes?.response.numFound" class="space-y-2">
-            <div class="flex items-center space-x-2">
-              <USelectMenu
-                class="ml-auto"
-                v-model="referencesStore.perPage"
-                :options="referencesStore.perPageOptions"
-              />
-              <UPagination
-                v-model="referencesStore.page"
-                :page-count="referencesStore.perPage"
-                :total="referencesRes?.response.numFound ?? 0"
-                show-first
-                show-last
-              />
-            </div>
-            <template v-for="(reference, index) in references">
-              <UDivider v-if="index !== 0" />
-              <ReferenceSummary
-                :reference="reference"
-                :selected="false"
-                :position="
-                  index + (referencesStore.page - 1) * referencesStore.perPage
-                "
-              />
-            </template>
-
-            <UPagination
-              v-model="referencesStore.page"
-              :ui="{ base: 'ml-auto' }"
-              :page-count="referencesStore.perPage"
-              :total="referencesRes?.response.numFound ?? 0"
-              show-first
-              show-last
-            />
-          </div>
+          <ReferenceSummaryList
+            :references="references"
+            :count="referencesRes?.response.numFound ?? 0"
+          />
         </div>
       </div>
       <div class="col-span-2">

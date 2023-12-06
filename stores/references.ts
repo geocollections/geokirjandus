@@ -27,7 +27,6 @@ export const useReferencesStore = defineStore(
       resetFilters,
       querySchema: filtersQuerySchema,
     } = useReferenceFilters();
-    filters.value.type.add("adawd");
     const { searchPosition, enteredFrom, fromSearch } = useSearchPosition();
 
     const querySchema = z

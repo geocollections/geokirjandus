@@ -133,15 +133,11 @@ definePageMeta({
 });
 
 const router = useRouter();
-const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
-
-const openFilters = ref(false);
-
 const referencesStore = useReferencesStore();
 const selectStore = useReferenceSelectStore();
 
-referencesStore.setStateFromQueryParams(route);
+const openFilters = ref(false);
 
 type SolrResponse<T = any> = {
   facets: any;
@@ -151,6 +147,7 @@ type SolrResponse<T = any> = {
     docs: T[];
   };
 };
+
 const { data: referencesRes, refresh: refreshReferences } =
   await useSolrFetch<SolrResponse>("/reference", {
     query: computed(() => ({

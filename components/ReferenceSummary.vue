@@ -10,7 +10,7 @@
       <div>
         <NuxtLinkLocale
           :to="`/references/${reference.id}`"
-          class="text-lg visited:text-purple-600 hover:underline"
+          class="text-lg visited:text-purple-600 hover:underline dark:visited:text-purple-400"
           @click="handleDetailNavigation"
         >
           {{ reference.title ? reference.title : reference.reference }}
@@ -55,6 +55,7 @@ const props = defineProps<{
 }>();
 const { t } = useI18n({ useScope: "local" });
 const { $translate } = useNuxtApp();
+const route = useRoute();
 
 const showAbstract = ref(false);
 
@@ -97,6 +98,7 @@ const searchStore = useReferencesStore();
 function handleDetailNavigation() {
   if (!props.position || props.position < 0) return;
   searchStore.searchPosition = props.position;
+  searchStore.enteredFrom = route.path;
 }
 </script>
 

@@ -13,7 +13,7 @@ export const useReferenceFilters = () => {
     localities: "",
     taxa: "",
     year: [null, null] as (number | null)[],
-    type: new Set<string>(),
+    type: new Set<string>(["1.0"]),
     language: new Set<string>(),
     keywords: new Set<string>(),
   });
@@ -26,7 +26,7 @@ export const useReferenceFilters = () => {
   const setSchema = z
     .string()
     .transform((val) => new Set(val.split(",")))
-    .catch(new Set());
+    .catch((_ctx) => new Set());
 
   const querySchema = z.object({
     isEstonianReference: booleanSchema,

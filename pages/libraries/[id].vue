@@ -2,8 +2,14 @@
   <div class="container" v-if="library">
     <div class="grid grid-cols-12 gap-x-2">
       <div
-        class="col-span-2 overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
-      ></div>
+        class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
+      >
+        <SearchFormReference
+          :default-solr-filters="[librarySolrFilter]"
+          @update="handleSubmit"
+          @reset="handleReset"
+        />
+      </div>
 
       <div class="col-span-8 space-y-2 px-4 py-8">
         <div id="general" class="scroll-mt-20">
@@ -35,12 +41,12 @@
             <div class="flex items-center space-x-2">
               <USelectMenu
                 class="ml-auto"
-                v-model="perPage"
-                :options="perPageOptions"
+                v-model="referencesStore.perPage"
+                :options="referencesStore.perPageOptions"
               />
               <UPagination
-                v-model="page"
-                :page-count="perPage"
+                v-model="referencesStore.page"
+                :page-count="referencesStore.perPage"
                 :total="referencesRes?.response.numFound ?? 0"
                 show-first
                 show-last
@@ -50,14 +56,17 @@
               <UDivider v-if="index !== 0" />
               <ReferenceSummary
                 :reference="reference"
-                :position="index + (page - 1) * perPage"
+                :selected="false"
+                :position="
+                  index + (referencesStore.page - 1) * referencesStore.perPage
+                "
               />
             </template>
 
             <UPagination
-              v-model="page"
+              v-model="referencesStore.page"
               :ui="{ base: 'ml-auto' }"
-              :page-count="perPage"
+              :page-count="referencesStore.perPage"
               :total="referencesRes?.response.numFound ?? 0"
               show-first
               show-last
@@ -75,10 +84,13 @@
 </template>
 
 <script setup lang="ts">
+import type { LocationQueryRaw } from "vue-router";
+import { z } from "zod";
 definePageMeta({
   alias: "/library/:id",
 });
 const route = useRoute();
+const router = useRouter();
 const { t } = useI18n({ useScope: "local" });
 const { data: library } = await useNewApiFetch(
   `/libraries/${route.params.id}/`,
@@ -92,22 +104,131 @@ if (!library.value) {
     fatal: true,
   });
 }
-const perPageOptions = [10, 25, 50, 100];
-const page = ref(1);
-const perPage = ref(10);
-const { data: referencesRes, execute } = await useSolrFetch("/reference", {
-  query: computed(() => ({
-    q: "*",
-    rows: perPage.value,
-    start: (page.value - 1) * perPage.value,
-    // sort: searchStore.sort,
-    json: {
-      // filter: searchStore.solrFilter,
-      filter: [`libraries:${route.params.id}`],
-    },
-  })),
-});
+const referencesStore = useReferencesStore();
+
+const librarySolrFilter = `libraries:${route.params.id}`;
+const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch(
+  "/reference",
+  {
+    query: computed(() => ({
+      q: referencesStore.solrQuery,
+      rows: referencesStore.perPage,
+      start: referencesStore.offset,
+      sort: referencesStore.sort,
+      json: {
+        // filter: searchStore.solrFilter,
+        filter: [librarySolrFilter, ...referencesStore.solrFilters],
+      },
+    })),
+  },
+);
 const references = computed(() => referencesRes.value?.response.docs ?? []);
+
+referencesStore.setStateFromQueryParams(route);
+
+watch([() => referencesStore.sort, () => referencesStore.perPage], () => {
+  referencesStore.page = 1;
+  refreshReferences();
+});
+watch(
+  () => referencesStore.page,
+  () => refreshReferences(),
+);
+
+watch(
+  [
+    () => referencesStore.sort,
+    () => referencesStore.perPage,
+    () => referencesStore.page,
+    () => referencesStore.query,
+  ],
+  () => {
+    setQueryParamsFromState();
+  },
+);
+
+watch(
+  [
+    () => referencesStore.filters.isEstonianAuthor,
+    () => referencesStore.filters.isEstonianReference,
+    () => referencesStore.filters.pdf,
+  ],
+  () => {
+    handleFilterChange();
+  },
+);
+function setQueryParamsFromState() {
+  const query: z.input<typeof referencesStore.querySchema> = {
+    page: referencesStore.page,
+    perPage: referencesStore.perPage,
+    sort: referencesStore.sort,
+  };
+
+  if (referencesStore.query.length > 0) {
+    query.q = referencesStore.query;
+  }
+
+  if (referencesStore.filters.isEstonianReference) {
+    query.isEstonianReference =
+      referencesStore.filters.isEstonianReference.toString();
+  }
+  if (referencesStore.filters.isEstonianAuthor) {
+    query.isEstonianAuthor =
+      referencesStore.filters.isEstonianAuthor.toString();
+  }
+  if (referencesStore.filters.isEstonianAuthor) {
+    query.pdf = referencesStore.filters.pdf.toString();
+  }
+  if (referencesStore.filters.title.length > 0) {
+    query.title = referencesStore.filters.title;
+  }
+  if (referencesStore.filters.book.length > 0) {
+    query.book = referencesStore.filters.book;
+  }
+  if (referencesStore.filters.journal.length > 0) {
+    query.journal = referencesStore.filters.journal;
+  }
+  if (referencesStore.filters.publisher.length > 0) {
+    query.publisher = referencesStore.filters.publisher;
+  }
+  if (referencesStore.filters.volumeOrNumber.length > 0) {
+    query.volumeOrNumber = referencesStore.filters.volumeOrNumber;
+  }
+  if (referencesStore.filters.localities.length > 0) {
+    query.localities = referencesStore.filters.localities;
+  }
+  if (referencesStore.filters.taxa.length > 0) {
+    query.taxa = referencesStore.filters.taxa;
+  }
+  if (referencesStore.filters.type.size > 0) {
+    query.type = Array.from(referencesStore.filters.type).join(",");
+  }
+  if (referencesStore.filters.language.size > 0) {
+    query.language = Array.from(referencesStore.filters.type).join(",");
+  }
+
+  if (referencesStore.filters.keywords.size > 0) {
+    query.keywords = Array.from(referencesStore.filters.keywords).join(",");
+  }
+
+  if (referencesStore.filters.year.some((val) => val !== null)) {
+    const start = referencesStore.filters.year[0] ?? "*";
+    const end = referencesStore.filters.year[1] ?? "*";
+
+    query.year = `${start}-${end}`;
+  }
+  router.push({
+    query: query as LocationQueryRaw,
+  });
+}
+function handleSubmit() {
+  refreshReferences();
+}
+function handleReset() {
+  referencesStore.resetFilters();
+  setQueryParamsFromState();
+  refreshReferences();
+}
 </script>
 
 <i18n lang="yaml">
@@ -115,7 +236,7 @@ et:
   abstract: "Abstrakt"
   general: "Üldine info"
   remarks: "Märkused"
-  virtualLibrary: "Virtuaalne kirnaudse kogumik"
+  virtualLibrary: "Virtuaalne kirjanduse kogumik"
   references: "Kogumiku artiklid"
 en:
   general: "General info"

@@ -19,25 +19,25 @@
           <div class="text-xl font-medium">{{ t("filters") }}</div>
           <UFormGroup :label="t('author')">
             <UInput
-              v-model="searchStore.filters.author"
+              v-model="librariesStore.filters.author"
               @blur="handleFilterChange"
             />
           </UFormGroup>
           <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
             <UInput
-              v-model="searchStore.filters.year[0]"
+              v-model="librariesStore.filters.year[0]"
               @blur="handleFilterChange"
               placeholder="Start"
             />
             <UInput
-              v-model="searchStore.filters.year[1]"
+              v-model="librariesStore.filters.year[1]"
               @blur="handleFilterChange"
               placeholder="End"
             />
           </UFormGroup>
           <UFormGroup :label="t('title')">
             <UInput
-              v-model="searchStore.filters.title"
+              v-model="librariesStore.filters.title"
               @blur="handleFilterChange"
             />
           </UFormGroup>
@@ -56,8 +56,8 @@
           <div class="flex items-center space-x-2">
             <USelectMenu
               class="w-40"
-              v-model="searchStore.sort"
-              :options="searchStore.sortOptions"
+              v-model="librariesStore.sort"
+              :options="librariesStore.sortOptions"
               by="value"
               option-attribute="name"
               :ui="{ wrapper: 'mr-auto' }"
@@ -65,12 +65,12 @@
             </USelectMenu>
             <USelectMenu
               class="ml-auto"
-              v-model="searchStore.perPage"
-              :options="searchStore.perPageOptions"
+              v-model="librariesStore.perPage"
+              :options="librariesStore.perPageOptions"
             />
             <UPagination
-              v-model="searchStore.page"
-              :page-count="searchStore.perPage"
+              v-model="librariesStore.page"
+              :page-count="librariesStore.perPage"
               :total="librariesRes?.response.numFound ?? 0"
               show-first
               show-last
@@ -81,14 +81,16 @@
           <UDivider v-if="index !== 0" />
           <LibrarySummary
             :library="library"
-            :position="index + (searchStore.page - 1) * searchStore.perPage"
+            :position="
+              index + (librariesStore.page - 1) * librariesStore.perPage
+            "
           />
         </template>
 
         <UPagination
-          v-model="searchStore.page"
+          v-model="librariesStore.page"
           :ui="{ base: 'ml-auto' }"
-          :page-count="searchStore.perPage"
+          :page-count="librariesStore.perPage"
           :total="librariesRes?.response.numFound ?? 0"
           show-first
           show-last
@@ -108,9 +110,10 @@ definePageMeta({
 const { t } = useI18n({ useScope: "local" });
 const router = useRouter();
 const route = useRoute();
-const searchStore = useLibrariesStore();
-searchStore.setStateFromQueryParams(route);
+const librariesStore = useLibrariesStore();
 const localQuery = ref("");
+librariesStore.setStateFromQueryParams(route);
+localQuery.value = librariesStore.query;
 
 type SolrResponse<T = any> = {
   facets: any;
@@ -125,12 +128,12 @@ const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
   "/library",
   {
     query: computed(() => ({
-      q: searchStore.solrQuery,
-      rows: searchStore.perPage,
-      start: (searchStore.page - 1) * searchStore.perPage,
-      sort: searchStore.sort,
+      q: librariesStore.solrQuery,
+      rows: librariesStore.perPage,
+      start: (librariesStore.page - 1) * librariesStore.perPage,
+      sort: librariesStore.sort,
       json: {
-        filter: searchStore.solrFilters,
+        filter: librariesStore.solrFilters,
       },
     })),
     watch: false,
@@ -139,30 +142,30 @@ const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
 const libraries = computed(() => librariesRes.value?.response.docs ?? []);
 
 watch(
-  () => searchStore.sort,
+  () => librariesStore.sort,
   () => {
-    searchStore.page = 1;
+    librariesStore.page = 1;
     execute();
   },
 );
 watch(
-  () => searchStore.perPage,
+  () => librariesStore.perPage,
   () => {
-    searchStore.page = 1;
+    librariesStore.page = 1;
     execute();
   },
 );
 watch(
-  () => searchStore.page,
+  () => librariesStore.page,
   () => execute(),
 );
 
 watch(
   [
-    () => searchStore.sort,
-    () => searchStore.perPage,
-    () => searchStore.page,
-    () => searchStore.query,
+    () => librariesStore.sort,
+    () => librariesStore.perPage,
+    () => librariesStore.page,
+    () => librariesStore.query,
   ],
   () => {
     setQueryParamsFromState();
@@ -170,24 +173,24 @@ watch(
 );
 
 function setQueryParamsFromState() {
-  const query: z.input<typeof searchStore.querySchema> = {
-    page: searchStore.page,
-    perPage: searchStore.perPage,
-    sort: searchStore.sort,
-    q: searchStore.query,
+  const query: z.input<typeof librariesStore.querySchema> = {
+    page: librariesStore.page,
+    perPage: librariesStore.perPage,
+    sort: librariesStore.sort,
+    q: librariesStore.query,
   };
 
-  if (searchStore.filters.year.some((val) => val !== null)) {
-    const start = searchStore.filters.year[0] ?? "*";
-    const end = searchStore.filters.year[1] ?? "*";
+  if (librariesStore.filters.year.some((val) => val !== null)) {
+    const start = librariesStore.filters.year[0] ?? "*";
+    const end = librariesStore.filters.year[1] ?? "*";
 
     query.year = `${start}-${end}`;
   }
-  if (searchStore.filters.author.length > 0) {
-    query.author = searchStore.filters.author;
+  if (librariesStore.filters.author.length > 0) {
+    query.author = librariesStore.filters.author;
   }
-  if (searchStore.filters.title.length > 0) {
-    query.title = searchStore.filters.title;
+  if (librariesStore.filters.title.length > 0) {
+    query.title = librariesStore.filters.title;
   }
 
   router.push({
@@ -200,7 +203,7 @@ function handleFilterChange() {
   execute();
 }
 function handleSubmit() {
-  searchStore.query = localQuery.value;
+  librariesStore.query = localQuery.value;
   execute();
 }
 </script>

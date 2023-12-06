@@ -2,7 +2,12 @@
   <UButton
     variant="link"
     icon="i-heroicons-arrow-small-left"
-    :to="localePath({ path: '/references', query: searchQueryParams })"
+    :to="
+      localePath({
+        path: referencesStore.enteredFrom,
+        query: searchQueryParams,
+      })
+    "
   >
     {{ t("back") }}
   </UButton>

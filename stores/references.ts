@@ -27,7 +27,8 @@ export const useReferencesStore = defineStore(
       resetFilters,
       querySchema: filtersQuerySchema,
     } = useReferenceFilters();
-    const { searchPosition, fromSearch } = useSearchPosition();
+    filters.value.type.add("adawd");
+    const { searchPosition, enteredFrom, fromSearch } = useSearchPosition();
 
     const querySchema = z
       .object({
@@ -95,6 +96,7 @@ export const useReferencesStore = defineStore(
       solrFilters,
       setStateFromQueryParams,
       searchPosition,
+      enteredFrom,
       fromSearch,
       resetFilters,
       activeFiltersCount,

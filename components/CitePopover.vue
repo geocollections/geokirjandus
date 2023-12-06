@@ -65,7 +65,6 @@ watch(
 
 function createClipboardItems(text: string) {
   const mime = "text/html";
-  console.log(text);
   const blob = new Blob([`<div>${text}</div>`], { type: mime });
   return new ClipboardItem({
     [mime]: blob,

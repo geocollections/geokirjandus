@@ -50,7 +50,7 @@ export default function ({
     queryParams.type = Array.from(filters.type).join(",");
   }
   if (filters.language.size > 0) {
-    queryParams.language = Array.from(filters.type).join(",");
+    queryParams.language = Array.from(filters.language).join(",");
   }
 
   if (filters.keywords.size > 0) {

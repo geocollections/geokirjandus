@@ -85,13 +85,14 @@
       <FilterKeywords
         v-model="filters.keywords"
         :q="solrQuery"
-        :filters="solrFilters"
+        :filters="[...solrFilters, ...defaultSolrFilters]"
         @change="handleFilterChange"
       />
     </UFormGroup>
     <UFormGroup :label="t('type')" :ui="{ container: 'space-y-1' }">
       <UCheckbox
         v-for="option in typeOptions"
+        :key="`type-${option.value}`"
         class="label-w-full"
         :ui="{ label: 'flex' }"
         :model-value="filters.type.has(option.value)"
@@ -109,6 +110,7 @@
     <UFormGroup :label="t('language')" :ui="{ container: 'space-y-1' }">
       <UCheckbox
         v-for="option in languageOptions"
+        :key="`language-${option.value}`"
         class="label-w-full"
         :ui="{ label: 'flex' }"
         :model-value="filters.language.has(option.value)"
@@ -131,15 +133,21 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ numFound?: number }>();
+const props = withDefaults(
+  defineProps<{ numFound?: number; defaultSolrFilters?: string[] }>(),
+  { defaultSolrFilters: () => [] },
+);
 const emit = defineEmits<{ update: []; reset: [] }>();
 
 const { t } = useI18n({ useScope: "local" });
+const route = useRoute();
 const referencesStore = useReferencesStore();
 const { solrQuery, solrFilters, filters, query, activeFiltersCount } =
   storeToRefs(referencesStore);
-
 const localQuery = ref("");
+
+referencesStore.setStateFromQueryParams(route);
+localQuery.value = query.value;
 
 const { data: referencesRes, refresh: refreshOptions } =
   await useSolrFetch<SolrResponse>("/reference", {
@@ -147,7 +155,7 @@ const { data: referencesRes, refresh: refreshOptions } =
       q: solrQuery.value,
       rows: 0,
       json: {
-        filter: solrFilters.value,
+        filter: [...solrFilters.value, ...props.defaultSolrFilters],
         facet: {
           type: {
             type: "terms",

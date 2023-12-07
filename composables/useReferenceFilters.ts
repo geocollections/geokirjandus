@@ -63,11 +63,14 @@ export const useReferenceFilters = () => {
   });
 
   const activeFiltersCount = computed(() => {
-    return Object.values(filters).filter((val) => {
+    return Object.values(filters.value).filter((val) => {
       if (typeof val === "string") return val.length > 0;
       if (typeof val === "boolean") return val;
       if (val instanceof Set) return val.size;
-      if (Array.isArray(val)) return !val.every((v) => v === null);
+      if (Array.isArray(val)) {
+        return !val.every((v) => v === null);
+      }
+      return false;
     }).length;
   });
 

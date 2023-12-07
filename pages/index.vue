@@ -34,7 +34,7 @@
           <UButton
             :to="
               localePath({
-                path: '/references',
+                path: '/reference',
                 query: { isEstonianReference: true },
               })
             "
@@ -57,7 +57,7 @@
           <UButton
             :to="
               localePath({
-                path: '/references',
+                path: '/reference',
                 query: { isEstonianReference: false },
               })
             "
@@ -75,7 +75,7 @@
             </div>
             <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
           </UButton>
-          <UButton :to="localePath({ path: '/libraries' })" size="xl">
+          <UButton :to="localePath({ path: '/library' })" size="xl">
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-building-library"></UIcon>
@@ -184,7 +184,7 @@ const { data: intro } = await useNewApiFetch("/web-pages/75/");
 
 function handleSearch() {
   router.push(
-    localePath({ path: "/references", query: { q: state.searchStr } }),
+    localePath({ path: "/reference", query: { q: state.searchStr } }),
   );
 }
 

@@ -49,15 +49,11 @@
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
 
-definePageMeta({
-  alias: "/references",
-});
-
 const router = useRouter();
+const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
 const referencesStore = useReferencesStore();
-const selectStore = useReferenceSelectStore();
-
+referencesStore.setStateFromQueryParams(route);
 const openFilters = ref(false);
 
 export type ReferenceDoc = {
@@ -110,9 +106,6 @@ const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
     },
   })),
   watch: false,
-  onRequest: (res) => {
-    console.log(res.request, res.options.query?.json.filter);
-  },
 });
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 watch(
@@ -192,10 +185,6 @@ function setQueryParamsFromState() {
   });
 }
 
-function handleFilterChange() {
-  setQueryParamsFromState();
-  refreshReferences();
-}
 function handleSubmit() {
   refreshReferences();
 }

@@ -36,7 +36,7 @@
             color="white"
             variant="ghost"
             class="block"
-            :to="localePath(`/references/${reference.id}`)"
+            :to="localePath(`/reference/${reference.id}`)"
             exact
             active-class="bg-carrot-orange-500/10 border border-carrot-orange-500"
             @click="handleDetailNavigation(idx)"
@@ -60,6 +60,8 @@
 </template>
 
 <script setup lang="ts">
+import type { ReferenceDoc } from "./ReferenceSummaryList.vue";
+
 const { t } = useI18n({ useScope: "local" });
 const referencesStore = useReferencesStore();
 const localePath = useLocalePath();
@@ -69,7 +71,7 @@ const page = ref(
     ? 1
     : Math.floor(referencesStore.searchPosition / perPage) + 1,
 );
-const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
+const { data: referencesRes } = await useSolrFetch<SolrResponse<ReferenceDoc>>(
   "/reference",
   {
     query: computed(() => ({
@@ -78,7 +80,10 @@ const { data: referencesRes, execute } = await useSolrFetch<SolrResponse>(
       start: (page.value - 1) * perPage,
       sort: referencesStore.sort,
       json: {
-        filter: referencesStore.solrFilters,
+        filter: [
+          ...referencesStore.solrFilters,
+          ...referencesStore.routeSolrFilters,
+        ],
       },
     })),
   },
@@ -94,7 +99,7 @@ const searchQueryParams = buildReferenceSearchQueryParams({
   sort: referencesStore.sort,
   filters: referencesStore.filters,
 });
-function pdf(reference) {
+function pdf(reference: ReferenceDoc) {
   return (
     reference.attachment__filename ??
     reference.parent_reference__attachment__filename ??
@@ -102,7 +107,7 @@ function pdf(reference) {
     null
   );
 }
-function url(reference) {
+function url(reference: ReferenceDoc) {
   return reference.url ?? reference.parent_reference__url ?? null;
 }
 

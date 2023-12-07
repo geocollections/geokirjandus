@@ -9,7 +9,7 @@
     <div class="space-y-2">
       <div>
         <NuxtLinkLocale
-          :to="`/references/${reference.id}`"
+          :to="`/reference/${reference.id}`"
           class="text-lg visited:text-purple-600 hover:underline dark:visited:text-purple-400"
           @click="handleDetailNavigation"
         >
@@ -47,7 +47,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { ReferenceDoc } from "~/pages/references/index.vue";
+import type { ReferenceDoc } from "~/pages/reference/index.vue";
 
 const emit = defineEmits<{ "update:selected": [] }>();
 const props = defineProps<{

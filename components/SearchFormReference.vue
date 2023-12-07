@@ -85,7 +85,7 @@
       <FilterKeywords
         v-model="filters.keywords"
         :q="solrQuery"
-        :filters="[...solrFilters, ...defaultSolrFilters]"
+        :filters="[...solrFilters, ...routeSolrFilters]"
         @change="handleFilterChange"
       />
     </UFormGroup>
@@ -133,17 +133,20 @@
 </template>
 
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{ numFound?: number; defaultSolrFilters?: string[] }>(),
-  { defaultSolrFilters: () => [] },
-);
+defineProps<{ numFound?: number }>();
 const emit = defineEmits<{ update: []; reset: [] }>();
 
 const { t } = useI18n({ useScope: "local" });
 const route = useRoute();
 const referencesStore = useReferencesStore();
-const { solrQuery, solrFilters, filters, query, activeFiltersCount } =
-  storeToRefs(referencesStore);
+const {
+  solrQuery,
+  solrFilters,
+  filters,
+  query,
+  activeFiltersCount,
+  routeSolrFilters,
+} = storeToRefs(referencesStore);
 const localQuery = ref("");
 
 referencesStore.setStateFromQueryParams(route);
@@ -158,7 +161,7 @@ const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
     q: solrQuery.value,
     rows: 0,
     json: {
-      filter: [...solrFilters.value, ...props.defaultSolrFilters],
+      filter: [...solrFilters.value, ...routeSolrFilters.value],
       facet: {
         type: {
           type: "terms",

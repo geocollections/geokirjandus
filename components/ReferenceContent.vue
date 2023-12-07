@@ -11,7 +11,7 @@
           {{ content.pages }}
         </td>
         <td class="px-2 align-top">
-          <NuxtLinkLocale :to="`/references/${content.id}`">
+          <NuxtLinkLocale :to="`/reference/${content.id}`">
             {{ content.title }}
           </NuxtLinkLocale>
         </td>

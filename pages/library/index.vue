@@ -103,9 +103,6 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
-definePageMeta({
-  alias: "/library",
-});
 
 const { t } = useI18n({ useScope: "local" });
 const router = useRouter();

@@ -5,8 +5,6 @@
         class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
       >
         <SearchFormReference @update="handleSubmit" @reset="handleReset" />
-        :default-solr-filters="[librarySolrFilter]" @update="handleSubmit"
-        @reset="handleReset" />
       </div>
 
       <div class="col-span-8 space-y-2 px-4 py-8">
@@ -53,13 +51,23 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
-definePageMeta({
-  alias: "/library/:id",
-});
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n({ useScope: "local" });
-const { data: library } = await useNewApiFetch(
+
+type Library = {
+  id: string;
+  title: string;
+  title_en: string;
+  author_text: string;
+  abstract: string;
+  abstract_en: string;
+  remarks: string;
+  remarks_en: string;
+  count_references: number;
+};
+
+const { data: library } = await useNewApiFetch<Library>(
   `/libraries/${route.params.id}/`,
   {},
 );
@@ -73,10 +81,8 @@ if (!library.value) {
 }
 const referencesStore = useReferencesStore();
 
-const librarySolrFilter = `libraries:${route.params.id}`;
-const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch(
-  "/reference",
-  {
+const { data: referencesRes, refresh: refreshReferences } =
+  await useSolrFetch<SolrResponse>("/reference", {
     query: computed(() => ({
       q: referencesStore.solrQuery,
       rows: referencesStore.perPage,
@@ -84,23 +90,16 @@ const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch(
       sort: referencesStore.sort,
       json: {
         // filter: searchStore.solrFilter,
-        filter: [librarySolrFilter, ...referencesStore.solrFilters],
+        filter: [
+          ...referencesStore.routeSolrFilters,
+          ...referencesStore.solrFilters,
+        ],
       },
     })),
-  },
-);
+  });
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 
 referencesStore.setStateFromQueryParams(route);
-
-watch([() => referencesStore.sort, () => referencesStore.perPage], () => {
-  referencesStore.page = 1;
-  refreshReferences();
-});
-watch(
-  () => referencesStore.page,
-  () => refreshReferences(),
-);
 
 watch(
   [
@@ -114,16 +113,6 @@ watch(
   },
 );
 
-watch(
-  [
-    () => referencesStore.filters.isEstonianAuthor,
-    () => referencesStore.filters.isEstonianReference,
-    () => referencesStore.filters.pdf,
-  ],
-  () => {
-    handleFilterChange();
-  },
-);
 function setQueryParamsFromState() {
   const query: z.input<typeof referencesStore.querySchema> = {
     page: referencesStore.page,

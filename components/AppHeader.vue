@@ -17,7 +17,7 @@
           color="white"
           variant="ghost"
           class="relative font-semibold"
-          :to="localePath(`/references`)"
+          :to="localePath(`/reference`)"
           icon="i-heroicons-book-open"
           exact
           active-class="after:h-1 after:bg-carrot-orange-500 after:absolute after:w-full after:bottom-0 after:left-0 after:rounded-b bg-carrot-orange-500/10"
@@ -28,7 +28,7 @@
           color="white"
           variant="ghost"
           class="relative font-semibold"
-          :to="localePath(`/libraries`)"
+          :to="localePath(`/library`)"
           icon="i-heroicons-building-library"
           exact
           active-class="after:h-1 after:bg-carrot-orange-500 after:absolute after:w-full after:bottom-0 after:left-0 after:rounded-b bg-carrot-orange-500/10"

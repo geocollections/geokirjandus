@@ -2,7 +2,7 @@
   <div class="space-y-2 py-2">
     <div>
       <NuxtLinkLocale
-        :to="`/references/${reference.id}`"
+        :to="`/reference/${reference.id}`"
         class="text-xl visited:text-purple-600 hover:underline"
         @click="handleLinkClick"
       >

@@ -103,9 +103,7 @@
           <div class="w-full p-4 lg:h-96">
             <Statistics />
           </div>
-          <div
-            class="rounded border bg-stone-50 p-4 dark:border-gray-700 dark:bg-gray-800"
-          >
+          <div class="rounded border p-4 dark:border-gray-800">
             <div class="mb-3 text-2xl">
               {{ t("about") }}
             </div>
@@ -121,9 +119,7 @@
         </div>
 
         <div class="order-1 col-span-full lg:order-none lg:col-span-1">
-          <div
-            class="rounded border bg-stone-50 p-4 dark:border-gray-700 dark:bg-gray-800"
-          >
+          <div class="rounded border p-4 dark:border-gray-800">
             <div class="mb-3 text-2xl">
               {{ t("latest") }}
             </div>
@@ -143,7 +139,6 @@
 const router = useRouter();
 const localePath = useLocalePath();
 const { t } = useI18n({ useScope: "local" });
-const img = useImage();
 const state = reactive({
   searchStr: "",
   references: [] as any[],

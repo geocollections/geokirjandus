@@ -158,57 +158,59 @@ const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
     language: { name: {}; name_en: {} };
   }>
 >("/reference", {
-  query: computed(() => ({
-    q: solrQuery.value,
-    rows: 0,
-    json: {
-      filter: [...solrFilters.value, ...routeSolrFilters.value],
-      facet: {
-        type: {
-          type: "terms",
-          field: "type",
-          limit: -1,
-          domain: {
-            excludeTags: "type",
-          },
-          facet: {
-            name: {
-              type: "terms",
-              field: "reference_type",
-              limit: 1,
-              mincount: 0,
+  query: computed(() => {
+    return {
+      q: solrQuery.value,
+      rows: 0,
+      json: {
+        filter: [...solrFilters.value, ...routeSolrFilters.value],
+        facet: {
+          type: {
+            type: "terms",
+            field: "type",
+            limit: -1,
+            domain: {
+              excludeTags: "type",
             },
-            name_en: {
-              type: "terms",
-              field: "reference_type_en",
-              limit: 1,
-              mincount: 0,
+            facet: {
+              name: {
+                type: "terms",
+                field: "reference_type",
+                limit: 1,
+                mincount: 0,
+              },
+              name_en: {
+                type: "terms",
+                field: "reference_type_en",
+                limit: 1,
+                mincount: 0,
+              },
             },
           },
-        },
-        language: {
-          type: "terms",
-          field: "language",
-          domain: {
-            excludeTags: "language",
-          },
-          limit: -1,
-          facet: {
-            name: {
-              type: "terms",
-              field: "reference_language",
-              limit: 1,
+          language: {
+            type: "terms",
+            field: "language",
+            domain: {
+              excludeTags: "language",
             },
-            name_en: {
-              type: "terms",
-              field: "reference_language_en",
-              limit: 1,
+            limit: -1,
+            facet: {
+              name: {
+                type: "terms",
+                field: "reference_language",
+                limit: 1,
+              },
+              name_en: {
+                type: "terms",
+                field: "reference_language_en",
+                limit: 1,
+              },
             },
           },
         },
       },
-    },
-  })),
+    };
+  }),
 });
 const typeOptions = computed(() => {
   return referencesRes.value?.facets.type.buckets.map((bucket) => {

@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-screen flex-col">
     <AppHeader />
-    <main class="px-2 lg:px-0" ref="el">
+    <main ref="el">
       <slot />
     </main>
     <AppFooter class="mt-auto" />

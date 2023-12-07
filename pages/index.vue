@@ -1,5 +1,7 @@
 <template>
-  <div class="-mt-[57px]">
+  <div
+    class="-mt-[57px] bg-[url('/layered-steps-haikei-light.svg')] dark:bg-[url('/layered-steps-haikei-dark.svg')]"
+  >
     <div class="container pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
@@ -92,7 +94,7 @@
       </div>
     </div>
   </div>
-  <div class="mb-4 bg-[url('/layered-steps-haikei4.svg')] bg-cover">
+  <div class="mb-4 bg-cover">
     <div class="container pt-10">
       <div class="grid grid-cols-2 gap-x-4">
         <div
@@ -101,7 +103,9 @@
           <div class="w-full p-4 lg:h-96">
             <Statistics />
           </div>
-          <div class="rounded border bg-stone-50 p-4 dark:bg-gray-800">
+          <div
+            class="rounded border bg-stone-50 p-4 dark:border-gray-700 dark:bg-gray-800"
+          >
             <div class="mb-3 text-2xl">
               {{ t("about") }}
             </div>
@@ -117,7 +121,9 @@
         </div>
 
         <div class="order-1 col-span-full lg:order-none lg:col-span-1">
-          <div class="rounded border bg-stone-50 p-4 dark:bg-gray-800">
+          <div
+            class="rounded border bg-stone-50 p-4 dark:border-gray-700 dark:bg-gray-800"
+          >
             <div class="mb-3 text-2xl">
               {{ t("latest") }}
             </div>

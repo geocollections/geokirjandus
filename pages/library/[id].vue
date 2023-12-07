@@ -25,7 +25,7 @@
       <div v-html="library.remarks"></div>
     </div>
     <div id="references" class="scroll-mt-16">
-      <h2 class="mb-2 text-xl font-semibold">{{ t("references") }}</h2>
+      <h2 class="text-xl font-semibold">{{ t("references") }}</h2>
       <ReferenceSummaryList
         :references="references"
         :count="referencesRes?.response.numFound ?? 0"

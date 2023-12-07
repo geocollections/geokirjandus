@@ -78,11 +78,30 @@ const keywordsChartData = computed(() => {
 
   data.labels = labels;
   data.datasets = [{ data: values }];
+  data.color = "#ffffff";
   return data;
 });
 
 const { width, height } = useWindowSize();
 const isMobile = ref();
+const colorMode = useColorMode();
+
+watch(
+  () => colorMode.preference,
+  () => {
+    if (state.decadesChart) {
+      state.decadesChart.options.plugins.datalabels.color =
+        colorMode.preference === "dark" ? "#ffffff" : undefined;
+      state.decadesChart.update();
+    }
+    if (state.categoryChart) {
+      state.categoryChart.options.plugins.datalabels.color =
+        colorMode.preference === "dark" ? "#ffffff" : undefined;
+      state.categoryChart.update();
+    }
+  },
+);
+
 watchPostEffect(() => {
   const prev = isMobile.value;
   isMobile.value = width.value < 1024;
@@ -171,6 +190,7 @@ onMounted(async () => {
           },
           align: mobile ? "end" : "start",
           anchor: mobile ? "end" : "start",
+          color: colorMode.preference === "dark" ? "#ffffff" : undefined,
         },
       },
     },
@@ -231,6 +251,7 @@ onMounted(async () => {
           },
           align: "end",
           anchor: "start",
+          color: colorMode.preference === "dark" ? "#ffffff" : undefined,
         },
       },
     },

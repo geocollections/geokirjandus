@@ -100,13 +100,18 @@ export type ReferenceDoc = {
   pages?: string;
 };
 
-watch([() => referencesStore.sort, () => referencesStore.perPage], () => {
-  referencesStore.page = 1;
-  emit("update");
-});
 watch(
-  () => referencesStore.page,
-  () => emit("update"),
+  [
+    () => referencesStore.sort,
+    () => referencesStore.perPage,
+    () => referencesStore.page,
+  ],
+  ([_newSort, _newPerPage, newPage], [_oldSort, _oldPerPage, oldPage]) => {
+    if (newPage === oldPage) {
+      referencesStore.page = 1;
+    }
+    emit("update");
+  },
 );
 function handleSelectUpdate(updatedId: string) {
   const index = selectStore.selected.findIndex((id) => id === updatedId);

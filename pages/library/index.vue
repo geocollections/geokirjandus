@@ -1,95 +1,38 @@
 <template>
-  <div class="container">
-    <div class="grid grid-cols-12 gap-x-4">
-      <div
-        class="col-span-3 space-y-2 overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
-      >
-        <UForm :state="{ localQuery }" @submit="handleSubmit">
-          <UButtonGroup size="lg" :ui="{ wrapper: { horizontal: 'w-full' } }">
-            <UInput
-              v-model="localQuery"
-              :placeholder="t('searchAllFields')"
-              :ui="{ wrapper: 'w-full' }"
-            />
-            <UButton icon="i-heroicons-magnifying-glass" type="submit">
-            </UButton>
-          </UButtonGroup>
-        </UForm>
-        <div class="space-y-1">
-          <div class="text-xl font-medium">{{ t("filters") }}</div>
-          <UFormGroup :label="t('author')">
-            <UInput
-              v-model="librariesStore.filters.author"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
-            <UInput
-              v-model="librariesStore.filters.year[0]"
-              @blur="handleFilterChange"
-              placeholder="Start"
-            />
-            <UInput
-              v-model="librariesStore.filters.year[1]"
-              @blur="handleFilterChange"
-              placeholder="End"
-            />
-          </UFormGroup>
-          <UFormGroup :label="t('title')">
-            <UInput
-              v-model="librariesStore.filters.title"
-              @blur="handleFilterChange"
-            />
-          </UFormGroup>
+  <Search>
+    <template #filters>
+      <SearchFormLibrary @update="handleSubmit" @reset="handleReset" />
+    </template>
+    <div class="space-y-2">
+      <div class="flex items-center">
+        <div class="text-xl">
+          <span class="font-bold">{{
+            librariesRes?.response.numFound ?? 0
+          }}</span>
+          results
         </div>
       </div>
-      <div class="col-span-9 lg:py-8">
-        <div class="space-y-2">
-          <div class="flex items-center">
-            <div class="text-xl">
-              <span class="font-bold">{{
-                librariesRes?.response.numFound ?? 0
-              }}</span>
-              results
-            </div>
-          </div>
-          <div class="flex items-center space-x-2">
-            <USelectMenu
-              class="w-40"
-              v-model="librariesStore.sort"
-              :options="librariesStore.sortOptions"
-              by="value"
-              option-attribute="name"
-              :ui="{ wrapper: 'mr-auto' }"
-            >
-            </USelectMenu>
-            <USelectMenu
-              class="ml-auto"
-              v-model="librariesStore.perPage"
-              :options="librariesStore.perPageOptions"
-            />
-            <UPagination
-              v-model="librariesStore.page"
-              :page-count="librariesStore.perPage"
-              :total="librariesRes?.response.numFound ?? 0"
-              show-first
-              show-last
-            />
-          </div>
-        </div>
-        <template v-for="(library, index) in libraries">
-          <UDivider v-if="index !== 0" />
-          <LibrarySummary
-            :library="library"
-            :position="
-              index + (librariesStore.page - 1) * librariesStore.perPage
-            "
-          />
-        </template>
-
+      <div class="flex items-center space-x-2">
+        <USelectMenu
+          class="w-40"
+          v-model="librariesStore.sort"
+          :options="librariesStore.sortOptions"
+          value-attribute="value"
+          option-attribute="name"
+          icon="i-heroicons-arrows-up-down"
+          :ui="{ wrapper: 'mr-auto' }"
+        >
+          <template #label>
+            {{ librariesStore.currentSort.name }}
+          </template>
+        </USelectMenu>
+        <USelectMenu
+          class="ml-auto"
+          v-model="librariesStore.perPage"
+          :options="librariesStore.perPageOptions"
+        />
         <UPagination
           v-model="librariesStore.page"
-          :ui="{ base: 'ml-auto' }"
           :page-count="librariesStore.perPage"
           :total="librariesRes?.response.numFound ?? 0"
           show-first
@@ -97,7 +40,30 @@
         />
       </div>
     </div>
-  </div>
+    <template v-for="(library, index) in libraries">
+      <UDivider v-if="index !== 0" />
+      <LibrarySummary
+        :library="library"
+        :position="index + (librariesStore.page - 1) * librariesStore.perPage"
+      />
+    </template>
+
+    <UPagination
+      v-model="librariesStore.page"
+      :ui="{ base: 'ml-auto' }"
+      :page-count="librariesStore.perPage"
+      :total="librariesRes?.response.numFound ?? 0"
+      show-first
+      show-last
+    />
+    <template #mobile-filters>
+      <SearchFormLibrary
+        :num-found="librariesRes?.response.numFound"
+        @update="handleSubmit"
+        @reset="handleReset"
+      />
+    </template>
+  </Search>
 </template>
 
 <script setup lang="ts">
@@ -128,25 +94,6 @@ const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
   },
 );
 const libraries = computed(() => librariesRes.value?.response.docs ?? []);
-
-watch(
-  () => librariesStore.sort,
-  () => {
-    librariesStore.page = 1;
-    execute();
-  },
-);
-watch(
-  () => librariesStore.perPage,
-  () => {
-    librariesStore.page = 1;
-    execute();
-  },
-);
-watch(
-  () => librariesStore.page,
-  () => execute(),
-);
 
 watch(
   [
@@ -193,6 +140,11 @@ function handleFilterChange() {
 function handleSubmit() {
   librariesStore.query = localQuery.value;
   execute();
+}
+function handleReset() {
+  referencesStore.resetFilters();
+  setQueryParamsFromState();
+  refreshReferences();
 }
 </script>
 

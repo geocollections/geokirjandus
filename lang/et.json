@@ -234,5 +234,17 @@
     "tooltipShowAllHeaders": "Vaata kõiki päiseid",
     "filter": "Filteeri",
     "headerSelectDisabled": "Veergu sorteeritakse"
+  },
+  "sort": {
+    "best": "Parim vaste",
+    "newest": "Hiljuti lisatud",
+    "authorAsc": "Autorid A-Z",
+    "authorDesc": "Autorid Z-A",
+    "compilerAsc": "Koostajad A-Z",
+    "compilerDesc": "Koostajad Z-A",
+    "titleAsc": "Pealkiri A-Z",
+    "titleDesc": "Pealkiri Z-A",
+    "yearAsc": "Aasta ascending",
+    "yearDesc": "Aasta descending"
   }
 }

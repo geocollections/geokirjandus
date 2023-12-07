@@ -33,7 +33,7 @@ export const useLibraryFilters = () => {
   });
 
   const activeFiltersCount = computed(() => {
-    return Object.values(filters).filter((val) => {
+    return Object.values(filters.value).filter((val) => {
       if (typeof val === "string") return val.length > 0;
       if (typeof val === "boolean") return val;
       if (val instanceof Set) return val.size;

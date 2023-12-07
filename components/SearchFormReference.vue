@@ -147,10 +147,11 @@ const {
   activeFiltersCount,
   routeSolrFilters,
 } = storeToRefs(referencesStore);
-const localQuery = ref("");
-
 referencesStore.setStateFromQueryParams(route);
+
+const localQuery = ref("");
 localQuery.value = query.value;
+
 const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
   SolrFacets<{
     type: { name: {}; name_en: {} };

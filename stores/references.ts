@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { RouteLocation } from "vue-router";
+import { useRoute } from "vue-router";
 import { z } from "zod";
 
 export const useReferencesStore = defineStore(
@@ -32,12 +33,11 @@ export const useReferencesStore = defineStore(
     const { searchPosition, enteredFrom, fromSearch } = useSearchPosition();
 
     const route = useRoute();
-
     const routeSolrFilters = computed(() => {
       const baseName = getRouteBaseName(route);
       const res = [];
 
-      if (baseName?.startsWith("libraries") && route.params.id) {
+      if (baseName?.startsWith("library") && route.params.id) {
         res.push(`libraries:${route.params.id}`);
       }
       return res;

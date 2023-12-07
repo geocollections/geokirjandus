@@ -4,7 +4,7 @@
       <NuxtLinkLocale
         :to="`/library/${library.id}`"
         class="text-xl hover:underline"
-        @click="handleDetailNavigation"
+        @click.native="handleDetailNavigation"
       >
         {{ library.title }}
       </NuxtLinkLocale>

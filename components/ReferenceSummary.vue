@@ -99,6 +99,7 @@ const info = computed(() => {
 
 const searchStore = useReferencesStore();
 function handleDetailNavigation() {
+  console.log("entered from", route.path);
   if (!props.position || props.position < 0) return;
   searchStore.searchPosition = props.position;
   searchStore.enteredFrom = route.path;

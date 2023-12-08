@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { RouteLocation } from "vue-router";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { z } from "zod";
 
 export const useReferencesStore = defineStore(
@@ -32,7 +32,8 @@ export const useReferencesStore = defineStore(
     const { searchPosition, enteredFrom, fromSearch } = useSearchPosition();
 
     const route = useRoute();
-    function getRouteSolrFilters() {
+    const router = useRouter();
+    const routeSolrFilters = computed(() => {
       const baseName = getRouteBaseName(route);
       const res = [];
 
@@ -40,7 +41,17 @@ export const useReferencesStore = defineStore(
         res.push(`libraries:${route.params.id}`);
       }
       return res;
-    }
+    });
+    const enteredFromRouteSolrFilters = computed(() => {
+      const enteredFromRoute = router.resolve(enteredFrom.value);
+      const baseName = getRouteBaseName(enteredFromRoute);
+      const res = [];
+
+      if (baseName?.startsWith("library") && enteredFromRoute.params.id) {
+        res.push(`libraries:${enteredFromRoute.params.id}`);
+      }
+      return res;
+    });
 
     const querySchema = z
       .object({
@@ -106,7 +117,8 @@ export const useReferencesStore = defineStore(
       currentSort,
       filters,
       solrFilters,
-      getRouteSolrFilters,
+      routeSolrFilters,
+      enteredFromRouteSolrFilters,
       setStateFromQueryParams,
       searchPosition,
       enteredFrom,

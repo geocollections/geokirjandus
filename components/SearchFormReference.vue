@@ -85,7 +85,7 @@
       <FilterKeywords
         v-model="filters.keywords"
         :q="solrQuery"
-        :filters="[...solrFilters, ...referencesStore.getRouteSolrFilters()]"
+        :filters="[...solrFilters, ...referencesStore.routeSolrFilters]"
         @change="handleFilterChange"
       />
     </UFormGroup>
@@ -139,16 +139,21 @@ const emit = defineEmits<{ update: []; reset: [] }>();
 const { t } = useI18n({ useScope: "local" });
 const route = useRoute();
 const referencesStore = useReferencesStore();
-const getRouteSolrFilters = referencesStore.getRouteSolrFilters;
-const { solrQuery, solrFilters, filters, query, activeFiltersCount } =
-  storeToRefs(referencesStore);
+const {
+  solrQuery,
+  solrFilters,
+  routeSolrFilters ,
+  filters,
+  query,
+  activeFiltersCount,
+} = storeToRefs(referencesStore);
 referencesStore.setStateFromQueryParams(route);
 
 const localQuery = ref("");
 localQuery.value = query.value;
 
 const combinedSolrFilters = computed(() => {
-  return [...solrFilters.value, ...getRouteSolrFilters()];
+  return [...solrFilters.value, ...routeSolrFilters.value];
 });
 
 const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<

@@ -4,7 +4,6 @@
       <NuxtLinkLocale
         :to="`/library/${library.id}`"
         class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
-        @click.native="handleDetailNavigation"
       >
         {{ library.title }}
       </NuxtLinkLocale>
@@ -16,10 +15,6 @@
 <script setup lang="ts">
 const props = defineProps<{ library: any; position: number }>();
 const { t } = useI18n({ useScope: "local" });
-
-const route = useRoute();
-const librariesStore = useLibrariesStore();
-const referencesStore = useReferencesStore();
 
 const info = computed(() => {
   const infoList = [];
@@ -36,12 +31,6 @@ const info = computed(() => {
   }
   return infoList.join(" | ");
 });
-
-function handleDetailNavigation() {
-  if (props.position < 0) return;
-  librariesStore.searchPosition = props.position;
-  referencesStore.enteredFrom = route.path;
-}
 </script>
 
 <i18n lang="yaml">

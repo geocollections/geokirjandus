@@ -2,7 +2,7 @@
   <div class="container" v-if="reference">
     <div class="grid grid-cols-12 gap-x-2">
       <div
-        class="col-span-2 hidden overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"
+        class="col-span-2 hidden overflow-y-auto lg:sticky lg:top-[57px] lg:block lg:max-h-[calc(100vh-57px)] lg:px-2 lg:py-8"
       >
         <ClientOnly>
           <ReferenceSimilar />

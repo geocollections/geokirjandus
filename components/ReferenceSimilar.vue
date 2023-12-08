@@ -28,7 +28,7 @@
         @click="page++"
       />
     </div>
-    <div class="space-y-1">
+    <div class="space-y-1 overflow-x-hidden">
       <template v-for="(reference, idx) in references">
         <UDivider v-if="idx !== 0" />
         <div class="space-y-1">
@@ -36,6 +36,7 @@
             color="white"
             variant="ghost"
             class="block"
+            :ui="{ color: { white: { ghost: 'dark:hover:bg-gray-800' } } }"
             :to="localePath(`/reference/${reference.id}`)"
             exact
             active-class="bg-carrot-orange-500/10 border border-carrot-orange-500"
@@ -82,7 +83,7 @@ const { data: referencesRes } = await useSolrFetch<SolrResponse<ReferenceDoc>>(
       json: {
         filter: [
           ...referencesStore.solrFilters,
-          ...referencesStore.getRouteSolrFilters(),
+          ...referencesStore.enteredFromRouteSolrFilters,
         ],
       },
     })),

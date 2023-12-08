@@ -18,10 +18,9 @@
 </template>
 
 <script setup lang="ts">
-import { useReferenceSelectStore } from "~/stores/referenceSelectStore";
-
 const { t } = useI18n({ useScope: "local" });
-const selectStore = useReferenceSelectStore();
+const referencesStore = useReferencesStore();
+const { selection } = storeToRefs(referencesStore);
 const openExport = ref(false);
 
 async function exportRis() {
@@ -30,7 +29,7 @@ async function exportRis() {
     {
       query: {
         format: "ris",
-        id__in: selectStore.selected.join(","),
+        id__in: selection.join(","),
       },
     },
   );

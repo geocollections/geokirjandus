@@ -1,3 +1,4 @@
+import { useSelection } from "#ui-colors/imports";
 import { defineStore } from "pinia";
 import type { RouteLocation } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
@@ -30,6 +31,7 @@ export const useReferencesStore = defineStore(
       querySchema: filtersQuerySchema,
     } = useReferenceFilters();
     const { searchPosition, enteredFrom, fromSearch } = useSearchPosition();
+    const { selection } = useSelection<string>();
 
     const route = useRoute();
     const router = useRouter();
@@ -126,11 +128,20 @@ export const useReferencesStore = defineStore(
       resetFilters,
       activeFiltersCount,
       querySchema,
+      selection,
     };
   },
   {
     persist: {
-      paths: ["searchPosition", "sort", "page", "perPage", "filters", "query"],
+      paths: [
+        "searchPosition",
+        "sort",
+        "page",
+        "perPage",
+        "filters",
+        "query",
+        "selection",
+      ],
       storage: persistedState.sessionStorage,
       serializer: {
         serialize: (value) => {

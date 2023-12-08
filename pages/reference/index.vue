@@ -43,6 +43,9 @@ export type ReferenceDoc = {
   year_numeric?: number;
   volume?: string;
   pages?: string;
+  type?: number;
+  reference_type?: string;
+  reference_type_en?: string;
 };
 
 const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<

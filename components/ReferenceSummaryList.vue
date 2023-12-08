@@ -6,12 +6,12 @@
   </i18n-t>
   <div v-if="count" class="space-y-2">
     <div class="flex items-center space-x-2">
-      <ExportPopover v-if="selectStore.selected.length > 0" />
+      <ExportPopover v-if="referencesStore.selection.length > 0" />
       <span
         class="text-sm text-green-600"
-        v-if="selectStore.selected.length > 0"
+        v-if="referencesStore.selection.length > 0"
       >
-        {{ t("selected", { count: selectStore.selected.length }) }}
+        {{ t("selected", { count: referencesStore.selection.length }) }}
       </span>
     </div>
     <div class="flex flex-col items-end space-y-2 lg:flex-row">
@@ -54,7 +54,6 @@
           :position="
             index + (referencesStore.page - 1) * referencesStore.perPage
           "
-          @update:selected="handleSelectUpdate(reference.id)"
         />
       </template>
     </div>
@@ -118,11 +117,6 @@ watch(
     emit("update");
   },
 );
-function handleSelectUpdate(updatedId: string) {
-  const index = selectStore.selected.findIndex((id) => id === updatedId);
-  if (index === -1) selectStore.selected.push(updatedId);
-  else selectStore.selected.splice(index, 1);
-}
 
 function isSelected(id: string) {
   return selectStore.selected.includes(id);
@@ -133,7 +127,9 @@ function isSelected(id: string) {
 et:
   results: "Tulemused puuduvad | {count} tulemus | {count} tulemust"
   noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
+  selected: "{count} kirje valitud | {count} kirjet valitud"
 en:
   results: "No results | {count} result | {count} results"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
+  selected: "{count} item selected | {count} items selected"
 </i18n>

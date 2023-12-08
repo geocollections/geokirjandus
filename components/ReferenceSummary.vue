@@ -4,7 +4,7 @@
       class="hidden lg:block"
       :model-value="selected"
       color="blue"
-      @input="emit('update:selected')"
+      @input="handleSelection"
     />
     <div class="space-y-1">
       <div>
@@ -53,7 +53,6 @@ import type { ReferenceDoc } from "~/pages/reference/index.vue";
 const emit = defineEmits<{ "update:selected": [] }>();
 const props = defineProps<{
   reference: ReferenceDoc;
-  selected: boolean;
   position?: number;
 }>();
 const { t } = useI18n({ useScope: "local" });
@@ -97,12 +96,23 @@ const info = computed(() => {
   return infoList.join(" | ");
 });
 
-const searchStore = useReferencesStore();
+const referencesStore = useReferencesStore();
 function handleDetailNavigation() {
-  console.log("entered from", route.path);
   if (!props.position || props.position < 0) return;
-  searchStore.searchPosition = props.position;
-  searchStore.enteredFrom = route.path;
+  referencesStore.searchPosition = props.position;
+  referencesStore.enteredFrom = route.path;
+}
+
+const selected = computed(() => {
+  return referencesStore.selection.includes(props.reference.id);
+});
+
+function handleSelection() {
+  const index = referencesStore.selection.findIndex(
+    (id) => id === props.reference.id,
+  );
+  if (index === -1) referencesStore.selection.push(props.reference.id);
+  else referencesStore.selection.splice(index, 1);
 }
 </script>
 

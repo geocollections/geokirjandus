@@ -142,7 +142,7 @@ const referencesStore = useReferencesStore();
 const {
   solrQuery,
   solrFilters,
-  routeSolrFilters ,
+  routeSolrFilters,
   filters,
   query,
   activeFiltersCount,

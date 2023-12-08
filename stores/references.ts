@@ -6,7 +6,6 @@ import { z } from "zod";
 export const useReferencesStore = defineStore(
   "references",
   () => {
-    const router = useRouter();
     const getRouteBaseName = useRouteBaseName();
     const {
       page,
@@ -33,7 +32,7 @@ export const useReferencesStore = defineStore(
     const { searchPosition, enteredFrom, fromSearch } = useSearchPosition();
 
     const route = useRoute();
-    const routeSolrFilters = computed(() => {
+    function getRouteSolrFilters() {
       const baseName = getRouteBaseName(route);
       const res = [];
 
@@ -41,7 +40,7 @@ export const useReferencesStore = defineStore(
         res.push(`libraries:${route.params.id}`);
       }
       return res;
-    });
+    }
 
     const querySchema = z
       .object({
@@ -107,7 +106,7 @@ export const useReferencesStore = defineStore(
       currentSort,
       filters,
       solrFilters,
-      routeSolrFilters,
+      getRouteSolrFilters,
       setStateFromQueryParams,
       searchPosition,
       enteredFrom,

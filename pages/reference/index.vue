@@ -76,9 +76,6 @@ const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
     },
   })),
   watch: false,
-  onRequest: (res) => {
-    console.log(res.request, res.options.query?.json.filter);
-  },
 });
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 watch(

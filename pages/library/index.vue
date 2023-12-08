@@ -1,14 +1,14 @@
 <template>
-  <Search>
+  <Search :filter-count="librariesStore.activeFiltersCount">
     <template #filters>
       <SearchFormLibrary @update="handleSubmit" @reset="handleReset" />
     </template>
     <div class="space-y-2">
       <div class="flex items-center">
         <div class="text-xl">
-          <span class="font-bold">{{
-            librariesRes?.response.numFound ?? 0
-          }}</span>
+          <span class="font-bold">
+            {{ librariesRes?.response.numFound ?? 0 }}
+          </span>
           results
         </div>
       </div>
@@ -70,7 +70,6 @@
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
 
-const { t } = useI18n({ useScope: "local" });
 const router = useRouter();
 const route = useRoute();
 const librariesStore = useLibrariesStore();
@@ -133,34 +132,13 @@ function setQueryParamsFromState() {
   });
 }
 
-function handleFilterChange() {
-  setQueryParamsFromState();
-  execute();
-}
 function handleSubmit() {
   librariesStore.query = localQuery.value;
   execute();
 }
 function handleReset() {
-  referencesStore.resetFilters();
+  librariesStore.resetFilters();
   setQueryParamsFromState();
-  refreshReferences();
+  execute();
 }
 </script>
-
-<i18n lang="yaml">
-et:
-  search: "Otsi"
-  filters: "Filtrid"
-  year: "Aasta"
-  author: "Koostaja(d)"
-  title: "Pealkiri"
-  searchAllFields: "Otsi kõigilt väljadelt"
-en:
-  search: "Search"
-  filters: "Filters"
-  year: "Year"
-  author: "Compiler(s)"
-  title: "Title"
-  searchAllFields: "Search all fields"
-</i18n>

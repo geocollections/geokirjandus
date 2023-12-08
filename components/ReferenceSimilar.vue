@@ -82,7 +82,7 @@ const { data: referencesRes } = await useSolrFetch<SolrResponse<ReferenceDoc>>(
       json: {
         filter: [
           ...referencesStore.solrFilters,
-          ...referencesStore.routeSolrFilters,
+          ...referencesStore.getRouteSolrFilters(),
         ],
       },
     })),

@@ -85,7 +85,7 @@
       <FilterKeywords
         v-model="filters.keywords"
         :q="solrQuery"
-        :filters="[...solrFilters, ...routeSolrFilters]"
+        :filters="[...solrFilters, ...referencesStore.getRouteSolrFilters()]"
         @change="handleFilterChange"
       />
     </UFormGroup>
@@ -139,18 +139,17 @@ const emit = defineEmits<{ update: []; reset: [] }>();
 const { t } = useI18n({ useScope: "local" });
 const route = useRoute();
 const referencesStore = useReferencesStore();
-const {
-  solrQuery,
-  solrFilters,
-  filters,
-  query,
-  activeFiltersCount,
-  routeSolrFilters,
-} = storeToRefs(referencesStore);
+const getRouteSolrFilters = referencesStore.getRouteSolrFilters;
+const { solrQuery, solrFilters, filters, query, activeFiltersCount } =
+  storeToRefs(referencesStore);
 referencesStore.setStateFromQueryParams(route);
 
 const localQuery = ref("");
 localQuery.value = query.value;
+
+const combinedSolrFilters = computed(() => {
+  return [...solrFilters.value, ...getRouteSolrFilters()];
+});
 
 const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
   SolrFacets<{
@@ -163,7 +162,7 @@ const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
       q: solrQuery.value,
       rows: 0,
       json: {
-        filter: [...solrFilters.value, ...routeSolrFilters.value],
+        filter: combinedSolrFilters.value,
         facet: {
           type: {
             type: "terms",

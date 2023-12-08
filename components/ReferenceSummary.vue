@@ -6,19 +6,19 @@
       color="blue"
       @input="emit('update:selected')"
     />
-    <div class="space-y-2">
+    <div class="space-y-1">
       <div>
         <NuxtLinkLocale
           :to="`/reference/${reference.id}`"
-          class="text-lg visited:text-purple-600 hover:underline dark:visited:text-purple-400"
+          class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
           @click.native="handleDetailNavigation"
         >
           {{ reference.title ? reference.title : reference.reference }}
         </NuxtLinkLocale>
-        <div>{{ reference.author }}</div>
-        <div>{{ reference.journal_name }}</div>
-        <div>{{ reference.book }}</div>
-        <div>
+        <div class="text-sm">{{ reference.author }}</div>
+        <div class="text-sm">{{ reference.journal_name }}</div>
+        <div class="text-sm">{{ reference.book }}</div>
+        <div class="text-sm">
           {{ info }}
         </div>
       </div>
@@ -26,6 +26,7 @@
         <UButton
           v-if="reference.abstract"
           color="black"
+          size="xs"
           variant="ghost"
           :trailing-icon="
             showAbstract ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'

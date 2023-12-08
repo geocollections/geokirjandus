@@ -1,16 +1,16 @@
 <template>
-  <div class="space-y-2 py-2">
+  <div class="space-y-1 py-2">
     <div>
       <NuxtLinkLocale
         :to="`/reference/${reference.id}`"
-        class="text-xl visited:text-purple-600 hover:underline"
+        class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
         @click="handleLinkClick"
       >
         {{ reference.title ? reference.title : reference.reference }}
       </NuxtLinkLocale>
-      <div>{{ reference.author }}</div>
-      <div>{{ reference.journal_name }}</div>
-      <div>{{ reference.book }}</div>
+      <div class="text-sm">{{ reference.author }}</div>
+      <div class="text-sm">{{ reference.journal_name }}</div>
+      <div class="text-sm">{{ reference.book }}</div>
     </div>
     <div class="flex items-center space-x-1">
       <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />

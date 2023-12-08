@@ -2,6 +2,7 @@
   <UButton
     v-if="doi"
     variant="soft"
+    size="xs"
     color="yellow"
     icon="i-simple-icons-doi"
     :to="`https://doi.org/${doi}`"
@@ -12,6 +13,7 @@
   <UButton
     v-if="pdf"
     variant="soft"
+    size="xs"
     color="red"
     icon="i-heroicons-document"
     target="_blank"
@@ -22,6 +24,7 @@
   <UButton
     v-if="url"
     variant="soft"
+    size="xs"
     color="blue"
     icon="i-heroicons-arrow-top-right-on-square"
     target="_blank"

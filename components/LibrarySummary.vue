@@ -3,13 +3,13 @@
     <div>
       <NuxtLinkLocale
         :to="`/library/${library.id}`"
-        class="text-xl hover:underline"
+        class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
         @click.native="handleDetailNavigation"
       >
         {{ library.title }}
       </NuxtLinkLocale>
-      <div>{{ library.author }}</div>
-      <div>{{ info }}</div>
+      <div class="text-sm">{{ library.author }}</div>
+      <div class="text-sm">{{ info }}</div>
     </div>
   </div>
 </template>

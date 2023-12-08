@@ -2,6 +2,7 @@
   <UPopover :ui="{ wrapper: 'w-fit' }">
     <UButton
       color="black"
+      size="xs"
       variant="soft"
       icon="i-heroicons-document-text"
       @click="openCitationPopover"

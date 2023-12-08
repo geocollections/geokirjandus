@@ -13,13 +13,8 @@ export const useReferenceSort = () => {
     "date_added desc",
   ] as const;
 
-  type SortOption<K> = { value: K; name: string };
-  type SortOptionsMap = {
-    [K in (typeof sortQueryOptions)[number]]: SortOption<K>;
-  };
-
   const sortOptionsMap = computed(
-    (): SortOptionsMap => ({
+    (): SortOptionsMap<typeof sortQueryOptions> => ({
       "score desc": { value: "score desc", name: t("sort.best") },
       "author asc": { value: "author asc", name: t("sort.authorAsc") },
       "author desc": { value: "author desc", name: t("sort.authorDesc") },
@@ -37,12 +32,9 @@ export const useReferenceSort = () => {
     }),
   );
 
-  const sortOptions = computed(() => Object.values(sortOptionsMap.value));
-
   const sort = ref<(typeof sortQueryOptions)[number]>(sortQueryOptions[0]);
-
+  const sortOptions = computed(() => Object.values(sortOptionsMap.value));
   const currentSort = computed(() => sortOptionsMap.value[sort.value]);
-
   const querySchema = z.enum(sortQueryOptions).catch(sortQueryOptions[0]);
 
   return { sort, sortOptions, sortQueryOptions, querySchema, currentSort };

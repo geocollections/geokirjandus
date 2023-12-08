@@ -44,15 +44,20 @@
         />
       </div>
     </div>
-    <template v-for="(reference, index) in references">
-      <UDivider v-if="index !== 0" />
-      <ReferenceSummary
-        :reference="reference"
-        :selected="isSelected(reference.id)"
-        :position="index + (referencesStore.page - 1) * referencesStore.perPage"
-        @update:selected="handleSelectUpdate(reference.id)"
-      />
-    </template>
+    <div>
+      <template v-for="(reference, index) in references">
+        <UDivider v-if="index !== 0" />
+
+        <ReferenceSummary
+          :reference="reference"
+          :selected="isSelected(reference.id)"
+          :position="
+            index + (referencesStore.page - 1) * referencesStore.perPage
+          "
+          @update:selected="handleSelectUpdate(reference.id)"
+        />
+      </template>
+    </div>
 
     <UPagination
       v-model="referencesStore.page"

@@ -85,7 +85,7 @@ const { data: referencesRes, refresh: refreshReferences } =
       json: {
         // filter: searchStore.solrFilter,
         filter: [
-          ...referencesStore.routeSolrFilters,
+          ...referencesStore.getRouteSolrFilters(),
           ...referencesStore.solrFilters,
         ],
       },

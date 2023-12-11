@@ -1,11 +1,13 @@
 <template>
   <div class="flex items-start space-x-2 py-2 lg:space-x-4">
-    <UCheckbox
-      class="hidden lg:block"
-      :model-value="selected"
-      color="blue"
-      @input="handleSelection"
-    />
+    <ClientOnly>
+      <UCheckbox
+        class="hidden lg:block"
+        :model-value="selected"
+        color="blue"
+        @input="handleSelection"
+      />
+    </ClientOnly>
     <div class="space-y-1">
       <div>
         <NuxtLinkLocale
@@ -112,7 +114,8 @@ function handleSelection() {
     (id) => id === props.reference.id,
   );
   if (index === -1) referencesStore.selection.push(props.reference.id);
-  else referencesStore.selection.splice(index, 1);
+  else
+    referencesStore.selection = referencesStore.selection.toSpliced(index, 1);
 }
 </script>
 

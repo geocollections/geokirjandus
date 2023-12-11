@@ -108,12 +108,8 @@ const langOptions = computed(() => [
 ]);
 
 const pageItems = computed(() => [
-  [
-    { label: t("menu.fossils"), to: "/page/28" },
-    { label: t("menu.collecting"), to: "/page/29" },
-    { label: t("menu.identifying"), to: "/page/30" },
-    { label: t("menu.geocollections"), to: "https://geocollections.info" },
-  ],
+  [{ label: t("tabs.references"), to: localePath("/reference") }],
+  [{ label: t("tabs.libraries"), to: localePath("/library") }],
 ]);
 
 function handleLocaleChange(locale: string) {

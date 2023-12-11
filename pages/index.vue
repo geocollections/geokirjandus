@@ -2,7 +2,7 @@
   <div
     class="-mt-[57px] bg-[url('/layered-steps-haikei-light.svg')] dark:bg-[url('/layered-steps-haikei-dark.svg')]"
   >
-    <div class="container pt-[calc(57px+2em)]">
+    <div class="container px-2 pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
           <h1 class="text-center text-6xl" style="word-break: normal">
@@ -94,41 +94,37 @@
       </div>
     </div>
   </div>
-  <div class="mb-4 bg-cover">
-    <div class="container pt-10">
-      <div class="grid grid-cols-2 gap-x-4">
-        <div
-          class="order-2 col-span-full space-y-4 lg:order-none lg:col-span-1"
-        >
-          <div class="w-full p-4 lg:h-96">
-            <Statistics />
-          </div>
-          <div class="rounded border p-4 dark:border-gray-800">
-            <div class="mb-3 text-2xl">
-              {{ t("about") }}
-            </div>
-            <div
-              v-html="
-                $translate({
-                  et: intro.content_et,
-                  en: intro.content_en,
-                })
-              "
-            ></div>
-          </div>
+  <div class="container px-2 pb-4 pt-10">
+    <div class="grid grid-cols-2 gap-x-4">
+      <div class="order-2 col-span-full space-y-4 lg:order-none lg:col-span-1">
+        <div class="w-full p-4 lg:h-96">
+          <Statistics />
         </div>
-
-        <div class="order-1 col-span-full lg:order-none lg:col-span-1">
-          <div class="rounded border p-4 dark:border-gray-800">
-            <div class="mb-3 text-2xl">
-              {{ t("latest") }}
-            </div>
-
-            <template v-for="(reference, index) in references">
-              <UDivider v-if="index !== 0" />
-              <ReferenceItem :reference="reference" />
-            </template>
+        <div class="rounded border p-4 dark:border-gray-800">
+          <div class="mb-3 text-2xl">
+            {{ t("about") }}
           </div>
+          <div
+            v-html="
+              $translate({
+                et: intro.content_et,
+                en: intro.content_en,
+              })
+            "
+          ></div>
+        </div>
+      </div>
+
+      <div class="order-1 col-span-full lg:order-none lg:col-span-1">
+        <div class="rounded border p-4 dark:border-gray-800">
+          <div class="mb-3 text-2xl">
+            {{ t("latest") }}
+          </div>
+
+          <template v-for="(reference, index) in references">
+            <UDivider v-if="index !== 0" />
+            <ReferenceItem :reference="reference" />
+          </template>
         </div>
       </div>
     </div>

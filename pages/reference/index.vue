@@ -6,6 +6,7 @@
     <ReferenceSummaryList
       :references="references"
       :count="referencesRes?.response.numFound ?? 0"
+      @update="handleSubmit"
     />
     <template #mobile-filters>
       <SearchFormReference
@@ -70,6 +71,9 @@ const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
       "year_numeric",
       "volume",
       "pages",
+      "type",
+      "reference_type",
+      "reference_type_en",
     ] as (keyof ReferenceDoc)[],
     rows: referencesStore.perPage,
     start: referencesStore.offset,

@@ -18,7 +18,9 @@
           value-attribute="value"
           option-attribute="name"
         ></USelect>
-        <div class="flex items-start rounded border p-2">
+        <div
+          class="flex items-start rounded border p-2 dark:border-gray-700 dark:bg-gray-800"
+        >
           <div v-html="citation?.source"></div>
         </div>
         <div class="flex space-x-2">

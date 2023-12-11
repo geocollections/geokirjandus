@@ -6,13 +6,21 @@
   </i18n-t>
   <div v-if="count" class="space-y-2">
     <div class="flex items-center space-x-2">
-      <ExportPopover v-if="referencesStore.selection.length > 0" />
-      <span
-        class="text-sm text-green-600"
-        v-if="referencesStore.selection.length > 0"
-      >
-        {{ t("selected", { count: referencesStore.selection.length }) }}
-      </span>
+      <ExportPopover />
+      <ClientOnly>
+        <template v-if="referencesStore.selection.length > 0">
+          <span class="text-sm text-green-600">
+            {{ t("selected", { count: referencesStore.selection.length }) }}
+          </span>
+          <UButton
+            trailing-icon="i-heroicons-x-mark"
+            color="white"
+            type="ghost"
+            @click="handleClearSelection"
+            >{{ t("clear") }}</UButton
+          >
+        </template>
+      </ClientOnly>
     </div>
     <div class="flex flex-col items-end space-y-2 lg:flex-row">
       <div class="flex items-center">
@@ -45,12 +53,13 @@
       </div>
     </div>
     <div>
-      <template v-for="(reference, index) in references">
+      <template
+        v-for="(reference, index) in references"
+        :key="`summary-${reference.id}`"
+      >
         <UDivider v-if="index !== 0" />
-
         <ReferenceSummary
           :reference="reference"
-          :selected="isSelected(reference.id)"
           :position="
             index + (referencesStore.page - 1) * referencesStore.perPage
           "
@@ -83,26 +92,6 @@ defineProps<{ references: ReferenceDoc[]; count: number }>();
 const emit = defineEmits<{ update: [] }>();
 const { t } = useI18n({ useScope: "local" });
 const referencesStore = useReferencesStore();
-const selectStore = useReferenceSelectStore();
-
-export type ReferenceDoc = {
-  id: string;
-  reference: string;
-  title?: string;
-  author?: string;
-  journal_name?: string;
-  book?: string;
-  abstract?: string;
-  doi_url?: string;
-  attachment__filename?: string;
-  parent_reference__attachment__filename?: string;
-  filename?: string;
-  url?: string;
-  parent_reference__url?: string;
-  year_numeric?: number;
-  volume?: string;
-  pages?: string;
-};
 
 watch(
   [
@@ -118,8 +107,8 @@ watch(
   },
 );
 
-function isSelected(id: string) {
-  return selectStore.selected.includes(id);
+function handleClearSelection() {
+  referencesStore.selection = [];
 }
 </script>
 
@@ -128,8 +117,10 @@ et:
   results: "Tulemused puuduvad | {count} tulemus | {count} tulemust"
   noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
   selected: "{count} kirje valitud | {count} kirjet valitud"
+  clear: "Puhasta"
 en:
   results: "No results | {count} result | {count} results"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
   selected: "{count} item selected | {count} items selected"
+  clear: "Clear"
 </i18n>

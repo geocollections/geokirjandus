@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container px-2">
     <div class="grid grid-cols-12 gap-x-4">
       <div
         class="hidden space-y-2 overflow-y-auto py-4 lg:sticky lg:top-[57px] lg:col-span-3 lg:block lg:max-h-[calc(100vh-57px)] lg:px-4 lg:py-8"

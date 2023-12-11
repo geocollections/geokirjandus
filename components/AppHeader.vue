@@ -16,7 +16,7 @@
           size="md"
           color="white"
           variant="ghost"
-          class="relative font-semibold"
+          class="relative hidden font-semibold sm:inline-flex"
           :to="localePath(`/reference`)"
           icon="i-heroicons-book-open"
           exact
@@ -27,7 +27,7 @@
           size="md"
           color="white"
           variant="ghost"
-          class="relative font-semibold"
+          class="relative hidden font-semibold sm:inline-flex"
           :to="localePath(`/library`)"
           icon="i-heroicons-building-library"
           exact
@@ -72,9 +72,9 @@
                 :aria-label="t('header.lang')"
                 @update:model-value="handleLocaleChange"
               />
-            </div>
-            <div class="ml-auto">
-              <ColorModeSwitch />
+              <div class="ml-auto">
+                <ColorModeSwitch />
+              </div>
             </div>
             <UDivider />
             <UVerticalNavigation :links="pageItems[0]" />
@@ -108,8 +108,10 @@ const langOptions = computed(() => [
 ]);
 
 const pageItems = computed(() => [
-  [{ label: t("tabs.references"), to: localePath("/reference") }],
-  [{ label: t("tabs.libraries"), to: localePath("/library") }],
+  [
+    { label: t("tabs.references"), to: localePath("/reference"), exact: true },
+    { label: t("tabs.libraries"), to: localePath("/library"), exact: true },
+  ],
 ]);
 
 function handleLocaleChange(locale: string) {

@@ -68,11 +68,13 @@ const pdf = computed(() => {
     props.reference.attachment__filename ??
     props.reference.parent_reference__attachment__filename ??
     props.reference.filename ??
-    null
+    undefined
   );
 });
 const url = computed(() => {
-  return props.reference.url ?? props.reference.parent_reference__url ?? null;
+  return (
+    props.reference.url ?? props.reference.parent_reference__url ?? undefined
+  );
 });
 
 const info = computed(() => {

@@ -23,7 +23,8 @@
       </ClientOnly>
     </div>
     <div class="flex flex-col items-end space-y-2 lg:flex-row">
-      <div class="flex items-center">
+      <URadioGroup v-model="view" :options="viewOptions" />
+      <div class="flex items-center space-x-2">
         <USelectMenu
           class="w-40"
           v-model="referencesStore.sort"
@@ -59,6 +60,14 @@
       >
         <UDivider v-if="index !== 0" />
         <ReferenceSummary
+          v-if="view === 'summary'"
+          :reference="reference"
+          :position="
+            index + (referencesStore.page - 1) * referencesStore.perPage
+          "
+        />
+        <ReferenceCompact
+          v-if="view === 'compact'"
           :reference="reference"
           :position="
             index + (referencesStore.page - 1) * referencesStore.perPage
@@ -92,6 +101,17 @@ defineProps<{ references: ReferenceDoc[]; count: number }>();
 const emit = defineEmits<{ update: [] }>();
 const { t } = useI18n({ useScope: "local" });
 const referencesStore = useReferencesStore();
+const viewOptions = computed(() => [
+  {
+    value: "summary",
+    label: "Summary",
+  },
+  {
+    value: "compact",
+    label: "Compact",
+  },
+]);
+const view = ref("summary");
 
 watch(
   [

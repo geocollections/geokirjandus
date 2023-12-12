@@ -21,7 +21,7 @@
         <div
           class="flex items-start rounded border p-2 dark:border-gray-700 dark:bg-gray-800"
         >
-          <div v-html="citation?.source"></div>
+          <div v-html="citation"></div>
         </div>
         <div class="flex space-x-2">
           <UButton
@@ -30,7 +30,7 @@
             color="gray"
             size="sm"
             icon="i-heroicons-clipboard"
-            @click="copy([createClipboardItems(citation?.source)])"
+            @click="copy([createClipboardItems(citation)])"
           >
             <span v-if="copied">
               {{ t("copied") }}
@@ -63,7 +63,10 @@ const settings = useSettingsStore();
 
 watch(
   () => settings.citationStyle,
-  () => fetchCitation(),
+  () => {
+    if (!openCite.value) return;
+    fetchCitation();
+  },
 );
 
 function createClipboardItems(text: string) {
@@ -79,7 +82,7 @@ async function fetchCitation() {
     `https://rwapi.geoloogia.info/api/v1/public/references/${props.id}/`,
     {
       query: {
-        view_type: "bibliography",
+        format: "cite",
         citation_style: settings.citationStyle,
       },
     },

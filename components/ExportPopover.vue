@@ -19,20 +19,32 @@
             >
             </USelect>
           </UFormGroup>
-          <!-- <UFormGroup label="Format"> -->
-          <!--   <USelect -->
-          <!--     v-model="state.format" -->
-          <!--     :options="formatOptions" -->
-          <!--     option-attribute="label" -->
-          <!--   > -->
-          <!--   </USelect> -->
-          <!-- </UFormGroup> -->
+          <UFormGroup :label="t('format')">
+            <USelect
+              v-model="state.format"
+              :options="formatOptions"
+              option-attribute="label"
+            >
+            </USelect>
+          </UFormGroup>
+          <UFormGroup
+            v-if="state.format === 'cite'"
+            :label="t('citationStyle')"
+          >
+            <USelect
+              class="w-40"
+              v-model="settings.citationStyle"
+              :options="settings.citationStyleOptions"
+              value-attribute="value"
+              option-attribute="name"
+            ></USelect>
+          </UFormGroup>
           <UButton
             icon="i-heroicons-arrow-down-tray"
             size="sm"
             @click="exportItems"
           >
-            {{ t("exportRis") }}
+            {{ t("export") }}
           </UButton>
         </UForm>
       </div>
@@ -68,7 +80,7 @@ const selectionOptions = computed(() => {
 const formatOptions = computed(() => {
   return [
     { value: "ris", label: "RIS" },
-    { value: "csv", label: "CSV" },
+    { value: "cite", label: t("citations") },
   ];
 });
 
@@ -137,6 +149,29 @@ function getExportLimit() {
     return 1000;
   }
 }
+const settings = useSettingsStore();
+
+const formatQueryParams = computed(() => {
+  if (state.value.format === "ris") {
+    return {
+      format: "ris",
+    };
+  }
+  if (state.value.format === "cite") {
+    return {
+      format: "cite",
+      citation_style: settings.citationStyle,
+    };
+  }
+});
+const formatFileType = computed(() => {
+  if (state.value.format === "ris") {
+    return "ris";
+  }
+  if (state.value.format === "cite") {
+    return "txt";
+  }
+});
 
 async function exportItems() {
   const ids = await getExportIds();
@@ -144,9 +179,9 @@ async function exportItems() {
     `https://rwapi.geoloogia.info/api/v1/public/references/`,
     {
       query: {
-        format: state.value.format,
         id__in: ids.join(","),
         limit: getExportLimit(),
+        ...formatQueryParams.value,
       },
     },
   );
@@ -156,7 +191,7 @@ async function exportItems() {
   const linkElement = document.createElement("a");
 
   linkElement.href = urlForDownload;
-  linkElement.download = `references.${state.value.format}`;
+  linkElement.download = `references.${formatFileType.value}`;
   linkElement.click();
 
   URL.revokeObjectURL(urlForDownload); // free memory
@@ -177,6 +212,9 @@ et:
   maxExportHelp: "Esimesed 1000 kirjet salvestatakse faili"
   selectionSize: "Valiku suurus"
   exportToFile: "Ekspordi kirjed faili"
+  format: "Formaat"
+  citations: "Viited"
+  citationStyle: "Viitamisstiil"
 en:
   export: "Export"
   exportRis: "Export RIS"
@@ -186,4 +224,7 @@ en:
   maxExportHelp: "Only the first 1000 references will be saved in your file"
   selectionSize: "Selection"
   exportToFile: "Export references to file"
+  format: "Format"
+  citations: "Citations"
+  citationStyle: "Citation style"
 </i18n>

@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxt/image",
     "@nuxtjs/google-fonts",
+    "@nuxtseo/module",
   ],
   imports: {
     dirs: ["types/*.ts"],
@@ -40,5 +41,16 @@ export default defineNuxtConfig({
         ital: [300, 400, 600, 700, 800],
       },
     },
+  },
+  site: {
+    name: "Geokirjandus",
+  },
+  sitemap: {
+    sitemaps: true,
+    sources: ["/api/__sitemap__/urls"],
+  },
+  runtimeConfig: {
+    // TODO: allow indexing in production but not in staging
+    indexable: false,
   },
 });

@@ -70,6 +70,11 @@
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
 
+const { t } = useI18n({ useScope: "local" });
+useHead({
+  title: t("title"),
+});
+
 const router = useRouter();
 const route = useRoute();
 const librariesStore = useLibrariesStore();
@@ -142,3 +147,9 @@ function handleReset() {
   execute();
 }
 </script>
+<i18n lang="yaml">
+et:
+  title: "Kogumikud"
+en:
+  title: "Libraries"
+</i18n>

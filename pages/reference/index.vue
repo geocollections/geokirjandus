@@ -21,6 +21,11 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
+const { t } = useI18n({ useScope: "local" });
+
+useHead({
+  title: t("title"),
+});
 
 const router = useRouter();
 const route = useRoute();
@@ -177,3 +182,10 @@ function handleReset() {
   @apply w-full;
 }
 </style>
+
+<i18n lang="yaml">
+et:
+  title: "Teavikud"
+en:
+  title: "References"
+</i18n>

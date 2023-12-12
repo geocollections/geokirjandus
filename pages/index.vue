@@ -135,6 +135,9 @@
 const router = useRouter();
 const localePath = useLocalePath();
 const { t } = useI18n({ useScope: "local" });
+useHead({
+  title: null,
+});
 const state = reactive({
   searchStr: "",
   references: [] as any[],

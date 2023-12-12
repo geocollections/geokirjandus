@@ -1,4 +1,9 @@
 <template>
+  <Head>
+    <Title v-if="library">
+      {{ $translate({ et: library.title, en: library.title_en }) }}
+    </Title>
+  </Head>
   <Search v-if="library" :filterCount="referencesStore.activeFiltersCount">
     <template #filters>
       <SearchFormReference @update="handleSubmit" @reset="handleReset" />

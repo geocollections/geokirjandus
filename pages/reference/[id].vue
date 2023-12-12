@@ -1,4 +1,7 @@
 <template>
+  <Head>
+    <Title>{{ reference?.title }}</Title>
+  </Head>
   <div class="container px-2" v-if="reference">
     <div class="grid grid-cols-12 gap-x-2">
       <div
@@ -330,6 +333,7 @@ import type { VerticalNavigationLink } from "@nuxt/ui/dist/runtime/types";
 
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });
+
 const localePath = useLocalePath();
 
 type Reference = {

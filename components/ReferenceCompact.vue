@@ -11,18 +11,16 @@
     <div class="w-full space-x-1">
       <NuxtLinkLocale
         :to="`/reference/${reference.id}`"
-        class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
+        class="space-x-1 visited:text-purple-600 hover:underline dark:visited:text-purple-400"
         @click.native="handleDetailNavigation"
       >
-        <span>
-          <span class="text-sm italic text-black dark:text-white">{{
-            reference.author
-          }}</span>
-          <span class="text-sm italic text-black dark:text-white"
-            >({{ reference.year_numeric }})</span
-          >
-          {{ reference.title ? reference.title : reference.reference }}
-        </span>
+        <span class="text-sm italic text-black dark:text-white">{{
+          reference.author
+        }}</span>
+        <span class="text-sm italic text-black dark:text-white"
+          >({{ reference.year_numeric }})</span
+        >
+        {{ reference.title ? reference.title : reference.reference }}
       </NuxtLinkLocale>
       <span class="inline-flex w-min items-center space-x-1">
         <CitePopover :id="reference.id" size="2xs" />

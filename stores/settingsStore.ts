@@ -8,11 +8,13 @@ export const useSettingsStore = defineStore(
     ]);
     const citationStyle = ref(citationStyleOptions.value[0].value);
 
-    return { citationStyle, citationStyleOptions };
+    const view = ref<"summary" | "compact">("summary");
+
+    return { citationStyle, citationStyleOptions, view };
   },
   {
     persist: {
-      paths: ["citationStyle"],
+      paths: ["citationStyle", "view"],
     },
   },
 );

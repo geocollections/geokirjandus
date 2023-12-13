@@ -9,20 +9,29 @@
       />
     </ClientOnly>
     <div class="w-full space-x-1">
-      <span class="text-sm">{{ reference.author }}</span>
-      <span class="text-sm">({{ reference.year_numeric }})</span>
-      <span>
-        <NuxtLinkLocale
-          :to="`/reference/${reference.id}`"
-          class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
-          @click.native="handleDetailNavigation"
-        >
+      <NuxtLinkLocale
+        :to="`/reference/${reference.id}`"
+        class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
+        @click.native="handleDetailNavigation"
+      >
+        <span>
+          <span class="text-sm italic text-black dark:text-white">{{
+            reference.author
+          }}</span>
+          <span class="text-sm italic text-black dark:text-white"
+            >({{ reference.year_numeric }})</span
+          >
           {{ reference.title ? reference.title : reference.reference }}
-        </NuxtLinkLocale>
-      </span>
+        </span>
+      </NuxtLinkLocale>
       <span class="inline-flex w-min items-center space-x-1">
-        <CitePopover :id="reference.id" />
-        <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />
+        <CitePopover :id="reference.id" size="2xs" />
+        <ReferenceLinks
+          :doi="reference.doi_url"
+          :pdf="pdf"
+          :url="url"
+          size="2xs"
+        />
       </span>
     </div>
   </div>

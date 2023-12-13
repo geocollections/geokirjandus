@@ -24,7 +24,7 @@
     <div class="flex">
       <div class="text-xl font-medium">{{ t("filters") }}</div>
       <UButton
-        v-if="activeFiltersCount"
+        v-if="activeFiltersCount > 0"
         class="ml-auto"
         icon="i-heroicons-trash"
         variant="ghost"

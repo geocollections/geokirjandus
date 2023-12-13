@@ -3,7 +3,7 @@
     <template #filters>
       <SearchFormReference @update="handleSubmit" @reset="handleReset" />
     </template>
-    <ReferenceSummaryList
+    <ReferenceList
       :references="references"
       :count="referencesRes?.response.numFound ?? 0"
       @update="handleSubmit"

@@ -31,7 +31,7 @@
     </div>
     <div id="references" class="scroll-mt-16">
       <h2 class="text-xl font-semibold">{{ t("references") }}</h2>
-      <ReferenceSummaryList
+      <ReferenceList
         :references="references"
         :count="referencesRes?.response.numFound ?? 0"
       />

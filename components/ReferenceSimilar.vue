@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ReferenceDoc } from "./ReferenceSummaryList.vue";
+import type { ReferenceDoc } from "~/pages/reference/index.vue";
 
 const { t } = useI18n({ useScope: "local" });
 const referencesStore = useReferencesStore();
@@ -91,7 +91,8 @@ const { data: referencesRes } = await useSolrFetch<SolrResponse<ReferenceDoc>>(
 );
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 const hasNext = computed(
-  () => (page.value - 1) * perPage < referencesRes.value?.response.numFound,
+  () =>
+    (page.value - 1) * perPage < (referencesRes.value?.response.numFound ?? 0),
 );
 const searchQueryParams = buildReferenceSearchQueryParams({
   query: referencesStore.query,
@@ -105,11 +106,11 @@ function pdf(reference: ReferenceDoc) {
     reference.attachment__filename ??
     reference.parent_reference__attachment__filename ??
     reference.filename ??
-    null
+    undefined
   );
 }
 function url(reference: ReferenceDoc) {
-  return reference.url ?? reference.parent_reference__url ?? null;
+  return reference.url ?? reference.parent_reference__url ?? undefined;
 }
 
 function handleDetailNavigation(index: number) {

@@ -2,7 +2,7 @@
   <UPopover :ui="{ wrapper: 'w-fit' }">
     <UButton
       color="black"
-      size="xs"
+      :size="size"
       variant="soft"
       icon="i-heroicons-document-text"
       @click="openCitationPopover"
@@ -51,8 +51,15 @@
 
 <script setup lang="ts">
 import { useSettingsStore } from "~/stores/settingsStore";
-
-const props = defineProps<{ id: number | string }>();
+// @ts-expect-error
+import appConfig from "#build/app.config";
+const props = withDefaults(
+  defineProps<{
+    id: number | string;
+    size?: typeof appConfig.ui.button.size;
+  }>(),
+  { size: "xs" },
+);
 
 const { t } = useI18n({ useScope: "local" });
 const citation = ref();

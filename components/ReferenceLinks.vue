@@ -2,7 +2,7 @@
   <UButton
     v-if="doi"
     variant="soft"
-    size="xs"
+    :size="size"
     color="yellow"
     icon="i-simple-icons-doi"
     :to="`https://doi.org/${doi}`"
@@ -13,7 +13,7 @@
   <UButton
     v-if="pdf"
     variant="soft"
-    size="xs"
+    :size="size"
     color="red"
     icon="i-heroicons-document"
     target="_blank"
@@ -24,7 +24,7 @@
   <UButton
     v-if="url"
     variant="soft"
-    size="xs"
+    :size="size"
     color="blue"
     icon="i-heroicons-arrow-top-right-on-square"
     target="_blank"
@@ -35,7 +35,17 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ doi?: string; pdf?: string; url?: string }>();
+// @ts-expect-error
+import appConfig from "#build/app.config";
+withDefaults(
+  defineProps<{
+    doi?: string;
+    pdf?: string;
+    url?: string;
+    size?: typeof appConfig.ui.button.size;
+  }>(),
+  { size: "xs" },
+);
 </script>
 
 <style scoped>

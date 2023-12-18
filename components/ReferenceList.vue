@@ -13,11 +13,11 @@
         >
           <RadioGroupOption v-slot="{ checked }" value="summary">
             <span
-              class="flex h-8 rounded-l-md border border-r-0 border-gray-300 bg-white px-2.5 py-1.5 text-sm hover:cursor-pointer hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800/50"
+              class="flex h-8 rounded-l-md border border-r-0 border-gray-300 px-2.5 py-1.5 text-sm hover:cursor-pointer dark:border-gray-700"
               :class="
                 checked
                   ? 'bg-primary dark:bg-primary-400 hover:bg-primary-600 dark:hover:bg-primary-500 text-white dark:text-black'
-                  : ''
+                  : 'bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800/50'
               "
             >
               <UIcon class="h-5 w-5 flex-shrink-0" name="i-heroicons-bars-4" />
@@ -25,11 +25,11 @@
           </RadioGroupOption>
           <RadioGroupOption v-slot="{ checked }" value="compact">
             <span
-              class="flex h-8 rounded-r-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm hover:cursor-pointer hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800/50"
+              class="flex h-8 rounded-r-md border border-gray-300 px-2.5 py-1.5 text-sm hover:cursor-pointer dark:border-gray-700"
               :class="
                 checked
                   ? 'bg-primary dark:bg-primary-400 hover:bg-primary-600 dark:hover:bg-primary-500 text-white dark:text-black'
-                  : ''
+                  : 'bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800/50'
               "
             >
               <UIcon

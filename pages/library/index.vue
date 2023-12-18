@@ -4,7 +4,7 @@
       <SearchFormLibrary @update="handleSubmit" @reset="handleReset" />
     </template>
     <div class="space-y-2">
-      <h1 class="mb-2 text-3xl">{{ t("title") }}</h1>
+      <h1 class="mb-2 text-4xl font-semibold">{{ t("title") }}</h1>
       <div class="flex items-center">
         <div class="text-xl">
           <span class="font-bold">

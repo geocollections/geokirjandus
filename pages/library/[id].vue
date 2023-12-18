@@ -8,33 +8,31 @@
     <template #filters>
       <SearchFormReference @update="handleSubmit" @reset="handleReset" />
     </template>
-    <div id="general" class="scroll-mt-20">
-      <div>{{ t("virtualLibrary") }}</div>
+    <div class="mb-4">
+      <div class="italic">{{ t("virtualLibrary") }}</div>
       <h1 class="text-4xl font-semibold">
         {{ $translate({ et: library.title, en: library.title_en }) }}
       </h1>
       <div class="text-2xl">{{ library.author_text }}</div>
     </div>
-    <div
-      v-if="$translate({ et: library.abstract, en: library.abstract_en })"
-      id="abstract"
-      class="scroll-mt-16"
-    >
-      <h2 class="mb-2 text-xl font-semibold">{{ t("abstract") }}</h2>
-      <div
-        v-html="$translate({ et: library.abstract, en: library.abstract_en })"
-      ></div>
-    </div>
-    <div v-if="library.remarks" id="remarks" class="scroll-mt-16">
-      <h2 class="mb-2 text-xl font-semibold">{{ t("remarks") }}</h2>
-      <div v-html="library.remarks"></div>
-    </div>
-    <div id="references" class="scroll-mt-16">
-      <h2 class="text-xl font-semibold">{{ t("references") }}</h2>
-      <ReferenceList
-        :references="references"
-        :count="referencesRes?.response.numFound ?? 0"
-      />
+    <div class="space-y-4">
+      <div v-if="$translate({ et: library.abstract, en: library.abstract_en })">
+        <h2 class="mb-2 text-xl font-semibold">{{ t("abstract") }}</h2>
+        <div
+          v-html="$translate({ et: library.abstract, en: library.abstract_en })"
+        ></div>
+      </div>
+      <div v-if="library.remarks">
+        <h2 class="mb-2 text-xl font-semibold">{{ t("remarks") }}</h2>
+        <div v-html="library.remarks"></div>
+      </div>
+      <div id="references" class="scroll-mt-16">
+        <h2 class="text-xl font-semibold">{{ t("references") }}</h2>
+        <ReferenceList
+          :references="references"
+          :count="referencesRes?.response.numFound ?? 0"
+        />
+      </div>
     </div>
     <template #mobile-filters>
       <SearchFormReference

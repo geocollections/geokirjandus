@@ -3,7 +3,7 @@
     <template #filters>
       <SearchFormReference @update="handleSubmit" @reset="handleReset" />
     </template>
-    <h1 class="mb-2 text-3xl">{{ t("title") }}</h1>
+    <h1 class="mb-2 text-4xl font-semibold">{{ t("title") }}</h1>
     <ReferenceList
       :references="references"
       :count="referencesRes?.response.numFound ?? 0"

@@ -5,7 +5,7 @@
     <div class="container px-2 pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
-          <h1 class="text-center text-6xl" style="word-break: normal">
+          <h1 class="pb-2 text-center text-6xl" style="word-break: normal">
             {{ t("title") }}
           </h1>
 

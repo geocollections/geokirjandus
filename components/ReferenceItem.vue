@@ -6,11 +6,17 @@
         class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
         @click="handleLinkClick"
       >
+        <div class="text-sm text-black dark:text-white">
+          {{ reference.author }}
+        </div>
         {{ reference.title ? reference.title : reference.reference }}
+        <div class="text-sm text-black dark:text-white">
+          {{ reference.journal_name }}
+        </div>
+        <div class="text-sm text-black dark:text-white">
+          {{ reference.book }}
+        </div>
       </NuxtLinkLocale>
-      <div class="text-sm">{{ reference.author }}</div>
-      <div class="text-sm">{{ reference.journal_name }}</div>
-      <div class="text-sm">{{ reference.book }}</div>
     </div>
     <div class="flex items-center space-x-1">
       <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />

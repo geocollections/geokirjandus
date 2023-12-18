@@ -14,10 +14,10 @@
         class="space-x-1 visited:text-purple-600 hover:underline dark:visited:text-purple-400"
         @click.native="handleDetailNavigation"
       >
-        <span class="text-sm italic text-black dark:text-white">{{
+        <span class="text-sm text-black dark:text-white">{{
           reference.author
         }}</span>
-        <span class="text-sm italic text-black dark:text-white"
+        <span class="text-sm text-black dark:text-white"
           >({{ reference.year_numeric }})</span
         >
         {{ reference.title ? reference.title : reference.reference }}

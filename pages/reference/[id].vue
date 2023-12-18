@@ -12,16 +12,16 @@
         </ClientOnly>
       </div>
 
-      <div class="col-span-12 space-y-2 px-4 py-8 lg:col-span-8">
-        <UButton
-          class="lg:hidden"
-          variant="link"
-          icon="i-heroicons-arrow-small-left"
-          :to="localePath({ path: '/reference', query: searchQueryParams })"
-        >
-          {{ t("back") }}
-        </UButton>
+      <div class="col-span-12 space-y-4 px-4 py-8 lg:col-span-8">
         <div id="general" class="scroll-mt-20">
+          <UButton
+            class="lg:hidden"
+            variant="link"
+            icon="i-heroicons-arrow-small-left"
+            :to="localePath({ path: '/reference', query: searchQueryParams })"
+          >
+            {{ t("back") }}
+          </UButton>
           <div class="text-xl italic">{{ reference.reference }}</div>
           <h1 class="text-4xl font-semibold">
             {{ reference.title }}
@@ -552,8 +552,8 @@ const navigationLinks = computed(() => {
 });
 
 const url = computed(() => {
-  if (!reference.value) return null;
-  return reference.value.url ?? reference.value.parent?.url ?? null;
+  if (!reference.value) return undefined;
+  return reference.value.url ?? reference.value.parent?.url ?? undefined;
 });
 const referencesStore = useReferencesStore();
 const searchQueryParams = buildReferenceSearchQueryParams({

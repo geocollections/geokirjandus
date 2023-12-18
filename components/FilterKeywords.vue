@@ -116,10 +116,10 @@ watch(
   { deep: true },
 );
 
-watch([() => props.q, () => props.filters], async () => {
-  await refreshCounts();
-  refreshOptions();
-});
+// watch([() => props.q, () => props.filters], async () => {
+//   await refreshCounts();
+//   refreshOptions();
+// });
 
 // NOTE: In case filters are reset, clear the selected value
 watch(
@@ -152,6 +152,10 @@ function handleRemove(obj) {
   emit("remove", obj.value);
   emit("change");
 }
+defineExpose({
+  refreshCounts,
+  refreshOptions,
+});
 </script>
 
 <style scoped lang="scss">

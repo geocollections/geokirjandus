@@ -54,6 +54,9 @@
       :label="t('isEstonianAuthor')"
     />
     <UCheckbox v-model="filters.pdf" :label="t('pdf')" />
+    <UFormGroup :label="t('author')">
+      <UInput v-model="filters.author" @blur="handleFilterChange" />
+    </UFormGroup>
     <UFormGroup :label="t('title')">
       <UInput v-model="filters.title" @blur="handleFilterChange" />
     </UFormGroup>
@@ -83,6 +86,7 @@
     </UFormGroup>
     <UFormGroup :label="t('keywords')" :ui="{ container: 'space-y-1' }">
       <FilterKeywords
+        ref="filterKeywords"
         v-model="filters.keywords"
         :q="solrQuery"
         :filters="[...solrFilters, ...referencesStore.routeSolrFilters]"
@@ -133,10 +137,12 @@
 </template>
 
 <script setup lang="ts">
+import FilterKeywords from "~/components/FilterKeywords.vue";
 defineProps<{ numFound?: number }>();
 const emit = defineEmits<{ update: []; reset: [] }>();
 
 const { t } = useI18n({ useScope: "local" });
+const filterKeywords = ref<InstanceType<typeof FilterKeywords>>();
 const route = useRoute();
 const referencesStore = useReferencesStore();
 const {
@@ -162,6 +168,7 @@ const { data: referencesRes, refresh: refreshOptions } = await useSolrFetch<
     language: { name: {}; name_en: {} };
   }>
 >("/reference", {
+  watch: false,
   query: computed(() => {
     return {
       q: solrQuery.value,
@@ -251,15 +258,21 @@ watch(
 
 function handleFilterChange() {
   refreshOptions();
+  filterKeywords.value?.refreshOptions();
+  filterKeywords.value?.refreshCounts();
   emit("update");
 }
 function handleSubmit() {
   refreshOptions();
+  filterKeywords.value?.refreshOptions();
+  filterKeywords.value?.refreshCounts();
   query.value = localQuery.value;
   emit("update");
 }
 function handleReset() {
   refreshOptions();
+  filterKeywords.value?.refreshOptions();
+  filterKeywords.value?.refreshCounts();
   emit("reset");
 }
 
@@ -285,6 +298,7 @@ et:
   filters: "Filtrid"
   isEstonianReference: "Eesti kirjandus"
   isEstonianAuthor: "Eesti author"
+  author: "Autor(id)"
   title: "Pealkiri"
   year: "Aasta"
   book: "Raamat"
@@ -307,6 +321,7 @@ en:
   filters: "Filters"
   isEstonianReference: "Estonian reference"
   isEstonianAuthor: "Estonian author"
+  author: "Author(s)"
   title: "Title"
   year: "Year"
   book: "Book"

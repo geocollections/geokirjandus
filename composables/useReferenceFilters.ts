@@ -5,6 +5,7 @@ export const useReferenceFilters = () => {
     isEstonianReference: false,
     isEstonianAuthor: false,
     pdf: false,
+    author: "",
     title: "",
     book: "",
     journal: "",
@@ -32,6 +33,7 @@ export const useReferenceFilters = () => {
     isEstonianReference: booleanSchema,
     isEstonianAuthor: booleanSchema,
     pdf: booleanSchema,
+    author: z.string().catch(""),
     title: z.string().catch(""),
     book: z.string().catch(""),
     journal: z.string().catch(""),
@@ -79,6 +81,7 @@ export const useReferenceFilters = () => {
     filters.value.isEstonianAuthor = false;
     filters.value.pdf = false;
     filters.value.title = "";
+    filters.value.author = "";
     filters.value.book = "";
     filters.value.journal = "";
     filters.value.publisher = "";
@@ -101,6 +104,9 @@ export const useReferenceFilters = () => {
     }
     if (filters.value.pdf) {
       res.push("pdf:*");
+    }
+    if (filters.value.author.length > 0) {
+      res.push(`author:*${filters.value.author}*`);
     }
     if (filters.value.title.length > 0) {
       res.push(`title:*${filters.value.title}*`);

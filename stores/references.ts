@@ -72,6 +72,7 @@ export const useReferencesStore = defineStore(
         isEstonianReference: route.query.isEstonianReference,
         isEstonianAuthor: route.query.isEstonianAuthor,
         pdf: route.query.pdf,
+        author: route.query.author,
         title: route.query.title,
         book: route.query.book,
         journal: route.query.journal,
@@ -95,6 +96,7 @@ export const useReferencesStore = defineStore(
       filters.value.isEstonianAuthor = params.isEstonianAuthor;
       filters.value.pdf = params.pdf;
       filters.value.year = params.year;
+      filters.value.author = params.author;
       filters.value.title = params.title;
       filters.value.book = params.book;
       filters.value.journal = params.journal;

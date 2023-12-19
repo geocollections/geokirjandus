@@ -1,13 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   modules: [
     "@nuxt/ui",
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
-    "@nuxt/image",
     "@nuxtjs/google-fonts",
     "@nuxtseo/module",
   ],
@@ -48,6 +47,9 @@ export default defineNuxtConfig({
   sitemap: {
     sitemaps: true,
     sources: ["/api/__sitemap__/urls"],
+  },
+  linkChecker: {
+    enabled: false,
   },
   runtimeConfig: {
     // TODO: allow indexing in production but not in staging

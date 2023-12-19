@@ -1,4 +1,3 @@
-import { useSelection } from "#ui-colors/imports";
 import { defineStore } from "pinia";
 import type { RouteLocation } from "vue-router";
 import { useRoute, useRouter } from "vue-router";

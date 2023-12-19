@@ -57,9 +57,6 @@
     <UFormGroup :label="t('author')">
       <UInput v-model="filters.author" @blur="handleFilterChange" />
     </UFormGroup>
-    <UFormGroup :label="t('title')">
-      <UInput v-model="filters.title" @blur="handleFilterChange" />
-    </UFormGroup>
     <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
       <UInput
         v-model="filters.year[0]"
@@ -71,6 +68,9 @@
         @blur="handleFilterChange"
         :placeholder="t('end')"
       />
+    </UFormGroup>
+    <UFormGroup :label="t('title')">
+      <UInput v-model="filters.title" @blur="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('book')">
       <UInput v-model="filters.book" @blur="handleFilterChange" />

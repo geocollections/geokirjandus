@@ -13,7 +13,7 @@ export const useReferenceFilters = () => {
     volumeOrNumber: "",
     localities: "",
     taxa: "",
-    year: [null, null] as (number | null)[],
+    year: [undefined, undefined] as (number | undefined)[],
     type: new Set<string>(),
     language: new Set<string>(),
     keywords: new Set<string>(),
@@ -48,8 +48,8 @@ export const useReferenceFilters = () => {
       .string()
       .transform((val, ctx) => {
         let [startStr, endStr] = val.split("-");
-        const start = parseInt(startStr) || null;
-        const end = parseInt(endStr) || null;
+        const start = parseInt(startStr) || undefined;
+        const end = parseInt(endStr) || undefined;
 
         if (start && end && start > end) {
           ctx.addIssue({
@@ -61,7 +61,7 @@ export const useReferenceFilters = () => {
 
         return [start, end];
       })
-      .catch([null, null]),
+      .catch([undefined, undefined]),
   });
 
   const activeFiltersCount = computed(() => {
@@ -88,7 +88,7 @@ export const useReferenceFilters = () => {
     filters.value.volumeOrNumber = "";
     filters.value.localities = "";
     filters.value.taxa = "";
-    filters.value.year = [null, null];
+    filters.value.year = [undefined, undefined];
     filters.value.type.clear();
     filters.value.language.clear();
     filters.value.keywords.clear();
@@ -111,7 +111,7 @@ export const useReferenceFilters = () => {
     if (filters.value.title.length > 0) {
       res.push(`title:*${filters.value.title}*`);
     }
-    if (filters.value.year.some((val) => val !== null)) {
+    if (filters.value.year.some((val) => val !== undefined)) {
       const start = filters.value.year[0] ?? "*";
       const end = filters.value.year[1] ?? "*";
       res.push(`year_numeric:[${start} TO ${end}]`);

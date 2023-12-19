@@ -139,7 +139,7 @@ function setQueryParamsFromState() {
 }
 
 function handleSubmit() {
-  librariesStore.query = localQuery.value;
+  setQueryParamsFromState();
   execute();
 }
 function handleReset() {

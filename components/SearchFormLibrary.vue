@@ -34,22 +34,26 @@
       </UButton>
     </div>
     <UFormGroup :label="t('author')">
-      <UInput v-model="filters.author" @blur="handleFilterChange" />
+      <UInput v-model="filters.author" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
       <UInput
-        v-model="filters.year[0]"
-        @blur="handleFilterChange"
-        placeholder="Start"
+        :model-value="filters.year[0]"
+        @input="filters.year[0] = parseNumber($event.target.value)"
+        type="number"
+        :placeholder="t('start')"
+        @change="handleFilterChange"
       />
       <UInput
-        v-model="filters.year[1]"
-        @blur="handleFilterChange"
-        placeholder="End"
+        :model-value="filters.year[1]"
+        @input="filters.year[1] = parseNumber($event.target.value)"
+        type="number"
+        :placeholder="t('end')"
+        @change="handleFilterChange"
       />
     </UFormGroup>
     <UFormGroup :label="t('title')">
-      <UInput v-model="filters.title" @blur="handleFilterChange" />
+      <UInput v-model="filters.title" @change="handleFilterChange" />
     </UFormGroup>
   </div>
 </template>
@@ -94,6 +98,8 @@ et:
   title: "Pealkiri"
   searchAllFields: "Otsi kõigilt väljadelt"
   found: "Tulemused puuduvad | {count} tulemus leitud | {count} tulemust leitud"
+  start: "Algus"
+  end: "Lõpp"
 en:
   search: "Search"
   filters: "Filters"
@@ -102,4 +108,6 @@ en:
   title: "Title"
   searchAllFields: "Search all fields"
   found: "No results found | Found {count} result | Found {count} results"
+  start: "Start"
+  end: "End"
 </i18n>

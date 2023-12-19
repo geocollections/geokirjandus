@@ -125,6 +125,9 @@ function setQueryParamsFromState() {
   if (referencesStore.filters.isEstonianAuthor) {
     query.pdf = referencesStore.filters.pdf.toString();
   }
+  if (referencesStore.filters.author.length > 0) {
+    query.author = referencesStore.filters.author;
+  }
   if (referencesStore.filters.title.length > 0) {
     query.title = referencesStore.filters.title;
   }
@@ -157,7 +160,7 @@ function setQueryParamsFromState() {
     query.keywords = Array.from(referencesStore.filters.keywords).join(",");
   }
 
-  if (referencesStore.filters.year.some((val) => val !== null)) {
+  if (referencesStore.filters.year.some((val) => val !== undefined)) {
     const start = referencesStore.filters.year[0] ?? "*";
     const end = referencesStore.filters.year[1] ?? "*";
 
@@ -169,6 +172,7 @@ function setQueryParamsFromState() {
 }
 
 function handleSubmit() {
+  setQueryParamsFromState();
   refreshReferences();
 }
 function handleReset() {

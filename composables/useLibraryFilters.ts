@@ -4,7 +4,7 @@ export const useLibraryFilters = () => {
   const { locale } = useI18n();
 
   const filters = ref({
-    year: [null, null] as (number | null)[],
+    year: [undefined, undefined] as (number | undefined)[],
     author: "",
     title: "",
   });
@@ -14,8 +14,8 @@ export const useLibraryFilters = () => {
       .string()
       .transform((val, ctx) => {
         let [startStr, endStr] = val.split("-");
-        const start = parseInt(startStr) || null;
-        const end = parseInt(endStr) || null;
+        const start = parseInt(startStr) || undefined;
+        const end = parseInt(endStr) || undefined;
 
         if (start && end && start > end) {
           ctx.addIssue({
@@ -27,7 +27,7 @@ export const useLibraryFilters = () => {
 
         return [start, end];
       })
-      .catch([null, null]),
+      .catch([undefined, undefined]),
     author: z.string().catch(""),
     title: z.string().catch(""),
   });
@@ -42,14 +42,14 @@ export const useLibraryFilters = () => {
   });
 
   function resetFilters() {
-    filters.value.year = [null, null];
+    filters.value.year = [undefined, undefined];
     filters.value.author = "";
     filters.value.title = "";
   }
 
   const solrFilters = computed(() => {
     const res = [];
-    if (filters.value.year.some((val) => val !== null)) {
+    if (filters.value.year.some((val) => val !== undefined)) {
       const start = filters.value.year[0] ?? "*";
       const end = filters.value.year[1] ?? "*";
       res.push(`year:[${start} TO ${end}]`);

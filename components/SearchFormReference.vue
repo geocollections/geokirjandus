@@ -55,34 +55,38 @@
     />
     <UCheckbox v-model="filters.pdf" :label="t('pdf')" />
     <UFormGroup :label="t('author')">
-      <UInput v-model="filters.author" @blur="handleFilterChange" />
+      <UInput v-model="filters.author" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('year')" :ui="{ container: 'flex gap-x-1' }">
       <UInput
-        v-model="filters.year[0]"
-        @blur="handleFilterChange"
+        :model-value="filters.year[0]"
+        @input="filters.year[0] = parseNumber($event.target.value)"
+        type="number"
         :placeholder="t('start')"
+        @change="handleFilterChange"
       />
       <UInput
-        v-model="filters.year[1]"
-        @blur="handleFilterChange"
+        :model-value="filters.year[1]"
+        @input="filters.year[1] = parseNumber($event.target.value)"
+        type="number"
         :placeholder="t('end')"
+        @change="handleFilterChange"
       />
     </UFormGroup>
     <UFormGroup :label="t('title')">
-      <UInput v-model="filters.title" @blur="handleFilterChange" />
+      <UInput v-model="filters.title" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('book')">
-      <UInput v-model="filters.book" @blur="handleFilterChange" />
+      <UInput v-model="filters.book" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('journal')">
-      <UInput v-model="filters.journal" @blur="handleFilterChange" />
+      <UInput v-model="filters.journal" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('publisher')">
-      <UInput v-model="filters.publisher" @blur="handleFilterChange" />
+      <UInput v-model="filters.publisher" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('volumeOrNumber')">
-      <UInput v-model="filters.volumeOrNumber" @blur="handleFilterChange" />
+      <UInput v-model="filters.volumeOrNumber" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('keywords')" :ui="{ container: 'space-y-1' }">
       <FilterKeywords
@@ -128,10 +132,10 @@
       </UCheckbox>
     </UFormGroup>
     <UFormGroup :label="t('localities')">
-      <UInput v-model="filters.localities" @blur="handleFilterChange" />
+      <UInput v-model="filters.localities" @change="handleFilterChange" />
     </UFormGroup>
     <UFormGroup :label="t('taxa')">
-      <UInput v-model="filters.taxa" @blur="handleFilterChange" />
+      <UInput v-model="filters.taxa" @change="handleFilterChange" />
     </UFormGroup>
   </div>
 </template>

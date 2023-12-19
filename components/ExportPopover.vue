@@ -136,6 +136,7 @@ async function getExportIds() {
 
     return res.response.docs.map((val) => val.id);
   }
+  return [];
 }
 
 function getExportLimit() {

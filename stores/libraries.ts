@@ -7,7 +7,7 @@ export const useLibrariesStore = defineStore("libraries", () => {
   const {
     page,
     perPage,
-    perPageOptions,
+    perPageMenuOptions,
     offset,
     querySchema: paginationQuerySchema,
   } = usePagination();
@@ -61,7 +61,7 @@ export const useLibrariesStore = defineStore("libraries", () => {
     solrQuery,
     page,
     perPage,
-    perPageOptions,
+    perPageMenuOptions,
     offset,
     sortOptions,
     sort,

@@ -3,7 +3,7 @@
     :model-value="selected"
     v-model:query="query"
     v-model:pagination="pagination"
-    :options="options"
+    :options="options ?? []"
     :selected-counts="selectedCounts"
     @add="handleAdd"
     @remove="handleRemove"
@@ -24,8 +24,12 @@ const props = defineProps<{
   filters: string[];
   modelValue: Set<string>;
 }>();
-
-const selected = ref(new Set());
+type SelectedItem = {
+  count: number;
+  name: string;
+  value: string;
+};
+const selected = ref(new Set<SelectedItem>());
 const query = ref("");
 const pagination = ref({
   page: 1,
@@ -53,42 +57,48 @@ const options = computed(() => {
   });
 });
 
-const { data: optionsFacet, refresh: refreshOptions } =
-  await useSolrFetch<SolrResponse>("/reference", {
-    query: computed(() => ({
-      q: props.q,
-      rows: 0,
-      facet: "true",
-      "facet.contains": query.value,
-      "facet.contains.ignoreCase": true,
-      "facet.pivot": "keywords",
-      "facet.excludeTerms": Array.from(props.modelValue).join(","),
-      "facet.offset": (pagination.value.page - 1) * pagination.value.paginateBy,
-      "facet.limit": pagination.value.paginateBy,
-      "facet.overrequest.count": true,
-      json: {
-        filter: props.filters,
-      },
-    })),
-    watch: false,
-  });
+const { data: optionsFacet, refresh: refreshOptions } = await useSolrFetch<
+  SolrResponse & {
+    facet_counts: {
+      facet_pivot: { keywords: { value: string; count: number }[] };
+    };
+  }
+>("/reference", {
+  query: computed(() => ({
+    q: props.q,
+    rows: 0,
+    facet: "true",
+    "facet.contains": query.value,
+    "facet.contains.ignoreCase": true,
+    "facet.pivot": "keywords",
+    "facet.excludeTerms": Array.from(props.modelValue).join(","),
+    "facet.offset": (pagination.value.page - 1) * pagination.value.paginateBy,
+    "facet.limit": pagination.value.paginateBy,
+    "facet.overrequest.count": true,
+    json: {
+      filter: props.filters,
+    },
+  })),
+  watch: false,
+});
 const countFacets = computed(() => {
   return Array.from(props.modelValue).map((val) => `keywords:${val}`);
 });
-const { data: countsFacetRes, refresh: refreshCounts } =
-  await useSolrFetch<SolrResponse>("/reference", {
-    query: computed(() => ({
-      q: props.q,
-      rows: 0,
-      facet: "true",
-      "facet.query": countFacets.value,
-      json: {
-        filter: props.filters,
-      },
-    })),
-    watch: false,
-    immediate: false,
-  });
+const { data: countsFacetRes, refresh: refreshCounts } = await useSolrFetch<
+  SolrResponse & { facet_counts: { facet_queries: { [K: string]: number } } }
+>("/reference", {
+  query: computed(() => ({
+    q: props.q,
+    rows: 0,
+    facet: "true",
+    "facet.query": countFacets.value,
+    json: {
+      filter: props.filters,
+    },
+  })),
+  watch: false,
+  immediate: false,
+});
 
 await hydrateSelected();
 
@@ -137,12 +147,12 @@ async function hydrateSelected() {
     }),
   );
 }
-function handleAdd(obj) {
+function handleAdd(obj: SelectedItem) {
   pagination.value.page = 1;
   emit("add", obj.value);
   emit("change");
 }
-function handleRemove(obj) {
+function handleRemove(obj: SelectedItem) {
   pagination.value.page = 1;
   emit("remove", obj.value);
   emit("change");

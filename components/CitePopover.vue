@@ -77,10 +77,9 @@ watch(
 );
 
 function createClipboardItems(text: string) {
-  const mime = "text/html";
-  const blob = new Blob([`<div>${text}</div>`], { type: mime });
   return new ClipboardItem({
-    [mime]: blob,
+    "text/plain": new Blob([text], { type: "text/plain" }),
+    "text/html": new Blob([text], { type: "text/html" }),
   });
 }
 
@@ -97,7 +96,7 @@ async function fetchCitation() {
   citation.value = res;
 }
 async function exportRis() {
-  const res = await $fetch(
+  const res = await $fetch<string>(
     `https://rwapi.geoloogia.info/api/v1/public/references/${props.id}/`,
     {
       query: {

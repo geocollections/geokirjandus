@@ -10,7 +10,9 @@
 
 <script setup lang="ts">
 const props = defineProps<{ url: string; count: number }>();
-const { data: taxa } = await useNewApiFetch(props.url, {
+const { data: taxa } = await useNewApiFetch<{
+  results: { id: number; name: string }[];
+}>(props.url, {
   query: {
     fields: ["name", "id"],
     limit: props.count,

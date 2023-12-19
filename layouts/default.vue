@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 const el = ref<HTMLElement | null>(null);
-const { y } = useWindowScroll(el);
+const { y } = useWindowScroll();
 
 function toTop() {
   window.scrollTo({

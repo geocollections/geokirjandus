@@ -20,13 +20,12 @@
 const props = defineProps<{ referenceLibrariesUrl: string }>();
 const localePath = useLocalePath();
 
-const { data: referenceLibraries } = await useNewApiFetch(
-  props.referenceLibrariesUrl,
-  {
-    query: {
-      expand: "library",
-      fields: ["library.id", "library.title", "library.title_en"],
-    },
+const { data: referenceLibraries } = await useNewApiFetch<{
+  results: { library: { id: number; title: string; title_en: string } }[];
+}>(props.referenceLibrariesUrl, {
+  query: {
+    expand: "library",
+    fields: ["library.id", "library.title", "library.title_en"],
   },
-);
+});
 </script>

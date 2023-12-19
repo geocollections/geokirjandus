@@ -73,7 +73,7 @@
         <div class="ml-auto flex items-center space-x-2">
           <USelectMenu
             v-model="referencesStore.perPage"
-            :options="referencesStore.perPageOptions"
+            :options="referencesStore.perPageMenuOptions"
           />
           <UPagination
             v-model="referencesStore.page"

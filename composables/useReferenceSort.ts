@@ -33,9 +33,7 @@ export const useReferenceSort = () => {
   );
 
   const sort = ref<(typeof sortQueryOptions)[number]>(sortQueryOptions[0]);
-  const sortOptions = computed(() =>
-    Object.values<SortOption>(sortOptionsMap.value),
-  );
+  const sortOptions = computed(() => Object.values(sortOptionsMap.value));
   const currentSort = computed(() => sortOptionsMap.value[sort.value]);
   const querySchema = z.enum(sortQueryOptions).catch(sortQueryOptions[0]);
 

@@ -58,7 +58,7 @@
               {{
                 $translate({
                   et: referenceSite.site.name,
-                  en: referenceSite.site.name_en,
+                  en: referenceSite.site.name_en ?? referenceSite.site.name,
                 })
               }}
             </NuxtLink>
@@ -126,11 +126,9 @@ const baseMaps = computed(() => {
         attribution:
           "Estonian maps: <a  href='http://www.maaamet.ee/'>Republic of Estonia Land Board</a>",
         tms: true,
-        worldCopyJump: true,
         detectRetina: true,
         zIndex: 1,
         updateWhenIdle: true,
-        continuousWorld: true,
       },
     ),
     "Estonian map": L.tileLayer(
@@ -141,11 +139,9 @@ const baseMaps = computed(() => {
         attribution:
           "Estonian maps: <a  href='http://www.maaamet.ee/'>Republic of Estonia Land Board</a>",
         tms: true,
-        worldCopyJump: true,
         detectRetina: true,
         zIndex: 1,
         updateWhenIdle: true,
-        continuousWorld: true,
       },
     ),
   };
@@ -158,11 +154,9 @@ const overlayMaps = computed(() => {
         attribution:
           "Estonian maps: <a  href='http://www.maaamet.ee/'>Republic of Estonia Land Board</a>",
         tms: true,
-        worldCopyJump: true,
         detectRetina: true,
         zIndex: 2,
         updateWhenIdle: true,
-        continuousWorld: true,
         minZoom: 6,
         maxZoom: 18,
       },
@@ -174,7 +168,6 @@ const overlayMaps = computed(() => {
         layers: "geocollections:bedrock400k",
         format: "image/png",
         transparent: true,
-        tiled: true,
         detectRetina: true,
         updateWhenIdle: true,
       },
@@ -186,7 +179,6 @@ const overlayMaps = computed(() => {
         layers: "sarv:basement",
         format: "image/png",
         transparent: true,
-        tiled: true,
         detectRetina: true,
         updateWhenIdle: true,
       },
@@ -199,8 +191,21 @@ const localityOrdering = computed(() => {
   if (locale.value === "en") return ["locality__locality_en"];
   return [];
 });
+
+type Locality = {
+  id: number;
+  name: string;
+  name_en: string;
+  latitude: number | null;
+  longitude: number | null;
+};
 const { data: referenceLocalities, refresh: refreshLocalities } =
-  await useNewApiFetch(props.localityUrl, {
+  await useNewApiFetch<{
+    count: number;
+    results: {
+      locality: Locality;
+    }[];
+  }>(props.localityUrl, {
     query: {
       limit: props.localityCount,
       expand: ["locality"],
@@ -222,44 +227,62 @@ const areaOrdering = computed(() => {
   if (locale.value === "en") return ["area__name_en"];
   return [];
 });
-const { data: referenceAreas, refresh: refreshAreas } = await useNewApiFetch(
-  props.areaUrl,
-  {
-    query: {
-      limit: props.areaCount,
-      expand: ["area"],
-      fields: ["area.id", "area.name", "area.name_en", "area.polygon"],
-      ordering: areaOrdering.value,
-    },
-    watch: false,
-    immediate: false,
+type Area = {
+  id: number;
+  name: string;
+  name_en: string;
+  polygon: string | null;
+};
+
+const { data: referenceAreas, refresh: refreshAreas } = await useNewApiFetch<{
+  count: number;
+  results: {
+    area: Area;
+  }[];
+}>(props.areaUrl, {
+  query: {
+    limit: props.areaCount,
+    expand: ["area"],
+    fields: ["area.id", "area.name", "area.name_en", "area.polygon"],
+    ordering: areaOrdering.value,
   },
-);
+  watch: false,
+  immediate: false,
+});
 
 const siteOrdering = computed(() => {
   if (locale.value === "et") return ["site__name"];
   if (locale.value === "en") return ["site__name_en"];
   return [];
 });
-const { data: referenceSites, refresh: refreshSites } = await useNewApiFetch(
-  props.siteUrl,
-  {
-    query: {
-      limit: props.siteCount,
-      expand: ["site"],
-      fields: [
-        "site.id",
-        "site.name",
-        "site.name_en",
-        "site.latitude",
-        "site.longitude",
-      ],
-      ordering: siteOrdering.value,
-    },
-    watch: false,
-    immediate: false,
+type Site = {
+  id: number;
+  name: string;
+  name_en: string | null;
+  latitude: number | null;
+  longitude: number | null;
+};
+const { data: referenceSites, refresh: refreshSites } = await useNewApiFetch<{
+  count: number;
+  results: {
+    site: Site;
+  }[];
+}>(props.siteUrl, {
+  query: {
+    limit: props.siteCount,
+    expand: ["site"],
+    fields: [
+      "site.id",
+      "site.name",
+      "site.name_en",
+      "site.latitude",
+      "site.longitude",
+    ],
+    ordering: siteOrdering.value,
   },
-);
+  watch: false,
+  immediate: false,
+});
 
 if (props.localityCount > 0) await refreshLocalities();
 if (props.areaCount > 0) await refreshAreas();
@@ -285,6 +308,7 @@ onMounted(() => {
     layers: [baseMaps.value.CartoDB],
     //@ts-ignore
     gestureHandling: mobile,
+    worldCopyJump: true,
     gestureHandlingOptions: {
       text: {
         touch: t("gestureHandling.touch"),
@@ -357,7 +381,17 @@ function getLocalityMarkers() {
   });
   return (
     referenceLocalities.value?.results
-      .filter((item) => item.locality.latitude && item.locality.longitude)
+      .filter(
+        (
+          item,
+        ): item is {
+          locality: Locality & { latitude: number; longitude: number };
+        } => {
+          return (
+            item.locality.latitude !== null && item.locality.longitude !== null
+          );
+        },
+      )
       .map((item) => {
         return L.marker([item.locality.latitude, item.locality.longitude], {
           icon: localityIcon,
@@ -375,7 +409,13 @@ function getLocalityMarkers() {
 function getAreaPolygons() {
   return (
     referenceAreas.value?.results
-      .filter((item) => item.area.polygon)
+      .filter(
+        (
+          item,
+        ): item is {
+          area: Area & { polygon: string };
+        } => !!item.area.polygon,
+      )
       .map((item) =>
         L.geoJSON(JSON.parse(item.area.polygon)).bindPopup(
           `<a href="https://geoloogia.info/area/
@@ -394,7 +434,12 @@ function getSiteMarkers() {
   });
   return (
     referenceSites.value?.results
-      .filter((item) => item.site.latitude && item.site.longitude)
+      .filter(
+        (
+          item,
+        ): item is { site: Site & { latitude: number; longitude: number } } =>
+          !!item.site.latitude && !!item.site.longitude,
+      )
       .map((item) =>
         L.marker([item.site.latitude, item.site.longitude], {
           icon: siteIcon,

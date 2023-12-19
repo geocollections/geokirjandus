@@ -14,7 +14,9 @@
 <script setup lang="ts">
 const props = defineProps<{ keywordsUrl: string }>();
 
-const { data: keywords } = await useNewApiFetch(props.keywordsUrl);
+const { data: keywords } = await useNewApiFetch<{
+  results: { name: string }[];
+}>(props.keywordsUrl);
 
 function getKeywordSearchRoute(keyword: string) {
   return { path: "/reference", query: { keywords: keyword } };

@@ -1,5 +1,3 @@
-import { asSitemapUrl, defineSitemapEventHandler } from "#imports";
-
 export default defineSitemapEventHandler(async () => {
   const referenceCount = await $fetch<{
     response: { numFound: number };

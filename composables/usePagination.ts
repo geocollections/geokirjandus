@@ -24,5 +24,20 @@ export const usePagination = () => {
     return (page.value - 1) * perPage.value;
   });
 
-  return { page, perPage, offset, perPageOptions, querySchema };
+  // NOTE: USelectMenu does not accept `number[]` so have to transform it
+  const perPageMenuOptions = computed(() => {
+    return perPageOptions.map((val) => ({
+      value: val,
+      label: val,
+    }));
+  });
+
+  return {
+    page,
+    perPage,
+    offset,
+    perPageOptions,
+    perPageMenuOptions,
+    querySchema,
+  };
 };

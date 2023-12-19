@@ -30,7 +30,8 @@
         <USelectMenu
           class="ml-auto"
           v-model="librariesStore.perPage"
-          :options="librariesStore.perPageOptions"
+          :options="librariesStore.perPageMenuOptions"
+          value-attribute="value"
         />
         <UPagination
           v-model="librariesStore.page"
@@ -83,9 +84,8 @@ const localQuery = ref("");
 librariesStore.setStateFromQueryParams(route);
 localQuery.value = librariesStore.query;
 
-const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
-  "/library",
-  {
+const { data: librariesRes, refresh: refreshLibraries } =
+  await useSolrFetch<SolrResponse>("/library", {
     query: computed(() => ({
       q: librariesStore.solrQuery,
       rows: librariesStore.perPage,
@@ -96,8 +96,7 @@ const { data: librariesRes, execute } = await useSolrFetch<SolrResponse>(
       },
     })),
     watch: false,
-  },
-);
+  });
 const libraries = computed(() => librariesRes.value?.response.docs ?? []);
 
 watch(
@@ -109,6 +108,7 @@ watch(
   ],
   () => {
     setQueryParamsFromState();
+    refreshLibraries();
   },
 );
 
@@ -140,12 +140,12 @@ function setQueryParamsFromState() {
 
 function handleSubmit() {
   setQueryParamsFromState();
-  execute();
+  refreshLibraries();
 }
 function handleReset() {
   librariesStore.resetFilters();
   setQueryParamsFromState();
-  execute();
+  refreshLibraries();
 }
 </script>
 <i18n lang="yaml">

@@ -26,7 +26,15 @@
 <script setup lang="ts">
 const props = defineProps<{ contentsUrl: string; count: number }>();
 
-const { data: contents } = await useNewApiFetch(props.contentsUrl, {
+const { data: contents } = await useNewApiFetch<{
+  results: {
+    id: number;
+    title: string | null;
+    pages: string | null;
+    author: string | null;
+  }[];
+  count: number;
+}>(props.contentsUrl, {
   query: {
     fields: ["id", "title", "pages", "author"],
     limit: props.count,

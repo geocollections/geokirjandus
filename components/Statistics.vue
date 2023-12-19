@@ -14,28 +14,56 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getRelativePosition } from "chart.js/helpers";
 import sortBy from "lodash/sortBy";
+import type { ChartEvent } from "chart.js/dist/core/core.interaction";
 
 const router = useRouter();
 const state = shallowReactive({
-  categoryChart: null,
-  decadesChart: null,
+  categoryChart: null as Chart | null,
+  decadesChart: null as Chart | null,
 });
 
-const {
-  data: statisticsData,
-  error,
-  refresh,
-} = await useFetch(
-  "https://api.geoloogia.info/solr/reference" +
-    "?q=*&rows=1&fq=is_estonian_reference:1" +
-    "&facet=on&facet.query=keywords%3A*alusp%C3%B5hjageoloogia*&facet.query=keywords%3A*paleontoloogia*&facet.query=keywords%3A*kvaternaarigeoloogia*&facet.query=keywords%3A*maavarad*&facet.query=keywords%3A*h%C3%BCdrogeoloogia*&facet.query=keywords:*ehitusgeoloogia*&facet.query=keywords:*m%C3%A4endus*&facet.query=keywords:*personaalia*&facet.query=keywords:*kroonika*" +
-    "&facet.field=language&facet.mincount=1&facet.field=type" +
-    "&facet.range=year_numeric&f.year_numeric.facet.range.start=1820&f.year_numeric.facet.range.end=2021&f.year_numeric.facet.range.gap=10&f.year_numeric.facet.range.other=before&f.year_numeric.facet.range.other=after" +
-    "&facet.pivot={!ex=type}type,reference_type,reference_type_en&f.type.facet.pivot.mincount=1" +
-    "&facet.field={!ex=dt}language&facet.pivot={!ex=type}language,reference_language,reference_language_en&f.language.facet.mincount=1",
-);
+const { data: statisticsData } = await useSolrFetch<{
+  facet_counts: {
+    facet_queries: {
+      [K: string]: number;
+    };
+    facet_ranges: {
+      year_numeric: {
+        counts: any[];
+      };
+    };
+  };
+}>("/reference", {
+  query: {
+    q: "*",
+    rows: 0,
+    fq: ["is_estonian_reference:1"],
+    facet: "on",
+    "facet.query": [
+      "keywords:*paleontoloogia*",
+      "keywords:*kvaternaarigeoloogia*",
+      "keywords:*maavarad*",
+      "keywords:*hüdrogeoloogia*",
+      "keywords:*ehitusgeoloogia*",
+      "keywords:*mäendus*",
+      "keywords:*personaalia*",
+      "keywords:*kroonika*",
+    ],
+    "facet.field": ["language", "type"],
+    "facet.mincount": 1,
+    "facet.range": "year_numeric",
+    "f.year_numeric.facet.range.start": 1820,
+    "f.year_numeric.facet.range.end": new Date().getUTCFullYear(),
+    "f.year_numeric.facet.range.gap": 10,
+    "f.year_numeric.facet.range.other": "none",
+    "facet.pivot": ["{!ex=type}type,reference_type,reference_type_en"],
+    "f.type.facet.pivot.mincount": 1,
+  },
+});
+
 const decadesChartData = computed(() => {
-  let data = {};
+  let data = { labels: [] as any[], datasets: [] as any[] };
+  if (!statisticsData.value) return data;
 
   let labels = [];
   let values = [];
@@ -64,10 +92,11 @@ const decadesChartData = computed(() => {
   return data;
 });
 const keywordsChartData = computed(() => {
-  let data = {};
+  let data = { labels: [] as any[], datasets: [] as any[], color: "#ffffff" };
+  if (!statisticsData.value) return data;
 
-  let labels = [];
-  let values = [];
+  let labels: string[] = [];
+  let values: number[] = [];
 
   sortBy(Object.entries(statisticsData.value.facet_counts.facet_queries), [
     ([_k, v]) => -v,
@@ -78,23 +107,25 @@ const keywordsChartData = computed(() => {
 
   data.labels = labels;
   data.datasets = [{ data: values }];
-  data.color = "#ffffff";
   return data;
 });
 
-const { width, height } = useWindowSize();
+const { width } = useWindowSize();
 const isMobile = ref();
 const colorMode = useColorMode();
 
 watch(
   () => colorMode.preference,
   () => {
-    if (state.decadesChart) {
+    if (state.decadesChart && state.decadesChart.options.plugins?.datalabels) {
       state.decadesChart.options.plugins.datalabels.color =
         colorMode.preference === "dark" ? "#ffffff" : undefined;
       state.decadesChart.update();
     }
-    if (state.categoryChart) {
+    if (
+      state.categoryChart &&
+      state.categoryChart?.options.plugins?.datalabels
+    ) {
       state.categoryChart.options.plugins.datalabels.color =
         colorMode.preference === "dark" ? "#ffffff" : undefined;
       state.categoryChart.update();
@@ -106,17 +137,22 @@ watchPostEffect(() => {
   const prev = isMobile.value;
   isMobile.value = width.value < 1024;
   if (prev !== isMobile.value && state.decadesChart) {
-    state.decadesChart.options.scales.x.reverse = !isMobile.value;
+    if (state.decadesChart.options.scales?.x) {
+      state.decadesChart.options.scales.x.reverse = !isMobile.value;
+    }
     state.decadesChart.options.maintainAspectRatio = isMobile.value;
     if (isMobile.value) {
       state.decadesChart.options.aspectRatio = 1;
     }
-    state.decadesChart.options.plugins.datalabels.align = !isMobile.value
-      ? "start"
-      : "end";
-    state.decadesChart.options.plugins.datalabels.anchor = !isMobile.value
-      ? "start"
-      : "end";
+
+    if (state.decadesChart.options.plugins?.datalabels) {
+      state.decadesChart.options.plugins.datalabels.align = !isMobile.value
+        ? "start"
+        : "end";
+      state.decadesChart.options.plugins.datalabels.anchor = !isMobile.value
+        ? "start"
+        : "end";
+    }
     state.decadesChart.update();
     state.decadesChart.resize();
   }
@@ -131,8 +167,9 @@ watchPostEffect(() => {
 });
 
 onMounted(async () => {
-  const yearsCtx = document.getElementById("myChart");
+  const yearsCtx = <HTMLCanvasElement>document.getElementById("myChart");
   const mobile = width.value < 1024;
+
   state.decadesChart = new Chart(yearsCtx, {
     type: "bar",
     data: {
@@ -143,6 +180,7 @@ onMounted(async () => {
     options: {
       onClick: handleDecadeClick,
       onHover: (event, chartElement) => {
+        // @ts-ignore
         event.native.target.style.cursor = chartElement[0]
           ? "pointer"
           : "default";
@@ -185,8 +223,8 @@ onMounted(async () => {
           display: false,
         },
         datalabels: {
-          formatter: function (value, context) {
-            return context.chart.data.labels[context.dataIndex];
+          formatter: function (_value, context) {
+            return context.chart.data.labels?.[context.dataIndex];
           },
           align: mobile ? "end" : "start",
           anchor: mobile ? "end" : "start",
@@ -195,7 +233,7 @@ onMounted(async () => {
       },
     },
   });
-  const categoriesCTX = document.getElementById("myChart2");
+  const categoriesCTX = <HTMLCanvasElement>document.getElementById("myChart2");
   state.categoryChart = new Chart(categoriesCTX, {
     type: "bar",
     data: {
@@ -213,6 +251,7 @@ onMounted(async () => {
       },
       onClick: handleKeywordClick,
       onHover: (event, chartElement) => {
+        // @ts-ignore
         event.native.target.style.cursor = chartElement[0]
           ? "pointer"
           : "default";
@@ -246,8 +285,8 @@ onMounted(async () => {
           display: false,
         },
         datalabels: {
-          formatter: function (value, context) {
-            return context.chart.data.labels[context.dataIndex];
+          formatter: function (_value, context) {
+            return context.chart.data.labels?.[context.dataIndex];
           },
           align: "end",
           anchor: "start",
@@ -257,29 +296,35 @@ onMounted(async () => {
     },
   });
 });
-function handleDecadeClick(e) {
+function handleDecadeClick(e: ChartEvent) {
+  // @ts-ignore
   const canvasPosition = getRelativePosition(e, state.decadesChart);
 
+  if (!state.decadesChart) return;
   const dataY = state.decadesChart.scales.y.getValueForPixel(canvasPosition.y);
+  if (!dataY) return;
   const decade = decadesChartData.value.labels[dataY];
 
   router.push({
     path: "/reference",
     query: {
       year: `${parseInt(decade)}-${parseInt(decade) + 9}`,
-      isEstonianReference: false,
+      isEstonianReference: "false",
     },
   });
 }
-function handleKeywordClick(e) {
+function handleKeywordClick(e: ChartEvent) {
+  // @ts-ignore
   const canvasPosition = getRelativePosition(e, state.categoryChart);
 
+  if (!state.categoryChart) return;
   const dataY = state.categoryChart.scales.y.getValueForPixel(canvasPosition.y);
+  if (!dataY) return;
   const keyword = keywordsChartData.value.labels[dataY];
 
   router.push({
     path: "/reference",
-    query: { keywords: keyword, isEstonianReference: false },
+    query: { keywords: keyword, isEstonianReference: "false" },
   });
 }
 </script>

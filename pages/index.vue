@@ -37,7 +37,7 @@
             :to="
               localePath({
                 path: '/reference',
-                query: { isEstonianReference: true },
+                query: { isEstonianReference: 'true' },
               })
             "
             size="xl"
@@ -48,7 +48,9 @@
                 <span
                   >+
                   {{
-                    roundToRank(referencesRes.facets.estonianReferences.count)
+                    roundToRank(
+                      referencesRes?.facets.estonianReferences.count ?? 26000,
+                    )
                   }}
                 </span>
               </div>
@@ -60,7 +62,6 @@
             :to="
               localePath({
                 path: '/reference',
-                query: { isEstonianReference: false },
               })
             "
             size="xl"
@@ -70,7 +71,11 @@
                 <UIcon name="i-heroicons-book-open"></UIcon>
                 <span
                   >+
-                  {{ roundToRank(referencesRes.facets.allReferences.count) }}
+                  {{
+                    roundToRank(
+                      referencesRes?.facets.allReferences.count ?? 43000,
+                    )
+                  }}
                 </span>
               </div>
               <div>{{ t("allReferences") }}</div>
@@ -83,7 +88,12 @@
                 <UIcon name="i-heroicons-building-library"></UIcon>
                 <span
                   >+
-                  {{ roundToRank(libraryRes.facets.allLibraries.count, 1e1) }}
+                  {{
+                    roundToRank(
+                      libraryRes?.facets.allLibraries.count ?? 80,
+                      1e1,
+                    )
+                  }}
                 </span>
               </div>
               <div>{{ t("libraries") }}</div>
@@ -107,8 +117,8 @@
           <div
             v-html="
               $translate({
-                et: intro.content_et,
-                en: intro.content_en,
+                et: intro?.content_et ?? '',
+                en: intro?.content_en ?? '',
               })
             "
           ></div>
@@ -132,6 +142,8 @@
 </template>
 
 <script setup lang="ts">
+import type { ReferenceDoc } from "./reference/index.vue";
+
 const router = useRouter();
 const localePath = useLocalePath();
 const { t } = useI18n({ useScope: "local" });
@@ -145,7 +157,14 @@ const state = reactive({
   statisticsData: null,
 });
 
-const { data: referencesRes } = await useSolrFetch("/reference", {
+const { data: referencesRes } = await useSolrFetch<
+  SolrResponse<ReferenceDoc> & {
+    facets: {
+      allReferences: { count: number };
+      estonianReferences: { count: number };
+    };
+  }
+>("/reference", {
   query: {
     q: "*",
     rows: 10,
@@ -164,7 +183,9 @@ const { data: referencesRes } = await useSolrFetch("/reference", {
     },
   },
 });
-const { data: libraryRes } = await useSolrFetch("/library", {
+const { data: libraryRes } = await useSolrFetch<{
+  facets: { allLibraries: { count: number } };
+}>("/library", {
   query: {
     q: "*",
     rows: 0,
@@ -180,7 +201,10 @@ const { data: libraryRes } = await useSolrFetch("/library", {
 });
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 
-const { data: intro } = await useNewApiFetch("/web-pages/75/");
+const { data: intro } = await useNewApiFetch<{
+  content_et: string;
+  content_en: string;
+}>("/web-pages/75/");
 
 function handleSearch() {
   router.push(

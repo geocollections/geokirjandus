@@ -75,7 +75,6 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-  "update:model-value": [value: Set<string>];
   "update:pagination": [value: { page: number; paginateBy: number }];
   "update:query": [value: string];
   add: [value: any];
@@ -100,14 +99,12 @@ const hasNextPage = computed(() => {
 
 selected.value = props.modelValue;
 
-function removeSelected(option) {
+function removeSelected(option: any) {
   selected.value.delete(option);
-  // emit("update:model-value", selected.value);
   emit("remove", option);
 }
-function addOption(option) {
+function addOption(option: any) {
   selected.value.add(option);
-  // emit("update:model-value", selected.value);
   emit("add", option);
 }
 function prevPage() {

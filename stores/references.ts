@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { RouteLocation } from "vue-router";
+import type { LocationQueryRaw, RouteLocation } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 import { z } from "zod";
 
@@ -10,7 +10,7 @@ export const useReferencesStore = defineStore(
     const {
       page,
       perPage,
-      perPageOptions,
+      perPageMenuOptions,
       offset,
       querySchema: paginationQuerySchema,
     } = usePagination();
@@ -107,13 +107,78 @@ export const useReferencesStore = defineStore(
       filters.value.localities = params.localities;
       filters.value.taxa = params.taxa;
     }
+    function getQueryParams() {
+      const queryParams: LocationQueryRaw = {
+        page: page.value,
+        perPage: perPage.value,
+        sort: sort.value,
+      };
+
+      if (query.value.length > 0) {
+        queryParams.q = query.value;
+      }
+
+      if (filters.value.isEstonianReference) {
+        queryParams.isEstonianReference =
+          filters.value.isEstonianReference.toString();
+      }
+      if (filters.value.isEstonianAuthor) {
+        queryParams.isEstonianAuthor =
+          filters.value.isEstonianAuthor.toString();
+      }
+      if (filters.value.isEstonianAuthor) {
+        queryParams.pdf = filters.value.pdf.toString();
+      }
+      if (filters.value.author.length > 0) {
+        queryParams.author = filters.value.author;
+      }
+      if (filters.value.title.length > 0) {
+        queryParams.title = filters.value.title;
+      }
+      if (filters.value.book.length > 0) {
+        queryParams.book = filters.value.book;
+      }
+      if (filters.value.journal.length > 0) {
+        queryParams.journal = filters.value.journal;
+      }
+      if (filters.value.publisher.length > 0) {
+        queryParams.publisher = filters.value.publisher;
+      }
+      if (filters.value.volumeOrNumber.length > 0) {
+        queryParams.volumeOrNumber = filters.value.volumeOrNumber;
+      }
+      if (filters.value.localities.length > 0) {
+        queryParams.localities = filters.value.localities;
+      }
+      if (filters.value.taxa.length > 0) {
+        queryParams.taxa = filters.value.taxa;
+      }
+      if (filters.value.type.size > 0) {
+        queryParams.type = Array.from(filters.value.type).join(",");
+      }
+      if (filters.value.language.size > 0) {
+        queryParams.language = Array.from(filters.value.type).join(",");
+      }
+
+      if (filters.value.keywords.size > 0) {
+        queryParams.keywords = Array.from(filters.value.keywords).join(",");
+      }
+
+      if (filters.value.year.some((val) => val !== undefined)) {
+        const start = filters.value.year[0] ?? "*";
+        const end = filters.value.year[1] ?? "*";
+
+        queryParams.year = `${start}-${end}`;
+      }
+      return queryParams;
+    }
 
     return {
       query,
       solrQuery,
       page,
       perPage,
-      perPageOptions,
+      perPageMenuOptions,
       offset,
       sortOptions,
       sort,
@@ -123,6 +188,7 @@ export const useReferencesStore = defineStore(
       routeSolrFilters,
       enteredFromRouteSolrFilters,
       setStateFromQueryParams,
+      getQueryParams,
       searchPosition,
       enteredFrom,
       fromSearch,

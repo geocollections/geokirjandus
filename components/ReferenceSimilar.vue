@@ -94,13 +94,7 @@ const hasNext = computed(
   () =>
     (page.value - 1) * perPage < (referencesRes.value?.response.numFound ?? 0),
 );
-const searchQueryParams = buildReferenceSearchQueryParams({
-  query: referencesStore.query,
-  page: referencesStore.page,
-  perPage: referencesStore.perPage,
-  sort: referencesStore.sort,
-  filters: referencesStore.filters,
-});
+const searchQueryParams = referencesStore.getQueryParams();
 function pdf(reference: ReferenceDoc) {
   return (
     reference.attachment__filename ??

@@ -556,13 +556,7 @@ const url = computed(() => {
   return reference.value.url ?? reference.value.parent?.url ?? undefined;
 });
 const referencesStore = useReferencesStore();
-const searchQueryParams = buildReferenceSearchQueryParams({
-  query: referencesStore.query,
-  page: referencesStore.page,
-  perPage: referencesStore.perPage,
-  sort: referencesStore.sort,
-  filters: referencesStore.filters,
-});
+const searchQueryParams = referencesStore.getQueryParams();
 </script>
 
 <i18n lang="yaml">

@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  typescript: {
+    typeCheck: true,
+  },
   modules: [
     "@nuxt/ui",
     "@nuxtjs/i18n",
@@ -49,6 +52,9 @@ export default defineNuxtConfig({
     sources: ["/api/__sitemap__/urls"],
   },
   linkChecker: {
+    enabled: false,
+  },
+  ogImage: {
     enabled: false,
   },
   runtimeConfig: {

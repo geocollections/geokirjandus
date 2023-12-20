@@ -305,6 +305,14 @@
               :pdf="reference.pdf"
               :url="url"
             />
+            <UButton
+              :to="`https://edit.geocollections.info/reference/${route.params.id}`"
+              size="xs"
+              icon="i-heroicons-pencil-square"
+              target="_blank"
+            >
+              {{ t("edit") }}
+            </UButton>
           </div>
           <UDivider />
           <div class="space-y-2">
@@ -594,6 +602,7 @@ et:
   taxa: "Kirjeldatud taksonid"
   changed: "Viimati muudetud: {date}"
   back: "Tagasi otsingusse"
+  edit: "Muuda"
 en:
   doi: "DOI"
   authorOriginal: "Author original"
@@ -628,4 +637,5 @@ en:
   taxa: "Described taxa"
   changed: "Last change: {date}"
   back: "Back to search"
+  edit: "Edit"
 </i18n>

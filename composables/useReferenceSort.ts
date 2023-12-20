@@ -8,8 +8,8 @@ export const useReferenceSort = () => {
     "author asc",
     "year_numeric desc",
     "year_numeric asc",
-    "title desc",
-    "title asc",
+    "title_str desc",
+    "title_str asc",
     "date_added desc",
   ] as const;
 
@@ -18,8 +18,8 @@ export const useReferenceSort = () => {
       "score desc": { value: "score desc", name: t("sort.best") },
       "author asc": { value: "author asc", name: t("sort.authorAsc") },
       "author desc": { value: "author desc", name: t("sort.authorDesc") },
-      "title asc": { value: "title asc", name: t("sort.titleAsc") },
-      "title desc": { value: "title desc", name: t("sort.titleDesc") },
+      "title_str asc": { value: "title_str asc", name: t("sort.titleAsc") },
+      "title_str desc": { value: "title_str desc", name: t("sort.titleDesc") },
       "year_numeric asc": {
         value: "year_numeric asc",
         name: t("sort.yearAsc"),

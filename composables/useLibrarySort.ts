@@ -4,16 +4,16 @@ export const useLibrarySort = () => {
 
   const sortQueryOptions = [
     "score desc",
-    "title desc",
-    "title asc",
+    "title_str desc",
+    "title_str asc",
     "date_added desc",
   ] as const;
 
   const sortOptionsMap = computed(
     (): SortOptionsMap<typeof sortQueryOptions> => ({
       "score desc": { value: "score desc", name: t("sort.best") },
-      "title asc": { value: "title asc", name: t("sort.titleAsc") },
-      "title desc": { value: "title desc", name: t("sort.titleDesc") },
+      "title_str asc": { value: "title_str asc", name: t("sort.titleAsc") },
+      "title_str desc": { value: "title_str desc", name: t("sort.titleDesc") },
       "date_added desc": { value: "date_added desc", name: t("sort.newest") },
     }),
   );

@@ -23,7 +23,7 @@
             {{ t("back") }}
           </UButton>
           <div class="text-xl italic">{{ reference.reference }}</div>
-          <h1 class="text-4xl font-semibold">
+          <h1 class="pb-1 pt-0.5 text-4xl font-semibold">
             {{ reference.title }}
           </h1>
           <div class="text-2xl">{{ reference.author }}</div>

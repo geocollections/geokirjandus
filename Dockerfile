@@ -14,8 +14,8 @@ COPY --link . .
 
 RUN npm run build && npm prune
 
-FROM base
+FROM gcr.io/distroless/nodejs20-debian12
 
 COPY --from=build /code/.output /code/.output
 
-CMD [ "node", "./.output/server/index.mjs" ]
+CMD [ "/code/.output/server/index.mjs" ]

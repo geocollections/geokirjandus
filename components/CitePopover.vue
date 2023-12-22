@@ -94,7 +94,7 @@ async function fetchCitation() {
     `/references/${props.id}/`,
     {
       query: {
-        format: "cite",
+        format: "reference",
         style: settings.citationStyle,
         reference_format: "json",
       },

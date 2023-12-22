@@ -80,7 +80,7 @@ const selectionOptions = computed(() => {
 const formatOptions = computed(() => {
   return [
     { value: "ris", label: "RIS" },
-    { value: "cite", label: t("citations") },
+    { value: "reference", label: t("citations") },
   ];
 });
 
@@ -158,9 +158,9 @@ const formatQueryParams = computed(() => {
       format: "ris",
     };
   }
-  if (state.value.format === "cite") {
+  if (state.value.format === "reference") {
     return {
-      format: "cite",
+      format: "reference",
       style: settings.citationStyle,
       reference_format: "html",
     };
@@ -170,8 +170,8 @@ const formatFileType = computed(() => {
   if (state.value.format === "ris") {
     return "ris";
   }
-  if (state.value.format === "cite") {
-    return "txt";
+  if (state.value.format === "reference") {
+    return "html";
   }
 });
 

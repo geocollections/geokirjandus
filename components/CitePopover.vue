@@ -21,7 +21,7 @@
         <div
           class="flex items-start rounded border p-2 dark:border-gray-700 dark:bg-gray-800"
         >
-          <div v-html="citation.html"></div>
+          <div v-html="citation?.html"></div>
         </div>
         <div class="flex space-x-2">
           <UButton
@@ -30,7 +30,7 @@
             color="gray"
             size="sm"
             icon="i-heroicons-clipboard"
-            @click="copy([createClipboardItems(citation)])"
+            @click="copy([createClipboardItems(citation!)])"
           >
             <span v-if="copied">
               {{ t("copied") }}
@@ -62,9 +62,15 @@ const props = withDefaults(
 );
 
 const { t } = useI18n({ useScope: "local" });
-const citation = ref();
+
+type FormattedReferenceJsonResponse = {
+  text: string;
+  html: string;
+};
+const citation = ref<FormattedReferenceJsonResponse>();
 const openCite = ref(false);
 const { copy, copied, isSupported } = useClipboardItems();
+const { $apiFetch } = useNuxtApp();
 
 const settings = useSettingsStore();
 
@@ -76,7 +82,7 @@ watch(
   },
 );
 
-function createClipboardItems(reference: { text: string; html: string }) {
+function createClipboardItems(reference: FormattedReferenceJsonResponse) {
   return new ClipboardItem({
     "text/plain": new Blob([reference.text], { type: "text/plain" }),
     "text/html": new Blob([reference.html], { type: "text/html" }),
@@ -84,8 +90,8 @@ function createClipboardItems(reference: { text: string; html: string }) {
 }
 
 async function fetchCitation() {
-  const res = await $fetch(
-    `https://rwapi.geoloogia.info/api/v1/public/references/${props.id}/`,
+  const res = await $apiFetch<FormattedReferenceJsonResponse>(
+    `/references/${props.id}/`,
     {
       query: {
         format: "cite",
@@ -97,14 +103,11 @@ async function fetchCitation() {
   citation.value = res;
 }
 async function exportRis() {
-  const res = await $fetch<string>(
-    `https://rwapi.geoloogia.info/api/v1/public/references/${props.id}/`,
-    {
-      query: {
-        format: "ris",
-      },
+  const res = await $apiFetch<string>(`/references/${props.id}/`, {
+    query: {
+      format: "ris",
     },
-  );
+  });
 
   const blob = new Blob([res], { type: "text/plain" });
   const urlForDownload = window.URL.createObjectURL(blob);

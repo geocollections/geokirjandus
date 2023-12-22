@@ -177,16 +177,13 @@ const formatFileType = computed(() => {
 
 async function exportItems() {
   const ids = await getExportIds();
-  const res = await $apiFetch<string>(
-    `https://rwapi.geoloogia.info/api/v1/public/references/`,
-    {
-      query: {
-        id__in: ids.join(","),
-        limit: getExportLimit(),
-        ...formatQueryParams.value,
-      },
+  const res = await $apiFetch<string>(`/references/`, {
+    query: {
+      id__in: ids.join(","),
+      limit: getExportLimit(),
+      ...formatQueryParams.value,
     },
-  );
+  });
 
   const blob = new Blob([res], { type: "text/plain" });
   const urlForDownload = window.URL.createObjectURL(blob);

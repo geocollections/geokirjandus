@@ -21,7 +21,7 @@
         <div
           class="flex items-start rounded border p-2 dark:border-gray-700 dark:bg-gray-800"
         >
-          <div v-html="citation"></div>
+          <div v-html="citation.html"></div>
         </div>
         <div class="flex space-x-2">
           <UButton
@@ -76,10 +76,10 @@ watch(
   },
 );
 
-function createClipboardItems(text: string) {
+function createClipboardItems(reference: { text: string; html: string }) {
   return new ClipboardItem({
-    "text/plain": new Blob([text], { type: "text/plain" }),
-    "text/html": new Blob([text], { type: "text/html" }),
+    "text/plain": new Blob([reference.text], { type: "text/plain" }),
+    "text/html": new Blob([reference.html], { type: "text/html" }),
   });
 }
 
@@ -89,7 +89,8 @@ async function fetchCitation() {
     {
       query: {
         format: "cite",
-        citation_style: settings.citationStyle,
+        style: settings.citationStyle,
+        reference_format: "json",
       },
     },
   );

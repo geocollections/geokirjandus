@@ -161,7 +161,8 @@ const formatQueryParams = computed(() => {
   if (state.value.format === "cite") {
     return {
       format: "cite",
-      citation_style: settings.citationStyle,
+      style: settings.citationStyle,
+      reference_format: "html",
     };
   }
 });

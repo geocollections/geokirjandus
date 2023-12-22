@@ -3,7 +3,7 @@ export const useSettingsStore = defineStore(
   () => {
     const citationStyleOptions = computed(() => [
       { value: "apa", name: "APA" },
-      { value: "harvard1", name: "Harvard" },
+      { value: "harvard", name: "Harvard" },
       { value: "sedimentology", name: "Sedimentology" },
       { value: "geol-mag", name: "Geological magazine" },
       { value: "holocene", name: "Holocene" },

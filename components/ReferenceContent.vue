@@ -18,6 +18,19 @@
         <td class="pl-2 align-top">
           {{ content.author }}
         </td>
+        <td class="py-1 pl-2 align-top">
+          <UButton
+            v-if="content.pdf"
+            variant="soft"
+            size="xs"
+            color="red"
+            icon="i-heroicons-document"
+            target="_blank"
+            :to="`https://files.geocollections.info/${content.pdf}`"
+          >
+            PDF
+          </UButton>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -32,11 +45,12 @@ const { data: contents } = await useNewApiFetch<{
     title: string | null;
     pages: string | null;
     author: string | null;
+    pdf: string | null;
   }[];
   count: number;
 }>(props.contentsUrl, {
   query: {
-    fields: ["id", "title", "pages", "author"],
+    fields: ["id", "title", "pages", "author", "pdf"],
     limit: props.count,
   },
 });

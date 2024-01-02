@@ -15,8 +15,19 @@
       <UInput
         v-model="localQuery"
         :placeholder="t('searchAllFields')"
-        :ui="{ wrapper: 'w-full' }"
-      />
+        :ui="{ wrapper: 'w-full', icon: { trailing: { pointer: '' } } }"
+      >
+        <template #trailing>
+          <UButton
+            v-show="localQuery !== ''"
+            color="gray"
+            variant="link"
+            icon="i-heroicons-x-mark-20-solid"
+            :padded="false"
+            @click="handleQueryReset"
+          />
+        </template>
+      </UInput>
       <UButton icon="i-heroicons-magnifying-glass" type="submit"> </UButton>
     </UButtonGroup>
   </UForm>
@@ -80,6 +91,11 @@ function handleSubmit() {
 }
 function handleReset() {
   emit("reset");
+}
+function handleQueryReset() {
+  query.value = "";
+  localQuery.value = "";
+  emit("update");
 }
 </script>
 

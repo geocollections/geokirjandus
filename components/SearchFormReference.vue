@@ -24,7 +24,7 @@
             variant="link"
             icon="i-heroicons-x-mark-20-solid"
             :padded="false"
-            @click="localQuery = ''"
+            @click="handleQueryReset"
           />
         </template>
       </UInput>
@@ -287,6 +287,12 @@ function handleOptionClick(option: any, valueSet: Set<string>) {
     valueSet.add(option.value);
   }
   handleFilterChange();
+}
+
+function handleQueryReset() {
+  query.value = "";
+  localQuery.value = "";
+  emit("update");
 }
 </script>
 

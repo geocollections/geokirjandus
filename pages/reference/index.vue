@@ -53,6 +53,9 @@ export type ReferenceDoc = {
   type: number;
   reference_type: string;
   reference_type_en: string;
+  publisher?: string;
+  publisher_place?: string;
+  number?: string;
 };
 
 const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
@@ -80,6 +83,9 @@ const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
       "type",
       "reference_type",
       "reference_type_en",
+      "publisher",
+      "publisher_place",
+      "number",
     ] as (keyof ReferenceDoc)[],
     rows: referencesStore.perPage,
     start: referencesStore.offset,

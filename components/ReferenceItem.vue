@@ -3,19 +3,32 @@
     <div>
       <NuxtLinkLocale
         :to="`/reference/${reference.id}`"
-        class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
+        class="text-black visited:text-purple-600 hover:underline dark:text-white dark:visited:text-purple-400"
         @click="handleLinkClick"
       >
-        <div class="text-sm text-black dark:text-white">
+        <span class="font-semibold">
           {{ reference.author }}
-        </div>
-        {{ reference.title ? reference.title : reference.reference }}
-        <div class="text-sm text-black dark:text-white">
-          {{ reference.journal_name }}
-        </div>
-        <div class="text-sm text-black dark:text-white">
-          {{ reference.book }}
-        </div>
+        </span>
+        <span v-if="reference.year">&nbsp;{{ reference.year }}.</span>
+        {{ reference.title ? reference.title : reference.reference }}.
+        <span v-if="reference.book" class="italic">
+          {{ reference.book }}.
+        </span>
+        <span v-if="reference.publisher">{{ reference.publisher }}</span>
+        <span v-if="reference.publisher_place">{{
+          reference.publisher_place
+        }}</span>
+        <span v-if="reference.journal_name" class="italic">
+          {{ reference.journal_name }}.
+        </span>
+
+        <span v-if="reference.volume"> {{ reference.volume }}, </span>
+        <span v-if="reference.number"> {{ reference.number }}, </span>
+        <span v-if="reference.pages && reference.journal_name">
+          {{ reference.pages }}.
+        </span>
+        <span v-else-if="reference.pages"> pp. {{ reference.pages }}. </span>
+        <span v-if="reference.doi"> {{ reference.doi }}. </span>
       </NuxtLinkLocale>
     </div>
     <div class="flex items-center space-x-1">

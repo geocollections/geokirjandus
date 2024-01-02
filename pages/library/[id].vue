@@ -158,8 +158,8 @@ function setQueryParamsFromState() {
     query.language = Array.from(referencesStore.filters.type).join(",");
   }
 
-  if (referencesStore.filters.keywords.size > 0) {
-    query.keywords = Array.from(referencesStore.filters.keywords).join(",");
+  if (referencesStore.filters.keywords.length > 0) {
+    query.keywords = referencesStore.filters.keywords.join(",");
   }
 
   if (referencesStore.filters.year.some((val) => val !== null)) {

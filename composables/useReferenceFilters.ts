@@ -1,4 +1,5 @@
 import { z } from "zod";
+import uniq from "lodash/uniq";
 
 export const useReferenceFilters = () => {
   const filters = ref({
@@ -16,7 +17,7 @@ export const useReferenceFilters = () => {
     year: [undefined, undefined] as (number | undefined)[],
     type: new Set<string>(),
     language: new Set<string>(),
-    keywords: new Set<string>(),
+    keywords: [] as string[],
   });
 
   const booleanSchema = z
@@ -41,7 +42,10 @@ export const useReferenceFilters = () => {
     volumeOrNumber: z.string().catch(""),
     localities: z.string().catch(""),
     taxa: z.string().catch(""),
-    keywords: setSchema,
+    keywords: z
+      .string()
+      .transform((val) => uniq(val.split(",")))
+      .catch([]),
     type: setSchema,
     language: setSchema,
     year: z
@@ -70,7 +74,7 @@ export const useReferenceFilters = () => {
       if (typeof val === "boolean") return val;
       if (val instanceof Set) return !!val.size;
       if (Array.isArray(val)) {
-        return !val.every((v) => v === undefined);
+        return val.length > 0 || !val.every((v) => v === undefined);
       }
       return false;
     }).length;
@@ -91,7 +95,7 @@ export const useReferenceFilters = () => {
     filters.value.year = [undefined, undefined];
     filters.value.type.clear();
     filters.value.language.clear();
-    filters.value.keywords.clear();
+    filters.value.keywords = [];
   }
 
   const solrFilters = computed(() => {
@@ -139,9 +143,9 @@ export const useReferenceFilters = () => {
       );
     }
 
-    if (filters.value.keywords.size > 0) {
+    if (filters.value.keywords.length > 0) {
       res.push(
-        `{!tag=keywords}keywords:(${Array.from(filters.value.keywords)
+        `{!tag=keywords}keywords:(${filters.value.keywords
           .map((val) => `"${val}"`)
           .join(" AND ")})`,
       );

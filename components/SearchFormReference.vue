@@ -94,7 +94,7 @@
         v-model="filters.keywords"
         :q="solrQuery"
         :filters="[...solrFilters, ...referencesStore.routeSolrFilters]"
-        @change="handleFilterChange"
+        @update:model-value="handleFilterChange"
       />
     </UFormGroup>
     <UFormGroup :label="t('type')" :ui="{ container: 'space-y-1' }">
@@ -263,20 +263,17 @@ watch(
 function handleFilterChange() {
   refreshOptions();
   filterKeywords.value?.refreshOptions();
-  filterKeywords.value?.refreshCounts();
   emit("update");
 }
 function handleSubmit() {
   refreshOptions();
   filterKeywords.value?.refreshOptions();
-  filterKeywords.value?.refreshCounts();
   query.value = localQuery.value;
   emit("update");
 }
 function handleReset() {
   refreshOptions();
   filterKeywords.value?.refreshOptions();
-  filterKeywords.value?.refreshCounts();
   emit("reset");
 }
 

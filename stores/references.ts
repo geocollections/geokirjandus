@@ -161,8 +161,8 @@ export const useReferencesStore = defineStore(
         queryParams.language = Array.from(filters.value.type).join(",");
       }
 
-      if (filters.value.keywords.size > 0) {
-        queryParams.keywords = Array.from(filters.value.keywords).join(",");
+      if (filters.value.keywords.length > 0) {
+        queryParams.keywords = filters.value.keywords.join(",");
       }
 
       if (filters.value.year.some((val) => val !== undefined)) {

@@ -5,7 +5,10 @@
     <div class="container px-2 pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
-          <h1 class="pb-2 text-center text-6xl" style="word-break: normal">
+          <h1
+            class="pb-2 text-center text-6xl font-semibold uppercase"
+            style="word-break: normal"
+          >
             {{ t("title") }}
           </h1>
 
@@ -49,13 +52,12 @@
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-book-open"></UIcon>
-                <span
-                  >+
+                <span>
                   {{
                     roundToRank(
                       referencesRes?.facets.estonianReferences.count ?? 26000,
                     )
-                  }}
+                  }}+
                 </span>
               </div>
               <div>{{ t("estonianReferences") }}</div>
@@ -73,13 +75,12 @@
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-book-open"></UIcon>
-                <span
-                  >+
+                <span>
                   {{
                     roundToRank(
                       referencesRes?.facets.allReferences.count ?? 43000,
                     )
-                  }}
+                  }}+
                 </span>
               </div>
               <div>{{ t("allReferences") }}</div>
@@ -90,14 +91,13 @@
             <div class="text-start">
               <div class="flex items-center space-x-1">
                 <UIcon name="i-heroicons-building-library"></UIcon>
-                <span
-                  >+
+                <span>
                   {{
                     roundToRank(
                       libraryRes?.facets.allLibraries.count ?? 80,
                       1e1,
                     )
-                  }}
+                  }}+
                 </span>
               </div>
               <div>{{ t("libraries") }}</div>
@@ -229,10 +229,10 @@ et:
   enterKeyword: "Sisesta otsingu termin"
   browse: "või sirvi"
   estonianReferences: "Eesti kirjandus"
-  allReferences: "Kõik kirjandus"
+  allReferences: "Kogu kirjandus"
   libraries: "Kogumikud"
   about: "Tutvustus"
-  latest: "Viimased väljaanded"
+  latest: "Viimati listud teavikud"
 en:
   title: "Geoliterature"
   subtitle: "Estonian geoscience literature database"
@@ -243,5 +243,5 @@ en:
   allReferences: "All references"
   libraries: "Libraries"
   about: "About"
-  latest: "Latest publications"
+  latest: "Recently added references"
 </i18n>

@@ -203,6 +203,12 @@
                   }}
                 </td>
               </tr>
+              <tr v-if="reference.id">
+                <th class="w-40 text-start font-semibold">
+                  {{ t("id") }}
+                </th>
+                <td>{{ reference.id }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -591,6 +597,7 @@ et:
   estonianReference: "Eesti kirjandus"
   estonianAuthor: "Eesti autor"
   language: "Keel"
+  id: "Id"
   abstract: "Abstrakt"
   general: "Üldine info"
   keywords: "Märksõnad"
@@ -626,6 +633,7 @@ en:
   estonianReference: "Estonian reference"
   estonianAuthor: "Estonian author"
   language: "Language"
+  id: "Id"
   general: "General info"
   abstract: "Abstract"
   keywords: "Keywords"

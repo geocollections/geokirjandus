@@ -74,6 +74,8 @@
           <USelectMenu
             v-model="referencesStore.perPage"
             :options="referencesStore.perPageMenuOptions"
+            value-attribute="value"
+            option-attribute="label"
           />
           <UPagination
             v-model="referencesStore.page"

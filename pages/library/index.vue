@@ -32,6 +32,7 @@
           v-model="librariesStore.perPage"
           :options="librariesStore.perPageMenuOptions"
           value-attribute="value"
+          option-attribute="label"
         />
         <UPagination
           v-model="librariesStore.page"

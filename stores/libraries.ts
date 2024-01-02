@@ -14,8 +14,9 @@ export const useLibrariesStore = defineStore("libraries", () => {
   const { query, solrQuery } = useQuery();
   const {
     sort,
-    sortQueryOptions,
     sortOptions,
+    sortSelectOptions,
+    sortQuery,
     currentSort,
     querySchema: sortQuerySchema,
   } = useLibrarySort();
@@ -48,9 +49,9 @@ export const useLibrariesStore = defineStore("libraries", () => {
 
     page.value = params.page;
     perPage.value = params.perPage;
-    sort.value =
-      sortQueryOptions.find((option) => option === params.sort) ??
-      sortOptions.value[0].value;
+    sort.value = sortOptions.includes(params.sort)
+      ? params.sort
+      : sortOptions[0];
     query.value = params.q;
     filters.value.year = params.year;
     filters.value.author = params.author;
@@ -63,8 +64,9 @@ export const useLibrariesStore = defineStore("libraries", () => {
     perPage,
     perPageMenuOptions,
     offset,
-    sortOptions,
+    sortSelectOptions,
     sort,
+    sortQuery,
     currentSort,
     filters,
     solrFilters,

@@ -83,7 +83,7 @@ const { data: referencesRes, refresh: refreshReferences } = await useSolrFetch<
     ] as (keyof ReferenceDoc)[],
     rows: referencesStore.perPage,
     start: referencesStore.offset,
-    sort: referencesStore.sort,
+    sort: referencesStore.sortQuery,
     json: {
       filter: referencesStore.solrFilters,
     },

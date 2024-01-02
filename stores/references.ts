@@ -18,7 +18,8 @@ export const useReferencesStore = defineStore(
     const {
       sort,
       sortOptions,
-      sortQueryOptions,
+      sortSelectOptions,
+      sortQuery,
       currentSort,
       querySchema: sortQuerySchema,
     } = useReferenceSort();
@@ -87,9 +88,9 @@ export const useReferencesStore = defineStore(
 
       page.value = params.page;
       perPage.value = params.perPage;
-      sort.value =
-        sortQueryOptions.find((option) => option === params.sort) ??
-        sortOptions.value[0].value;
+      sort.value = sortOptions.includes(params.sort)
+        ? params.sort
+        : sortOptions[0];
       query.value = params.q;
       filters.value.isEstonianReference = params.isEstonianReference;
       filters.value.isEstonianAuthor = params.isEstonianAuthor;
@@ -180,8 +181,9 @@ export const useReferencesStore = defineStore(
       perPage,
       perPageMenuOptions,
       offset,
-      sortOptions,
+      sortSelectOptions,
       sort,
+      sortQuery,
       currentSort,
       filters,
       solrFilters,

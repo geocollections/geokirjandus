@@ -239,6 +239,7 @@
   "sort": {
     "best": "Best match",
     "newest": "Recently added",
+    "changed": "Recently modified",
     "authorAsc": "Authors A-Z",
     "authorDesc": "Authors Z-A",
     "compilerAsc": "Compilers A-Z",

@@ -238,6 +238,7 @@
   "sort": {
     "best": "Parim vaste",
     "newest": "Hiljuti lisatud",
+    "changed": "Hiljuti muudetud",
     "authorAsc": "Autorid A-Z",
     "authorDesc": "Autorid Z-A",
     "compilerAsc": "Koostajad A-Z",

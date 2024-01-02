@@ -60,8 +60,8 @@
           <USelectMenu
             class="w-40"
             v-model="referencesStore.sort"
-            :options="referencesStore.sortOptions"
-            value-attribute="value"
+            :options="referencesStore.sortSelectOptions"
+            value-attribute="id"
             option-attribute="name"
             icon="i-heroicons-arrows-up-down"
           >

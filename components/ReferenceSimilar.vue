@@ -79,7 +79,7 @@ const { data: referencesRes } = await useSolrFetch<SolrResponse<ReferenceDoc>>(
       q: referencesStore.solrQuery,
       rows: perPage,
       start: (page.value - 1) * perPage,
-      sort: referencesStore.sort,
+      sort: referencesStore.sortQuery,
       json: {
         filter: [
           ...referencesStore.solrFilters,

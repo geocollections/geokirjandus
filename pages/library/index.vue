@@ -17,7 +17,7 @@
         <USelectMenu
           class="w-40"
           v-model="librariesStore.sort"
-          :options="librariesStore.sortOptions"
+          :options="librariesStore.sortSelectOptions"
           value-attribute="value"
           option-attribute="name"
           icon="i-heroicons-arrows-up-down"
@@ -90,7 +90,7 @@ const { data: librariesRes, refresh: refreshLibraries } =
       q: librariesStore.solrQuery,
       rows: librariesStore.perPage,
       start: (librariesStore.page - 1) * librariesStore.perPage,
-      sort: librariesStore.sort,
+      sort: librariesStore.sortQuery,
       json: {
         filter: librariesStore.solrFilters,
       },

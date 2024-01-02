@@ -25,7 +25,11 @@
             :placeholder="t('enterKeyword')"
           >
           </UInput>
-          <UButton class="ml-2 pr-4" icon="i-heroicons-magnifying-glass">
+          <UButton
+            type="submit"
+            class="ml-2 pr-4"
+            icon="i-heroicons-magnifying-glass"
+          >
             <div class="font-family-exo-2">
               {{ t("search") }}
             </div>

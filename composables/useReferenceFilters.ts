@@ -68,9 +68,9 @@ export const useReferenceFilters = () => {
     return Object.values(filters.value).filter((val) => {
       if (typeof val === "string") return val.length > 0;
       if (typeof val === "boolean") return val;
-      if (val instanceof Set) return val.size;
+      if (val instanceof Set) return !!val.size;
       if (Array.isArray(val)) {
-        return !val.every((v) => v === null);
+        return !val.every((v) => v === undefined);
       }
       return false;
     }).length;

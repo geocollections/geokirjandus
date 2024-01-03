@@ -29,9 +29,8 @@
           reference.publisher_place
         }}</span>
         <span v-if="reference.journal_name" class="italic">
-          {{ reference.journal_name }}.
+          {{ reference.journal_name }},
         </span>
-
         <span v-if="reference.volume">{{ reference.volume }},</span>
         <span v-if="reference.number">{{ reference.number }},</span>
         <span v-if="reference.pages && reference.journal_name">

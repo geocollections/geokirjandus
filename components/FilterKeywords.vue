@@ -33,14 +33,15 @@
     <UCheckbox
       v-for="option in options"
       :key="`options-${option.value}`"
-      class="label-w-full"
-      :ui="{ label: 'flex' }"
+      :ui="{ label: 'flex', inner: 'w-full' }"
       :label="option.name"
       @click="addOption(option)"
     >
       <template #label>
         {{ option.name }}
-        <UBadge size="xs" class="ml-auto">{{ option.count }}</UBadge>
+        <UBadge size="xs" class="ml-auto block h-min">{{
+          option.count
+        }}</UBadge>
       </template>
     </UCheckbox>
   </template>

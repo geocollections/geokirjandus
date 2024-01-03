@@ -15,7 +15,11 @@
       <UInput
         v-model="localQuery"
         :placeholder="t('searchAllFields')"
-        :ui="{ wrapper: 'w-full', icon: { trailing: { pointer: '' } } }"
+        :ui="{
+          wrapper: 'w-full',
+          icon: { trailing: { pointer: '' } },
+          base: 'rounded-s-md',
+        }"
       >
         <template #trailing>
           <UButton
@@ -101,8 +105,7 @@
       <UCheckbox
         v-for="option in typeOptions"
         :key="`type-${option.value}`"
-        class="label-w-full"
-        :ui="{ label: 'flex' }"
+        :ui="{ label: 'flex', inner: 'w-full' }"
         :model-value="filters.type.has(option.value)"
         @click="handleOptionClick(option, filters.type)"
         :label="option.name"
@@ -119,8 +122,7 @@
       <UCheckbox
         v-for="option in languageOptions"
         :key="`language-${option.value}`"
-        class="label-w-full"
-        :ui="{ label: 'flex' }"
+        :ui="{ label: 'flex', inner: 'w-full' }"
         :model-value="filters.language.has(option.value)"
         @click="handleOptionClick(option, filters.language)"
         :label="option.name"
@@ -292,12 +294,6 @@ function handleQueryReset() {
   emit("update");
 }
 </script>
-
-<style scoped lang="scss">
-.label-w-full :deep(.text-sm) {
-  @apply w-full;
-}
-</style>
 
 <i18n lang="yaml">
 et:

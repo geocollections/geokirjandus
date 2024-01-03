@@ -3,7 +3,7 @@
     <UButton
       color="black"
       :size="size"
-      variant="soft"
+      :variant="variant"
       icon="i-heroicons-document-text"
       @click="openCitationPopover"
     >
@@ -57,8 +57,9 @@ const props = withDefaults(
   defineProps<{
     id: number | string;
     size?: typeof appConfig.ui.button.size;
+    variant?: typeof appConfig.ui.button.variant;
   }>(),
-  { size: "xs" },
+  { size: "xs", variant: "soft" },
 );
 
 const { t } = useI18n({ useScope: "local" });

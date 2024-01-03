@@ -4,6 +4,7 @@
       :to="localePath(`/library/${referenceLibrary.library.id}`)"
       size="2xs"
       color="blue"
+      variant="outline"
       v-for="referenceLibrary in referenceLibraries?.results"
     >
       {{

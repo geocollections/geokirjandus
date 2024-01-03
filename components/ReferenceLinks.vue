@@ -1,7 +1,7 @@
 <template>
   <UButton
     v-if="doi"
-    variant="soft"
+    :variant="variant"
     :size="size"
     color="yellow"
     icon="i-simple-icons-doi"
@@ -12,10 +12,10 @@
   </UButton>
   <UButton
     v-if="bookPdf"
-    variant="soft"
+    :variant="variant"
     :size="size"
     color="orange"
-    icon="i-heroicons-document-solid"
+    icon="i-heroicons-book-open"
     target="_blank"
     :to="`https://files.geocollections.info/${bookPdf}`"
   >
@@ -23,7 +23,7 @@
   </UButton>
   <UButton
     v-if="pdf"
-    variant="soft"
+    :variant="variant"
     :size="size"
     color="red"
     icon="i-heroicons-document"
@@ -34,7 +34,7 @@
   </UButton>
   <UButton
     v-if="url"
-    variant="soft"
+    :variant="variant"
     :size="size"
     color="blue"
     icon="i-heroicons-arrow-top-right-on-square"
@@ -55,8 +55,9 @@ withDefaults(
     url?: string;
     bookPdf?: string;
     size?: typeof appConfig.ui.button.size;
+    variant?: typeof appConfig.ui.button.variant;
   }>(),
-  { size: "xs" },
+  { size: "xs", variant: "soft" },
 );
 
 const { t } = useI18n({ useScope: "local" });

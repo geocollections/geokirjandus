@@ -306,21 +306,15 @@
           class="space-y-2 overflow-y-auto py-8 lg:sticky lg:top-[57px] lg:max-h-[calc(100vh-57px)] lg:px-4"
         >
           <div class="flex flex-col items-start space-y-1">
-            <CitePopover :id="reference.id" />
+            <CitePopover :id="reference.id" size="sm" variant="solid" />
             <ReferenceLinks
               :doi="reference.doi"
               :pdf="reference.pdf"
               :url="url"
               :book-pdf="reference.parent?.pdf"
+              size="sm"
+              variant="solid"
             />
-            <UButton
-              :to="`https://edit.geocollections.info/reference/${route.params.id}`"
-              size="xs"
-              icon="i-heroicons-pencil-square"
-              target="_blank"
-            >
-              {{ t("edit") }}
-            </UButton>
           </div>
           <UDivider />
           <div class="space-y-2">
@@ -337,6 +331,15 @@
                 </div>
               </template>
             </UVerticalNavigation>
+            <UDivider />
+            <UButton
+              :to="`https://edit.geocollections.info/reference/${route.params.id}`"
+              variant="ghost"
+              icon="i-heroicons-pencil-square"
+              target="_blank"
+            >
+              {{ t("edit") }}
+            </UButton>
           </div>
         </div>
       </div>

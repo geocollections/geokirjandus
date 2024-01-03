@@ -1,6 +1,6 @@
 <template>
   <header
-    class="sticky top-0 z-10 border-b bg-stone-100/80 px-2 backdrop-blur transition-shadow dark:border-gray-800 dark:bg-gray-900/80"
+    class="sticky top-0 z-10 border-b bg-stone-50/75 px-2 backdrop-blur transition-shadow dark:border-gray-800 dark:bg-gray-900/75"
     :class="{ 'shadow-lg': state.scroll }"
   >
     <div class="container mx-auto">

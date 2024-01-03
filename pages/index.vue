@@ -1,12 +1,10 @@
 <template>
-  <div
-    class="-mt-[57px] bg-[url('/layered-steps-haikei-light.svg')] dark:bg-[url('/layered-steps-haikei-dark.svg')]"
-  >
+  <div class="background -mt-[57px] bg-cover pb-8">
     <div class="container px-2 pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
           <h1
-            class="pb-2 text-center text-6xl font-semibold uppercase"
+            class="pb-2 text-center text-7xl font-semibold uppercase"
             style="word-break: normal"
           >
             {{ t("title") }}
@@ -38,7 +36,11 @@
             </div>
           </UButton>
         </UForm>
-        <UDivider :label="t('browse')" icon="i-heroicons-arrow-left" />
+        <UDivider
+          :label="t('browse')"
+          :ui="{ border: { base: 'border-stone-400' } }"
+          icon="i-heroicons-arrow-left"
+        />
         <div class="flex flex-col space-y-1 text-center lg:block lg:space-x-1">
           <UButton
             :to="
@@ -220,6 +222,30 @@ function roundToRank(n: number, rank: number = 1e3) {
   return Math.floor(n / rank) * rank;
 }
 </script>
+
+<style lang="scss">
+.background {
+  background-image: url("/layered-steps-haikei-light.svg"),
+    linear-gradient(
+      to bottom,
+      rgba(250, 250, 249, 0.5),
+      rgba(250, 250, 249, 0.5)
+    ),
+    url("/background.webp");
+  background-size: contain, cover, cover;
+  background-position: bottom, bottom, 50%;
+  background-repeat: repeat-x, repeat, no-repeat;
+}
+
+.dark .background {
+  background-image: url("/layered-steps-haikei-dark.svg"),
+    linear-gradient(to bottom, rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+    url("/background.webp");
+  background-size: contain, cover, cover;
+  background-position: bottom, bottom, 50%;
+  background-repeat: repeat-x, repeat, no-repeat;
+}
+</style>
 
 <i18n lang="yaml">
 et:

@@ -11,6 +11,17 @@
     DOI
   </UButton>
   <UButton
+    v-if="bookPdf"
+    variant="soft"
+    :size="size"
+    color="orange"
+    icon="i-heroicons-document-solid"
+    target="_blank"
+    :to="`https://files.geocollections.info/${bookPdf}`"
+  >
+    {{ t("bookPdf") }}
+  </UButton>
+  <UButton
     v-if="pdf"
     variant="soft"
     :size="size"
@@ -42,10 +53,13 @@ withDefaults(
     doi?: string;
     pdf?: string;
     url?: string;
+    bookPdf?: string;
     size?: typeof appConfig.ui.button.size;
   }>(),
   { size: "xs" },
 );
+
+const { t } = useI18n({ useScope: "local" });
 </script>
 
 <style scoped>
@@ -55,3 +69,10 @@ withDefaults(
   text-decoration: none;
 }
 </style>
+
+<i18n lang="yaml">
+et:
+  bookPdf: "Raamat PDF"
+en:
+  bookPdf: "Book PDF"
+</i18n>

@@ -32,7 +32,12 @@
       </NuxtLinkLocale>
     </div>
     <div class="flex items-center space-x-1">
-      <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />
+      <ReferenceLinks
+        :doi="reference.doi_url"
+        :pdf="pdf"
+        :url="url"
+        :book-pdf="bookPdf"
+      />
     </div>
   </div>
 </template>
@@ -42,10 +47,12 @@ const props = defineProps<{ reference: any }>();
 const pdf = computed(() => {
   return (
     props.reference.attachment__filename ??
-    props.reference.parent_reference__attachment__filename ??
     props.reference.filename ??
-    null
+    undefined
   );
+});
+const bookPdf = computed(() => {
+  return props.reference.parent_reference__attachment__filename ?? undefined;
 });
 const url = computed(() => {
   return props.reference.url ?? props.reference.parent_reference__url ?? null;

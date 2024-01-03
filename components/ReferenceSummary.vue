@@ -38,7 +38,12 @@
           {{ t("abstract") }}
         </UButton>
         <CitePopover :id="reference.id" />
-        <ReferenceLinks :doi="reference.doi_url" :pdf="pdf" :url="url" />
+        <ReferenceLinks
+          :doi="reference.doi_url"
+          :pdf="pdf"
+          :url="url"
+          :book-pdf="bookPdf"
+        />
       </div>
       <div v-if="showAbstract">
         <div
@@ -66,11 +71,15 @@ const showAbstract = ref(false);
 const pdf = computed(() => {
   return (
     props.reference.attachment__filename ??
-    props.reference.parent_reference__attachment__filename ??
     props.reference.filename ??
     undefined
   );
 });
+
+const bookPdf = computed(() => {
+  return props.reference.parent_reference__attachment__filename ?? undefined;
+});
+
 const url = computed(() => {
   return (
     props.reference.url ?? props.reference.parent_reference__url ?? undefined

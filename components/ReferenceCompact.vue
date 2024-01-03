@@ -45,6 +45,7 @@
           :doi="reference.doi_url"
           :pdf="pdf"
           :url="url"
+          :book-pdf="bookPdf"
           size="2xs"
         />
       </span>
@@ -66,11 +67,15 @@ const referencesStore = useReferencesStore();
 const pdf = computed(() => {
   return (
     props.reference.attachment__filename ??
-    props.reference.parent_reference__attachment__filename ??
     props.reference.filename ??
     undefined
   );
 });
+
+const bookPdf = computed(() => {
+  return props.reference.parent_reference__attachment__filename ?? undefined;
+});
+
 const url = computed(() => {
   return (
     props.reference.url ?? props.reference.parent_reference__url ?? undefined

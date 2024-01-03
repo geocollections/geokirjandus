@@ -52,6 +52,8 @@
               :doi="reference.doi_url"
               :pdf="pdf(reference)"
               :url="url(reference)"
+              :book-pdf="bookPdf(reference)"
+              size="2xs"
             />
           </div>
         </div>
@@ -96,13 +98,13 @@ const hasNext = computed(
 );
 const searchQueryParams = referencesStore.getQueryParams();
 function pdf(reference: ReferenceDoc) {
-  return (
-    reference.attachment__filename ??
-    reference.parent_reference__attachment__filename ??
-    reference.filename ??
-    undefined
-  );
+  return reference.attachment__filename ?? reference.filename ?? undefined;
 }
+
+function bookPdf(reference: ReferenceDoc) {
+  return reference.parent_reference__attachment__filename ?? undefined;
+}
+
 function url(reference: ReferenceDoc) {
   return reference.url ?? reference.parent_reference__url ?? undefined;
 }

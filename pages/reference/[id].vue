@@ -34,6 +34,7 @@
             :doi="reference.doi"
             :pdf="reference.pdf"
             :url="url"
+            :book-pdf="reference.parent?.pdf"
           />
         </div>
         <div>
@@ -310,6 +311,7 @@
               :doi="reference.doi"
               :pdf="reference.pdf"
               :url="url"
+              :book-pdf="reference.parent?.pdf"
             />
             <UButton
               :to="`https://edit.geocollections.info/reference/${route.params.id}`"
@@ -375,6 +377,7 @@ type Reference = {
     id: string;
     reference: string;
     url?: string;
+    pdf?: string;
   };
   volume?: string;
   number?: string;
@@ -444,6 +447,7 @@ const { data: reference } = await useNewApiFetch<Reference>(
         "parent.id",
         "parent.reference",
         "parent.url",
+        "parent.pdf",
         "volume",
         "number",
         "pages",

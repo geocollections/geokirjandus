@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="relative border-t bg-stone-200 py-5 text-center dark:border-gray-800 dark:bg-gray-900"
+    class="relative border-t bg-stone-100 py-5 text-center dark:border-gray-800 dark:bg-gray-900"
   >
     <div class="mb-4 flex justify-center">
       <a href="https://kik.ee" target="_blank" rel="noopener">

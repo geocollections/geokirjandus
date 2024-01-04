@@ -34,6 +34,7 @@
           <UInput
             v-model="state.searchStr"
             class="w-full"
+            autofocus
             size="xl"
             :placeholder="t('enterKeyword')"
           >

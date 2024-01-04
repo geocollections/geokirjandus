@@ -14,6 +14,7 @@
     <UButtonGroup size="lg" :ui="{ wrapper: { horizontal: 'w-full' } }">
       <UInput
         v-model="localQuery"
+        autofocus
         :placeholder="t('searchAllFields')"
         :ui="{
           wrapper: 'w-full',

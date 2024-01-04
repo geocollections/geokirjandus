@@ -302,7 +302,7 @@ et:
   allReferences: "Kogu kirjandus"
   libraries: "Kogumikud"
   about: "Tutvustus"
-  latest: "Viimati listud teavikud"
+  latest: "Viimati lisatud teavikud"
 en:
   title: "Geoliterature"
   subtitle: "Estonian geoscience literature database"

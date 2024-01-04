@@ -3,14 +3,26 @@
     <div class="container px-2 pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
         <div class="pb-6">
-          <h1
-            class="pb-2 text-center text-7xl font-semibold uppercase"
+          <div class="typewriter text-center">
+            <i18n-t
+              keypath="titleNew"
+              scope="global"
+              tag="h1"
+              class="font-serif cursor-default pb-1 text-4xl font-semibold text-carrot-orange-500 md:text-7xl lg:pb-3 dark:text-carrot-orange-400"
+              style="word-break: normal"
+            >
+              <template #literature>
+                <span class="font-normal text-black dark:text-white">{{
+                  $t("literature")
+                }}</span>
+              </template>
+            </i18n-t>
+          </div>
+
+          <div
+            class="cursor-default text-center text-2xl font-normal md:text-4xl"
             style="word-break: normal"
           >
-            {{ t("title") }}
-          </h1>
-
-          <div class="text-center text-4xl" style="word-break: normal">
             {{ t("subtitle") }}
           </div>
         </div>
@@ -113,7 +125,7 @@
   <div class="container px-2 pb-4 pt-10">
     <div class="grid grid-cols-2 gap-x-4">
       <div class="order-2 col-span-full space-y-4 lg:order-none lg:col-span-1">
-        <div class="w-full p-4 lg:h-96">
+        <div class="hidden w-full p-4 lg:block lg:h-96">
           <Statistics />
         </div>
         <div class="rounded border p-4 dark:border-gray-800">
@@ -227,9 +239,9 @@ function roundToRank(n: number, rank: number = 1e3) {
 .background {
   background-image: url("/layered-steps-haikei-light.svg"),
     linear-gradient(
-      to bottom,
-      rgba(250, 250, 249, 0.5),
-      rgba(250, 250, 249, 0.5)
+      to right,
+      rgba(250, 250, 249, 0.9),
+      rgba(250, 250, 249, 0.7)
     ),
     url("/background.webp");
   background-size: contain, cover, cover;
@@ -239,11 +251,43 @@ function roundToRank(n: number, rank: number = 1e3) {
 
 .dark .background {
   background-image: url("/layered-steps-haikei-dark.svg"),
-    linear-gradient(to bottom, rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+    linear-gradient(to right, rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.7)),
     url("/background.webp");
   background-size: contain, cover, cover;
   background-position: bottom, bottom, 50%;
   background-repeat: repeat-x, repeat, no-repeat;
+  background-attachment: scroll, fixed, fixed;
+}
+.typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: 0.25rem solid; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: 0.005em;
+  animation:
+    typing 0.8s steps(24) 0.1s 1 normal both,
+    blink-caret 1.5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: min-content;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
 }
 </style>
 

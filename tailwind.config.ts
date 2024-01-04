@@ -6,6 +6,7 @@ export default <Partial<Config>>{
     darkMode: "class",
     fontFamily: {
       sans: ["'Noto Sans'", ...defaultTheme.fontFamily.sans],
+      serif: ["'Noto Serif'", ...defaultTheme.fontFamily.serif],
     },
     container: {
       center: true,

@@ -247,5 +247,7 @@
     "titleDesc": "Pealkiri Z-A",
     "yearAsc": "Aasta ascending",
     "yearDesc": "Aasta descending"
-  }
+  },
+  "titleNew": "GEO{literature}",
+  "literature": "kirjandus"
 }

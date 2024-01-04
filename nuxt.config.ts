@@ -39,8 +39,12 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       "Noto+Sans": {
-        wght: [300, 400, 600, 700, 800],
-        ital: [300, 400, 600, 700, 800],
+        wght: [300, 400, 500, 600, 700],
+        ital: [300, 400, 500, 600, 700],
+      },
+      "Noto+Serif": {
+        wght: [400, 500, 700],
+        ital: [400, 500, 700],
       },
     },
   },

@@ -8,7 +8,7 @@
           src="https://files.geocollections.info/img/kik_valge.png"
           alt="KIK"
           title="KIK"
-          class="footerLogo"
+          class="footerLogo invert dark:filter-none"
         />
       </a>
       <a href="https://natarc.ut.ee" target="_blank" rel="noopener">
@@ -16,7 +16,7 @@
           src="https://files.geocollections.info/img/natarclogovalge1.png"
           alt="NATARC"
           title="NATARC"
-          class="footerLogo"
+          class="footerLogo invert dark:filter-none"
         />
       </a>
       <a
@@ -28,7 +28,7 @@
           src="https://files.geocollections.info/img/tutaltech2.png"
           alt="SARV"
           title="TalTech geoloogia instituut"
-          class="footerLogo"
+          class="footerLogo invert dark:filter-none"
         />
       </a>
       <a
@@ -40,7 +40,7 @@
           src="https://files.geocollections.info/img/TY_logo_ring_jooneta_valge.png"
           alt="TÜ Loodusmuuseumi geokogud"
           title="TÜ Loodusmuuseumi geokogud"
-          class="footerLogo"
+          class="footerLogo invert dark:filter-none"
         />
       </a>
       <a
@@ -52,84 +52,62 @@
           src="https://files.geocollections.info/img/ELM_logo_white1.png"
           alt="Eesti Loodusmuuseumi geoloogia osakond"
           title="Eesti Loodusmuuseumi geoloogia osakond"
-          class="footerLogo"
+          class="footerLogo invert dark:filter-none"
         />
       </a>
     </div>
-    <small v-if="locale === 'et'" class="text-center">
-      Siin leiduvad materjalid on enamasti kasutamiseks
-      <a
-        class="white--text"
-        href="https://creativecommons.org/licenses/by-sa/3.0/"
-        target="_blank"
-      >
-        CC BY-SA</a
-      >
-      litsentsi alusel, kui pole näidatud teisiti.
-      <br />
-      Portaal on osaks
-      <a class="white--text" href="https://natarc.ut.ee" target="_blank"
-        >NATARC</a
-      >
-      teadustaristust ning infosüsteemist
-      <a class="white--text" href="https://geocollections.info" target="_blank"
-        >SARV</a
-      >, majutab
-      <a
-        class="white--text"
-        href="https://taltech.ee/geoloogia-instituut"
-        target="_blank"
-      >
-        TalTech</a
-      >.
-      <br />
-      Tarkvara on loodud kasutades
-      <a class="white--text" href="https://vuejs.org/" target="_blank">Vue.js</a
-      >, raamistikku ning kättesaadav
-      <a
-        class="white--text"
-        href="https://github.com/geocollections/geokirjandus"
-        target="_blank"
-      >
-        GitHubis</a
-      >.
-    </small>
-    <small v-if="locale === 'en'" class="text-center">
-      All materials in the portal are for free usage according to
-      <a
-        class="white--text"
-        href="https://creativecommons.org/licenses/by-sa/3.0/"
-        target="_blank"
-        >CC BY-SA</a
-      >
-      licence, unless indicated otherwise.
-      <br />
-      Portal is part of
-      <a class="white--text" href="https://natarc.ut.ee" target="_blank"
-        >NATARC</a
-      >
-      national research infrastructure and geoscience data platform
-      <a class="white--text" href="https://geocollections.info" target="_blank"
-        >SARV</a
-      >, hosted by
-      <a
-        class="white--text"
-        href="https://taltech.ee/geoloogia-instituut"
-        target="_blank"
-        >TalTech</a
-      >.
-      <br />
-      Built using
-      <a class="white--text" href="https://vuejs.org/" target="_blank">Vue.js</a
-      >, available on
-      <a
-        class="white--text"
-        href="https://github.com/geocollections/geokirjandus"
-        target="_blank"
-      >
-        GitHub</a
-      >.
-    </small>
+    <div class="text-sm">
+      <i18n-t keypath="licence" tag="div">
+        <template #licence>
+          <a
+            href="https://creativecommons.org/licenses/by-sa/3.0/"
+            target="_blank"
+          >
+            CC BY-SA
+          </a>
+        </template>
+        <template #natarc>
+          <a href="https://natarc.ut.ee" target="_blank">NATARC</a>
+        </template>
+      </i18n-t>
+      <i18n-t keypath="development" tag="div">
+        <template #sarv>
+          <a href="https://geocollections.info" target="_blank">SARV</a>
+        </template>
+        <template #taltech>
+          <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
+            TalTech</a
+          >
+        </template>
+      </i18n-t>
+      <i18n-t keypath="icons8" tag="div">
+        <template #openBook>
+          <a
+            target="_blank"
+            href="https://icons8.com/icon/NJKARrx4jLfJ/open-book"
+            >Open Book</a
+          >
+        </template>
+        <template #icons8>
+          <a target="_blank" href="https://icons8.com">Icons8</a>
+        </template>
+      </i18n-t>
+    </div>
+    <UButton
+      class="mt-2"
+      icon="i-simple-icons-github"
+      size="xl"
+      :padded="false"
+      color="gray"
+      href="https://github.com/geocollections/geokirjandus"
+      variant="link"
+    />
+    <!-- <a href="https://github.com/geocollections/geokirjandus" target="_blank"> -->
+    <!--   <UIcon -->
+    <!--     class="h-8 w-8 text-gray-600 dark:text-white" -->
+    <!--     name="i-simple-icons-github" -->
+    <!--   /> -->
+    <!-- </a> -->
   </footer>
 </template>
 
@@ -154,8 +132,15 @@ const { locale } = useI18n();
   background-position: bottom;
   background-size: cover;
 }
-
-.layer2 {
-  /* background-image: url("../assets/stacked-steps-haikei (5).svg"); */
-}
 </style>
+
+<i18n lang="yaml">
+et:
+  licence: "Siin leiduvad materjalid on enamasti kasutamiseks {licence} litsensi alusel, kui pole teisiti määratud."
+  development: "Portaal on osaks {natarc} teadustaristust ning infosüsteemist {sarv}, majutab {taltech}."
+  icons8: "{openBook} ikooni autor {icons8}."
+en:
+  licence: All materials in the protal are for free usage according to {licence}, unless indiated otherwise."
+  development: "Portal is part of {natarc} natianal research infrastructure and geoscience data platform {sarv}, hosted by {taltech}."
+  icons8: "{openBook} icon by {icons8}."
+</i18n>

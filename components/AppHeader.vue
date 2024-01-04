@@ -6,10 +6,16 @@
     <div class="container mx-auto">
       <nav class="flex h-14 items-center gap-x-2 py-2">
         <NuxtLinkLocale
-          class="mr-4 text-base font-bold text-carrot-orange-500 dark:text-carrot-orange-400 md:text-lg"
+          class="font-serif group mr-4 font-bold text-carrot-orange-500 md:text-lg dark:text-carrot-orange-400"
           to="/"
         >
-          {{ $t("title") }}
+          <i18n-t keypath="titleNew">
+            <template #literature>
+              <span class="font-medium text-black dark:text-white">{{
+                $t("literature")
+              }}</span>
+            </template>
+          </i18n-t>
         </NuxtLinkLocale>
         <UButton
           :label="$t('tabs.references')"
@@ -118,3 +124,19 @@ function handleLocaleChange(locale: string) {
   setLocale(locale);
 }
 </script>
+
+<style>
+.test {
+  color: transparent;
+  background-image: linear-gradient(90deg, yellow 50%, green 50%);
+  background-position: 100%;
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  transition: background-position steps(12, end) ease;
+}
+.test:hover {
+  background-position: 0;
+}
+</style>

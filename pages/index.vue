@@ -2,7 +2,7 @@
   <div class="background -mt-[57px] bg-cover pb-8">
     <div class="container px-2 pt-[calc(57px+2em)]">
       <div class="mx-auto space-y-4 lg:w-fit">
-        <div class="b-6">
+        <div class="pb-6">
           <div class="typewriter mx-auto w-fit">
             <i18n-t
               keypath="titleNew"

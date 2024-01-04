@@ -249,5 +249,6 @@
     "yearAsc": "Year ascending",
     "yearDesc": "Year descending"
   },
-  "titleNew": "GEO{literature}"
+  "titleNew": "GEO{literature}",
+  "literature": "literature"
 }

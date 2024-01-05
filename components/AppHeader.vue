@@ -5,17 +5,8 @@
   >
     <div class="container mx-auto">
       <nav class="flex h-14 items-center gap-x-2 py-2">
-        <NuxtLinkLocale
-          class="font-serif group mr-4 font-bold text-carrot-orange-500 md:text-lg dark:text-carrot-orange-400"
-          to="/"
-        >
-          <i18n-t keypath="titleNew">
-            <template #literature>
-              <span class="font-medium text-black dark:text-white">{{
-                $t("literature")
-              }}</span>
-            </template>
-          </i18n-t>
+        <NuxtLinkLocale class="mr-4 md:text-lg" to="/">
+          <SiteLogo />
         </NuxtLinkLocale>
         <UButton
           :label="$t('tabs.references')"

@@ -120,6 +120,11 @@ watch(
     if (state.decadesChart && state.decadesChart.options.plugins?.datalabels) {
       state.decadesChart.options.plugins.datalabels.color =
         colorMode.preference === "dark" ? "#ffffff" : undefined;
+      state.decadesChart.options.backgroundColor =
+        colorMode.preference === "dark" ? "#f1b02e80" : "#ea921980";
+      // @ts-ignore
+      state.decadesChart.options.hoverBackgroundColor =
+        colorMode.preference === "dark" ? "#f1b02eb3" : "#ea9219b3";
       state.decadesChart.update();
     }
     if (
@@ -128,6 +133,11 @@ watch(
     ) {
       state.categoryChart.options.plugins.datalabels.color =
         colorMode.preference === "dark" ? "#ffffff" : undefined;
+      state.categoryChart.options.backgroundColor =
+        colorMode.preference === "dark" ? "#f1b02e80" : "#ea921980";
+      // @ts-ignore
+      state.categoryChart.options.hoverBackgroundColor =
+        colorMode.preference === "dark" ? "#f1b02eb3" : "#ea9219b3";
       state.categoryChart.update();
     }
   },
@@ -192,6 +202,11 @@ onMounted(async () => {
           right: 5,
         },
       },
+      backgroundColor:
+        colorMode.preference === "dark" ? "#f1b02e80" : "#ea921980",
+      // @ts-ignore
+      hoverBackgroundColor:
+        colorMode.preference === "dark" ? "#f1b02eb3" : "#ea9219b3",
       scales: {
         x: {
           type: "linear",
@@ -256,6 +271,11 @@ onMounted(async () => {
           ? "pointer"
           : "default";
       },
+      backgroundColor:
+        colorMode.preference === "dark" ? "#f1b02e80" : "#ea921980",
+      // @ts-ignore
+      hoverBackgroundColor:
+        colorMode.preference === "dark" ? "#f1b02eb3" : "#ea9219b3",
       scales: {
         x: {
           type: "linear",

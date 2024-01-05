@@ -1,159 +1,142 @@
 <template>
-  <div class="background -mt-[57px] bg-cover pb-8">
-    <div class="container px-2 pt-[calc(57px+2em)]">
-      <div class="mx-auto space-y-4 lg:w-fit">
-        <div class="pb-6">
-          <div class="typewriter mx-auto w-fit">
-            <i18n-t
-              keypath="titleNew"
-              scope="global"
-              tag="h1"
-              class="font-serif cursor-default pb-1 text-4xl font-semibold text-carrot-orange-500 md:text-7xl lg:pb-3 dark:text-carrot-orange-400"
-              style="word-break: normal"
-            >
-              <template #literature>
-                <span class="font-normal text-black dark:text-white">{{
-                  $t("literature")
-                }}</span>
-              </template>
-            </i18n-t>
-          </div>
-
+  <div class="background -mt-[57px]">
+    <div class="container mx-auto px-2 pt-[calc(57px+2em)] xl:max-w-screen-xl">
+      <div class="space-y-4 lg:w-fit">
+        <div>
+          <SiteLogo class="pb-1 text-4xl md:text-7xl lg:pb-3" />
           <div
-            class="cursor-default text-center text-2xl font-normal md:text-4xl"
+            class="text-2xl font-normal text-gray-700 md:text-4xl dark:text-gray-300"
             style="word-break: normal"
           >
             {{ t("subtitle") }}
           </div>
         </div>
-        <UForm
-          class="flex justify-center"
-          :state="state"
-          @submit="handleSearch"
-        >
-          <UInput
-            v-model="state.searchStr"
-            class="w-full"
-            autofocus
-            size="xl"
-            :placeholder="t('enterKeyword')"
-          >
-          </UInput>
-          <UButton
-            type="submit"
-            class="ml-2 pr-4"
-            icon="i-heroicons-magnifying-glass"
-          >
-            <div class="font-family-exo-2">
-              {{ t("search") }}
-            </div>
-          </UButton>
-        </UForm>
-        <UDivider
-          :label="t('browse')"
-          :ui="{ border: { base: 'border-stone-400' } }"
-          icon="i-heroicons-arrow-left"
-        />
-        <div class="flex flex-col space-y-1 text-center lg:block lg:space-x-1">
-          <UButton
-            :to="
-              localePath({
-                path: '/reference',
-                query: { isEstonianReference: 'true' },
-              })
-            "
-            size="xl"
-          >
-            <div class="text-start">
-              <div class="flex items-center space-x-1">
-                <UIcon name="i-heroicons-book-open"></UIcon>
-                <span>
-                  {{
-                    roundToRank(
-                      referencesRes?.facets.estonianReferences.count ?? 26000,
-                    )
-                  }}+
-                </span>
-              </div>
-              <div>{{ t("estonianReferences") }}</div>
-            </div>
-            <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
-          </UButton>
-          <UButton
-            :to="
-              localePath({
-                path: '/reference',
-              })
-            "
-            size="xl"
-          >
-            <div class="text-start">
-              <div class="flex items-center space-x-1">
-                <UIcon name="i-heroicons-book-open"></UIcon>
-                <span>
-                  {{
-                    roundToRank(
-                      referencesRes?.facets.allReferences.count ?? 43000,
-                    )
-                  }}+
-                </span>
-              </div>
-              <div>{{ t("allReferences") }}</div>
-            </div>
-            <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
-          </UButton>
-          <UButton :to="localePath({ path: '/library' })" size="xl">
-            <div class="text-start">
-              <div class="flex items-center space-x-1">
-                <UIcon name="i-heroicons-building-library"></UIcon>
-                <span>
-                  {{
-                    roundToRank(
-                      libraryRes?.facets.allLibraries.count ?? 80,
-                      1e1,
-                    )
-                  }}+
-                </span>
-              </div>
-              <div>{{ t("libraries") }}</div>
-            </div>
-            <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
-          </UButton>
-        </div>
       </div>
     </div>
-  </div>
-  <div class="container px-2 pb-4 pt-10">
-    <div class="grid grid-cols-2 gap-x-4">
-      <div class="order-2 col-span-full space-y-4 lg:order-none lg:col-span-1">
-        <div class="hidden w-full p-4 lg:block lg:h-96">
-          <Statistics />
-        </div>
-        <div class="rounded border p-4 dark:border-gray-800">
-          <div class="mb-3 text-2xl">
-            {{ t("about") }}
-          </div>
+    <div class="container mx-auto px-2 pb-4 lg:pt-10 xl:max-w-screen-xl">
+      <div class="grid grid-cols-2 gap-8">
+        <div class="col-span-full space-y-4 lg:order-none lg:col-span-1">
+          <UForm
+            class="mt-12 flex justify-center"
+            :state="state"
+            @submit="handleSearch"
+          >
+            <UInput
+              v-model="state.searchStr"
+              class="w-full"
+              autofocus
+              size="xl"
+              :placeholder="t('enterKeyword')"
+            >
+            </UInput>
+            <UButton
+              type="submit"
+              class="ml-2 pr-4"
+              icon="i-heroicons-magnifying-glass"
+            >
+              <div class="font-family-exo-2">
+                {{ t("search") }}
+              </div>
+            </UButton>
+          </UForm>
+          <UDivider
+            :label="t('browse')"
+            :ui="{ border: { base: 'border-stone-400' } }"
+            icon="i-heroicons-arrow-left"
+          />
           <div
-            v-html="
-              $translate({
-                et: intro?.content_et ?? '',
-                en: intro?.content_en ?? '',
-              })
-            "
-          ></div>
-        </div>
-      </div>
-
-      <div class="order-1 col-span-full lg:order-none lg:col-span-1">
-        <div class="rounded border p-4 dark:border-gray-800">
-          <div class="mb-3 text-2xl">
-            {{ t("latest") }}
+            class="flex flex-col space-y-1 text-center lg:block lg:space-x-1"
+          >
+            <UButton
+              :to="
+                localePath({
+                  path: '/reference',
+                  query: { isEstonianReference: 'true' },
+                })
+              "
+              size="xl"
+            >
+              <div class="text-start">
+                <div class="flex items-center space-x-1">
+                  <UIcon name="i-heroicons-book-open"></UIcon>
+                  <span>
+                    {{
+                      roundToRank(
+                        referencesRes?.facets.estonianReferences.count ?? 26000,
+                      )
+                    }}+
+                  </span>
+                </div>
+                <div>{{ t("estonianReferences") }}</div>
+              </div>
+              <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
+            </UButton>
+            <UButton
+              :to="
+                localePath({
+                  path: '/reference',
+                })
+              "
+              size="xl"
+            >
+              <div class="text-start">
+                <div class="flex items-center space-x-1">
+                  <UIcon name="i-heroicons-book-open"></UIcon>
+                  <span>
+                    {{
+                      roundToRank(
+                        referencesRes?.facets.allReferences.count ?? 43000,
+                      )
+                    }}+
+                  </span>
+                </div>
+                <div>{{ t("allReferences") }}</div>
+              </div>
+              <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
+            </UButton>
+            <UButton :to="localePath({ path: '/library' })" size="xl">
+              <div class="text-start">
+                <div class="flex items-center space-x-1">
+                  <UIcon name="i-heroicons-building-library"></UIcon>
+                  <span>
+                    {{
+                      roundToRank(
+                        libraryRes?.facets.allLibraries.count ?? 80,
+                        1e1,
+                      )
+                    }}+
+                  </span>
+                </div>
+                <div>{{ t("libraries") }}</div>
+              </div>
+              <UIcon name="i-heroicons-arrow-right" class="ml-auto h-6 w-6" />
+            </UButton>
           </div>
+          <div class="hidden w-full lg:block lg:h-96">
+            <Statistics />
+          </div>
+        </div>
 
-          <template v-for="(reference, index) in references">
-            <UDivider v-if="index !== 0" />
-            <ReferenceItem :reference="reference" />
-          </template>
+        <div class="col-span-full lg:order-none lg:col-span-1">
+          <div class="rounded dark:border-gray-800">
+            <div class="mb-3 text-2xl font-medium">
+              {{ t("latest") }}
+            </div>
+
+            <div class="space-y-1">
+              <template v-for="(reference, index) in references">
+                <!-- <UDivider v-if="index !== 0" /> -->
+                <ReferenceItem
+                  class="rounded border bg-stone-50 p-2 dark:border-gray-800 dark:bg-gray-900"
+                  :reference="reference"
+                />
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-full mb-8">
+          <AboutSection />
         </div>
       </div>
     </div>
@@ -186,7 +169,7 @@ const { data: referencesRes } = await useSolrFetch<
 >("/reference", {
   query: {
     q: "*",
-    rows: 10,
+    rows: 5,
     sort: "date_added desc",
     json: {
       facet: {
@@ -238,27 +221,36 @@ function roundToRank(n: number, rank: number = 1e3) {
 
 <style lang="scss">
 .background {
-  background-image: url("/layered-steps-haikei-light.svg"),
+  background-image: 
+    // url("/layered-steps-haikei-light.svg"),
+    // linear-gradient(
+    //   to right,
+    //   rgba(250, 250, 249, 0.9),
+    //   rgba(250, 250, 249, 0.7)
+    // ),
     linear-gradient(
-      to right,
-      rgba(250, 250, 249, 0.9),
-      rgba(250, 250, 249, 0.7)
+      to bottom,
+      rgba(250, 250, 249, 0.85),
+      rgba(250, 250, 249, 1)
     ),
     url("/background.webp");
-  background-size: contain, cover, cover;
-  background-position: bottom, bottom, 50%;
-  background-repeat: repeat-x, repeat, no-repeat;
+  background-size: cover, cover;
+  background-position: bottom, top;
+  background-repeat: repeat, no-repeat;
 }
 
 .dark .background {
-  background-image: url("/layered-steps-haikei-dark.svg"),
-    linear-gradient(to right, rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.7)),
+  background-image: linear-gradient(
+      to bottom,
+      rgba(17, 24, 39, 0.85),
+      rgba(17, 24, 39, 1)
+    ),
     url("/background.webp");
-  background-size: contain, cover, cover;
-  background-position: bottom, bottom, 50%;
-  background-repeat: repeat-x, repeat, no-repeat;
-  background-attachment: scroll, fixed, fixed;
+  background-size: cover, cover;
+  background-position: bottom, top;
+  background-repeat: repeat, no-repeat;
 }
+
 .typewriter h1 {
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   border-right: 0.25rem solid; /* The typwriter cursor */

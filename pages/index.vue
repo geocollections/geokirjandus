@@ -41,7 +41,7 @@
           </UForm>
           <UDivider
             :label="t('browse')"
-            :ui="{ border: { base: 'border-stone-400' } }"
+            :ui="{ border: { base: 'border-stone-400 dark:border-stone-400' } }"
             icon="i-heroicons-arrow-left"
           />
           <div

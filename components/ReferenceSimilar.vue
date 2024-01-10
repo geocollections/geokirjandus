@@ -93,8 +93,7 @@ const { data: referencesRes } = await useSolrFetch<SolrResponse<ReferenceDoc>>(
 );
 const references = computed(() => referencesRes.value?.response.docs ?? []);
 const hasNext = computed(
-  () =>
-    (page.value - 1) * perPage < (referencesRes.value?.response.numFound ?? 0),
+  () => page.value * perPage < (referencesRes.value?.response.numFound ?? 0),
 );
 const searchQueryParams = referencesStore.getQueryParams();
 function pdf(reference: ReferenceDoc) {

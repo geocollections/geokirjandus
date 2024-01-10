@@ -111,7 +111,7 @@ const info = computed(() => {
 
 const referencesStore = useReferencesStore();
 function handleDetailNavigation() {
-  if (!props.position || props.position < 0) return;
+  if (props.position === undefined || props.position < 0) return;
   referencesStore.searchPosition = props.position;
   referencesStore.enteredFrom = route.path;
 }

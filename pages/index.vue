@@ -8,7 +8,7 @@
             class="text-2xl font-normal text-gray-700 md:text-4xl dark:text-gray-300"
             style="word-break: normal"
           >
-            {{ t("subtitle") }}
+            {{ $t("subtitle") }}
           </div>
         </div>
       </div>
@@ -286,8 +286,6 @@ function roundToRank(n: number, rank: number = 1e3) {
 
 <i18n lang="yaml">
 et:
-  title: "Geokirjandus"
-  subtitle: "Eesti maapõue teavikute register"
   search: "Otsi"
   enterKeyword: "Sisesta otsingu termin"
   browse: "või sirvi"
@@ -297,8 +295,6 @@ et:
   about: "Tutvustus"
   latest: "Viimati lisatud teavikud"
 en:
-  title: "Geoliterature"
-  subtitle: "Estonian geoscience literature database"
   search: "Search"
   enterKeyword: "Enter a search term"
   browse: "or browse"

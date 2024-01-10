@@ -4,7 +4,7 @@
       <SearchFormLibrary @update="handleSubmit" @reset="handleReset" />
     </template>
     <div class="space-y-2">
-      <h1 class="mb-2 text-4xl font-semibold">{{ t("title") }}</h1>
+      <h1 class="mb-2 text-4xl font-semibold">{{ t("tabs.libraries") }}</h1>
       <div class="flex items-center">
         <div class="text-xl">
           <span class="font-bold">
@@ -73,7 +73,7 @@
 import type { LocationQueryRaw } from "vue-router";
 import { z } from "zod";
 
-const { t } = useI18n({ useScope: "local" });
+const { t } = useI18n();
 useHead({
   title: t("title"),
 });
@@ -149,9 +149,3 @@ function handleReset() {
   refreshLibraries();
 }
 </script>
-<i18n lang="yaml">
-et:
-  title: "Kogumikud"
-en:
-  title: "Libraries"
-</i18n>

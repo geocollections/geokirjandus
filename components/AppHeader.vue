@@ -35,6 +35,7 @@
             :modelValue="locale"
             size="md"
             :options="langOptions"
+            :aria-label="t('header.lang')"
             icon="i-heroicons-language-20-solid"
             @update:model-value="handleLocaleChange"
           />

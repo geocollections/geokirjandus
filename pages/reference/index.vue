@@ -3,7 +3,7 @@
     <template #filters>
       <SearchFormReference @update="handleSubmit" @reset="handleReset" />
     </template>
-    <h1 class="mb-2 text-4xl font-semibold">{{ t("title") }}</h1>
+    <h1 class="mb-2 text-4xl font-semibold">{{ t("tabs.references") }}</h1>
     <ReferenceList
       :references="references"
       :count="referencesRes?.response.numFound ?? 0"
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import type { LocationQueryRaw } from "vue-router";
 
-const { t } = useI18n({ useScope: "local" });
+const { t } = useI18n();
 
 useHead({
   title: t("title"),
@@ -131,10 +131,3 @@ function handleReset() {
   @apply w-full;
 }
 </style>
-
-<i18n lang="yaml">
-et:
-  title: "Teavikud"
-en:
-  title: "References"
-</i18n>

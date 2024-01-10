@@ -1,6 +1,6 @@
 import { z } from "zod";
 export const useReferenceSort = () => {
-  const { t } = useI18n();
+  const { t } = useI18n({ useScope: "global" });
 
   const sortOptions = [
     "score desc",

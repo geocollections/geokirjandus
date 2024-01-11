@@ -106,6 +106,10 @@
   </footer>
 </template>
 
+<script setup lang="ts">
+useI18n();
+</script>
+
 <style scoped>
 .footerLogo {
   height: 60px;
@@ -127,11 +131,11 @@
 
 <i18n lang="yaml">
 et:
-  licence: "Siin leiduvad materjalid on enamasti kasutamiseks {licence} litsensi alusel, kui pole teisiti määratud."
+  licence: "Leheküljel leiduvad materjalid on enamasti kasutamiseks {licence} litsensi alusel, kui pole teisiti määratud."
   development: "Portaal on osaks {natarc} teadustaristust ning infosüsteemist {sarv}, majutab {taltech}."
   icons8: "{openBook} ikooni autor {icons8}."
 en:
-  licence: All materials in the protal are for free usage according to {licence}, unless indiated otherwise."
+  licence: "All materials in the portal are for free usage according to {licence}, unless indiated otherwise."
   development: "Portal is part of {natarc} natianal research infrastructure and geoscience data platform {sarv}, hosted by {taltech}."
   icons8: "{openBook} icon by {icons8}."
 </i18n>

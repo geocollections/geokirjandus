@@ -60,6 +60,7 @@
       <i18n-t keypath="licence" tag="div">
         <template #licence>
           <a
+            class="hover:underline"
             href="https://creativecommons.org/licenses/by-sa/3.0/"
             target="_blank"
           >
@@ -67,15 +68,26 @@
           </a>
         </template>
         <template #natarc>
-          <a href="https://natarc.ut.ee" target="_blank">NATARC</a>
+          <a class="hover:underline" href="https://natarc.ut.ee" target="_blank"
+            >NATARC</a
+          >
         </template>
       </i18n-t>
       <i18n-t keypath="development" tag="div">
         <template #sarv>
-          <a href="https://geocollections.info" target="_blank">SARV</a>
+          <a
+            class="hover:underline"
+            href="https://geocollections.info"
+            target="_blank"
+            >SARV</a
+          >
         </template>
         <template #taltech>
-          <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
+          <a
+            class="hover:underline"
+            href="https://taltech.ee/geoloogia-instituut"
+            target="_blank"
+          >
             TalTech</a
           >
         </template>
@@ -84,12 +96,15 @@
         <template #openBook>
           <a
             target="_blank"
+            class="hover:underline"
             href="https://icons8.com/icon/NJKARrx4jLfJ/open-book"
             >Open Book</a
           >
         </template>
         <template #icons8>
-          <a target="_blank" href="https://icons8.com">Icons8</a>
+          <a target="_blank" class="hover:underline" href="https://icons8.com"
+            >Icons8</a
+          >
         </template>
       </i18n-t>
     </div>

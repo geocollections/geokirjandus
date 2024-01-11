@@ -38,21 +38,29 @@
       >
         <i18n-t keypath="text.project.p1" tag="p">
           <template #natarc>
-            <NuxtLink to="https://natarc.ut.ee/">{{ t("natarc") }}</NuxtLink>
+            <NuxtLink class="hover:underline" to="https://natarc.ut.ee/">{{
+              t("natarc")
+            }}</NuxtLink>
           </template>
           <template #sarv>
-            <NuxtLink to="https://geoloogia.info/">SARV</NuxtLink>
+            <NuxtLink class="hover:underline" to="https://geoloogia.info/"
+              >SARV</NuxtLink
+            >
           </template>
           <template #taltech>
-            <NuxtLink to="https://taltech.ee/geoloogia-instituut">{{
-              t("taltechGeology")
-            }}</NuxtLink>
+            <NuxtLink
+              class="hover:underline"
+              to="https://taltech.ee/geoloogia-instituut"
+              >{{ t("taltechGeology") }}</NuxtLink
+            >
           </template>
         </i18n-t>
         <br />
         <i18n-t keypath="text.project.p2" tag="p">
           <template #kik>
-            <NuxtLink to="https://kik.ee">{{ t("kik") }}</NuxtLink>
+            <NuxtLink class="hover:underline" to="https://kik.ee">{{
+              t("kik")
+            }}</NuxtLink>
           </template>
         </i18n-t>
       </div>
@@ -64,7 +72,10 @@
       >
         <i18n-t keypath="text.contact" tag="p">
           <template #mail>
-            <NuxtLink href="mailto:olle.hints@taltech.ee">
+            <NuxtLink
+              class="hover:underline"
+              href="mailto:olle.hints@taltech.ee"
+            >
               olle.hints@taltech.ee
             </NuxtLink>
           </template>

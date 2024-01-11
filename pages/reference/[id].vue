@@ -292,7 +292,10 @@
           />
         </div>
         <div class="text-end">
-          <span v-if="reference.date_changed" class="italic text-gray-500">
+          <span
+            v-if="reference.date_changed"
+            class="italic text-gray-500 dark:text-gray-400"
+          >
             {{
               t("changed", {
                 date: new Date(reference.date_changed).toLocaleDateString(),

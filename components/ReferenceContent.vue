@@ -1,12 +1,17 @@
 <template>
   <table>
     <tbody>
+      <tr>
+        <th class="pr-2 text-end">{{ t("pages") }}</th>
+        <th class="px-2 text-start">{{ t("title") }}</th>
+        <th class="px-2 text-start">{{ t("authors") }}</th>
+      </tr>
       <tr
-        class="border-t first:border-none dark:border-t-gray-700"
+        class="border-b last:border-none dark:border-b-gray-700"
         v-for="content in orderedContent"
       >
         <td
-          class="whitespace-nowrap pr-2 text-end align-top italic text-gray-600 dark:text-gray-400"
+          class="whitespace-nowrap pr-2 text-end align-top italic text-gray-500 dark:text-gray-400"
         >
           {{ content.pages }}
         </td>
@@ -39,6 +44,8 @@
 <script setup lang="ts">
 const props = defineProps<{ contentsUrl: string; count: number }>();
 
+const { t } = useI18n({ useScope: "local" });
+
 const { data: contents } = await useNewApiFetch<{
   results: {
     id: number;
@@ -69,3 +76,14 @@ const orderedContent = computed(() => {
   });
 });
 </script>
+
+<i18n lang="yaml">
+et:
+  pages: "Leheküljed"
+  title: "Pealkiri"
+  authors: "Autor(id)"
+en:
+  pages: "Pages"
+  title: "Title"
+  authors: "Author(s)"
+</i18n>

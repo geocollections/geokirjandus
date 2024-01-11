@@ -395,9 +395,15 @@ function getLocalityMarkers() {
       .map((item) => {
         return L.marker([item.locality.latitude, item.locality.longitude], {
           icon: localityIcon,
+          title:
+            locale.value === "et" ? item.locality.name : item.locality.name_en,
         }).bindPopup(
-          `<a href="https://geoloogia.info/locality/
-              ${item.locality.id}" target="_blank">
+          `<a href="https://geoloogia.info/locality/${item.locality.id}"
+              aria-label="${
+                locale.value === "et"
+                  ? item.locality.name
+                  : item.locality.name_en
+              }" target="_blank">
             ${
               locale.value === "et" ? item.locality.name : item.locality.name_en
             }
@@ -443,6 +449,10 @@ function getSiteMarkers() {
       .map((item) =>
         L.marker([item.site.latitude, item.site.longitude], {
           icon: siteIcon,
+          alt:
+            locale.value === "et"
+              ? item.site.name
+              : item.site.name_en ?? item.site.name,
         }).bindPopup(
           `<a href="https://geoloogia.info/site/
               ${item.site.id}" target="_blank">

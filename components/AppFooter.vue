@@ -96,24 +96,15 @@
     <UButton
       class="mt-2"
       icon="i-simple-icons-github"
+      aria-label="GitHub"
       size="xl"
       :padded="false"
       color="gray"
       href="https://github.com/geocollections/geokirjandus"
       variant="link"
     />
-    <!-- <a href="https://github.com/geocollections/geokirjandus" target="_blank"> -->
-    <!--   <UIcon -->
-    <!--     class="h-8 w-8 text-gray-600 dark:text-white" -->
-    <!--     name="i-simple-icons-github" -->
-    <!--   /> -->
-    <!-- </a> -->
   </footer>
 </template>
-
-<script setup lang="ts">
-const { locale } = useI18n();
-</script>
 
 <style scoped>
 .footerLogo {

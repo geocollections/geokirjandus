@@ -25,6 +25,7 @@
               v-model="state.searchStr"
               class="w-full"
               autofocus
+              id="search"
               size="xl"
               :placeholder="t('enterKeyword')"
             >

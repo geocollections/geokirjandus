@@ -28,12 +28,18 @@
             color="gray"
             variant="link"
             icon="i-heroicons-x-mark-20-solid"
+            :aria-label="t('clear')"
             :padded="false"
             @click="handleQueryReset"
           />
         </template>
       </UInput>
-      <UButton icon="i-heroicons-magnifying-glass" type="submit"> </UButton>
+      <UButton
+        :aria-label="t('search')"
+        icon="i-heroicons-magnifying-glass"
+        type="submit"
+      >
+      </UButton>
     </UButtonGroup>
   </UForm>
   <UDivider />
@@ -45,6 +51,7 @@
         class="ml-auto"
         icon="i-heroicons-trash"
         variant="ghost"
+        :aria-label="t('clearFilters')"
         @click="handleReset"
       >
         {{ t("reset") }}
@@ -320,6 +327,8 @@ et:
   start: "Algus"
   end: "Lõpp"
   found: "Tulemused puuduvad | {count} tulemus leitud | {count} tulemust leitud"
+  clear: "Puhasta otsinguväli"
+  clearFilter: "Puhasta filtrid"
 en:
   search: "Search"
   filters: "Filters"
@@ -343,4 +352,6 @@ en:
   start: "Start"
   end: "End"
   found: "No results found | Found {count} result | Found {count} results"
+  clear: "Clear search input"
+  clearFilter: "Clear filters"
 </i18n>

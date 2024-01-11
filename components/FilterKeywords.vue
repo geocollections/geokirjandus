@@ -24,6 +24,7 @@
         color="gray"
         variant="link"
         icon="i-heroicons-x-mark-20-solid"
+        :aria-label="t('clearKeywordSearch')"
         :padded="false"
         @click="query = ''"
       />
@@ -54,6 +55,7 @@
     <UButton
       variant="link"
       icon="i-heroicons-chevron-double-left"
+      :aria-label="t('previousPage')"
       :disabled="pagination.page <= 1"
       @click="prevPage"
     />
@@ -61,6 +63,7 @@
     <UButton
       variant="link"
       icon="i-heroicons-chevron-double-right"
+      :aria-label="t('nextPage')"
       :disabled="!hasNextPage"
       @click="nextPage"
     />
@@ -189,7 +192,13 @@ defineExpose({
 et:
   search: "Otsi"
   noMoreOptions: "Valikud puuduvad"
+  nextPage: "Järgmised märksõnad"
+  previousPage: "Eelmised märksõnad"
+  clearKeywordSearch: "Puhasta märksõna otsinguväli"
 en:
   search: "Search"
   noMoreOptions: "No options available"
+  nextPage: "Next keywords"
+  previousPage: "Previous keywords"
+  clearKeywordSearch: "Clear keyword search input"
 </i18n>

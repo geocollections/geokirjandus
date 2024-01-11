@@ -11,7 +11,11 @@
           class="flex rounded-md shadow-sm"
           v-model="settingsStore.view"
         >
-          <RadioGroupOption v-slot="{ checked }" value="summary">
+          <RadioGroupOption
+            :aria-label="t('summary')"
+            v-slot="{ checked }"
+            value="summary"
+          >
             <span
               class="flex h-8 rounded-l-md border border-r-0 border-gray-300 px-2.5 py-1.5 text-sm hover:cursor-pointer dark:border-gray-700"
               :class="
@@ -23,7 +27,11 @@
               <UIcon class="h-5 w-5 flex-shrink-0" name="i-heroicons-bars-4" />
             </span>
           </RadioGroupOption>
-          <RadioGroupOption v-slot="{ checked }" value="compact">
+          <RadioGroupOption
+            v-slot="{ checked }"
+            :aria-label="t('compact')"
+            value="compact"
+          >
             <span
               class="flex h-8 rounded-r-md border border-gray-300 px-2.5 py-1.5 text-sm hover:cursor-pointer dark:border-gray-700"
               :class="
@@ -165,9 +173,13 @@ et:
   noResults: "Otsingu parameetritele vastavaid tulemusi ei leitud. Muuda päringut ja filtreid."
   selected: "{count} kirje valitud | {count} kirjet valitud"
   clear: "Puhasta"
+  summary: "Kokkuvõtev vaade"
+  compact: "Kompaktne vaade"
 en:
   results: "No results | {count} result | {count} results"
   noResults: "Search resulted in zero matching results. Change the search query and filters."
   selected: "{count} item selected | {count} items selected"
   clear: "Clear"
+  summary: "Summary view"
+  compact: "Compact view"
 </i18n>

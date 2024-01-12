@@ -1,0 +1,24 @@
+{
+  "title": "Geoliterature",
+  "subtitle": "Estonian geoscience literature database",
+  "tabs": {
+    "references": "References",
+    "libraries": "Libraries"
+  },
+  "sort": {
+    "best": "Best match",
+    "newest": "Recently added",
+    "changed": "Recently modified",
+    "authorAsc": "Authors A-Z",
+    "authorDesc": "Authors Z-A",
+    "compilerAsc": "Compilers A-Z",
+    "compilerDesc": "Compilers Z-A",
+    "titleAsc": "Title A-Z",
+    "titleDesc": "Title Z-A",
+    "yearAsc": "Year ascending",
+    "yearDesc": "Year descending"
+  },
+  "header": {
+    "lang": "Language"
+  }
+}

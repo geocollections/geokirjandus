@@ -1,0 +1,24 @@
+{
+  "title": "Geokirjandus",
+  "subtitle": "Eesti maapõue teavikute register",
+  "tabs": {
+    "references": "Teavikud",
+    "libraries": "Kogumikud"
+  },
+  "sort": {
+    "best": "Parim vaste",
+    "newest": "Hiljuti lisatud",
+    "changed": "Hiljuti muudetud",
+    "authorAsc": "Autorid A-Z",
+    "authorDesc": "Autorid Z-A",
+    "compilerAsc": "Koostajad A-Z",
+    "compilerDesc": "Koostajad Z-A",
+    "titleAsc": "Pealkiri A-Z",
+    "titleDesc": "Pealkiri Z-A",
+    "yearAsc": "Aasta ascending",
+    "yearDesc": "Aasta descending"
+  },
+  "header": {
+    "lang": "Keel"
+  }
+}

@@ -1,5 +1,4 @@
 version: 2.1
-
 orbs:
   node: circleci/node@4.1.0
 
@@ -12,7 +11,6 @@ executors:
   docker-publisher:
     environment:
       IMAGE_NAME: geocollections/geokirjandus
-      IMAGE_NAME_DEV: geocollections/geokirjandus-dev
     docker:
       - image: circleci/node:lts-stretch
 
@@ -40,10 +38,10 @@ jobs:
             - run:
                 name: Build Docker dev image
                 command: |
-                  docker build -t $IMAGE_NAME_DEV:<< pipeline.parameters.package-version >> -t $IMAGE_NAME_DEV:latest .
+                  docker build -t $IMAGE_NAME:<< pipeline.parameters.package-version >> -t $IMAGE_NAME:dev .
             - run:
                 name: Archive Docker dev image
-                command: docker save -o image.tar $IMAGE_NAME_DEV
+                command: docker save -o image.tar $IMAGE_NAME
       - persist_to_workspace:
           root: .
           paths:
@@ -75,21 +73,21 @@ jobs:
                 name: Publish Docker dev image to Docker Hub
                 command: |
                   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                  docker push $IMAGE_NAME_DEV
+                  docker push $IMAGE_NAME
 
   run_docker_image:
     executor: docker-publisher
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/script && . run_docker_image.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_production.sh"
 
   run_docker_image_dev:
     executor: docker-publisher
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus-dev/script && . run_docker_image.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_dev.sh"
 
 workflows:
   build:

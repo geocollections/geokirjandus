@@ -1,15 +1,21 @@
-FROM node:lts-alpine3.14 AS build
+FROM node:20.10.0-bullseye-slim AS base
 
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
+ENV NODE_ENV=production
 
-COPY . .
-RUN npm run build
+WORKDIR /code
 
-# ---- Serve using nginx ----
-FROM nginx:alpine AS production
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY --from=build /app/nginx/default.conf /etc/nginx/conf.d/
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM base as build
+
+COPY --link package*.json ./
+
+RUN npm install --production=false
+
+COPY --link . .
+
+RUN npm run build && npm prune
+
+FROM base
+
+COPY --from=build /code/.output /code/.output
+
+CMD [ "node", "./.output/server/index.mjs" ]

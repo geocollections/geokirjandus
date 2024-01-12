@@ -61,8 +61,4 @@ export default defineNuxtConfig({
   ogImage: {
     enabled: false,
   },
-  runtimeConfig: {
-    // TODO: allow indexing in production but not in staging
-    indexable: false,
-  },
 });

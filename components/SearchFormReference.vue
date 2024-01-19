@@ -308,7 +308,7 @@ et:
   search: "Otsi"
   filters: "Filtrid"
   isEstonianReference: "Eesti kirjandus"
-  isEstonianAuthor: "Eesti author"
+  isEstonianAuthor: "Eesti autor"
   author: "Autor(id)"
   title: "Pealkiri"
   year: "Aasta"

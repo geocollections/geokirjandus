@@ -172,6 +172,7 @@ const { data: referencesRes } = await useSolrFetch<
     q: "*",
     rows: 5,
     sort: "date_added desc",
+    fq: ["is_estonian_reference:true"],
     json: {
       facet: {
         allReferences: {

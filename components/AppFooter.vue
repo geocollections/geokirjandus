@@ -2,21 +2,25 @@
   <footer
     class="relative border-t bg-stone-100 py-5 text-center dark:border-gray-800 dark:bg-gray-900"
   >
-    <div class="mb-4 flex justify-center">
+    <div class="mx-2 mb-4 flex justify-center space-x-2">
       <a href="https://kik.ee" target="_blank" rel="noopener">
         <img
           src="https://files.geocollections.info/img/kik_valge.png"
           alt="KIK"
+          height="60"
+          width="53"
           title="KIK"
-          class="footerLogo invert dark:filter-none"
+          class="invert dark:filter-none"
         />
       </a>
       <a href="https://natarc.ut.ee" target="_blank" rel="noopener">
         <img
           src="https://files.geocollections.info/img/natarclogovalge1.png"
           alt="NATARC"
+          height="60"
+          width="59"
           title="NATARC"
-          class="footerLogo invert dark:filter-none"
+          class="invert dark:filter-none"
         />
       </a>
       <a
@@ -27,8 +31,10 @@
         <img
           src="https://files.geocollections.info/img/tutaltech2.png"
           alt="SARV"
+          height="60"
+          width="105"
           title="TalTech geoloogia instituut"
-          class="footerLogo invert dark:filter-none"
+          class="invert dark:filter-none"
         />
       </a>
       <a
@@ -39,8 +45,10 @@
         <img
           src="https://files.geocollections.info/img/TY_logo_ring_jooneta_valge.png"
           alt="TÜ Loodusmuuseumi geokogud"
+          height="60"
+          width="59"
           title="TÜ Loodusmuuseumi geokogud"
-          class="footerLogo invert dark:filter-none"
+          class="invert dark:filter-none"
         />
       </a>
       <a
@@ -51,8 +59,10 @@
         <img
           src="https://files.geocollections.info/img/ELM_logo_white1.png"
           alt="Eesti Loodusmuuseumi geoloogia osakond"
+          height="60"
+          width="126"
           title="Eesti Loodusmuuseumi geoloogia osakond"
-          class="footerLogo invert dark:filter-none"
+          class="invert dark:filter-none"
         />
       </a>
     </div>
@@ -128,7 +138,6 @@ useI18n();
 <style scoped>
 .footerLogo {
   height: 60px;
-  width: auto;
   padding: 0 10px;
 }
 

@@ -34,7 +34,7 @@ const { data: statisticsData } = await useSolrFetch<{
     };
   };
 }>("/reference", {
-  query: {
+  query: { 
     q: "*",
     rows: 0,
     fq: ["is_estonian_reference:1"],
@@ -320,7 +320,7 @@ function handleDecadeClick(e: ChartEvent) {
 
   if (!state.decadesChart) return;
   const dataY = state.decadesChart.scales.y.getValueForPixel(canvasPosition.y);
-  if (!dataY) return;
+  if (dataY === undefined) return;
   const decade = decadesChartData.value.labels[dataY];
 
   router.push({
@@ -337,7 +337,7 @@ function handleKeywordClick(e: ChartEvent) {
 
   if (!state.categoryChart) return;
   const dataY = state.categoryChart.scales.y.getValueForPixel(canvasPosition.y);
-  if (!dataY) return;
+  if (dataY === undefined) return;
   const keyword = keywordsChartData.value.labels[dataY];
 
   router.push({

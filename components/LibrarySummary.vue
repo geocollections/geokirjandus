@@ -5,7 +5,7 @@
         :to="`/library/${library.id}`"
         class="visited:text-purple-600 hover:underline dark:visited:text-purple-400"
       >
-        {{ library.title }}
+        {{ title }}
       </NuxtLinkLocale>
       <div class="text-sm">{{ library.author }}</div>
       <div class="text-sm">{{ info }}</div>
@@ -14,7 +14,11 @@
 </template>
 <script setup lang="ts">
 const props = defineProps<{ library: any; position: number }>();
-const { t } = useI18n({ useScope: "local" });
+const { locale, t } = useI18n({ useScope: "local" });
+
+const title = computed(() => {
+  return locale.value === "et" ? props.library.title : props.library.title_en ?? props.library.title;
+});
 
 const info = computed(() => {
   const infoList = [];

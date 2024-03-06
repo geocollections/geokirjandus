@@ -1,19 +1,19 @@
 import { z } from "zod";
 export const useLibrarySort = () => {
-  const { t } = useI18n({ useScope: "global" });
+  const { locale, t } = useI18n({ useScope: "global" });
 
   const sortOptions = [
     "score desc",
-    "title_str desc",
-    "title_str asc",
+    "title desc",
+    "title asc",
     "date_added desc",
   ] as const;
 
   const sortOptionsMap = computed(
     (): SortOptionsMap<typeof sortOptions> => ({
       "score desc": { value: "score desc", name: t("sort.best") },
-      "title_str asc": { value: "title_str asc", name: t("sort.titleAsc") },
-      "title_str desc": { value: "title_str desc", name: t("sort.titleDesc") },
+      "title asc": { value: {et:"title_s asc", en: "title_en_s asc"}, name: t("sort.titleAsc") },
+      "title desc": { value: {et:"title_s desc", en: "title_en_s desc"}, name: t("sort.titleDesc") },
       "date_added desc": { value: "date_added desc", name: t("sort.newest") },
     }),
   );
@@ -27,7 +27,14 @@ export const useLibrarySort = () => {
   );
   const currentSort = computed(() => sortOptionsMap.value[sort.value]);
   const querySchema = z.enum(sortOptions).catch(sortOptions[0]);
-  const sortQuery = computed(() => sortOptionsMap.value[sort.value].value);
+  const sortQuery = computed(() => {
+    const currentSort = sortOptionsMap.value[sort.value];
+
+    if (typeof currentSort.value === "string") {
+      return currentSort.value;
+    }
+    return locale.value === "et" ? currentSort.value.et : currentSort.value.en;
+  });
 
   return {
     sort,

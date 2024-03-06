@@ -18,7 +18,7 @@
           class="w-40"
           v-model="librariesStore.sort"
           :options="librariesStore.sortSelectOptions"
-          value-attribute="value"
+          value-attribute="id"
           option-attribute="name"
           icon="i-heroicons-arrows-up-down"
           :ui="{ wrapper: 'mr-auto' }"

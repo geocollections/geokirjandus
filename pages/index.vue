@@ -178,10 +178,16 @@ const { data: referencesRes } = await useSolrFetch<
         allReferences: {
           type: "query",
           q: "*",
+          domain: {
+            query: "*"
+          }
         },
         estonianReferences: {
           type: "query",
           q: "is_estonian_reference:true",
+          domain: {
+            query: "*"
+          }
         },
       },
     },

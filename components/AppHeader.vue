@@ -120,8 +120,9 @@ const langOptions = computed(() => [
 
 const pageItems = computed(() => [
   [
-    { label: t("tabs.references"), to: localePath("/reference"), exact: true },
-    { label: t("tabs.libraries"), to: localePath("/library"), exact: true },
+    { label: t("tabs.references"), to: localePath("/reference"), exact: true, icon: "i-heroicons-book-open" },
+    { label: t("tabs.libraries"), to: localePath("/library"), exact: true, icon: "i-heroicons-building-library" },
+    { label: t("geocollections"), to: "https://geoloogia.info", icon: "i-geocollections-emaapou",  },
   ],
 ]);
 

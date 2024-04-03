@@ -1,6 +1,7 @@
 {
   "title": "Geokirjandus",
   "subtitle": "Eesti maapõue teavikute register",
+  "geocollections": "eMaapõu", 
   "tabs": {
     "references": "Teavikud",
     "libraries": "Kogumikud"

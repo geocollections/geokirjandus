@@ -1,6 +1,7 @@
 {
   "title": "Geoliterature",
   "subtitle": "Estonian geoscience literature database",
+  "geocollections": "Geocollections", 
   "tabs": {
     "references": "References",
     "libraries": "Libraries"

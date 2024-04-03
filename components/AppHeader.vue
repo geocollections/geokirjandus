@@ -13,7 +13,7 @@
           size="md"
           color="white"
           variant="ghost"
-          class="relative hidden font-semibold sm:inline-flex"
+          class="relative hidden font-semibold sm:inline-flex hover:text-primary-500 dark:hover:text-primary-400"
           :to="localePath(`/reference`)"
           icon="i-heroicons-book-open"
           exact
@@ -24,13 +24,24 @@
           size="md"
           color="white"
           variant="ghost"
-          class="relative hidden font-semibold sm:inline-flex"
+          class="relative hidden font-semibold sm:inline-flex hover:text-primary-500 dark:hover:text-primary-400"
           :to="localePath(`/library`)"
           icon="i-heroicons-building-library"
           exact
           active-class="after:h-1 after:bg-carrot-orange-500 after:absolute after:w-full after:bottom-0 after:left-0 after:rounded-b bg-carrot-orange-500/10"
         />
         <div class="ml-auto hidden space-x-2 lg:flex">
+        <UButton
+          :label="t('geocollections')"
+          size="md"
+          color="white"
+          variant="ghost"
+          class="relative hidden font-semibold sm:inline-flex hover:text-primary-500 dark:hover:text-primary-400"
+          to="https://geoloogia.info"
+          icon="i-geocollections-emaapou"
+          exact
+          active-class="after:h-1 after:bg-carrot-orange-500 after:absolute after:w-full after:bottom-0 after:left-0 after:rounded-b bg-carrot-orange-500/10"
+        />
           <USelect
             :modelValue="locale"
             size="md"
@@ -109,14 +120,16 @@ const langOptions = computed(() => [
 
 const pageItems = computed(() => [
   [
-    { label: t("tabs.references"), to: localePath("/reference"), exact: true },
-    { label: t("tabs.libraries"), to: localePath("/library"), exact: true },
+    { label: t("tabs.references"), to: localePath("/reference"), exact: true, icon: "i-heroicons-book-open" },
+    { label: t("tabs.libraries"), to: localePath("/library"), exact: true, icon: "i-heroicons-building-library" },
+    { label: t("geocollections"), to: "https://geoloogia.info", icon: "i-geocollections-emaapou",  },
   ],
 ]);
 
 function handleLocaleChange(locale: string) {
   setLocale(locale);
 }
+
 </script>
 
 <style>

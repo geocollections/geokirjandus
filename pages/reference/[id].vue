@@ -23,7 +23,7 @@
             {{ t("back") }}
           </UButton>
           <div class="text-xl italic">{{ reference.reference }}</div>
-          <h1 class="pb-1 pt-0.5 text-4xl font-semibold">
+          <h1 class="pb-3 pt-2 text-4xl font-semibold">
             {{ reference.title }}
           </h1>
           <div class="text-2xl">{{ reference.author }}</div>
@@ -37,6 +37,7 @@
             :book-pdf="reference.parent?.pdf"
           />
         </div>
+        <UDivider/>
         <div>
           <table>
             <tbody>
@@ -204,6 +205,18 @@
                   }}
                 </td>
               </tr>
+              <tr v-if="reference.issn">
+                <th class="w-40 text-start font-semibold">
+                  ISSN
+                </th>
+                <td>{{ reference.issn }}</td>
+              </tr>
+              <tr v-if="reference.isbn">
+                <th class="w-40 text-start font-semibold">
+                  ISBN
+                </th>
+                <td>{{ reference.isbn }}</td>
+              </tr>
               <tr v-if="reference.id">
                 <th class="w-40 text-start font-semibold">
                   {{ t("id") }}
@@ -213,6 +226,7 @@
             </tbody>
           </table>
         </div>
+        <UDivider /> 
         <div v-if="reference.abstract" id="abstract" class="scroll-mt-16">
           <HashLink hash="abstract">
             {{ t("abstract") }}
@@ -408,6 +422,8 @@ type Reference = {
   };
   abstract?: string;
   remarks?: string;
+  issn?: string;
+  isbn?: string;
   keyword_count: number;
   reference_library_count: number;
   reference_locality_count: number;
@@ -471,6 +487,8 @@ const { data: reference } = await useNewApiFetch<Reference>(
         "language.name_en",
         "abstract",
         "remarks",
+        "issn",
+        "isbn",
         "keyword_count",
         "reference_library_count",
         "reference_locality_count",

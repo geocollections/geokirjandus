@@ -312,7 +312,7 @@
           >
             {{
               t("changed", {
-                date: new Date(reference.date_changed).toLocaleDateString(),
+                date: new Date(reference.date_changed).toLocaleDateString("et"),
               })
             }}
           </span>

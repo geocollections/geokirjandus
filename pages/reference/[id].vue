@@ -37,7 +37,7 @@
             :book-pdf="reference.parent?.pdf"
           />
         </div>
-        <UDivider/>
+        <UDivider />
         <div>
           <table>
             <tbody>
@@ -206,15 +206,11 @@
                 </td>
               </tr>
               <tr v-if="reference.issn">
-                <th class="w-40 text-start font-semibold">
-                  ISSN
-                </th>
+                <th class="w-40 text-start font-semibold">ISSN</th>
                 <td>{{ reference.issn }}</td>
               </tr>
               <tr v-if="reference.isbn">
-                <th class="w-40 text-start font-semibold">
-                  ISBN
-                </th>
+                <th class="w-40 text-start font-semibold">ISBN</th>
                 <td>{{ reference.isbn }}</td>
               </tr>
               <tr v-if="reference.id">
@@ -226,7 +222,7 @@
             </tbody>
           </table>
         </div>
-        <UDivider /> 
+        <UDivider />
         <div v-if="reference.abstract" id="abstract" class="scroll-mt-16">
           <HashLink hash="abstract">
             {{ t("abstract") }}
@@ -274,14 +270,16 @@
           <HashLink hash="geography">
             {{ t("geography") }}
           </HashLink>
-          <ReferenceGeography
-            :locality-url="reference.reference_localities_url"
-            :locality-count="reference.reference_locality_count"
-            :area-url="reference.reference_areas_url"
-            :area-count="reference.reference_area_count"
-            :site-url="reference.reference_sites_url"
-            :site-count="reference.reference_site_count"
-          />
+          <ClientOnly>
+            <ReferenceGeography
+              :locality-url="reference.reference_localities_url"
+              :locality-count="reference.reference_locality_count"
+              :area-url="reference.reference_areas_url"
+              :area-count="reference.reference_area_count"
+              :site-url="reference.reference_sites_url"
+              :site-count="reference.reference_site_count"
+            />
+          </ClientOnly>
         </div>
         <div v-if="reference.taxon_count > 0" id="taxa" class="scroll-mt-16">
           <HashLink hash="taxa">
@@ -523,45 +521,44 @@ type NavLink = VerticalNavigationLink & {
   exactHash?: boolean;
 };
 
-const navigationLinks = computed(() => {
+function getNavigationLinks(reference: Reference) {
   const links: NavLink[] = [
     { label: t("general"), to: route.path, exactHash: true },
   ];
-  if (!reference.value) return links;
-  if (reference.value.abstract) {
+  if (reference.abstract) {
     links.push({
       label: t("abstract"),
       to: "#abstract",
       exactHash: true,
     });
   }
-  if (reference.value.remarks) {
+  if (reference.remarks) {
     links.push({
       label: t("remarks"),
       to: "#remarks",
       exactHash: true,
     });
   }
-  if (reference.value.keyword_count > 0) {
+  if (reference.keyword_count > 0) {
     links.push({
       label: t("keywords"),
       to: "#keywords",
       exactHash: true,
-      count: reference.value.keyword_count,
+      count: reference.keyword_count,
     });
   }
-  if (reference.value.reference_library_count > 0) {
+  if (reference.reference_library_count > 0) {
     links.push({
       label: t("libraries"),
       to: "#libraries",
       exactHash: true,
-      count: reference.value.reference_library_count,
+      count: reference.reference_library_count,
     });
   }
   if (
-    reference.value.reference_locality_count +
-      reference.value.reference_area_count +
-      reference.value.reference_site_count >
+    reference.reference_locality_count +
+      reference.reference_area_count +
+      reference.reference_site_count >
     0
   ) {
     links.push({
@@ -569,29 +566,31 @@ const navigationLinks = computed(() => {
       to: "#geography",
       exactHash: true,
       count:
-        reference.value.reference_locality_count +
-        reference.value.reference_area_count +
-        reference.value.reference_site_count,
+        reference.reference_locality_count +
+        reference.reference_area_count +
+        reference.reference_site_count,
     });
   }
-  if (reference.value.taxon_count > 0) {
+  if (reference.taxon_count > 0) {
     links.push({
       label: t("taxa"),
       to: "#taxa",
       exactHash: true,
-      count: reference.value.taxon_count,
+      count: reference.taxon_count,
     });
   }
-  if (reference.value.content_count > 0) {
+  if (reference.content_count > 0) {
     links.push({
       label: t("contents"),
       to: "#contents",
       exactHash: true,
-      count: reference.value.content_count,
+      count: reference.content_count,
     });
   }
   return links;
-});
+}
+
+const navigationLinks: NavLink[] = getNavigationLinks(reference.value);
 
 const url = computed(() => {
   if (!reference.value) return undefined;

@@ -70,14 +70,20 @@
 </template>
 
 <script setup lang="ts">
-let L: typeof import("leaflet");
+import L from "leaflet";
+import "leaflet-gesture-handling";
+import "leaflet/dist/leaflet.css";
+import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 
-if (process.client) {
-  L = await import("leaflet");
-  import("leaflet-gesture-handling");
-  import("leaflet/dist/leaflet.css");
-  import("leaflet-gesture-handling/dist/leaflet-gesture-handling.css");
-}
+// let L: typeof import("leaflet");
+//
+//
+// if (process.client) {
+//   L = await import("leaflet");
+//   import("leaflet-gesture-handling");
+//   import("leaflet/dist/leaflet.css");
+//   import("leaflet-gesture-handling/dist/leaflet-gesture-handling.css");
+// }
 const props = defineProps<{
   localityUrl: string;
   localityCount: number;

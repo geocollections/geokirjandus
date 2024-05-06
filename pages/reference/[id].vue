@@ -363,7 +363,7 @@
 </template>
 
 <script setup lang="ts">
-import type { VerticalNavigationLink } from "@nuxt/ui/dist/runtime/types";
+import type { VerticalNavigationLink } from "#ui/types";
 
 const route = useRoute();
 const { t } = useI18n({ useScope: "local" });

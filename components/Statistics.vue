@@ -14,7 +14,7 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getRelativePosition } from "chart.js/helpers";
 import sortBy from "lodash/sortBy";
-import type { ChartEvent } from "chart.js/dist/core/core.interaction";
+import type { ChartEvent } from "chart.js";
 
 const router = useRouter();
 const state = shallowReactive({

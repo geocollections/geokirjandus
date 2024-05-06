@@ -127,7 +127,7 @@ export const useReferencesStore = defineStore(
         queryParams.isEstonianAuthor =
           filters.value.isEstonianAuthor.toString();
       }
-      if (filters.value.isEstonianAuthor) {
+      if (filters.value.pdf) {
         queryParams.pdf = filters.value.pdf.toString();
       }
       if (filters.value.author.length > 0) {

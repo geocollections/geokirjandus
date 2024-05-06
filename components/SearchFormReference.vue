@@ -272,18 +272,24 @@ watch(
 
 function handleFilterChange() {
   refreshOptions();
-  filterKeywords.value?.refreshOptions();
+  nextTick(() => {
+    filterKeywords.value?.refreshOptions();
+  });
   emit("update");
 }
 function handleSubmit() {
   refreshOptions();
-  filterKeywords.value?.refreshOptions();
+  nextTick(() => {
+    filterKeywords.value?.refreshOptions();
+  });
   query.value = localQuery.value;
   emit("update");
 }
 function handleReset() {
   refreshOptions();
-  filterKeywords.value?.refreshOptions();
+  nextTick(() => {
+    filterKeywords.value?.refreshOptions();
+  });
   emit("reset");
 }
 
@@ -328,7 +334,7 @@ et:
   end: "Lõpp"
   found: "Tulemused puuduvad | {count} tulemus leitud | {count} tulemust leitud"
   clear: "Puhasta otsinguväli"
-  clearFilter: "Puhasta filtrid"
+  clearFilters: "Puhasta filtrid"
 en:
   search: "Search"
   filters: "Filters"
@@ -353,5 +359,5 @@ en:
   end: "End"
   found: "No results found | Found {count} result | Found {count} results"
   clear: "Clear search input"
-  clearFilter: "Clear filters"
+  clearFilters: "Clear filters"
 </i18n>

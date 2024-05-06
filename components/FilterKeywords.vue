@@ -1,72 +1,75 @@
 <template>
-  <UCheckbox
-    v-for="option in modelValue.values()"
-    :key="`selected-${option}`"
-    class="label-w-full"
-    :ui="{ label: 'flex' }"
-    :model-value="true"
-    checked
-    @click="removeSelected(option)"
-  >
-    <template #label>
-      {{ option }}
-    </template>
-  </UCheckbox>
-  <UDivider v-if="modelValue.length > 0" />
-  <UInput
-    v-model="query"
-    :placeholder="t('search')"
-    :ui="{ icon: { trailing: { pointer: '' } } }"
-  >
-    <template #trailing>
-      <UButton
-        v-show="query !== ''"
-        color="gray"
-        variant="link"
-        icon="i-heroicons-x-mark-20-solid"
-        :aria-label="t('clearKeywordSearch')"
-        :padded="false"
-        @click="query = ''"
-      />
-    </template>
-  </UInput>
-  <template v-if="options.length > 0">
+  <div>
     <UCheckbox
-      v-for="option in options"
-      :key="`options-${option.value}`"
-      :ui="{ label: 'flex', inner: 'w-full' }"
-      :label="option.name"
-      @click="addOption(option)"
+      v-for="option in modelValue.values()"
+      :key="`selected-${option}`"
+      class="label-w-full"
+      :ui="{ label: 'flex' }"
+      :model-value="true"
+      checked
+      @click="removeSelected(option)"
     >
       <template #label>
-        {{ option.name }}
-        <UBadge size="xs" class="ml-auto block h-min">{{
-          option.count
-        }}</UBadge>
+        {{ option }}
       </template>
     </UCheckbox>
-  </template>
-  <template v-else>
-    <div class="text-center text-gray-500">
-      {{ t("noMoreOptions") }}
+    <UDivider v-if="modelValue.length > 0" />
+    <UInput
+      v-model="query"
+      :placeholder="t('search')"
+      :ui="{ icon: { trailing: { pointer: '' } } }"
+    >
+      <template #trailing>
+        <UButton
+          v-show="query !== ''"
+          color="gray"
+          variant="link"
+          icon="i-heroicons-x-mark-20-solid"
+          :aria-label="t('clearKeywordSearch')"
+          :padded="false"
+          @click="query = ''"
+        />
+      </template>
+    </UInput>
+    <div v-if="options.length > 0" class="space-y-1 pt-1">
+      <UCheckbox
+        v-for="option in options"
+        :key="`options-${option.value}`"
+        :ui="{ label: 'flex', inner: 'w-full' }"
+        :label="option.name"
+        @click="addOption(option)"
+      >
+        <template #label>
+          {{ option.name }}
+          <UBadge size="xs" class="ml-auto block h-min">{{
+            option.count
+          }}</UBadge>
+        </template>
+      </UCheckbox>
     </div>
-  </template>
-  <div class="flex items-center justify-around">
-    <UButton
-      variant="link"
-      icon="i-heroicons-chevron-double-left"
-      :aria-label="t('previousPage')"
-      :disabled="pagination.page <= 1"
-      @click="prevPage"
-    />
-    <span>{{ pagination.page }}</span>
-    <UButton
-      variant="link"
-      icon="i-heroicons-chevron-double-right"
-      :aria-label="t('nextPage')"
-      :disabled="!hasNextPage"
-      @click="nextPage"
-    />
+    <template v-else>
+      <div class="text-center text-gray-500">
+        {{ t("noMoreOptions") }}
+      </div>
+    </template>
+    <div class="flex items-center justify-around">
+      <UButton
+        variant="link"
+        icon="i-heroicons-chevron-double-left"
+        :aria-label="t('previousPage')"
+        :disabled="pagination.page <= 1"
+        @click="prevPage"
+      />
+      <span>{{ pagination.page }}</span>
+      <UButton
+        variant="link"
+        icon="i-heroicons-chevron-double-right"
+        :aria-label="t('nextPage')"
+        :disabled="!hasNextPage"
+        SearchForm
+        @click="nextPage"
+      />
+    </div>
   </div>
 </template>
 
@@ -178,7 +181,10 @@ function prevPage() {
 }
 
 defineExpose({
-  refreshOptions,
+  refreshOptions: refreshOptions,
+  test: () => {
+    console.log(pagination.value);
+  },
 });
 </script>
 

@@ -288,7 +288,7 @@
             {{ t("taxa") }}
           </HashLink>
           <ReferenceTaxa
-            :url="`/reference/${route.params.id}/taxa/`"
+            :url="`/references/${route.params.id}/taxa/`"
             :count="reference.taxon_count"
           />
         </div>
@@ -301,7 +301,7 @@
             {{ t("contents") }}
           </HashLink>
           <ReferenceContent
-            :contents-url="`/reference/${route.params.id}/contents/`"
+            :contents-url="`/references/${route.params.id}/contents/`"
             :count="reference.content_count"
           />
         </div>

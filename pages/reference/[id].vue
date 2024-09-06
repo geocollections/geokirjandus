@@ -243,7 +243,9 @@
           <HashLink hash="keywords">
             {{ t("keywords") }}
           </HashLink>
-          <ReferenceKeywords :keywords-url="reference.keywords_url" />
+          <ReferenceKeywords
+            :keywords-url="`/references/${route.params.id}/keywords/`"
+          />
         </div>
         <div
           v-if="reference.reference_library_count > 0"
@@ -254,7 +256,7 @@
             {{ t("libraries") }}
           </HashLink>
           <ReferenceLibraries
-            :reference-libraries-url="reference.reference_libraries_url"
+            :reference-libraries-url="`/references/${route.params.id}/reference-libraries/`"
           />
         </div>
         <div
@@ -272,11 +274,11 @@
           </HashLink>
           <ClientOnly>
             <ReferenceGeography
-              :locality-url="reference.reference_localities_url"
+              :locality-url="`/references/${route.params.id}/reference-localities/`"
               :locality-count="reference.reference_locality_count"
-              :area-url="reference.reference_areas_url"
+              :area-url="`/references/${route.params.id}/reference-areas/`"
               :area-count="reference.reference_area_count"
-              :site-url="reference.reference_sites_url"
+              :site-url="`/references/${route.params.id}/reference-sites/`"
               :site-count="reference.reference_site_count"
             />
           </ClientOnly>
@@ -286,7 +288,7 @@
             {{ t("taxa") }}
           </HashLink>
           <ReferenceTaxa
-            :url="reference.taxa_url"
+            :url="`/reference/${route.params.id}/taxa/`"
             :count="reference.taxon_count"
           />
         </div>
@@ -299,7 +301,7 @@
             {{ t("contents") }}
           </HashLink>
           <ReferenceContent
-            :contents-url="reference.contents_url"
+            :contents-url="`/reference/${route.params.id}/contents/`"
             :count="reference.content_count"
           />
         </div>
@@ -431,13 +433,6 @@ type Reference = {
   content_count: number;
   date_added: string;
   date_changed: string;
-  reference_libraries_url: string;
-  reference_localities_url: string;
-  reference_areas_url: string;
-  reference_sites_url: string;
-  taxa_url: string;
-  contents_url: string;
-  keywords_url: string;
 };
 
 const { data: reference } = await useNewApiFetch<Reference>(
@@ -496,13 +491,6 @@ const { data: reference } = await useNewApiFetch<Reference>(
         "content_count",
         "date_added",
         "date_changed",
-        "reference_libraries_url",
-        "reference_localities_url",
-        "reference_areas_url",
-        "reference_sites_url",
-        "taxa_url",
-        "contents_url",
-        "keywords_url",
       ],
     },
   },

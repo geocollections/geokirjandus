@@ -116,10 +116,9 @@
         :ui="{ label: 'flex', inner: 'w-full' }"
         :model-value="filters.type.has(option.value)"
         @click="handleOptionClick(option, filters.type)"
-        :label="option.name"
       >
         <template #label>
-          {{ option.name }}
+          {{ $translate({ et: option.name, en: option.name_en }) }}
           <UBadge size="xs" class="ml-auto block h-min">{{
             option.count
           }}</UBadge>
@@ -133,10 +132,9 @@
         :ui="{ label: 'flex', inner: 'w-full' }"
         :model-value="filters.language.has(option.value)"
         @click="handleOptionClick(option, filters.language)"
-        :label="option.name"
       >
         <template #label>
-          {{ option.name }}
+          {{ $translate({ et: option.name, en: option.name_en }) }}
           <UBadge size="xs" class="ml-auto">{{ option.count }}</UBadge>
         </template>
       </UCheckbox>
@@ -287,9 +285,7 @@ function handleSubmit() {
 }
 function handleReset() {
   refreshOptions();
-  nextTick(() => {
-    filterKeywords.value?.refreshOptions();
-  });
+  filterKeywords.value?.refreshOptions();
   emit("reset");
 }
 

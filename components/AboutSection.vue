@@ -98,12 +98,8 @@ et:
     contact: "Kontakt"
   text:
     about:
-      p1:
-        "Geoloogia kirjanduse portaal koondab andmeid Eesti geoloogia-alaste trükiste ning
-        muude allikmaterjalide kohta."
-      p2:
-        "Lisaks sisaldab portaal teavet ka teiste regioonide ning üldiste geoloogia
-        küsimuste suhtes."
+      p1: "GEOkirjandus on portaal, mis koondab andmeid Eesti geoloogia, maapõue, maavarade ja mäenduse-alaste trükiste ning muude allikmaterjalide kohta"
+      p2: "Lisaks leidub portaalis teavet ka teiste regioonide ja üldiste geoloogia teemade kohta. Virtuaalsed kirjanduse kogumikud sisaldavad allikmaterjalide nimestikke mõne konkreetse teema, persooni või piirkonna kohta."
     libraries: "Virtuaal kogumikud sisaldavad allikaid mõned konkreetse teema,
       persooni või piirkonna kohta."
     project:
@@ -122,9 +118,9 @@ en:
     contact: "Contact"
   text:
     about:
-      p1: "The portal hosts a database of geological literature focusing on the territory of Estonia and Estonian authors., but holding also references on certain fossil groups and research topics from all over the world."
-      p2: "Additionally holds references on certain fossil groups and research topics from all over the world."
-    libraries: "Virtual libraries are a thematic collections of references. Usually containing information about a certain region, person or topic"
+      p1: "The portal is a gateway to publications, technical reports and other information on geology and georesources of Estonia or by Estonian authors."
+      p2: "Additionally, it holds data on various general geological topics and fossil groups from all over the world. References may be organised into virtual libraries – thematic collections on particular regions, persons or topics."
+    libraries: "Virtual libraries are a thematic collections of references. Usually containing information about a certain region, person or topic."
     project:
       p1: "The literature database is part of the {sarv} geological information system, which is developed within the framework of the {natarc} at {taltech}."
       p2: "The systematization, digitization and annotation of Estonian geological literature was supported by the {kik} projects No. 16633 and 17805."

@@ -1,5 +1,5 @@
 <template>
-  <div class="background -mt-[57px]">
+  <div class="background -mt-[58px]">
     <div class="container mx-auto px-2 pt-[calc(57px+2em)] xl:max-w-screen-xl">
       <div class="space-y-4 lg:w-fit">
         <div>
@@ -125,8 +125,7 @@
             </div>
 
             <div class="space-y-1">
-              <template v-for="(reference, index) in references">
-                <!-- <UDivider v-if="index !== 0" /> -->
+              <template v-for="(reference ) in references">
                 <ReferenceItem
                   class="rounded border bg-stone-50 p-2 dark:border-gray-800 dark:bg-gray-900"
                   :reference="reference"

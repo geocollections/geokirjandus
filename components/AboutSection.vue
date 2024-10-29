@@ -19,16 +19,6 @@
           {{ t("text.about.p2") }}
         </p>
       </div>
-      <div class="mb-3 mt-3 text-2xl font-medium">
-        {{ t("title.libraries") }}
-      </div>
-      <div
-        class="hyphens-auto rounded text-justify text-gray-900 dark:text-gray-300"
-      >
-        <p>
-          {{ t("text.libraries") }}
-        </p>
-      </div>
     </div>
 
     <div class="col-span-full md:col-span-3 xl:col-span-2">
@@ -93,15 +83,12 @@ const { t } = useI18n({ useScope: "local" });
 et:
   title:
     about: "Mis on {site}?"
-    libraries: "Virtuaal kogumikud"
     project: "Projekt"
     contact: "Kontakt"
   text:
     about:
       p1: "GEOkirjandus on portaal, mis koondab andmeid Eesti geoloogia, maapõue, maavarade ja mäenduse-alaste trükiste ning muude allikmaterjalide kohta"
       p2: "Lisaks leidub portaalis teavet ka teiste regioonide ja üldiste geoloogia teemade kohta. Virtuaalsed kirjanduse kogumikud sisaldavad allikmaterjalide nimestikke mõne konkreetse teema, persooni või piirkonna kohta."
-    libraries: "Virtuaal kogumikud sisaldavad allikaid mõned konkreetse teema,
-      persooni või piirkonna kohta."
     project:
       p1: "Kirjanduse andmebaas on osa geoloogia infosüsteemist {sarv}, mida
         arendatakse Eesti teadustaristu teekaardi {natarc} raames {taltech}."
@@ -113,14 +100,12 @@ et:
 en:
   title:
     about: "What is {site}?"
-    libraries: "Virtual libraries"
     project: "Project"
     contact: "Contact"
   text:
     about:
       p1: "The portal is a gateway to publications, technical reports and other information on geology and georesources of Estonia or by Estonian authors."
       p2: "Additionally, it holds data on various general geological topics and fossil groups from all over the world. References may be organised into virtual libraries – thematic collections on particular regions, persons or topics."
-    libraries: "Virtual libraries are a thematic collections of references. Usually containing information about a certain region, person or topic."
     project:
       p1: "The literature database is part of the {sarv} geological information system, which is developed within the framework of the {natarc} at {taltech}."
       p2: "The systematization, digitization and annotation of Estonian geological literature was supported by the {kik} projects No. 16633 and 17805."

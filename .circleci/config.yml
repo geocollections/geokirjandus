@@ -22,7 +22,9 @@ jobs:
       - setup_remote_docker
       - when:
           condition:
-            equal: [ "master", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "master", << pipeline.git.branch >> ]
+              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Build Docker image
@@ -33,7 +35,9 @@ jobs:
                 command: docker save -o image.tar $IMAGE_NAME
       - when:
           condition:
-            equal: [ "development", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "development", << pipeline.git.branch >> ]
+              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Build Docker dev image

@@ -58,7 +58,9 @@ jobs:
           command: docker load -i /tmp/workspace/image.tar
       - when:
           condition:
-            equal: [ "master", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "master", << pipeline.git.branch >> ]
+              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker image to Docker Hub
@@ -67,7 +69,9 @@ jobs:
                   docker push $IMAGE_NAME
       - when:
           condition:
-            equal: [ "development", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "development", << pipeline.git.branch >> ]
+              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker dev image to Docker Hub
@@ -80,14 +84,14 @@ jobs:
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_production.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_NEW} "cd /var/www/geokirjandus/ && . run_production.sh"
 
   run_docker_image_dev:
     executor: docker-publisher
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_dev.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_NEW} "cd /var/www/geokirjandus/ && . run_dev.sh"
 
 workflows:
   build:
@@ -101,10 +105,14 @@ workflows:
             - publish_docker_image
           filters:
             branches:
-              only: master
+              only: 
+                - master
+                - new-cloud-machine
       - run_docker_image_dev:
           requires:
             - publish_docker_image
           filters:
             branches:
-              only: development
+              only: 
+                - development
+                - new-cloud-machine

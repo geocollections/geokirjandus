@@ -28,6 +28,11 @@ export default defineNuxtConfig({
       { code: "et", file: "et.json" },
       { code: "en", file: "en.json" },
     ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirect",
+      redirectOn: "no prefix",
+    },
     lazy: true,
     langDir: "lang",
     defaultLocale: "et",

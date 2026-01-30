@@ -24,7 +24,6 @@ jobs:
           condition:
             or:
               - equal: [ "master", << pipeline.git.branch >> ]
-              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Build Docker image
@@ -37,7 +36,6 @@ jobs:
           condition:
             or:
               - equal: [ "development", << pipeline.git.branch >> ]
-              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Build Docker dev image
@@ -64,7 +62,6 @@ jobs:
           condition:
             or:
               - equal: [ "master", << pipeline.git.branch >> ]
-              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker image to Docker Hub
@@ -75,7 +72,6 @@ jobs:
           condition:
             or:
               - equal: [ "development", << pipeline.git.branch >> ]
-              - equal: [ "new-cloud-machine", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker dev image to Docker Hub
@@ -88,14 +84,14 @@ jobs:
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_NEW} "cd /var/www/geokirjandus/ && . run_production.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_production.sh"
 
   run_docker_image_dev:
     executor: docker-publisher
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS_NEW} "cd /var/www/geokirjandus/ && . run_dev.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_dev.sh"
 
 workflows:
   build:
@@ -111,7 +107,6 @@ workflows:
             branches:
               only: 
                 - master
-                - new-cloud-machine
       - run_docker_image_dev:
           requires:
             - publish_docker_image
@@ -119,4 +114,3 @@ workflows:
             branches:
               only: 
                 - development
-                - new-cloud-machine

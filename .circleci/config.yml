@@ -22,7 +22,8 @@ jobs:
       - setup_remote_docker
       - when:
           condition:
-            equal: [ "master", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "master", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Build Docker image
@@ -33,7 +34,8 @@ jobs:
                 command: docker save -o image.tar $IMAGE_NAME
       - when:
           condition:
-            equal: [ "development", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "development", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Build Docker dev image
@@ -58,7 +60,8 @@ jobs:
           command: docker load -i /tmp/workspace/image.tar
       - when:
           condition:
-            equal: [ "master", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "master", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker image to Docker Hub
@@ -67,7 +70,8 @@ jobs:
                   docker push $IMAGE_NAME
       - when:
           condition:
-            equal: [ "development", << pipeline.git.branch >> ]
+            or:
+              - equal: [ "development", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker dev image to Docker Hub
@@ -101,10 +105,12 @@ workflows:
             - publish_docker_image
           filters:
             branches:
-              only: master
+              only: 
+                - master
       - run_docker_image_dev:
           requires:
             - publish_docker_image
           filters:
             branches:
-              only: development
+              only: 
+                - development

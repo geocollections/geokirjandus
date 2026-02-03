@@ -10,7 +10,7 @@ parameters:
 executors:
   docker-publisher:
     docker:
-      - image: circleci/node:lts-stretch
+      - image: cimg/base:2026.02-22.04
 
 jobs:
   build_docker_image:

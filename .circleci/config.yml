@@ -34,7 +34,6 @@ jobs:
           root: .
           paths:
             - ./image.tar
-
   publish_docker_image:
     executor: docker-publisher
     steps:
@@ -44,40 +43,21 @@ jobs:
       - run:
           name: Load archive Docker image
           command: docker load -i /tmp/workspace/image.tar
-      - when:
-          condition:
-            or:
-              - equal: [ "master", << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish Docker image to Docker Hub
                 command: |
                   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
                   docker push $IMAGE_NAME
-      - when:
-          condition:
-            or:
-              - equal: [ "development", << pipeline.git.branch >> ]
-          steps:
-            - run:
-                name: Publish Docker dev image to Docker Hub
-                command: |
-                  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                  docker push $IMAGE_NAME
-
   run_docker_image:
     executor: docker-publisher
+    parameters:
+      cmd:
+        type: string
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_production.sh"
-
-  run_docker_image_dev:
-    executor: docker-publisher
-    steps:
-      - run:
-          name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "cd /var/www/geokirjandus/ && . run_dev.sh"
+          command: ssh -o "StrictHostKeyChecking no" -p ${PORT} ${USER}@${ADDRESS} "<< parameters.cmd >>"
 
 workflows:
   build:
@@ -88,9 +68,10 @@ workflows:
             branches:
               only: master
       - publish_docker_image:
-          requires:
+          requires: 
             - build_docker_image
       - run_docker_image:
+          cmd: cd /var/www/geokirjandus/ && . run_production.sh
           requires:
             - publish_docker_image
   build-dev:
@@ -103,6 +84,7 @@ workflows:
       - publish_docker_image:
           requires:
             - build_docker_image
-      - run_docker_image_dev:
+      - run_docker_image:
+          cmd: cd /var/www/geokirjandus/ && . run_dev.sh
           requires:
             - publish_docker_image

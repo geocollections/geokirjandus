@@ -59,7 +59,7 @@ jobs:
     steps:
       - run:
           name: Run Docker image
-          command: ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST "$SSH_WORKDIR && << parameters.cmd >>"
+          command: ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $SSH_WORKDIR && << parameters.cmd >>"
 
 workflows:
   build:

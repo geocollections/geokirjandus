@@ -28,7 +28,9 @@ jobs:
             docker build -t $IMAGE_NAME:<< pipeline.parameters.package-version >> -t $IMAGE_NAME:<< parameters.tag >> .
       - run:
           name: Archive Docker image
-          command: docker save -o image.tar $IMAGE_NAME
+          command: |
+            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
+            docker save -o image.tar $IMAGE_NAME
       - persist_to_workspace:
           root: .
           paths:

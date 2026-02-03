@@ -9,8 +9,6 @@ parameters:
 
 executors:
   docker-publisher:
-    environment:
-      IMAGE_NAME: $DOCKER_USERNAME/geokirjandus
     docker:
       - image: circleci/node:lts-stretch
 
@@ -26,6 +24,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
+            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
             docker build -t $IMAGE_NAME:<< pipeline.parameters.package-version >> -t $IMAGE_NAME:<< parameters.tag >> .
       - run:
           name: Archive Docker image
@@ -47,6 +46,7 @@ jobs:
             - run:
                 name: Publish Docker image to Docker Hub
                 command: |
+                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
                   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
                   docker push $IMAGE_NAME
   run_docker_image:

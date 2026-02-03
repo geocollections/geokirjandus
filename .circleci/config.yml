@@ -83,7 +83,7 @@ workflows:
   build:
     jobs:
       - build_docker_image:
-          tag: $IMAGE_TAG:latest
+          tag: $IMAGE_NAME:latest
           filters:
             branches:
               only: master
@@ -96,7 +96,7 @@ workflows:
   build-dev:
     jobs:
       - build_docker_image:
-          tag: $IMAGE_TAG:dev
+          tag: $IMAGE_NAME:dev
           filters:
             branches:
               only: development 

@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Run production Docker container
           command: |
-            cat /tmp/workspace/image.tar | ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST "cat > docker load"
+            cat /tmp/workspace/image.tar | ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST docker load
   ssh-run-production-docker-container:
     executor: docker-publisher
     steps:

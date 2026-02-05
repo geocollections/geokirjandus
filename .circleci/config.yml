@@ -54,11 +54,17 @@ jobs:
             IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push --all-tags $IMAGE_NAME
-  run-docker-container:
+  ssh-push-docker-image:
     executor: docker-publisher
-    parameters:
-      cmd:
-        type: string
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Run production Docker container
+          command: |
+            /tmp/workspace/image.tar | ssh -o "StrictHostKeyChecking no" -p $SSH_PORT -C $SSH_USER@$SSH_HOST "docker load"
+  ssh-run-production-docker-container:
+    executor: docker-publisher
     steps:
       - run:
           name: Run production Docker container
@@ -70,6 +76,18 @@ jobs:
               docker stop geokirjandus
               docker rm geokirjandus
               docker run -d --restart unless-stopped --network frontend --name geokirjandus $DOCKER_USERNAME/geokirjandus:latest
+            "
+  ssh-run-dev-docker-container:
+    executor: docker-publisher
+    steps:
+      - run:
+          name: Run production Docker container
+          command: |
+            ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
+              cd $SSH_WORKDIR 
+              docker stop geokirjandus-dev
+              docker rm geokirjandus-dev
+              docker run -d --restart unless-stopped --network frontend --name geokirjandus-dev $DOCKER_USERNAME/geokirjandus:dev-$CIRCLE_SHA1
             "
 
 workflows:
@@ -86,8 +104,7 @@ workflows:
             - build-docker-image
           filters:
             <<: *filters-production
-      - run-docker-container:
-          cmd: sh run_production.sh
+      - ssh-run-production-docker-container:
           context:
             - machine-sarv-apps
           requires:
@@ -97,15 +114,18 @@ workflows:
   build-dev:
     jobs:
       - build-docker-image:
-          filters:
+          filters: &filters-dev
             branches:
               only: development 
-      - publish-docker-image:
+      - ssh-push-docker-image:
           requires:
             - build-docker-image
-      - run-docker-container:
-          cmd: sh run_dev.sh
+          filters:
+            <<: *filters-dev
+      - ssh-run-dev-docker-container:
           context:
             - machine-sarv-apps
           requires:
-            - publish-docker-image
+            - ssh-push-docker-image
+          filters:
+            <<: *filters-dev

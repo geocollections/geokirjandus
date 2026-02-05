@@ -115,8 +115,8 @@ workflows:
     jobs:
       - build-docker-image:
           filters: &filters-dev
-            branches:
-              only: development 
+            tags:
+              ignore: /^*/
       - ssh-push-docker-image:
           context:
             - machine-sarv-apps

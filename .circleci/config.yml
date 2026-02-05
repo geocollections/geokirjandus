@@ -116,7 +116,7 @@ workflows:
       - build-docker-image:
           filters: &filters-dev
             tags:
-              ignore: /^*/
+              ignore: /^.*$/
       - ssh-push-docker-image:
           context:
             - machine-sarv-apps

@@ -61,11 +61,14 @@ jobs:
         type: string
     steps:
       - run:
-          name: Run Docker container
+          name: Run production Docker container
           command: |
             ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
               cd $SSH_WORKDIR 
-              << parameters.cmd >>
+              docker pull $DOCKER_USERNAME $DOCKER_USERNAME/geokirjandus:latest
+              docker stop geokirjandus
+              docker rm geokirjandus
+              docker run -d --restart unless-stopped --network frontend --name geokirjandus $DOCKER_USERNAME/geokirjandus:latest
             "
 
 workflows:

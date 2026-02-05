@@ -59,7 +59,7 @@ workflows:
     jobs:
       - build-docker-image:
           image-tag: latest
-          filters:
+          filters: &filters-production
             branches:
               only: master
             tags:
@@ -67,12 +67,16 @@ workflows:
       - publish-docker-image:
           requires: 
             - build-docker-image
+          filters:
+            <<: *filters-production
       - run-docker-container:
           cmd: sh run_production.sh
           context:
             - machine-sarv-apps
           requires:
             - publish-docker-image
+          filters:
+            <<: *filters-production
   build-dev:
     jobs:
       - build-docker-image:

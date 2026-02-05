@@ -11,7 +11,7 @@ executors:
       - image: cimg/base:2026.02-22.04
 
 jobs:
-  build_docker_image:
+  build-docker-image:
     executor: docker-publisher
     parameters:
       tag:
@@ -33,7 +33,7 @@ jobs:
           root: .
           paths:
             - ./image.tar
-  publish_docker_image:
+  publish-docker-image:
     executor: docker-publisher
     steps:
       - attach_workspace:
@@ -49,7 +49,7 @@ jobs:
                   IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
                   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
                   docker push $IMAGE_NAME
-  run_docker_image:
+  run-docker-container:
     executor: docker-publisher
     parameters:
       cmd:
@@ -62,33 +62,33 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_docker_image:
+      - build-docker-image:
           tag: latest
           filters:
             branches:
               only: master
-      - publish_docker_image:
+      - publish-docker-image:
           requires: 
-            - build_docker_image
-      - run_docker_image:
+            - build-docker-image
+      - run-docker-container:
           cmd: sh run_production.sh
           context:
             - machine-sarv-apps
           requires:
-            - publish_docker_image
+            - publish-docker-image
   build-dev:
     jobs:
-      - build_docker_image:
+      - build-docker-image:
           tag: dev
           filters:
             branches:
               only: development 
-      - publish_docker_image:
+      - publish-docker-image:
           requires:
-            - build_docker_image
-      - run_docker_image:
+            - build-docker-image
+      - run-docker-container:
           cmd: sh run_dev.sh
           context:
             - machine-sarv-apps
           requires:
-            - publish_docker_image
+            - publish-docker-image

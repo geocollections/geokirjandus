@@ -60,14 +60,14 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run:
-          name: Run production Docker container
+          name: Push Docker image through SSH
           command: |
-            /tmp/workspace/image.tar | ssh -o "StrictHostKeyChecking no" -p $SSH_PORT -C $SSH_USER@$SSH_HOST "docker load"
+            cat /tmp/workspace/image.tar | ssh -C -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST docker load
   ssh-run-production-docker-container:
     executor: docker-publisher
     steps:
       - run:
-          name: Run production Docker container
+          name: Run production Docker container through SSH
           command: |
             ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
               cd $SSH_WORKDIR 
@@ -81,7 +81,7 @@ jobs:
     executor: docker-publisher
     steps:
       - run:
-          name: Run production Docker container
+          name: Run dev Docker container through SSH
           command: |
             ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
               cd $SSH_WORKDIR 
@@ -115,9 +115,11 @@ workflows:
     jobs:
       - build-docker-image:
           filters: &filters-dev
-            branches:
-              only: development 
+            tags:
+              ignore: /^*/
       - ssh-push-docker-image:
+          context:
+            - machine-sarv-apps
           requires:
             - build-docker-image
           filters:

@@ -8,17 +8,28 @@ executors:
 jobs:
   build-docker-image:
     executor: docker-publisher
-    parameters:
-      image-tag:
-        type: string
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Build Docker image
-          command: |
-            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-            docker build -t $IMAGE_NAME:$CIRCLE_TAG -t $IMAGE_NAME:<< parameters.image-tag >> .
+      - when:
+          condition:
+            equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Build production Docker image
+                command: |
+                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
+                  docker build -t $IMAGE_NAME:$CIRCLE_TAG -t $IMAGE_NAME:latest .
+      - when:
+          condition:
+            not: 
+              equal: [ master, << pipeline.git.branch >>]
+          steps:
+            - run:
+                name: Build development Docker image
+                command: |
+                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
+                  docker build -t $IMAGE_NAME:dev-$CIRCLE_SHA1 .
       - run:
           name: Archive Docker image
           command: |
@@ -58,7 +69,6 @@ workflows:
   build:
     jobs:
       - build-docker-image:
-          image-tag: latest
           filters: &filters-production
             branches:
               only: master
@@ -80,7 +90,6 @@ workflows:
   build-dev:
     jobs:
       - build-docker-image:
-          image-tag: dev
           filters:
             branches:
               only: development 

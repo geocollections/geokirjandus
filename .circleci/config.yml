@@ -14,7 +14,7 @@ jobs:
   build-docker-image:
     executor: docker-publisher
     parameters:
-      tag:
+      image-tag:
         type: string
     steps:
       - checkout
@@ -23,7 +23,7 @@ jobs:
           name: Build Docker image
           command: |
             IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-            docker build -t $IMAGE_NAME:<< pipeline.parameters.package-version >> -t $IMAGE_NAME:<< parameters.tag >> .
+            docker build -t $IMAGE_NAME:<< pipeline.parameters.package-version >> -t $IMAGE_NAME:<< parameters.image-tag >> .
       - run:
           name: Archive Docker image
           command: |
@@ -63,7 +63,7 @@ workflows:
   build:
     jobs:
       - build-docker-image:
-          tag: latest
+          image-tag: latest
           filters:
             branches:
               only: master
@@ -79,7 +79,7 @@ workflows:
   build-dev:
     jobs:
       - build-docker-image:
-          tag: dev
+          image-tag: dev
           filters:
             branches:
               only: development 

@@ -1,44 +1,14 @@
 version: 2.1
 
+orbs:
+  deployment: geocollections/deployment-orb@1.0.0
+
 executors:
   docker-publisher:
     docker:
       - image: cimg/base:2026.02-22.04
 
 jobs:
-  build-docker-image:
-    executor: docker-publisher
-    steps:
-      - checkout
-      - setup_remote_docker
-      - when:
-          condition:
-            << pipeline.git.tag >>
-          steps:
-            - run:
-                name: Build production Docker image
-                command: |
-                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-                  docker build -t $IMAGE_NAME:$CIRCLE_TAG -t $IMAGE_NAME:latest .
-      - when:
-          condition:
-            not: 
-              << pipeline.git.tag >>
-          steps:
-            - run:
-                name: Build development Docker image
-                command: |
-                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-                  docker build -t $IMAGE_NAME:dev-$CIRCLE_SHA1 .
-      - run:
-          name: Archive Docker image
-          command: |
-            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-            docker save -o image.tar $IMAGE_NAME
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./image.tar
   publish-docker-image:
     executor: docker-publisher
     steps:
@@ -93,7 +63,9 @@ jobs:
 workflows:
   build:
     jobs:
-      - build-docker-image:
+      - geocollections/build_docker_image:
+          context:
+            - dockerhub
           filters: &filters-production
             branches:
               only: master
@@ -101,7 +73,7 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
       - publish-docker-image:
           requires: 
-            - build-docker-image
+            - geocollections/build_docker_image
           filters:
             <<: *filters-production
       - ssh-run-production-docker-container:
@@ -113,15 +85,17 @@ workflows:
             <<: *filters-production
   build-dev:
     jobs:
-      - build-docker-image:
+      - geocollections/build_docker_image:
+          context:
+            - dockerhub
           filters: &filters-dev
             tags:
               ignore: /^.*$/
       - ssh-push-docker-image:
           context:
             - machine-sarv-apps
-          requires:
-            - build-docker-image
+          requires: 
+            - geocollections/build_docker_image
           filters:
             <<: *filters-dev
       - ssh-run-dev-docker-container:

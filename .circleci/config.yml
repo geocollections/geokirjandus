@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  deployment: geocollections/deployment-orb@1.0.0
+  deployment: geocollections/deployment-orb@1
 
 executors:
   docker-publisher:

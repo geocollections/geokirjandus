@@ -64,6 +64,7 @@ workflows:
   build:
     jobs:
       - deployment/build_docker_image:
+          git_tag: << pipeline.git.tag >>
           context:
             - dockerhub
           filters: &filters-production
@@ -86,6 +87,7 @@ workflows:
   build-dev:
     jobs:
       - deployment/build_docker_image:
+          git_tag: << pipeline.git.tag >>
           context:
             - dockerhub
           filters: &filters-dev

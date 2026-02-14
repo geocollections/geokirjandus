@@ -8,58 +8,6 @@ executors:
     docker:
       - image: cimg/base:2026.02-22.04
 
-jobs:
-  publish-docker-image:
-    executor: docker-publisher
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - setup_remote_docker
-      - run:
-          name: Load archive Docker image
-          command: docker load -i /tmp/workspace/image.tar
-      - run:
-          name: Publish Docker image to Docker Hub
-          command: |
-            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push --all-tags $IMAGE_NAME
-  ssh-push-docker-image:
-    executor: docker-publisher
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Push Docker image through SSH
-          command: |
-            cat /tmp/workspace/image.tar | ssh -C -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST docker load
-  ssh-run-production-docker-container:
-    executor: docker-publisher
-    steps:
-      - run:
-          name: Run production Docker container through SSH
-          command: |
-            ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
-              cd $SSH_WORKDIR 
-              docker pull $DOCKER_USERNAME/geokirjandus:latest
-              docker pull $DOCKER_USERNAME/geokirjandus:$CIRCLE_TAG
-              docker stop geokirjandus
-              docker rm geokirjandus
-              docker run -d --restart unless-stopped --network frontend --name geokirjandus $DOCKER_USERNAME/geokirjandus:latest
-            "
-  ssh-run-dev-docker-container:
-    executor: docker-publisher
-    steps:
-      - run:
-          name: Run dev Docker container through SSH
-          command: |
-            ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
-              cd $SSH_WORKDIR 
-              docker stop geokirjandus-dev
-              docker rm geokirjandus-dev
-              docker run -d --restart unless-stopped --network frontend --name geokirjandus-dev $DOCKER_USERNAME/geokirjandus:dev-$CIRCLE_SHA1
-            "
-
 workflows:
   build:
     jobs:
@@ -72,16 +20,17 @@ workflows:
               only: master
             tags:
               only: /^\d+\.\d+\.\d+$/
-      - publish-docker-image:
+      - deployment/publish_docker_image:
           requires: 
             - deployment/build_docker_image
           filters:
             <<: *filters-production
-      - ssh-run-production-docker-container:
+      - deployment/ssh_run_production_container:
+          container_name: geokirjandus
           context:
             - machine-sarv-apps
           requires:
-            - publish-docker-image
+            - deployment/publish_docker_image
           filters:
             <<: *filters-production
   build-dev:
@@ -93,17 +42,18 @@ workflows:
           filters: &filters-dev
             tags:
               ignore: /^.*$/
-      - ssh-push-docker-image:
+      - deployment/ssh_push_docker_image:
           context:
             - machine-sarv-apps
           requires: 
             - deployment/build_docker_image
           filters:
             <<: *filters-dev
-      - ssh-run-dev-docker-container:
+      - deployment/ssh_run_dev_container:
+          container_name: geokirjandus-dev
           context:
             - machine-sarv-apps
           requires:
-            - ssh-push-docker-image
+            - deployment/ssh_push_docker_image
           filters:
             <<: *filters-dev

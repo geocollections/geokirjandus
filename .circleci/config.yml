@@ -1,133 +1,69 @@
 version: 2.1
 
-executors:
-  docker-publisher:
-    docker:
-      - image: cimg/base:2026.02-22.04
-
-jobs:
-  build-docker-image:
-    executor: docker-publisher
-    steps:
-      - checkout
-      - setup_remote_docker
-      - when:
-          condition:
-            << pipeline.git.tag >>
-          steps:
-            - run:
-                name: Build production Docker image
-                command: |
-                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-                  docker build -t $IMAGE_NAME:$CIRCLE_TAG -t $IMAGE_NAME:latest .
-      - when:
-          condition:
-            not: 
-              << pipeline.git.tag >>
-          steps:
-            - run:
-                name: Build development Docker image
-                command: |
-                  IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-                  docker build -t $IMAGE_NAME:dev-$CIRCLE_SHA1 .
-      - run:
-          name: Archive Docker image
-          command: |
-            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-            docker save -o image.tar $IMAGE_NAME
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./image.tar
-  publish-docker-image:
-    executor: docker-publisher
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - setup_remote_docker
-      - run:
-          name: Load archive Docker image
-          command: docker load -i /tmp/workspace/image.tar
-      - run:
-          name: Publish Docker image to Docker Hub
-          command: |
-            IMAGE_NAME=$DOCKER_USERNAME/geokirjandus
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push --all-tags $IMAGE_NAME
-  ssh-push-docker-image:
-    executor: docker-publisher
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Push Docker image through SSH
-          command: |
-            cat /tmp/workspace/image.tar | ssh -C -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST docker load
-  ssh-run-production-docker-container:
-    executor: docker-publisher
-    steps:
-      - run:
-          name: Run production Docker container through SSH
-          command: |
-            ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
-              cd $SSH_WORKDIR 
-              docker pull $DOCKER_USERNAME/geokirjandus:latest
-              docker pull $DOCKER_USERNAME/geokirjandus:$CIRCLE_TAG
-              docker stop geokirjandus
-              docker rm geokirjandus
-              docker run -d --restart unless-stopped --network frontend --name geokirjandus $DOCKER_USERNAME/geokirjandus:latest
-            "
-  ssh-run-dev-docker-container:
-    executor: docker-publisher
-    steps:
-      - run:
-          name: Run dev Docker container through SSH
-          command: |
-            ssh -o "StrictHostKeyChecking no" -p $SSH_PORT $SSH_USER@$SSH_HOST " 
-              cd $SSH_WORKDIR 
-              docker stop geokirjandus-dev
-              docker rm geokirjandus-dev
-              docker run -d --restart unless-stopped --network frontend --name geokirjandus-dev $DOCKER_USERNAME/geokirjandus:dev-$CIRCLE_SHA1
-            "
+orbs:
+  deployment: geocollections/deployment-orb@1
 
 workflows:
   build:
     jobs:
-      - build-docker-image:
+      - deployment/build_docker_image:
+          tag: << pipeline.git.tag >>
+          tag_latest: true
+          context:
+            - dockerhub
           filters: &filters-production
             branches:
               only: master
             tags:
-              only: /^\d+\.\d+\.\d+$/
-      - publish-docker-image:
+              only: /^v\d+\.\d+\.\d+$/
+      - deployment/publish_docker_image:
+          context:
+            - dockerhub
           requires: 
-            - build-docker-image
+            - deployment/build_docker_image
           filters:
             <<: *filters-production
-      - ssh-run-production-docker-container:
+      - deployment/ssh_pull_docker_image:
           context:
+            - dockerhub
+            - machine-sarv-apps
+          requires: 
+            - deployment/publish_docker_image
+          filters:
+            <<: *filters-production
+      - deployment/ssh_run_container:
+          container_name: geokirjandus
+          image_tag: << pipeline.git.tag >>
+          context:
+            - dockerhub
             - machine-sarv-apps
           requires:
-            - publish-docker-image
+            - deployment/publish_docker_image
           filters:
             <<: *filters-production
   build-dev:
     jobs:
-      - build-docker-image:
+      - deployment/build_docker_image:
+          tag: dev-<< pipeline.git.revision >>
+          context:
+            - dockerhub
           filters: &filters-dev
             tags:
               ignore: /^.*$/
-      - ssh-push-docker-image:
+      - deployment/ssh_push_docker_image:
           context:
             - machine-sarv-apps
-          requires:
-            - build-docker-image
+          requires: 
+            - deployment/build_docker_image
           filters:
             <<: *filters-dev
-      - ssh-run-dev-docker-container:
+      - deployment/ssh_run_container:
+          container_name: geokirjandus-dev
+          image_tag: dev-<< pipeline.git.revision >>
           context:
+            - dockerhub
             - machine-sarv-apps
           requires:
-            - ssh-push-docker-image
+            - deployment/ssh_push_docker_image
           filters:
             <<: *filters-dev

@@ -3,11 +3,6 @@ version: 2.1
 orbs:
   deployment: geocollections/deployment-orb@1
 
-executors:
-  docker-publisher:
-    docker:
-      - image: cimg/base:2026.02-22.04
-
 workflows:
   build:
     jobs:

@@ -14,7 +14,7 @@ workflows:
             branches:
               only: master
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - deployment/publish_docker_image:
           context:
             - dockerhub

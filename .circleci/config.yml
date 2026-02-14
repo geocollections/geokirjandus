@@ -38,7 +38,7 @@ workflows:
             - dockerhub
             - machine-sarv-apps
           requires:
-            - deployment/publish_docker_image
+            - deployment/ssh_pull_docker_image
           filters:
             <<: *filters-production
   build-dev:

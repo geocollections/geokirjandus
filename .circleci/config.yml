@@ -21,6 +21,8 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+$/
       - deployment/publish_docker_image:
+          context:
+            - dockerhub
           requires: 
             - deployment/build_docker_image
           filters:
@@ -28,6 +30,7 @@ workflows:
       - deployment/ssh_run_production_container:
           container_name: geokirjandus
           context:
+            - dockerhub
             - machine-sarv-apps
           requires:
             - deployment/publish_docker_image
@@ -52,6 +55,7 @@ workflows:
       - deployment/ssh_run_dev_container:
           container_name: geokirjandus-dev
           context:
+            - dockerhub
             - machine-sarv-apps
           requires:
             - deployment/ssh_push_docker_image

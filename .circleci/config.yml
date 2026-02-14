@@ -7,7 +7,8 @@ workflows:
   build:
     jobs:
       - deployment/build_docker_image:
-          git_tag: << pipeline.git.tag >>
+          tag: << pipeline.git.tag >>
+          tag_latest: true
           context:
             - dockerhub
           filters: &filters-production
@@ -22,8 +23,17 @@ workflows:
             - deployment/build_docker_image
           filters:
             <<: *filters-production
-      - deployment/ssh_run_production_container:
+      - deployment/ssh_pull_docker_image:
+          context:
+            - dockerhub
+            - machine-sarv-apps
+          requires: 
+            - deployment/publish_docker_image
+          filters:
+            <<: *filters-production
+      - deployment/ssh_run_container:
           container_name: geokirjandus
+          image_tag: << pipeline.git.tag >>
           context:
             - dockerhub
             - machine-sarv-apps
@@ -34,7 +44,7 @@ workflows:
   build-dev:
     jobs:
       - deployment/build_docker_image:
-          git_tag: << pipeline.git.tag >>
+          tag: dev-<< pipeline.git.revision >>
           context:
             - dockerhub
           filters: &filters-dev
@@ -47,8 +57,9 @@ workflows:
             - deployment/build_docker_image
           filters:
             <<: *filters-dev
-      - deployment/ssh_run_dev_container:
+      - deployment/ssh_run_container:
           container_name: geokirjandus-dev
+          image_tag: dev-<< pipeline.git.revision >>
           context:
             - dockerhub
             - machine-sarv-apps

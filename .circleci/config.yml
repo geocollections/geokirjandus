@@ -41,6 +41,15 @@ workflows:
             - deployment/ssh_pull_docker_image
           filters:
             <<: *filters-production
+      - deployment/ssh_remove_unused_images:
+          tag_filter: v*
+          context:
+            - dockerhub
+            - machine-sarv-apps
+          requires:
+            - deployment/ssh_run_container_with_script
+          filters:
+            <<: *filters-production
   build-dev:
     jobs:
       - deployment/build_docker_image:
@@ -65,5 +74,14 @@ workflows:
             - machine-sarv-apps
           requires:
             - deployment/ssh_push_docker_image
+          filters:
+            <<: *filters-dev
+      - deployment/ssh_remove_unused_images:
+          tag_filter: dev-*
+          context:
+            - dockerhub
+            - machine-sarv-apps
+          requires:
+            - deployment/ssh_run_container_with_script
           filters:
             <<: *filters-dev
